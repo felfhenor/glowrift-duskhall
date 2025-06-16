@@ -11,8 +11,9 @@ import { isSetup } from './setup';
 import { localStorageSignal } from './signal';
 import { isGameStateReady, updateGamestate } from './state-game';
 import { getOption } from './state-options';
+import { computed } from '@angular/core';
 
-export const isGameloopPaused = localStorageSignal<boolean>('paused', false);
+export const isGameloopPaused = computed(() => getOption('gameloopPaused'));
 
 export function doGameloop(numTicks: number): void {
   if (!isSetup()) return;

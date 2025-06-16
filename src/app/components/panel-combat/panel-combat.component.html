@@ -15,8 +15,8 @@
         role="tab"
         class="tab"
         [class.tab-active]="currentTab === tab.link"
-        (click)="activeTab.set(tab.link)"
-        (keydown)="activeTab.set(tab.link)"
+        (click)="changeActiveTab(tab.link)"
+        (keydown)="changeActiveTab(tab.link)"
       >
         {{ tab.name }}
       </button>

@@ -2,14 +2,12 @@ import { TitleCasePipe } from '@angular/common';
 import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
-  canSendNotifications,
-  enabledCategories,
   getOption,
   setOption,
-  ToggleableCategory,
 } from '../../helpers';
 import { GameOptions } from '../../interfaces';
 import { OptionsBaseComponent } from '../panel-options/option-base-page.component';
+import { ToggleableCategory } from '../../interfaces';
 
 @Component({
   selector: 'app-panel-options-ui',
@@ -22,8 +20,9 @@ export class PanelOptionsUIComponent extends OptionsBaseComponent {
     this.currentValueForOption('uiTheme') as string,
   );
 
-  public notificationsEnabled = computed(() => canSendNotifications());
-  public notificationCategoriesEnabled = computed(() => enabledCategories());
+  public notificationsEnabled = computed(() => this.currentValueForOption('canSendNotifications'));
+
+  public notificationCategoriesEnabled = computed(() => this.currentValueForOption('enabledNotificationCategories') as ToggleableCategory[]);
 
   public readonly themes = [
     { name: 'acid', type: 'light' },
@@ -106,18 +105,19 @@ export class PanelOptionsUIComponent extends OptionsBaseComponent {
   ) {
     setOption(option, value);
   }
-
+  
   public toggleNotifications() {
-    canSendNotifications.set(!canSendNotifications());
+    this.setValueForOption('canSendNotifications', !this.currentValueForOption('canSendNotifications'));
   }
 
   public toggleNotificationCategories(category: ToggleableCategory) {
-    if (enabledCategories().includes(category)) {
-      enabledCategories.set(
-        enabledCategories().filter((cat) => cat !== category),
-      );
+    if (this.notificationCategoriesEnabled().includes(category)) {
+      const newEnabledCategories = this.notificationCategoriesEnabled().filter((cat: ToggleableCategory) => cat !== category);
+      this.setValueForOption('enabledNotificationCategories', newEnabledCategories);
+      
       return;
     }
-    enabledCategories.set([...enabledCategories(), category]);
+
+    this.setValueForOption('enabledNotificationCategories', [...this.notificationCategoriesEnabled(), category]);
   }
 }

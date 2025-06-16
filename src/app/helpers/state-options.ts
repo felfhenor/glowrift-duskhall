@@ -15,6 +15,13 @@ export function defaultOptions(): GameOptions {
     uiTheme: 'dark',
 
     volume: 0.5,
+    gameloopPaused: false,
+    canSendNotifications: true,
+    enabledNotificationCategories: ['Travel', 'LocationClaim'],
+    combatTab: 'preferences',
+    optionsTab: 'ui',
+    townTab: 'Market',
+    inventoryFilter: 'accessory',
   };
 }
 
