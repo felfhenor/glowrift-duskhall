@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
+import { PanelTownBuildingUpgradeComponent } from '../panel-town-building-upgrade/panel-town-building-upgrade.component';
 
 @Component({
   selector: 'app-panel-town-market',
-  imports: [],
+  imports: [PanelTownBuildingUpgradeComponent],
   templateUrl: './panel-town-market.component.html',
-  styleUrl: './panel-town-market.component.scss'
+  styleUrl: './panel-town-market.component.scss',
 })
-export class PanelTownMarketComponent {
-
-}
+export class PanelTownMarketComponent {}

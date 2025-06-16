@@ -1,10 +1,10 @@
 import { Component, computed } from '@angular/core';
 import { gamestate } from '../../helpers';
-import { AtlasImageComponent } from '../atlas-image/atlas-image.component';
+import { IconLocationComponent } from '../icon-location/icon-location.component';
 
 @Component({
   selector: 'app-panel-combat-claims',
-  imports: [AtlasImageComponent],
+  imports: [IconLocationComponent],
   templateUrl: './panel-combat-claims.component.html',
   styleUrl: './panel-combat-claims.component.scss',
 })

@@ -6,6 +6,7 @@ import {
   GameState,
   Hero,
   HeroId,
+  LocationType,
   WorldPosition,
 } from '../interfaces';
 import { uuid } from './rng';
@@ -73,6 +74,16 @@ export function blankCurrencyBlock(): CurrencyBlock {
   };
 }
 
+export function blankNodeCountBlock(): Record<LocationType, number> {
+  return {
+    castle: 0,
+    cave: 0,
+    dungeon: 0,
+    town: 0,
+    village: 0,
+  };
+}
+
 export function blankGameState(): GameState {
   return {
     meta: {
@@ -87,20 +98,8 @@ export function blankGameState(): GameState {
       height: 0,
       nodes: {},
       homeBase: blankPosition(),
-      nodeCounts: {
-        castle: 0,
-        cave: 0,
-        dungeon: 0,
-        town: 0,
-        village: 0,
-      },
-      claimedCounts: {
-        castle: 0,
-        cave: 0,
-        dungeon: 0,
-        town: 0,
-        village: 0,
-      },
+      nodeCounts: blankNodeCountBlock(),
+      claimedCounts: blankNodeCountBlock(),
     },
     camera: blankPosition(),
     hero: {

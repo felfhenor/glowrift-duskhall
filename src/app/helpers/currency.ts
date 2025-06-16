@@ -2,6 +2,14 @@ import { CurrencyBlock, GameCurrency, WorldLocation } from '../interfaces';
 import { blankCurrencyBlock, gamestate, updateGamestate } from './state-game';
 import { getClaimedNodes } from './world';
 
+export function getCurrency(currency: GameCurrency): number {
+  return gamestate().currency.currencies[currency] ?? 0;
+}
+
+export function hasCurrency(type: GameCurrency, needed: number): boolean {
+  return getCurrency(type) >= needed;
+}
+
 export function gainCurrencies(currencies: Partial<CurrencyBlock>): void {
   updateGamestate((state) => {
     Object.keys(currencies).forEach((deltaCurrency) => {

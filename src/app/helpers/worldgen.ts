@@ -27,8 +27,8 @@ import {
   seededrng,
   uuid,
 } from './rng';
-import { indexToSprite } from './sprite';
-import { gamestate, updateGamestate } from './state-game';
+import { getSpriteFromNodeType, indexToSprite } from './sprite';
+import { blankNodeCountBlock, gamestate, updateGamestate } from './state-game';
 import { distanceBetweenNodes } from './travel';
 import { blankWorldNode } from './world';
 
@@ -197,23 +197,6 @@ function addElementsToWorld(
   });
 }
 
-function getSpriteFromNodeType(nodeType: LocationType | undefined): string {
-  switch (nodeType) {
-    case 'town':
-      return '0021';
-    case 'castle':
-      return '0000';
-    case 'cave':
-      return '0020';
-    case 'dungeon':
-      return '0023';
-    case 'village':
-      return '0022';
-    default:
-      return '';
-  }
-}
-
 function setEncounterLevels(
   config: WorldConfig,
   nodes: Record<string, WorldLocation>,
@@ -325,13 +308,8 @@ export function generateWorld(config: WorldConfig): GameStateWorld {
 
   addNode(firstTown);
 
-  const counts: Record<LocationType, number> = {
-    castle: 0,
-    cave: 0,
-    dungeon: 0,
-    town: 0,
-    village: 0,
-  };
+  const counts: Record<LocationType, number> = blankNodeCountBlock();
+  counts.town++;
 
   Object.keys(config.nodeCount).forEach((key) => {
     const count = config.nodeCount[key as LocationType];
@@ -370,13 +348,7 @@ export function generateWorld(config: WorldConfig): GameStateWorld {
       y: firstTown.y,
     },
     nodeCounts: counts,
-    claimedCounts: {
-      castle: 0,
-      cave: 0,
-      dungeon: 0,
-      town: 1,
-      village: 0,
-    },
+    claimedCounts: blankNodeCountBlock(),
   };
 }
 

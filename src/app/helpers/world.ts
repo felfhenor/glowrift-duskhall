@@ -1,5 +1,10 @@
 import { sortBy } from 'lodash';
-import { GameCurrency, GameStateWorld, WorldLocation } from '../interfaces';
+import {
+  GameCurrency,
+  GameStateWorld,
+  LocationType,
+  WorldLocation,
+} from '../interfaces';
 import { getCurrencyClaimsForNode, mergeCurrencyClaims } from './currency';
 import { notify } from './notify';
 import { uuid } from './rng';
@@ -151,4 +156,15 @@ export function unclaimNode(node: WorldLocation): void {
 
     return state;
   });
+}
+
+export function getClaimedNodeTypeCount(type: LocationType): number {
+  return gamestate().world.claimedCounts[type] ?? 0;
+}
+
+export function hasClaimedNodeCount(
+  type: LocationType,
+  needed: number,
+): boolean {
+  return getClaimedNodeTypeCount(type) >= needed;
 }
