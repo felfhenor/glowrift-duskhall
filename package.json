@@ -87,6 +87,7 @@
     "@typescript-eslint/eslint-plugin": "7.11.0",
     "@typescript-eslint/parser": "7.11.0",
     "autoprefixer": "^10.4.20",
+    "chokidar": "3.6",
     "concurrently": "^9.1.0",
     "conventional-changelog": "^6.0.0",
     "conventional-changelog-cli": "^5.0.0",
