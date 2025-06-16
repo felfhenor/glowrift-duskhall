@@ -20,5 +20,6 @@ export * from './state-game';
 export * from './state-options';
 export * from './texture';
 export * from './timer';
+export * from './town';
 export * from './world';
 export * from './worldconfig';

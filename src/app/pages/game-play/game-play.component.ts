@@ -5,6 +5,7 @@ import { PanelHeroesComponent } from '../../components/panel-heroes/panel-heroes
 import { PanelInventoryComponent } from '../../components/panel-inventory/panel-inventory.component';
 import { PanelLocationComponent } from '../../components/panel-location/panel-location.component';
 import { PanelOptionsComponent } from '../../components/panel-options/panel-options.component';
+import { PanelTownComponent } from '../../components/panel-town/panel-town.component';
 import {
   closeAllMenus,
   showCombatMenu,
@@ -12,6 +13,7 @@ import {
   showInventoryMenu,
   showLocationMenu,
   showOptionsMenu,
+  showTownMenu,
 } from '../../helpers';
 
 @Component({
@@ -23,6 +25,7 @@ import {
     PanelLocationComponent,
     PanelCombatComponent,
     PanelInventoryComponent,
+    PanelTownComponent,
   ],
   templateUrl: './game-play.component.html',
   styleUrl: './game-play.component.scss',
@@ -33,6 +36,7 @@ export class GamePlayComponent {
   public showCombat = computed(() => showCombatMenu());
   public showLocation = computed(() => showLocationMenu());
   public showInventory = computed(() => showInventoryMenu());
+  public showTown = computed(() => showTownMenu());
 
   @HostListener('document:keydown.escape', ['$event'])
   onEscapeKey(event: KeyboardEvent) {

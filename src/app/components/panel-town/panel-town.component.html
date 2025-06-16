@@ -1,0 +1,47 @@
+@let currentTab = activeTab();
+
+<app-card-page>
+  <span header>Town</span>
+
+  <div pageactions>
+    <button class="ml-8 btn btn-clear" (click)="closeMenu()">
+      <app-icon name="tablerX"></app-icon>
+    </button>
+  </div>
+
+  <div role="tablist" class="tabs tabs-boxed">
+    @for (tab of tabs; track $index) {
+      <button
+        role="tab"
+        class="tab"
+        [class.tab-active]="currentTab === tab.link"
+        (click)="activeTab.set(tab.link)"
+        (keydown)="activeTab.set(tab.link)"
+        [appAnalyticsClick]="'Town:Navigate:' + tab.name"
+        [class.hidden]="!tab.showIf()"
+      >
+        {{ tab.name }} Lv.{{ tab.level() }}
+      </button>
+    }
+  </div>
+
+  <div class="p-3 max-h-[500px] overflow-y-auto">
+    @switch (currentTab) {
+      @case ('Market') {
+        <app-panel-town-market></app-panel-town-market>
+      }
+
+      @case ('Blacksmith') {
+        <app-panel-town-blacksmith></app-panel-town-blacksmith>
+      }
+
+      @case ('Merchant') {
+        <app-panel-town-merchant></app-panel-town-merchant>
+      }
+
+      @case ('Academy') {
+        <app-panel-town-academy></app-panel-town-academy>
+      }
+    }
+  </div>
+</app-card-page>

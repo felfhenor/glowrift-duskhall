@@ -5,6 +5,7 @@ import { Hero, HeroRiskTolerance } from './hero';
 import { Branded } from './identifiable';
 import { EquipmentSkill } from './skill';
 import { Timer } from './timer';
+import { TownBuilding } from './town';
 import { WorldLocation, WorldPosition } from './world';
 import { LocationType } from './worldconfig';
 
@@ -66,6 +67,10 @@ export interface GameStateActionClock {
   timers: Record<number, Timer[]>;
 }
 
+export interface GameStateTown {
+  buildingLevels: Record<TownBuilding, number>;
+}
+
 export interface GameState {
   meta: GameStateMeta;
   gameId: GameId;
@@ -75,4 +80,5 @@ export interface GameState {
   inventory: GameStateInventory;
   currency: GameStateCurrency;
   actionClock: GameStateActionClock;
+  town: GameStateTown;
 }

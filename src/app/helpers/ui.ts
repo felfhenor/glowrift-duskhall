@@ -17,6 +17,7 @@ export const showOptionsMenu = signal<boolean>(false);
 export const showInventoryMenu = signal<boolean>(false);
 export const showHeroesMenu = signal<boolean>(false);
 export const showCombatMenu = signal<boolean>(false);
+export const showTownMenu = signal<boolean>(false);
 
 export const contextMenuCoordinates = signal<
   { x: number; y: number } | undefined
@@ -28,5 +29,6 @@ export function closeAllMenus() {
   showCombatMenu.set(false);
   showOptionsMenu.set(false);
   showInventoryMenu.set(false);
+  showTownMenu.set(false);
   showLocationMenu.set(undefined);
 }

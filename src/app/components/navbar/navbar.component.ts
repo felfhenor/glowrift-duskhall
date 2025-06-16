@@ -16,6 +16,7 @@ import {
   showHeroesMenu,
   showInventoryMenu,
   showOptionsMenu,
+  showTownMenu,
 } from '../../helpers';
 import { GameCurrency } from '../../interfaces';
 import { MetaService } from '../../services/meta.service';
@@ -58,6 +59,11 @@ export class NavbarComponent {
     icon: keyof typeof ALL_ICONS;
     clickCb: () => void;
   }> = [
+    {
+      name: 'Town',
+      icon: 'gameMedievalGate',
+      clickCb: () => this.toggleTown(),
+    },
     {
       name: 'Combat',
       icon: 'gameSwordBrandish',
@@ -123,6 +129,16 @@ export class NavbarComponent {
 
     closeAllMenus();
     showInventoryMenu.set(!showInventoryMenu());
+  }
+
+  public toggleTown() {
+    if (showTownMenu()) {
+      showTownMenu.set(false);
+      return;
+    }
+
+    closeAllMenus();
+    showTownMenu.set(!showTownMenu());
   }
 
   public focusCamera() {

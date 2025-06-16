@@ -47,6 +47,7 @@ export * from './sprite';
 export * from './state-game';
 export * from './state-options';
 export * from './timer';
+export * from './town';
 export * from './travel';
 export * from './ui';
 export * from './version';

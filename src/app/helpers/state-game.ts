@@ -138,6 +138,14 @@ export function blankGameState(): GameState {
       numTicks: 0,
       timers: {},
     },
+    town: {
+      buildingLevels: {
+        Market: 1,
+        Blacksmith: 1,
+        Merchant: 1,
+        Academy: 1,
+      },
+    },
   };
 }
 

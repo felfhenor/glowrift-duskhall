@@ -8,11 +8,13 @@
       ></app-panel-options>
     </div>
   }
+
   @if (showHeroes()) {
     <div class="absolute inset-0 p-8">
       <app-panel-heroes class="absolute inset-0 panel-layer"></app-panel-heroes>
     </div>
   }
+
   @if (showInventory()) {
     <div class="absolute inset-0 p-8">
       <app-panel-inventory
@@ -20,11 +22,19 @@
       ></app-panel-inventory>
     </div>
   }
+
   @if (showCombat()) {
     <div class="absolute inset-0 p-8">
       <app-panel-combat class="absolute inset-0 panel-layer"></app-panel-combat>
     </div>
   }
+
+  @if (showTown()) {
+    <div class="absolute inset-0 p-8">
+      <app-panel-town class="absolute inset-0 panel-layer"></app-panel-town>
+    </div>
+  }
+
   @if (showLocation(); as location) {
     <div class="absolute inset-0 p-8">
       <app-panel-location
