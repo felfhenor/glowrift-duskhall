@@ -11,9 +11,9 @@ import { resetContainerPositions } from './pixi-app-setup';
 export interface DragHandlerConfig {
   app: Application;
   containers: Container[];
-  viewportWidth: number;
-  viewportHeight: number;
-  tileSize?: number;
+  viewportWidth: () => number;
+  viewportHeight: () => number;
+  tileSize?: () => number;
 }
 
 /**
@@ -27,7 +27,7 @@ export function setupMapDragging(config: DragHandlerConfig): DragState {
     containers,
     viewportWidth,
     viewportHeight,
-    tileSize = 64,
+    tileSize = () => 64,
   } = config;
 
   const dragState: DragState = {
@@ -61,15 +61,15 @@ export function setupMapDragging(config: DragHandlerConfig): DragState {
     const bounds = calculateCameraBounds(
       world.width,
       world.height,
-      viewportWidth,
-      viewportHeight,
+      viewportWidth(),
+      viewportHeight(),
     );
 
     const result = processCameraDrag(
       dragState.accumulatedDrag,
       currentCamera,
       bounds,
-      tileSize,
+      tileSize(),
     );
 
     updateCameraPosition(result.newCamera);
