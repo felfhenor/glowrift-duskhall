@@ -48,6 +48,7 @@ export * from './state-game';
 export * from './state-options';
 export * from './timer';
 export * from './town';
+export * from './town-market';
 export * from './travel';
 export * from './ui';
 export * from './version';

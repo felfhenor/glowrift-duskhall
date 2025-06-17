@@ -5,6 +5,7 @@ import {
   hasCurrency,
   loseCurrency,
   notifySuccess,
+  townMarketBonus,
 } from '../../helpers';
 import { Currency } from '../../interfaces';
 import { PanelTownBuildingUpgradeComponent } from '../panel-town-building-upgrade/panel-town-building-upgrade.component';
@@ -76,11 +77,15 @@ export class PanelTownMarketComponent {
 
     if (!input || !output) return;
 
+    const outputBonusPercent = townMarketBonus();
+    const outputBonusValue = outputBonusPercent * this.outputAmount();
+    const outputTotal = this.outputAmount() + outputBonusValue;
+
     loseCurrency(input.name, this.inputAmount());
-    gainCurrency(output.name, this.outputAmount());
+    gainCurrency(output.name, outputTotal);
 
     notifySuccess(
-      `Traded ${this.inputAmount()} ${input.name} for ${this.outputAmount()} ${output.name}!`,
+      `Traded ${this.inputAmount()} ${input.name} for ${outputTotal} ${output.name} (+${outputBonusPercent * 100}% bonus)!`,
     );
   }
 }
