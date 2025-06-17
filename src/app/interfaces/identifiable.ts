@@ -1,5 +1,6 @@
 export type ContentType =
   | 'worldconfig'
+  | 'currency'
   | 'guardian'
   | 'skill'
   | 'weapon'

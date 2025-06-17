@@ -1,0 +1,27 @@
+.ng-select {
+  &.ng-select-opened > .ng-select-container,
+  .ng-select-container {
+    background-color: var(--color-base-200);
+    color: var(--color-base-content);
+    border-color: var(--color-base-300);
+
+    .ng-placeholder {
+      color: #fff !important;
+    }
+  }
+}
+
+.ng-dropdown-panel {
+  background-color: var(--color-base-100) !important;
+  color: var(--color-base-content);
+  border-color: var(--color-base-300) !important;
+}
+
+.ng-option {
+  background-color: var(--color-base-100) !important;
+  color: var(--color-base-content) !important;
+
+  &.ng-option-marked {
+    background-color: var(--color-base-300) !important;
+  }
+}

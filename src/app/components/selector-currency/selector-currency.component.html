@@ -1,0 +1,23 @@
+<ng-select
+  [(ngModel)]="currency"
+  appendTo="body"
+  placeholder="Select currency..."
+>
+  @for (currency of allCurrencies(); track currency.id) {
+    <ng-option [value]="currency">{{ currency.name }}</ng-option>
+  }
+
+  <ng-template ng-option-tmp let-item="item">
+    <div class="flex gap-2 items-center">
+      <app-icon-currency [currency]="item.name"></app-icon-currency>
+      {{ item.name }}
+    </div>
+  </ng-template>
+
+  <ng-template ng-label-tmp let-item="item">
+    <div class="flex gap-2 items-center">
+      <app-icon-currency [currency]="item.name"></app-icon-currency>
+      {{ item.name }}
+    </div>
+  </ng-template>
+</ng-select>

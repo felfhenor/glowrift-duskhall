@@ -1,0 +1,67 @@
+- id: 77473246-9c6c-4a9c-8c22-cd6acce0b498
+  name: Mana
+  value: 1
+
+- id: 4f4ab380-2ed5-4f3b-a143-af54e5e496c2
+  name: Soul Essence
+  value: 3
+
+- id: ce4b957b-cd71-4b39-b191-7e56ac79171c
+  name: Fire Sliver
+  element: Fire
+  value: 5
+
+- id: 3e582318-6c87-4338-9a5c-61710a462872
+  name: Fire Shard
+  element: Fire
+  value: 25
+
+- id: f5a51931-ed51-494c-a0d6-1feefb6299ef
+  name: Fire Crystal
+  element: Fire
+  value: 100
+
+- id: 4edafa53-a209-4172-8164-262c2b63b11f
+  name: Water Sliver
+  element: Water
+  value: 5
+
+- id: 49ba6a93-2c69-439c-8478-334ebc9ecd11
+  name: Water Shard
+  element: Water
+  value: 25
+
+- id: ee067250-8f17-48aa-a6fe-dbf53d79919c
+  name: Water Crystal
+  element: Water
+  value: 100
+
+- id: 1b40f4bc-656a-46a7-896d-815bded34257
+  name: Air Sliver
+  element: Air
+  value: 5
+
+- id: ed4e94ac-0c5e-4312-a931-d8b1b4c7a981
+  name: Air Shard
+  element: Air
+  value: 25
+
+- id: 4f575bce-e9ac-4e01-b7d5-1a55327dc2e7
+  name: Air Crystal
+  element: Air
+  value: 100
+
+- id: f7216f83-6ccc-417b-8f35-cf45e3f692a2
+  name: Earth Sliver
+  element: Earth
+  value: 5
+
+- id: 7041cfdf-f5de-4126-ac2c-6ee41a86db5a
+  name: Earth Shard
+  element: Earth
+  value: 25
+
+- id: 508ef468-57de-486c-9474-c46ce56c5bcc
+  name: Earth Crystal
+  element: Earth
+  value: 100

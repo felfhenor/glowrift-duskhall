@@ -43,6 +43,7 @@
     "@ng-icons/core": "^29.6.1",
     "@ng-icons/game-icons": "^29.9.0",
     "@ng-icons/tabler-icons": "^29.8.0",
+    "@ng-select/ng-select": "^14.9.0",
     "@ngneat/helipopper": "^9.2.1",
     "@ngxpert/hot-toast": "^3.0.2",
     "@pixi/graphics": "^7.4.3",

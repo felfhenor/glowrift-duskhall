@@ -111,6 +111,7 @@ export class ContentService {
       [key in ContentType]: undefined;
     } = {
       worldconfig: undefined,
+      currency: undefined,
       guardian: undefined,
       skill: undefined,
       accessory: undefined,

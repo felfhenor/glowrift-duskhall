@@ -1,4 +1,5 @@
 import { GameElement } from './element';
+import { Content } from './identifiable';
 
 export type GameCurrency =
   | 'Mana'
@@ -9,3 +10,9 @@ export type GameCurrency =
   | `${GameElement} Core`;
 
 export type CurrencyBlock = Record<GameCurrency, number>;
+
+export interface Currency extends Content {
+  name: GameCurrency;
+  element?: GameElement;
+  value: number;
+}
