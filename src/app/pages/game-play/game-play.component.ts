@@ -6,7 +6,9 @@ import { PanelInventoryComponent } from '../../components/panel-inventory/panel-
 import { PanelLocationComponent } from '../../components/panel-location/panel-location.component';
 import { PanelOptionsComponent } from '../../components/panel-options/panel-options.component';
 import { PanelTownComponent } from '../../components/panel-town/panel-town.component';
+
 import {
+  isGameloopPaused,
   closeAllMenus,
   showCombatMenu,
   showHeroesMenu,
@@ -44,4 +46,12 @@ export class GamePlayComponent {
     event.preventDefault();
     event.stopPropagation();
   }
+
+@HostListener('document:keydown.space', ['$event'])
+onSpaceKey(event: KeyboardEvent) {
+  isGameloopPaused.set(!isGameloopPaused());
+  event.preventDefault();
+  event.stopPropagation();
+}
+
 }
