@@ -1,15 +1,21 @@
-<div class="card bg-base-100 shadow-xl m-4 page-card" [style.height]="height()">
-  <div class="card-body h-full">
-    <h1 class="card-title justify-between">
-      <ng-content select="[header]"></ng-content>
+<div class="w-full px-2 sm:px-3 md:px-5 lg:px-6 xl:px-8">
+  <div class="card bg-base-100 shadow-xl my-4 page-card mx-auto"
+       [style.height]="height()"
+       [style.max-width.px]="1500">
 
-      <div>
-        <ng-content select="[pageactions]"></ng-content>
+    <div class="card-body h-full">
+      <h1 class="card-title justify-between">
+        <ng-content select="[header]"></ng-content>
+
+        <div>
+          <ng-content select="[pageactions]"></ng-content>
+        </div>
+      </h1>
+
+      <div class="card-content h-full mt-3">
+        <ng-content></ng-content>
       </div>
-    </h1>
-
-    <div class="card-content h-full mt-3">
-      <ng-content></ng-content>
     </div>
+
   </div>
 </div>
