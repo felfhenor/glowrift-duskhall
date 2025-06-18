@@ -1,4 +1,6 @@
-<div class="card bg-base-100 shadow-xl m-4 page-card" [style.height]="height()">
+<div class="card bg-base-100 shadow-xl m-4 page-card" 
+     [style.height]="height()" 
+     [style.max-width.px]="1500">
   <div class="card-body h-full">
     <h1 class="card-title justify-between">
       <ng-content select="[header]"></ng-content>
