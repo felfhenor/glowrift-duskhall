@@ -9,58 +9,64 @@
       Upgrade {{ building() }} to Lv.{{ nextLevel() }}
     </div>
 
-    @if (liberations.length > 0) {
-      <div class="text-lg">Liberations</div>
+    @if (isMaxLevel()) {
+      <div class="text-success text-lg mt-4 mb-4">
+        This building is at max level and cannot be upgraded any further.
+      </div>
+    } @else {
+      @if (liberations.length > 0) {
+        <div class="text-lg">Liberations</div>
 
-      <div class="flex flex-col">
-        @for (lib of liberations; track $index) {
-          <div
-            class="relative flex gap-2 items-center"
-            [class.text-error]="!hasNodeClaim(lib.key, lib.value)"
-          >
-            <app-icon-location
-              class="scale-50 absolute left-[-16px] top-[-16px]"
-              [type]="lib.key"
-            ></app-icon-location>
+        <div class="flex flex-col">
+          @for (lib of liberations; track $index) {
+            <div
+              class="relative flex gap-2 items-center"
+              [class.text-error]="!hasNodeClaim(lib.key, lib.value)"
+            >
+              <app-icon-location
+                class="scale-50 absolute left-[-16px] top-[-16px]"
+                [type]="lib.key"
+              ></app-icon-location>
 
-            <div class="ml-10">x{{ lib.value | number }}</div>
+              <div class="ml-10">x{{ lib.value | number }}</div>
 
-            <div>({{ curLiberations[lib.key] | number }})</div>
-          </div>
-        }
+              <div>({{ curLiberations[lib.key] | number }})</div>
+            </div>
+          }
+        </div>
+      }
+
+      @if (currencies.length > 0) {
+        <div class="text-lg">Currencies</div>
+
+        <div class="flex flex-col">
+          @for (curr of currencies; track $index) {
+            <div
+              class="relative flex gap-2 items-center"
+              [class.text-error]="!hasCurrency(curr.key, curr.value)"
+            >
+              <app-icon-currency
+                class="absolute left-[8px]"
+                [currency]="curr.key"
+              ></app-icon-currency>
+
+              <div class="ml-10">x{{ curr.value | number }}</div>
+
+              <div>({{ curCurrencies[curr.key] | number }})</div>
+            </div>
+          }
+        </div>
+      }
+
+      <div class="mt-6">
+        <button
+          class="btn btn-primary btn-block"
+          [class.btn-disabled]="!canUpgrade()"
+          (click)="upgrade()"
+        >
+          Upgrade
+        </button>
       </div>
     }
-
-    @if (currencies.length > 0) {
-      <div class="text-lg">Currencies</div>
-
-      <div class="flex flex-col">
-        @for (curr of currencies; track $index) {
-          <div
-            class="relative flex gap-2 items-center"
-            [class.text-error]="!hasCurrency(curr.key, curr.value)"
-          >
-            <app-icon-currency
-              class="absolute left-[8px]"
-              [currency]="curr.key"
-            ></app-icon-currency>
-
-            <div class="ml-10">x{{ curr.value | number }}</div>
-
-            <div>({{ curCurrencies[curr.key] | number }})</div>
-          </div>
-        }
-      </div>
-    }
-
-    <div class="mt-6">
-      <button
-        class="btn btn-primary btn-block"
-        [class.btn-disabled]="!canUpgrade()"
-        (click)="upgrade()"
-      >
-        Upgrade
-      </button>
-    </div>
   </div>
 </div>
