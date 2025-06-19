@@ -1,5 +1,10 @@
 import { sortBy } from 'lodash';
-import { DroppableEquippable } from '../interfaces';
+import {
+  DroppableEquippable,
+  EquipmentItem,
+  EquipmentItemDefinition,
+  GameStat,
+} from '../interfaces';
 
 export function sortedRarityList<T extends DroppableEquippable>(
   items: T[],
@@ -25,4 +30,14 @@ export function sortedRarityList<T extends DroppableEquippable>(
     },
     (i) => -i.dropLevel,
   ]);
+}
+
+export function getItemStat(
+  item: EquipmentItemDefinition,
+  stat: GameStat,
+): number {
+  return (
+    item.baseStats[stat] ??
+    0 + ((item as EquipmentItem)?.mods?.baseStats?.[stat] ?? 0)
+  );
 }

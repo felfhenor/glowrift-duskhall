@@ -1,1 +1,41 @@
-<p>panel-town-merchant works!</p>
+<div class="flex flex-row gap-2">
+  <div class="flex-1 flex flex-col">
+    <app-panel-town-building-upgrade
+      [building]="'Merchant'"
+    ></app-panel-town-building-upgrade>
+  </div>
+
+  <div class="flex-2 card bg-base-100 foreground shadow-xl">
+    <div class="card-body">
+      <div class="card-title relative">
+        Shop Items
+
+        <div class="absolute text-sm font-normal right-2 badge badge-warning">
+          <app-countdown
+            [secondsLeft]="shopResetTicks()"
+            label="Shop Resets In"
+          ></app-countdown>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <app-inventory-grid-item
+          [clickableItems]="true"
+          [items]="shopItems()"
+          [isShopList]="true"
+          (itemClicked)="selectItem($event)"
+        ></app-inventory-grid-item>
+      </div>
+    </div>
+  </div>
+</div>
+
+<swal
+  #buySwal
+  title="Buy {{ purchasingItem()?.name ?? 'Item' }}"
+  icon="question"
+  text="Are you sure you want to buy this item for {{ purchaseCost() }} Mana?"
+  confirmButtonText="Yes, buy item"
+  cancelButtonText="No, don't buy"
+  (confirm)="buyCurrentItem()"
+></swal>

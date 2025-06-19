@@ -45,7 +45,7 @@ export class PanelTownComponent {
     {
       name: 'Merchant',
       link: 'Merchant',
-      showIf: computed(() => false),
+      showIf: computed(() => true),
       level: computed(() => getBuildingLevel('Merchant')),
     },
     {

@@ -144,6 +144,10 @@ export function blankGameState(): GameState {
         Merchant: 1,
         Academy: 1,
       },
+      merchant: {
+        soldItems: [],
+        ticksUntilRefresh: 0,
+      },
     },
   };
 }

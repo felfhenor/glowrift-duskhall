@@ -67,8 +67,14 @@ export interface GameStateActionClock {
   timers: Record<number, Timer[]>;
 }
 
+export interface GameStateTownMerchant {
+  ticksUntilRefresh: number;
+  soldItems: (EquipmentItem | undefined)[];
+}
+
 export interface GameStateTown {
   buildingLevels: Record<TownBuilding, number>;
+  merchant: GameStateTownMerchant;
 }
 
 export interface GameState {

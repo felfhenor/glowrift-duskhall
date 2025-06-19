@@ -59,10 +59,12 @@
         }
 
         @if (nodeLostTime() > 0) {
-          <app-countdown
-            [secondsLeft]="nodeLostTime()"
-            label="Node Lost In"
-          ></app-countdown>
+          <div class="badge badge-warning">
+            <app-countdown
+              [secondsLeft]="nodeLostTime()"
+              label="Node Lost In"
+            ></app-countdown>
+          </div>
         }
 
         <button

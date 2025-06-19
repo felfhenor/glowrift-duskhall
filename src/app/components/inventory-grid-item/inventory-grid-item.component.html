@@ -1,16 +1,26 @@
 @let actions = allowedActions();
 
-<div class="flex flex-wrap flex-row gap-2 p-2">
-  @for (item of items(); track item.id) {
-    <app-icon-item
-      [item]="item"
-      [compareItem]="compareWithItem(item)"
-      (click)="itemClicked.emit(item)"
-      [tp]="contextMenu"
-      [tpData]="item"
-      tpVariation="contextMenu"
-      [class.cursor-pointer]="clickableItems()"
-    ></app-icon-item>
+<div class="flex flex-wrap flex-row gap-2">
+  @for (item of items(); track $index) {
+    @if (item) {
+      <app-icon-item
+        [item]="item"
+        [compareItem]="compareWithItem(item)"
+        (click)="itemClicked.emit(item)"
+        [tp]="contextMenu"
+        [tpData]="item"
+        tpVariation="contextMenu"
+        [showLevel]="!isShopList()"
+        [showPrice]="isShopList()"
+        [class.cursor-pointer]="clickableItems()"
+      ></app-icon-item>
+    } @else {
+      <div
+        class="h-[64px] w-[64px] bg-gray-400 flex justify-center items-center text-black"
+      >
+        Bought
+      </div>
+    }
 
     <ng-template #contextMenu let-hide let-item="data">
       @if (actions.length > 0) {

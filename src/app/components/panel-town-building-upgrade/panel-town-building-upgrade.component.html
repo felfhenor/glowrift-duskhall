@@ -5,7 +5,9 @@
 
 <div class="card bg-base-100 foreground shadow-xl">
   <div class="card-body">
-    <div class="card-title">Upgrade Market to Lv.{{ nextLevel() }}</div>
+    <div class="card-title">
+      Upgrade {{ building() }} to Lv.{{ nextLevel() }}
+    </div>
 
     @if (liberations.length > 0) {
       <div class="text-lg">Liberations</div>

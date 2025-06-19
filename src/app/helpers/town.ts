@@ -75,7 +75,21 @@ export function buildingUpgradeCost(building: TownBuilding) {
   return costs;
 }
 
+export function buildingMaxLevel(building: TownBuilding) {
+  const maxLevels: Record<TownBuilding, number> = {
+    Academy: 99,
+    Blacksmith: 99,
+    Market: 99,
+    Merchant: 99,
+  };
+
+  return maxLevels[building] ?? 1;
+}
+
 export function canUpgradeBuildingLevel(building: TownBuilding): boolean {
+  const level = getBuildingLevel(building);
+  if (level >= buildingMaxLevel(building)) return false;
+
   const { liberation, currency } = buildingUpgradeCost(building);
 
   let shouldUpgrade = true;

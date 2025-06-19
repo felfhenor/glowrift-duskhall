@@ -15,10 +15,11 @@ export type ItemAction = 'Salvage';
   styleUrl: './inventory-grid-item.component.css',
 })
 export class InventoryGridItemComponent {
-  public items = input.required<EquipmentItem[]>();
+  public items = input.required<(EquipmentItem | undefined)[]>();
   public clickableItems = input<boolean>();
   public allowedActions = input<ItemAction[]>([]);
   public compareWithEquippedHero = input<Hero>();
+  public isShopList = input<boolean>(false);
 
   public itemClicked = output<EquipmentItem>();
 

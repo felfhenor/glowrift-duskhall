@@ -15,7 +15,10 @@ import {
   WorldPosition,
 } from '../interfaces';
 import { getEntriesByType, getEntry } from './content';
-import { pickRandomItemDefinition } from './creator-equipment';
+import {
+  allItemDefinitions,
+  pickRandomItemDefinition,
+} from './creator-equipment';
 import { pickRandomSkillDefinition } from './creator-skill';
 import { createGuardianForLocation } from './guardian';
 import {
@@ -367,7 +370,10 @@ export function getLootForLocation(
   const numLoot = numLootForLocation(location);
   return Array.from({ length: numLoot }, () => {
     return randomChoice(
-      [pickRandomItemDefinition(rng), pickRandomSkillDefinition(rng)],
+      [
+        pickRandomItemDefinition(allItemDefinitions(), rng),
+        pickRandomSkillDefinition(rng),
+      ],
       rng,
     );
   }).filter(Boolean);

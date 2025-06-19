@@ -18,11 +18,21 @@
   [tpMaxWidth]="500"
 ></app-atlas-image>
 
-<div
-  class="z-20 absolute bottom-0 left-[2px] text-xs font-bold italic text-black text-shadow-white"
->
-  Lv. {{ itemData.dropLevel }}
-</div>
+@if (showLevel()) {
+  <div
+    class="z-20 absolute bottom-0 left-[2px] text-xs font-bold italic text-black text-shadow-white"
+  >
+    Lv. {{ itemData.dropLevel }}
+  </div>
+}
+
+@if (showPrice()) {
+  <div
+    class="z-20 absolute bottom-0 left-[2px] text-xs font-bold italic text-black text-shadow-white"
+  >
+    {{ shopPrice() | gameCurrency }}
+  </div>
+}
 
 <ng-template #itemInfo let-hide>
   @if (compareItem(); as compareWith) {
