@@ -6,7 +6,11 @@
 <div class="card bg-base-100 foreground shadow-xl">
   <div class="card-body">
     <div class="card-title">
-      Upgrade {{ building() }} to Lv.{{ nextLevel() }}
+      @if (isMaxLevel()) {
+        {{ building() }} is at max level
+      } @else {
+        Upgrade {{ building() }} to Lv.{{ nextLevel() }}
+      }
     </div>
 
     @if (isMaxLevel()) {
