@@ -8,34 +8,34 @@
     Level {{ itemData.dropLevel }} {{ itemData.rarity }} {{ itemData.__type }}
   </div>
 
-  @if (itemData.baseStats.Health || deltas?.Health) {
+  @if (itemHealth() || deltas?.Health) {
     <app-marker-stat
       stat="Health"
-      [value]="itemData.baseStats.Health || 0"
+      [value]="itemHealth() || 0"
       [delta]="deltas?.Health ?? 0"
     ></app-marker-stat>
   }
 
-  @if (itemData.baseStats.Force || deltas?.Force) {
+  @if (itemForce() || deltas?.Force) {
     <app-marker-stat
       stat="Force"
-      [value]="itemData.baseStats.Force || 0"
+      [value]="itemForce() || 0"
       [delta]="deltas?.Force ?? 0"
     ></app-marker-stat>
   }
 
-  @if (itemData.baseStats.Aura || deltas?.Aura) {
+  @if (itemAura() || deltas?.Aura) {
     <app-marker-stat
       stat="Aura"
-      [value]="itemData.baseStats.Aura || 0"
+      [value]="itemAura() || 0"
       [delta]="deltas?.Aura ?? 0"
     ></app-marker-stat>
   }
 
-  @if (itemData.baseStats.Speed || deltas?.Speed) {
+  @if (itemSpeed() || deltas?.Speed) {
     <app-marker-stat
       stat="Speed"
-      [value]="itemData.baseStats.Speed || 0"
+      [value]="itemSpeed() || 0"
       [delta]="deltas?.Speed ?? 0"
     ></app-marker-stat>
   }

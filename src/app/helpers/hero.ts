@@ -7,6 +7,7 @@ import {
   StatBlock,
   WorldPosition,
 } from '../interfaces';
+import { getItemStat } from './item';
 import { randomChoice, seededrng } from './rng';
 import { indexToSprite } from './sprite';
 import { gamestate, updateGamestate } from './state-game';
@@ -48,7 +49,9 @@ export function heroBaseStat(hero: Hero, stat: GameStat): number {
 
 export function heroEquipmentStat(hero: Hero, stat: GameStat): number {
   return sum(
-    Object.values(hero.equipment ?? {}).map((i) => i?.baseStats?.[stat] ?? 0),
+    Object.values(hero.equipment ?? {}).map((i) =>
+      i ? getItemStat(i, stat) : 0,
+    ),
   );
 }
 
