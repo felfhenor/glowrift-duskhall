@@ -13,6 +13,14 @@ import { GameCurrency, LocationType, TownBuilding } from '../../interfaces';
 import { IconItemComponent } from '../icon-currency/icon-currency.component';
 import { IconLocationComponent } from '../icon-location/icon-location.component';
 
+// Hardcoded max levels for each building (can be refactored to config later)
+const BUILDING_MAX_LEVELS: Record<TownBuilding, number> = {
+  Market: 5,
+  Merchant: 5,
+  Blacksmith: 5,
+  Academy: 5,
+};
+
 @Component({
   selector: 'app-panel-town-building-upgrade',
   imports: [IconLocationComponent, IconItemComponent, DecimalPipe],
@@ -28,6 +36,13 @@ export class PanelTownBuildingUpgradeComponent {
   public upgradeRequirements = computed(() =>
     buildingUpgradeCost(this.building()),
   );
+
+  // Add computed property for max level check
+  public isMaxLevel = computed(() => {
+    const currentLevel = getBuildingLevel(this.building());
+    const maxLevel = BUILDING_MAX_LEVELS[this.building() as TownBuilding];
+    return currentLevel >= maxLevel;
+  });
 
   public liberationRequirements = computed(() => {
     const reqs = this.upgradeRequirements().liberation;
