@@ -1,26 +1,18 @@
 import { Subject } from 'rxjs';
-import { localStorageSignal } from './signal';
-
-export const canSendNotifications = localStorageSignal<boolean>(
-  'canSendNotifications',
-  true,
-);
+import { options } from './state-options';
+import { NotificationCategory, ToggleableCategory } from '../interfaces';
 
 function isPageVisible(): boolean {
   return !document.hidden;
 }
 
-type NotificationCategory = 'Error' | 'Success' | 'Travel' | 'LocationClaim';
-
-export type ToggleableCategory = Exclude<
-  NotificationCategory,
-  'Error' | 'Success'
->;
-
-export const enabledCategories = localStorageSignal<ToggleableCategory[]>(
-  'enabledNotificationCategories',
-  ['Travel', 'LocationClaim'],
-);
+// export const enabledCategories = localStorageSignal<ToggleableCategory[]>(
+//   'enabledNotificationCategories',
+//   [
+//     'Travel', 
+//     'LocationClaim'
+//   ]
+// );
 
 const notification = new Subject<{
   message: string;
@@ -31,11 +23,11 @@ export const notification$ = notification.asObservable();
 
 export function notify(message: string, category: NotificationCategory): void {
   if (
-    !isPageVisible() ||
-    !canSendNotifications() ||
-    !enabledCategories().includes(category as ToggleableCategory)
-  )
-    return;
+    !isPageVisible() || 
+    !options()['canSendNotifications'] || 
+    !options()['enabledNotificationCategories'].includes(category as ToggleableCategory)
+  ) return;
+
   notification.next({ message, type: 'show', category });
 }
 

@@ -3,7 +3,9 @@ import { TeleportOutletDirective } from '@ngneat/overview';
 import { AnalyticsClickDirective } from '../../directives/analytics-click.directive';
 import {
   getBuildingLevel,
+  getOption,
   localStorageSignal,
+  setOption,
   showTownMenu,
 } from '../../helpers';
 import { TownBuilding } from '../../interfaces';
@@ -30,8 +32,12 @@ import { PanelTownMerchantComponent } from '../panel-town-merchant/panel-town-me
   styleUrl: './panel-town.component.scss',
 })
 export class PanelTownComponent {
-  public activeTab = localStorageSignal<TownBuilding>('townTab', 'Market');
+  // public activeTab = localStorageSignal<TownBuilding>('townTab', 'Market');
+  public activeTab = computed(() => getOption('townTab'));
 
+  public changeActiveTab(building: TownBuilding) {
+    setOption('townTab', building);
+  }
   public readonly tabs: Array<{
     name: string;
     link: TownBuilding;

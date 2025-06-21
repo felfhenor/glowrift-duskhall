@@ -1,17 +1,16 @@
 import { Component, computed } from '@angular/core';
 import {
   gamestate,
-  localStorageSignal,
+  getOption,
+  setOption,
   showInventoryMenu,
   sortedRarityList,
 } from '../../helpers';
-import { EquipmentItem, EquipmentSkill, EquipmentSlot } from '../../interfaces';
+import { EquipmentItem, EquipmentSkill, EquipmentSlot, InventorySlotType } from '../../interfaces';
 import { CardPageComponent } from '../card-page/card-page.component';
 import { IconComponent } from '../icon/icon.component';
 import { InventoryGridItemComponent } from '../inventory-grid-item/inventory-grid-item.component';
 import { InventoryGridSkillComponent } from '../inventory-grid-skill/inventory-grid-skill.component';
-
-type InventorySlotType = EquipmentSlot | 'skill';
 
 @Component({
   selector: 'app-panel-inventory',
@@ -25,10 +24,7 @@ type InventorySlotType = EquipmentSlot | 'skill';
   styleUrl: './panel-inventory.component.scss',
 })
 export class PanelInventoryComponent {
-  public currentItemType = localStorageSignal<InventorySlotType>(
-    'inventoryFilter',
-    'accessory',
-  );
+  public currentItemType = computed(() => getOption('inventoryFilter'));
 
   public readonly allItemTypes: Array<{
     name: string;
@@ -84,6 +80,6 @@ export class PanelInventoryComponent {
   }
 
   changeItemType(type: InventorySlotType) {
-    this.currentItemType.set(type);
+    setOption('inventoryFilter', type);
   }
 }

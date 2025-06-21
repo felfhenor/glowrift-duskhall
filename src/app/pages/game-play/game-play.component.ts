@@ -8,8 +8,10 @@ import { PanelOptionsComponent } from '../../components/panel-options/panel-opti
 import { PanelTownComponent } from '../../components/panel-town/panel-town.component';
 
 import {
-  isGameloopPaused,
   closeAllMenus,
+  getOption,
+  isGameloopPaused,
+  setOption,
   showCombatMenu,
   showHeroesMenu,
   showInventoryMenu,
@@ -39,6 +41,7 @@ export class GamePlayComponent {
   public showLocation = computed(() => showLocationMenu());
   public showInventory = computed(() => showInventoryMenu());
   public showTown = computed(() => showTownMenu());
+  private isGameloopPaused = computed(() => getOption('gameloopPaused'));
 
   @HostListener('document:keydown.escape', ['$event'])
   onEscapeKey(event: KeyboardEvent) {
@@ -49,7 +52,8 @@ export class GamePlayComponent {
 
 @HostListener('document:keydown.space', ['$event'])
 onSpaceKey(event: KeyboardEvent) {
-  isGameloopPaused.set(!isGameloopPaused());
+  // isGameloopPaused.set(!isGameloopPaused());
+  setOption('gameloopPaused', !this.isGameloopPaused());
   event.preventDefault();
   event.stopPropagation();
 }

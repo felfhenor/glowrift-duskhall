@@ -9,8 +9,10 @@ import {
   closeAllMenus,
   focusCameraOnPlayer,
   gamestate,
+  getOption,
   globalStatusText,
   isGameloopPaused,
+  setOption,
   showCombatMenu,
   showCurrencyList,
   showHeroesMenu,
@@ -41,7 +43,7 @@ export class NavbarComponent {
   public meta = inject(MetaService);
   public router = inject(Router);
 
-  public isPaused = computed(() => isGameloopPaused());
+  public isPaused = computed(() => getOption('gameloopPaused'));
   public currentStatus = computed(() => globalStatusText());
 
   public shouldShowCurrencyList = computed(() => showCurrencyList());
@@ -146,6 +148,6 @@ export class NavbarComponent {
   }
 
   public togglePause() {
-    isGameloopPaused.set(!isGameloopPaused());
+    setOption('gameloopPaused', !this.isPaused())
   }
 }
