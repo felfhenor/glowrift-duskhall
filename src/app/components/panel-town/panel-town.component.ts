@@ -4,7 +4,6 @@ import { AnalyticsClickDirective } from '../../directives/analytics-click.direct
 import {
   getBuildingLevel,
   getOption,
-  localStorageSignal,
   setOption,
   showTownMenu,
 } from '../../helpers';
@@ -32,7 +31,6 @@ import { PanelTownMerchantComponent } from '../panel-town-merchant/panel-town-me
   styleUrl: './panel-town.component.scss',
 })
 export class PanelTownComponent {
-  // public activeTab = localStorageSignal<TownBuilding>('townTab', 'Market');
   public activeTab = computed(() => getOption('townTab'));
 
   public changeActiveTab(building: TownBuilding) {

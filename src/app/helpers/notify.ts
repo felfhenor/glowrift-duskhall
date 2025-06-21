@@ -1,18 +1,10 @@
 import { Subject } from 'rxjs';
-import { options } from './state-options';
 import { NotificationCategory, ToggleableCategory } from '../interfaces';
+import { options } from './state-options';
 
 function isPageVisible(): boolean {
   return !document.hidden;
 }
-
-// export const enabledCategories = localStorageSignal<ToggleableCategory[]>(
-//   'enabledNotificationCategories',
-//   [
-//     'Travel', 
-//     'LocationClaim'
-//   ]
-// );
 
 const notification = new Subject<{
   message: string;
@@ -23,10 +15,13 @@ export const notification$ = notification.asObservable();
 
 export function notify(message: string, category: NotificationCategory): void {
   if (
-    !isPageVisible() || 
-    !options()['canSendNotifications'] || 
-    !options()['enabledNotificationCategories'].includes(category as ToggleableCategory)
-  ) return;
+    !isPageVisible() ||
+    !options()['canSendNotifications'] ||
+    !options()['enabledNotificationCategories'].includes(
+      category as ToggleableCategory,
+    )
+  )
+    return;
 
   notification.next({ message, type: 'show', category });
 }

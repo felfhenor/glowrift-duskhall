@@ -10,7 +10,6 @@ import { PanelTownComponent } from '../../components/panel-town/panel-town.compo
 import {
   closeAllMenus,
   getOption,
-  isGameloopPaused,
   setOption,
   showCombatMenu,
   showHeroesMenu,
@@ -50,12 +49,10 @@ export class GamePlayComponent {
     event.stopPropagation();
   }
 
-@HostListener('document:keydown.space', ['$event'])
-onSpaceKey(event: KeyboardEvent) {
-  // isGameloopPaused.set(!isGameloopPaused());
-  setOption('gameloopPaused', !this.isGameloopPaused());
-  event.preventDefault();
-  event.stopPropagation();
-}
-
+  @HostListener('document:keydown.space', ['$event'])
+  onSpaceKey(event: KeyboardEvent) {
+    setOption('gameloopPaused', !this.isGameloopPaused());
+    event.preventDefault();
+    event.stopPropagation();
+  }
 }
