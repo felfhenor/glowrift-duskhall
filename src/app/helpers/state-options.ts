@@ -18,8 +18,8 @@ export function defaultOptions(): GameOptions {
     gameloopPaused: false,
     canSendNotifications: true,
     enabledNotificationCategories: ['Travel', 'LocationClaim'],
-    combatTab: 'preferences',
-    optionsTab: 'ui',
+    combatTab: 'Preferences',
+    optionsTab: 'UI',
     townTab: 'Market',
     inventoryFilter: 'accessory',
   };

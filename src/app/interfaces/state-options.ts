@@ -1,6 +1,6 @@
-import { Signal } from "@angular/core";
-import { InventorySlotType } from "./equipment";
-import { TownBuilding } from "./town";
+import { Signal } from '@angular/core';
+import { InventorySlotType } from './equipment';
+import { TownBuilding } from './town';
 
 export type GameOption =
   | 'showDebug'
@@ -9,16 +9,23 @@ export type GameOption =
   | 'debugGameloopTimerUpdates'
   | 'audioPlay';
 
-export type NotificationCategory = 'Error' | 'Success' | 'Travel' | 'LocationClaim';
-  
-export type ToggleableCategory = Exclude<NotificationCategory, 'Error' | 'Success'>;
+export type NotificationCategory =
+  | 'Error'
+  | 'Success'
+  | 'Travel'
+  | 'LocationClaim';
 
-export type CombatTab = 'preferences' | 'combatlog' | 'claims';
-export type OptionsTab = 'ui' | 'savefile' | 'debug';
+export type ToggleableCategory = Exclude<
+  NotificationCategory,
+  'Error' | 'Success'
+>;
+
+export type CombatTab = 'Preferences' | 'CombatLog' | 'Claims';
+export type OptionsTab = 'UI' | 'Savefile' | 'Debug';
 
 export interface CombatTabLink {
   name: 'Preferences' | 'Combat Log' | 'Claims';
-  link: CombatTab
+  link: CombatTab;
 }
 
 export interface OptionsTabLink {
@@ -26,7 +33,7 @@ export interface OptionsTabLink {
   link: OptionsTab;
   showIf: Signal<boolean>;
 }
-  
+
 export type GameOptions = Record<GameOption, boolean> & {
   uiTheme: string;
   volume: number;
