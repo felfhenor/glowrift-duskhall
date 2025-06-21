@@ -76,6 +76,11 @@ export class PanelHeroesComponent {
 
   setSkillSlot(slot: number) {
     this.equipItemType.set(undefined);
+    if (slot === this.skillSlot()) {
+      this.closeSkills();
+      return;
+    }
+
     this.skillSlot.set(slot);
   }
 
@@ -92,6 +97,11 @@ export class PanelHeroesComponent {
 
   setEquipType(type: EquipmentSlot) {
     this.skillSlot.set(-1);
+    if (type === this.equipItemType()) {
+      this.closeEquipment();
+      return;
+    }
+
     this.equipItemType.set(type);
   }
 

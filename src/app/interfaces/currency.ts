@@ -1,3 +1,4 @@
+import { DropRarity } from './droppable';
 import { GameElement } from './element';
 import { Content } from './identifiable';
 
@@ -7,7 +8,8 @@ export type GameCurrency =
   | `${GameElement} Sliver`
   | `${GameElement} Shard`
   | `${GameElement} Crystal`
-  | `${GameElement} Core`;
+  | `${GameElement} Core`
+  | `${DropRarity} Dust`;
 
 export type CurrencyBlock = Record<GameCurrency, number>;
 

@@ -2,8 +2,8 @@
 
 <div class="flex flex-row gap-2">
   @for (spellSlot of maxSkills() | repeat; track spellSlot) {
-    <div
-      class="bg-gray-400 outline outline-2 h-[64px] w-[64px] cursor-pointer flex justify-center items-center text-black text-xs"
+    <app-icon-blank-slot
+      class="cursor-pointer"
       [class.animate-pulse]="highlightSlot() === spellSlot"
       (click)="slotClick.emit(spellSlot)"
       (contextmenu)="slotRightClick.emit(spellSlot)"
@@ -13,6 +13,6 @@
       } @else {
         Spell #{{ spellSlot + 1 }}
       }
-    </div>
+    </app-icon-blank-slot>
   }
 </div>

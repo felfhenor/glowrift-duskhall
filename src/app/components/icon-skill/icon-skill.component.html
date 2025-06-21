@@ -1,7 +1,9 @@
 @let skillData = skill();
 
+<app-icon-blank-slot class="absolute"></app-icon-blank-slot>
+
 <div
-  class="h-[64px] w-[64px] bg-gray-400 outline outline-2 z-0 absolute"
+  class="h-[64px] w-[64px] outline outline-2 z-0 absolute"
   [class.outline-white-900]="skillData.rarity === 'Common'"
   [class.outline-green-400]="skillData.rarity === 'Uncommon'"
   [class.outline-blue-400]="skillData.rarity === 'Rare'"

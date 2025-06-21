@@ -49,6 +49,7 @@ export * from './state-game';
 export * from './state-options';
 export * from './timer';
 export * from './town';
+export * from './town-blacksmith';
 export * from './town-market';
 export * from './town-merchant';
 export * from './travel';

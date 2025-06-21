@@ -70,6 +70,12 @@ export function blankCurrencyBlock(): CurrencyBlock {
     'Earth Crystal': 0,
     'Earth Core': 0,
     'Soul Essence': 0,
+    'Common Dust': 0,
+    'Uncommon Dust': 0,
+    'Rare Dust': 0,
+    'Legendary Dust': 0,
+    'Mystical Dust': 0,
+    'Unique Dust': 0,
     Mana: 0,
   };
 }

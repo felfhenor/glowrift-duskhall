@@ -1,11 +1,12 @@
 import { TitleCasePipe } from '@angular/common';
 import { Component, computed, input, output, Signal } from '@angular/core';
 import { EquipmentItem, EquipmentSlot, Hero } from '../../interfaces';
+import { IconBlankSlotComponent } from '../icon-blank-slot/icon-blank-slot.component';
 import { IconItemComponent } from '../icon-item/icon-item.component';
 
 @Component({
   selector: 'app-panel-heroes-equipment',
-  imports: [IconItemComponent, TitleCasePipe],
+  imports: [IconItemComponent, TitleCasePipe, IconBlankSlotComponent],
   templateUrl: './panel-heroes-equipment.component.html',
   styleUrl: './panel-heroes-equipment.component.css',
 })

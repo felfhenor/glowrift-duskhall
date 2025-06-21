@@ -4,13 +4,19 @@ import { DecimalPipe } from '@angular/common';
 import { TippyDirective } from '@ngneat/helipopper';
 import { itemSalvage, itemSalvageValue } from '../../helpers';
 import { EquipmentItem, Hero } from '../../interfaces';
+import { IconBlankSlotComponent } from '../icon-blank-slot/icon-blank-slot.component';
 import { IconItemComponent } from '../icon-item/icon-item.component';
 
 export type ItemAction = 'Salvage';
 
 @Component({
   selector: 'app-inventory-grid-item',
-  imports: [IconItemComponent, TippyDirective, DecimalPipe],
+  imports: [
+    IconItemComponent,
+    TippyDirective,
+    DecimalPipe,
+    IconBlankSlotComponent,
+  ],
   templateUrl: './inventory-grid-item.component.html',
   styleUrl: './inventory-grid-item.component.css',
 })

@@ -15,11 +15,7 @@
         [class.cursor-pointer]="clickableItems()"
       ></app-icon-item>
     } @else {
-      <div
-        class="h-[64px] w-[64px] bg-gray-400 flex justify-center items-center text-black"
-      >
-        Bought
-      </div>
+      <app-icon-blank-slot>Bought</app-icon-blank-slot>
     }
 
     <ng-template #contextMenu let-hide let-item="data">

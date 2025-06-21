@@ -3,10 +3,11 @@ import { TippyDirective } from '@ngneat/helipopper';
 import { uniq } from 'lodash';
 import { EquipmentSkillDefinition } from '../../interfaces';
 import { AtlasAnimationComponent } from '../atlas-animation/atlas-animation.component';
+import { IconBlankSlotComponent } from '../icon-blank-slot/icon-blank-slot.component';
 
 @Component({
   selector: 'app-icon-skill',
-  imports: [AtlasAnimationComponent, TippyDirective],
+  imports: [AtlasAnimationComponent, TippyDirective, IconBlankSlotComponent],
   templateUrl: './icon-skill.component.html',
   styleUrl: './icon-skill.component.scss',
 })

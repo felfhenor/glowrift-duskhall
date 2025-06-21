@@ -4,6 +4,7 @@ import { itemBuyValue } from '../../helpers';
 import { EquipmentItemDefinition } from '../../interfaces';
 import { GameCurrencyPipe } from '../../pipes/game-currency.pipe';
 import { AtlasImageComponent } from '../atlas-image/atlas-image.component';
+import { IconBlankSlotComponent } from '../icon-blank-slot/icon-blank-slot.component';
 import { ItemStatsCompareComponent } from '../item-stats-compare/item-stats-compare.component';
 import { ItemStatsComponent } from '../item-stats/item-stats.component';
 
@@ -15,6 +16,7 @@ import { ItemStatsComponent } from '../item-stats/item-stats.component';
     ItemStatsComponent,
     ItemStatsCompareComponent,
     GameCurrencyPipe,
+    IconBlankSlotComponent,
   ],
   templateUrl: './icon-item.component.html',
   styleUrl: './icon-item.component.scss',

@@ -2,8 +2,8 @@
 
 <div class="flex flex-row gap-2">
   @for (item of items(); track $index) {
-    <div
-      class="bg-gray-400 outline outline-2 h-[64px] w-[64px] cursor-pointer flex justify-center items-center text-black text-xs"
+    <app-icon-blank-slot
+      class="cursor-pointer"
       [class.animate-pulse]="highlightSlot() === item.slot"
       (click)="slotClick.emit(item.slot)"
       (contextmenu)="slotRightClick.emit(item.slot)"
@@ -13,6 +13,6 @@
       } @else {
         {{ item.slot | titlecase }}
       }
-    </div>
+    </app-icon-blank-slot>
   }
 </div>

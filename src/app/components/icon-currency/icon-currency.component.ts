@@ -22,6 +22,12 @@ const icons: Record<GameCurrency, keyof typeof ALL_ICONS> = {
   'Water Shard': 'gameStonePile',
   'Water Sliver': 'gameEarthWorm',
   'Soul Essence': 'gameDoubleRingedOrb',
+  'Common Dust': 'gameDustCloud',
+  'Uncommon Dust': 'gameDustCloud',
+  'Rare Dust': 'gameDustCloud',
+  'Mystical Dust': 'gameDustCloud',
+  'Legendary Dust': 'gameDustCloud',
+  'Unique Dust': 'gameDustCloud',
   Mana: 'gameBallGlow',
 };
 
@@ -43,6 +49,12 @@ const colors: Record<GameCurrency, string> = {
   'Water Shard': 'text-sky-500',
   'Water Sliver': 'text-sky-500',
   'Soul Essence': 'text-indigo-500',
+  'Common Dust': 'text-white-900',
+  'Uncommon Dust': 'text-green-400',
+  'Rare Dust': 'text-blue-400',
+  'Mystical Dust': 'text-purple-400',
+  'Legendary Dust': 'text-yellow-400',
+  'Unique Dust': 'text-rose-400',
   Mana: 'text-fuchsia-500',
 };
 
