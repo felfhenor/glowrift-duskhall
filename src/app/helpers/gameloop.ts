@@ -1,5 +1,6 @@
 import { LoggerTimer } from 'logger-timer';
 
+import { computed } from '@angular/core';
 import { autoTravelGameloop } from './gameloop-autotravel';
 import { currencyGameloop } from './gameloop-currency';
 import { exploreGameloop } from './gameloop-explore';
@@ -8,10 +9,8 @@ import { townGameloop } from './gameloop-town';
 import { travelGameloop } from './gameloop-travel';
 import { debug } from './logging';
 import { isSetup } from './setup';
-import { localStorageSignal } from './signal';
 import { isGameStateReady, updateGamestate } from './state-game';
 import { getOption } from './state-options';
-import { computed } from '@angular/core';
 
 export const isGameloopPaused = computed(() => getOption('gameloopPaused'));
 

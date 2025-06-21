@@ -11,7 +11,6 @@ import {
   gamestate,
   getOption,
   globalStatusText,
-  isGameloopPaused,
   setOption,
   showCombatMenu,
   showCurrencyList,
@@ -148,6 +147,6 @@ export class NavbarComponent {
   }
 
   public togglePause() {
-    setOption('gameloopPaused', !this.isPaused())
+    setOption('gameloopPaused', !this.isPaused());
   }
 }
