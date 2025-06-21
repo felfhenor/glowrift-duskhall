@@ -108,6 +108,9 @@
     "typescript": "^5.8.3"
   },
   "overrides": {
+    "@ngxpert/hot-toast": {
+      "@ngneat/overview": "6.1.2"
+    },
     "@sweetalert2/ngx-sweetalert2": {
       "@angular/common": "19",
       "@angular/core": "19"
