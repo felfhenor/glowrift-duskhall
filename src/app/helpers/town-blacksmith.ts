@@ -49,5 +49,5 @@ export function itemSalvageCurrencyGain(
 ): Partial<Record<GameCurrency, number>> {
   const currency: GameCurrency = `${item.rarity} Dust`;
 
-  return { [currency]: Math.max(1, Math.floor(item.dropLevel / 5)) };
+  return { [currency]: Math.max(1, Math.floor(item.dropLevel * 0.05)) };
 }

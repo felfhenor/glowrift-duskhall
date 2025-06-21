@@ -3,13 +3,13 @@
 <div class="flex flex-row gap-2">
   <div class="flex-1 flex flex-col">
     <app-panel-town-building-upgrade
-      [building]="'Blacksmith'"
+      [building]="'Alchemist'"
     ></app-panel-town-building-upgrade>
   </div>
 
   <div class="flex-1 card bg-base-100 foreground shadow-xl">
     <div class="card-body">
-      <div class="card-title relative">Break Down Items</div>
+      <div class="card-title relative">Break Down Spells</div>
 
       <div class="flex flex-row flex-wrap gap-2">
         @for (slot of maxSlots() | repeat; track $index) {
@@ -19,7 +19,7 @@
             (contextmenu)="unchooseItem($index)"
           >
             @if (items[slot]; as item) {
-              <app-icon-item [item]="item"></app-icon-item>
+              <app-icon-skill [skill]="item"></app-icon-skill>
             } @else {
               Choose
             }
@@ -45,7 +45,7 @@
               </div>
             }
           } @else {
-            <app-blank-slate>Choose items to break</app-blank-slate>
+            <app-blank-slate>Choose spells to break</app-blank-slate>
           }
         </div>
 
@@ -62,13 +62,13 @@
 </div>
 
 <app-card-page height="270px" *teleportTo="'panel-town'">
-  <span header>Choose Items To Break Down</span>
+  <span header>Choose Spells To Break Down</span>
 
   <div class="flex flex-row max-h-[156px] overflow-y-auto p-2">
-    <app-inventory-grid-item
-      [items]="visibleItemsToBreakDown()"
+    <app-inventory-grid-skill
+      [skills]="visibleSpellsToBreakDown()"
       (itemClicked)="chooseItem($event)"
-      [clickableItems]="true"
-    ></app-inventory-grid-item>
+      [clickableSkills]="true"
+    ></app-inventory-grid-skill>
   </div>
 </app-card-page>

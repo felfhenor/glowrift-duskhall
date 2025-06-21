@@ -19,6 +19,11 @@ export function buildingUpgradeCost(building: TownBuilding) {
       dungeon: 3,
     },
 
+    Alchemist: {
+      ...blankNodeCountBlock(),
+      cave: 25,
+    },
+
     Blacksmith: {
       ...blankNodeCountBlock(),
       cave: 25,
@@ -39,6 +44,11 @@ export function buildingUpgradeCost(building: TownBuilding) {
     Academy: {
       ...blankCurrencyBlock(),
       Mana: 5000,
+    },
+
+    Alchemist: {
+      ...blankCurrencyBlock(),
+      Mana: 1000,
     },
 
     Blacksmith: {
@@ -78,6 +88,7 @@ export function buildingUpgradeCost(building: TownBuilding) {
 export function buildingMaxLevel(building: TownBuilding) {
   const maxLevels: Record<TownBuilding, number> = {
     Academy: 99,
+    Alchemist: 99,
     Blacksmith: 99,
     Market: 99,
     Merchant: 99,

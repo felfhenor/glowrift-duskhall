@@ -1,1 +1,6 @@
-export type TownBuilding = 'Market' | 'Merchant' | 'Blacksmith' | 'Academy';
+export type TownBuilding =
+  | 'Market'
+  | 'Merchant'
+  | 'Blacksmith'
+  | 'Academy'
+  | 'Alchemist';

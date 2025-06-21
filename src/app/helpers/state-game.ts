@@ -145,10 +145,11 @@ export function blankGameState(): GameState {
     },
     town: {
       buildingLevels: {
-        Market: 1,
-        Blacksmith: 1,
-        Merchant: 1,
         Academy: 1,
+        Alchemist: 1,
+        Blacksmith: 1,
+        Market: 1,
+        Merchant: 1,
       },
       merchant: {
         soldItems: [],
