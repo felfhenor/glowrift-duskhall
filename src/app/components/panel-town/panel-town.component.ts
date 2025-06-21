@@ -1,4 +1,5 @@
 import { Component, computed, Signal } from '@angular/core';
+import { TeleportOutletDirective } from '@ngneat/overview';
 import { AnalyticsClickDirective } from '../../directives/analytics-click.directive';
 import {
   getBuildingLevel,
@@ -23,6 +24,7 @@ import { PanelTownMerchantComponent } from '../panel-town-merchant/panel-town-me
     PanelTownBlacksmithComponent,
     PanelTownMerchantComponent,
     PanelTownAcademyComponent,
+    TeleportOutletDirective,
   ],
   templateUrl: './panel-town.component.html',
   styleUrl: './panel-town.component.scss',

@@ -1,4 +1,5 @@
 import { Component, computed, signal } from '@angular/core';
+import { TeleportDirective } from '@ngneat/overview';
 import { RepeatPipe } from 'ngxtension/repeat-pipe';
 import {
   gamestate,
@@ -28,6 +29,7 @@ import { PanelTownBuildingUpgradeComponent } from '../panel-town-building-upgrad
     RepeatPipe,
     BlankSlateComponent,
     MarkerCurrencyComponent,
+    TeleportDirective,
   ],
   templateUrl: './panel-town-blacksmith.component.html',
   styleUrl: './panel-town-blacksmith.component.scss',

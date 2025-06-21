@@ -61,7 +61,9 @@
   </div>
 </div>
 
-<app-card-page height="170px">
+<app-card-page height="270px" *teleportTo="'panel-town'">
+  <span header>Choose Items To Break Down</span>
+
   <div class="flex flex-row max-h-[156px] overflow-y-auto p-2">
     <app-inventory-grid-item
       [items]="visibleItemsToEquip()"
