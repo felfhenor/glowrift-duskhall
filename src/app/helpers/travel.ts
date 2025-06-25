@@ -1,4 +1,5 @@
 import { WorldLocation, WorldPosition } from '../interfaces';
+import { getExplorationTickMultiplier } from './festival-exploration';
 import { notify } from './notify';
 import { gamestate, updateGamestate } from './state-game';
 
@@ -22,7 +23,14 @@ export function travelTimeBetweenNodes(
 
 export function travelTimeFromCurrentLocationTo(node: WorldPosition): number {
   const currentLocation = gamestate().hero.position;
-  return travelTimeBetweenNodes(currentLocation, node);
+  const travelTimeMultiplier = getExplorationTickMultiplier();
+  const baseTravelTime = travelTimeBetweenNodes(currentLocation, node);
+  const travelTimeModification = Math.floor(
+    baseTravelTime * travelTimeMultiplier,
+  );
+  const totalTravelTime = baseTravelTime + travelTimeModification;
+
+  return totalTravelTime;
 }
 
 export function travelToNode(node: WorldLocation): void {

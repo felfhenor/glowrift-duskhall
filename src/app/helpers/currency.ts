@@ -1,4 +1,5 @@
 import { CurrencyBlock, GameCurrency, WorldLocation } from '../interfaces';
+import { getFestivalProductionMultiplier } from './festival-production';
 import { blankCurrencyBlock, gamestate, updateGamestate } from './state-game';
 import { getClaimedNodes } from './world';
 
@@ -14,9 +15,12 @@ export function gainCurrencies(currencies: Partial<CurrencyBlock>): void {
   updateGamestate((state) => {
     Object.keys(currencies).forEach((deltaCurrency) => {
       const key = deltaCurrency as GameCurrency;
+      const multiplier = 1 + getFestivalProductionMultiplier(key);
+      const gainedCurrency = (currencies[key] ?? 0) * multiplier;
+
       state.currency.currencies[key] = Math.max(
         0,
-        state.currency.currencies[key] + (currencies[key] ?? 0),
+        state.currency.currencies[key] + gainedCurrency,
       );
     });
     return state;

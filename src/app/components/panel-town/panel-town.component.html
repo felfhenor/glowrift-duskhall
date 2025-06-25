@@ -20,7 +20,11 @@
         [appAnalyticsClick]="'Town:Navigate:' + tab.name"
         [class.hidden]="!tab.showIf()"
       >
-        {{ tab.name }} Lv.{{ tab.level() }}
+        {{ tab.name }}
+
+        @if (tab.level() > 0) {
+          Lv.{{ tab.level() }}
+        }
       </button>
     }
   </div>
@@ -45,6 +49,10 @@
 
       @case ('Academy') {
         <app-panel-town-academy></app-panel-town-academy>
+      }
+
+      @case ('Festivals') {
+        <app-panel-town-festivals></app-panel-town-festivals>
       }
     }
   </div>

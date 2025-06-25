@@ -1,6 +1,7 @@
 - id: 432ad282-8c1c-42d4-8a66-b795ff2b9dfd
   name: Temporal Echo
   description: Time itself seems to bend to your will, allowing rapid traversal of the realm!
+  endDescription: The echoes of time have faded, returning to their normal flow.
   effectsDescription: Explore Time -50%
   duration: 3600
   rarity: Uncommon

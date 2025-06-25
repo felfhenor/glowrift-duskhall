@@ -23,6 +23,7 @@ export interface FestivalEffects {
 
 export interface Festival extends Content {
   description: string;
+  endDescription: string;
   effectsDescription: string;
   duration: number;
   rarity: DropRarity;

@@ -1,13 +1,9 @@
-import { shuffle, sum, sumBy } from 'lodash';
-import {
-  DropRarity,
-  Festival,
-  FestivalEffectCombatAttribute,
-  GameCurrency,
-} from '../interfaces';
+import { shuffle, sumBy } from 'lodash';
+import { DropRarity, Festival } from '../interfaces';
 import { getTickTimer, isExpired } from './clock';
 import { getEntriesByType, getEntry } from './content';
-import { randomNumber } from './rng';
+import { notify } from './notify';
+import { randomNumber, succeedsChance } from './rng';
 import { gamestate, updateGamestate } from './state-game';
 
 export function getActiveFestivals(): Festival[] {
@@ -24,13 +20,21 @@ export function startFestival(festivalId: string): void {
   const festivalData = getEntry<Festival>(festivalId);
   if (!festivalData) return;
 
+  notify(festivalData.description, 'Festival');
+
   updateGamestate((state) => {
     state.festival.festivals[festivalId] = getTickTimer(festivalData.duration);
+    state.festival.ticksWithoutFestivalStart = 0;
     return state;
   });
 }
 
 export function stopFestival(festivalId: string): void {
+  const festivalData = getEntry<Festival>(festivalId);
+  if (!festivalData) return;
+
+  notify(festivalData.endDescription, 'Festival');
+
   updateGamestate((state) => {
     delete state.festival.festivals[festivalId];
     return state;
@@ -77,38 +81,15 @@ export function pickRandomFestivalBasedOnRarity(): string | undefined {
   return undefined;
 }
 
-export function maybeStartNewFestival(): void {}
+export function maybeStartNewFestival(): void {
+  const ticksSinceLastFestival = gamestate().festival.ticksWithoutFestivalStart;
+  const adjustedTicks = Math.floor(ticksSinceLastFestival / 100);
+  const shouldStartFestival = succeedsChance(adjustedTicks);
 
-export function getFestivalProductionMultiplier(
-  currency: GameCurrency,
-): number {
-  return sum(
-    getActiveFestivals().map((f) => f?.effects?.production?.[currency] ?? 0),
-  );
-}
+  if (shouldStartFestival) {
+    const randomFestival = pickRandomFestivalBasedOnRarity();
+    if (!randomFestival) return;
 
-export function getExplorationTickMultiplier(): number {
-  return sum(
-    getActiveFestivals().map((f) => f?.effects?.exploration?.ticks ?? 0),
-  );
-}
-
-export function getCombatOutgoingAttributeMultiplier(
-  attribute: FestivalEffectCombatAttribute,
-): number {
-  return sum(
-    getActiveFestivals().map(
-      (f) => f?.effects?.combat?.outgoing?.[attribute] ?? 0,
-    ),
-  );
-}
-
-export function getCombatIncomingAttributeMultiplier(
-  attribute: FestivalEffectCombatAttribute,
-): number {
-  return sum(
-    getActiveFestivals().map(
-      (f) => f?.effects?.combat?.incoming?.[attribute] ?? 0,
-    ),
-  );
+    startFestival(randomFestival);
+  }
 }

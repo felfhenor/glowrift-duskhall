@@ -47,9 +47,9 @@ export function doGameloop(numTicks: number): void {
   exploreGameloop(numTicks);
   timer.stopTimer('gameloop-explore');
 
-  timer.stopTimer('gameloop-festivals');
+  timer.startTimer('gameloop-festival');
   festivalGameloop(numTicks);
-  timer.stopTimer('gameloop');
+  timer.stopTimer('gameloop-festival');
 
   timer.startTimer('gameloop-timers');
   gameloopTimers(numTicks);

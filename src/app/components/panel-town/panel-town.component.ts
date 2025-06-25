@@ -7,12 +7,13 @@ import {
   setOption,
   showTownMenu,
 } from '../../helpers';
-import { TownBuilding } from '../../interfaces';
+import { TownTab } from '../../interfaces';
 import { CardPageComponent } from '../card-page/card-page.component';
 import { IconComponent } from '../icon/icon.component';
 import { PanelTownAcademyComponent } from '../panel-town-academy/panel-town-academy.component';
 import { PanelTownAlchemistComponent } from '../panel-town-alchemist/panel-town-alchemist.component';
 import { PanelTownBlacksmithComponent } from '../panel-town-blacksmith/panel-town-blacksmith.component';
+import { PanelTownFestivalsComponent } from '../panel-town-festivals/panel-town-festivals.component';
 import { PanelTownMarketComponent } from '../panel-town-market/panel-town-market.component';
 import { PanelTownMerchantComponent } from '../panel-town-merchant/panel-town-merchant.component';
 
@@ -28,6 +29,7 @@ import { PanelTownMerchantComponent } from '../panel-town-merchant/panel-town-me
     PanelTownAcademyComponent,
     TeleportOutletDirective,
     PanelTownAlchemistComponent,
+    PanelTownFestivalsComponent,
   ],
   templateUrl: './panel-town.component.html',
   styleUrl: './panel-town.component.scss',
@@ -35,12 +37,12 @@ import { PanelTownMerchantComponent } from '../panel-town-merchant/panel-town-me
 export class PanelTownComponent {
   public activeTab = computed(() => getOption('townTab'));
 
-  public changeActiveTab(building: TownBuilding) {
+  public changeActiveTab(building: TownTab) {
     setOption('townTab', building);
   }
   public readonly tabs: Array<{
     name: string;
-    link: TownBuilding;
+    link: TownTab;
     showIf: Signal<boolean>;
     level: Signal<number>;
   }> = [
@@ -73,6 +75,12 @@ export class PanelTownComponent {
       link: 'Academy',
       showIf: computed(() => false),
       level: computed(() => getBuildingLevel('Academy')),
+    },
+    {
+      name: 'Festivals',
+      link: 'Festivals',
+      showIf: computed(() => true),
+      level: computed(() => 0),
     },
   ];
 

@@ -13,13 +13,15 @@ export type NotificationCategory =
   | 'Error'
   | 'Success'
   | 'Travel'
-  | 'LocationClaim';
+  | 'LocationClaim'
+  | 'Festival';
 
 export type ToggleableCategory = Exclude<
   NotificationCategory,
   'Error' | 'Success'
 >;
 
+export type TownTab = TownBuilding | 'Festivals';
 export type CombatTab = 'Preferences' | 'CombatLog' | 'Claims';
 export type OptionsTab = 'UI' | 'Savefile' | 'Debug';
 
@@ -42,6 +44,6 @@ export type GameOptions = Record<GameOption, boolean> & {
   enabledNotificationCategories: ToggleableCategory[];
   combatTab: CombatTab;
   optionsTab: OptionsTab;
-  townTab: TownBuilding;
+  townTab: TownTab;
   inventoryFilter: InventorySlotType;
 };

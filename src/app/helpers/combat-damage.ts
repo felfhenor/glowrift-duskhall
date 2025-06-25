@@ -9,6 +9,10 @@ import {
 } from '../interfaces';
 import { isDead } from './combat-end';
 import { logCombatMessage } from './combat-log';
+import {
+  getCombatIncomingAttributeMultiplier,
+  getCombatOutgoingAttributeMultiplier,
+} from './festival-combat';
 
 export function techniqueHasAttribute(
   technique: EquipmentSkillDefinitionTechnique,
@@ -60,6 +64,19 @@ export function applySkillToTarget(
   if (techniqueHasAttribute(technique, 'AllowPlink')) {
     effectiveDamage = Math.max(damage > 0 ? 1 : 0, effectiveDamage);
   }
+
+  let damageMultiplierFromFestivals = 1;
+  if (combatant.isEnemy && !target.isEnemy && effectiveDamage > 0) {
+    damageMultiplierFromFestivals =
+      1 + getCombatIncomingAttributeMultiplier('damage');
+  }
+
+  if (!combatant.isEnemy && target.isEnemy && effectiveDamage > 0) {
+    damageMultiplierFromFestivals =
+      1 + getCombatOutgoingAttributeMultiplier('damage');
+  }
+
+  effectiveDamage *= damageMultiplierFromFestivals;
 
   effectiveDamage = Math.floor(effectiveDamage);
 

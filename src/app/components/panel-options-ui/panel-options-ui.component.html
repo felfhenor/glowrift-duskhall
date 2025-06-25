@@ -12,7 +12,7 @@
               class="checkbox checkbox-secondary"
               (click)="toggleNotifications()"
             />
-            <span class="label-text">Show All</span>
+            <span class="label-text">Allow Notifications</span>
           </label>
         </div>
 
@@ -25,7 +25,7 @@
               (click)="toggleNotificationCategories('Travel')"
               [disabled]="!notificationsEnabled()"
             />
-            <span class="label-text">Show Travel</span>
+            <span class="label-text">Travel</span>
           </label>
         </div>
 
@@ -40,7 +40,20 @@
               (click)="toggleNotificationCategories('LocationClaim')"
               [disabled]="!notificationsEnabled()"
             />
-            <span class="label-text">Show Location Claim</span>
+            <span class="label-text">Location Claim</span>
+          </label>
+        </div>
+
+        <div class="form-control">
+          <label class="label cursor-pointer label-checkbox">
+            <input
+              type="checkbox"
+              [checked]="notificationCategoriesEnabled().includes('Festival')"
+              class="checkbox checkbox-secondary"
+              (click)="toggleNotificationCategories('Festival')"
+              [disabled]="!notificationsEnabled()"
+            />
+            <span class="label-text">Festival Start/Stop</span>
           </label>
         </div>
       </div>
