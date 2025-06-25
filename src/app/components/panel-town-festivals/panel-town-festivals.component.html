@@ -1,0 +1,23 @@
+<div class="flex flex-col gap-2">
+  @for (festivalData of allFestivals(); track $index) {
+    <div class="flex flex-row gap-2">
+      <div class="max-w-[150px] flex justify-center items-center w-full">
+        <app-countdown [secondsLeft]="festivalData.timeLeft"></app-countdown>
+      </div>
+
+      <div class="flex-1">
+        <div class="font-bold">{{ festivalData.festival.name }}</div>
+
+        <div>
+          {{ festivalData.festival.description }}
+        </div>
+
+        <div class="italic text-xs">
+          {{ festivalData.festival.effectsDescription }}
+        </div>
+      </div>
+    </div>
+  } @empty {
+    <app-blank-slate>No festivals are happening.</app-blank-slate>
+  }
+</div>
