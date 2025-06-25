@@ -77,6 +77,11 @@ export interface GameStateTown {
   merchant: GameStateTownMerchant;
 }
 
+export interface GameStateFestival {
+  ticksWithoutFestivalStart: number;
+  festivals: Record<string, number>;
+}
+
 export interface GameState {
   meta: GameStateMeta;
   gameId: GameId;
@@ -87,4 +92,5 @@ export interface GameState {
   currency: GameStateCurrency;
   actionClock: GameStateActionClock;
   town: GameStateTown;
+  festival: GameStateFestival;
 }

@@ -4,6 +4,7 @@ import { computed } from '@angular/core';
 import { autoTravelGameloop } from './gameloop-autotravel';
 import { currencyGameloop } from './gameloop-currency';
 import { exploreGameloop } from './gameloop-explore';
+import { festivalGameloop } from './gameloop-festival';
 import { gameloopTimers } from './gameloop-timers';
 import { townGameloop } from './gameloop-town';
 import { travelGameloop } from './gameloop-travel';
@@ -45,6 +46,10 @@ export function doGameloop(numTicks: number): void {
   timer.startTimer('gameloop-explore');
   exploreGameloop(numTicks);
   timer.stopTimer('gameloop-explore');
+
+  timer.stopTimer('gameloop-festivals');
+  festivalGameloop(numTicks);
+  timer.stopTimer('gameloop');
 
   timer.startTimer('gameloop-timers');
   gameloopTimers(numTicks);

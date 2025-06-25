@@ -156,6 +156,10 @@ export function blankGameState(): GameState {
         ticksUntilRefresh: 0,
       },
     },
+    festival: {
+      ticksWithoutFestivalStart: 0,
+      festivals: {},
+    },
   };
 }
 

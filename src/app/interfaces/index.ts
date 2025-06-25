@@ -7,6 +7,7 @@ export * from './discord';
 export * from './droppable';
 export * from './element';
 export * from './equipment';
+export * from './festival';
 export * from './guardian';
 export * from './hero';
 export * from './identifiable';

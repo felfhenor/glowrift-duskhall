@@ -1,0 +1,14 @@
+- id: f2884638-c965-4ddd-a918-dc1420bd7217
+  name: Battle Frenzy
+  description: The thrill of battle courses through your heroes' veins, making them fierce but reckless!
+  effectsDescription: Outgoing Damage +50%, Incoming Damage +25%
+  duration: 3600
+  rarity: Uncommon
+
+  effects:
+    combat:
+      outgoing:
+        damage: 0.5
+
+      incoming:
+        damage: 0.25

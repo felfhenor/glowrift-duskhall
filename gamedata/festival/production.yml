@@ -1,0 +1,24 @@
+- id: 2889df31-3d8c-4e0b-8575-9b29592c145c
+  name: Weak Elemental Surge
+  description: The elemental forces align, causing a surge of raw magical energy across the realms!
+  effectsDescription: Sliver Production +50%
+  duration: 3600
+  rarity: Common
+
+  effects:
+    production:
+      Fire Sliver: 0.5
+      Water Sliver: 0.5
+      Earth Sliver: 0.5
+      Air Sliver: 0.5
+
+- id: d4bb4eaf-68dc-4714-996f-d10e2228d55a
+  name: Bountiful Harvest
+  description: The spirits of the land celebrate their freedom, blessing you with abundant soul energy!
+  effectsDescription: Soul Essence Acquisition +100%
+  duration: 3600
+  rarity: Common
+
+  effects:
+    production:
+      Soul Essence: 1
