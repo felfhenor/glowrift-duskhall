@@ -7,5 +7,10 @@
   "files.exclude": {
     "dist\\glowrift-duskhall": true,
     "dist": true
-  }
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "eslint.format.enable": true,
+  "eslint.lintTask.enable": true,
+  "eslint.validate": ["typescript", "javascript"],
+  "eslint.workingDirectories": [{ "mode": "auto" }]
 }
