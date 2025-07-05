@@ -30,6 +30,7 @@
         "@typescript-eslint/member-ordering": "off",
         "@typescript-eslint/no-unused-vars": "error",
         "@typescript-eslint/prefer-for-of": "off",
+        "semi": ["error", "always"],
         "arrow-parens": ["off", "always"],
         "no-underscore-dangle": "off",
         "keyword-spacing": "error",
