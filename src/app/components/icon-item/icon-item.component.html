@@ -2,15 +2,8 @@
 
 <app-icon-blank-slot class="absolute"></app-icon-blank-slot>
 
-<div
-  class="h-[64px] w-[64px] outline outline-2 z-0 absolute"
-  [class.outline-white-900]="itemData.rarity === 'Common'"
-  [class.outline-green-400]="itemData.rarity === 'Uncommon'"
-  [class.outline-blue-400]="itemData.rarity === 'Rare'"
-  [class.outline-purple-400]="itemData.rarity === 'Mystical'"
-  [class.outline-yellow-400]="itemData.rarity === 'Legendary'"
-  [class.outline-rose-400]="itemData.rarity === 'Unique'"
-></div>
+<div [class]="itemOutlineClass()">
+</div>
 
 <app-atlas-image
   class="z-10 absolute"
