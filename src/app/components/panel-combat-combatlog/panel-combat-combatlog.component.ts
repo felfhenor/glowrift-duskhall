@@ -2,7 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, computed } from '@angular/core';
 import { marked } from 'marked';
 import { combatLog } from '../../helpers';
-import { RarityItemColors } from '../../helpers/rarity-item-colors';
+import { RarityItemColor } from '../../helpers/rarity-item-color';
+import { DropRarity } from '../../interfaces/droppable';
 
 @Component({
   selector: 'app-panel-combat-combatlog',
@@ -16,8 +17,8 @@ export class PanelCombatCombatlogComponent {
 
     renderer.codespan = ({ text }: { text: string }) => {
       if (text.startsWith('rarity:')) {
-        const [_, rarity, itemName] = text.split(':');
-        const colorClass = RarityItemColors(rarity);
+        const [, rarity, itemName] = text.split(':');
+        const colorClass = RarityItemColor(rarity as DropRarity);
         return `<span class="text-${colorClass} font-bold">${itemName}</span>`;
       }
       return `<code>${text}</code>`;
