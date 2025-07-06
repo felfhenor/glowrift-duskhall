@@ -71,7 +71,10 @@ export function handleCombatVictory(combat: Combat): void {
       const created = makeDroppableIntoRealItem(lootDef);
       gainDroppableItem(created);
 
-      logCombatMessage(combat, `Heroes found **${created.name}**!`);
+      logCombatMessage(
+        combat,
+        `Heroes found \`rarity:${created.rarity}:${created.name}\`!`,
+      );
     });
 
     claimNode(currentNode);

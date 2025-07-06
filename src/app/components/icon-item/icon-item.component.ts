@@ -7,6 +7,7 @@ import { AtlasImageComponent } from '../atlas-image/atlas-image.component';
 import { IconBlankSlotComponent } from '../icon-blank-slot/icon-blank-slot.component';
 import { ItemStatsCompareComponent } from '../item-stats-compare/item-stats-compare.component';
 import { ItemStatsComponent } from '../item-stats/item-stats.component';
+import { RarityItemColor } from '../../helpers/rarity-item-color';
 
 @Component({
   selector: 'app-icon-item',
@@ -29,4 +30,9 @@ export class IconItemComponent {
   public showPrice = input<boolean>(false);
 
   public shopPrice = computed(() => itemBuyValue(this.item()));
+
+  public itemOutlineClass = computed(
+    () =>
+      `h-[64px] w-[64px] outline outline-2 z-0 absolute outline-${RarityItemColor(this.item().rarity)}`,
+  );
 }
