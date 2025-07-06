@@ -12,7 +12,6 @@ import {
 import { allHeroes, heroGainXp } from './hero';
 import { notify } from './notify';
 import { claimNode, getWorldNode } from './world';
-import{RarityItemColors} from '../helpers/rarity-item-colors'
 
 export function currentCombatHasGuardiansAlive(): boolean {
   const combat = currentCombat();
@@ -72,8 +71,10 @@ export function handleCombatVictory(combat: Combat): void {
       const created = makeDroppableIntoRealItem(lootDef);
       gainDroppableItem(created);
 
-      const combatMessageTextColor: string = `text-${RarityItemColors(created.rarity)}`
-      logCombatMessage(combat, `<span class="${combatMessageTextColor}">Heroes found **${created.name}**</span>`);
+      logCombatMessage(
+        combat,
+        `Heroes found \`rarity:${created.rarity}:${created.name}\`!`,
+      );
     });
 
     claimNode(currentNode);

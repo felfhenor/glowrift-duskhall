@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, computed } from '@angular/core';
 import { marked } from 'marked';
 import { combatLog } from '../../helpers';
+import { RarityItemColors } from '../../helpers/rarity-item-colors';
 
 @Component({
   selector: 'app-panel-combat-combatlog',
@@ -10,10 +11,27 @@ import { combatLog } from '../../helpers';
   styleUrl: './panel-combat-combatlog.component.scss',
 })
 export class PanelCombatCombatlogComponent {
+  private createCustomRenderer() {
+    const renderer = new marked.Renderer();
+
+    renderer.codespan = ({ text }: { text: string }) => {
+      if (text.startsWith('rarity:')) {
+        const [_, rarity, itemName] = text.split(':');
+        const colorClass = RarityItemColors(rarity);
+        return `<span class="text-${colorClass} font-bold">${itemName}</span>`;
+      }
+      return `<code>${text}</code>`;
+    };
+
+    return renderer;
+  }
+
   public allCombatLogs = computed(() =>
     combatLog().map((log) => ({
       ...log,
-      message: marked.parse(log.message),
+      message: marked.parse(log.message, {
+        renderer: this.createCustomRenderer(),
+      }),
     })),
   );
 }

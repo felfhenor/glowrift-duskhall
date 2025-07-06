@@ -1,41 +1,11 @@
-export function RarityItemColors(rarity: string): string{
+export function RarityItemColors(rarity: string): string {
+  const rarityColorRecord: Record<string, string> = {
+    Uncommon: 'green-400',
+    Rare: 'blue-400',
+    Mystical: 'purple-400',
+    Legendary: 'yellow-400',
+    Unique: 'rose-400',
+  };
 
-  let color: string
-
-  switch(rarity.toLowerCase()){ //lowercase just in case (no pun intended =P)
-    case "uncommon":{
-      color = "green-400"
-      break
-    }
-
-    case "rare":{
-      color = "blue-400"
-      break
-    }
-
-    case "mystical":{
-      color = "purple-400"
-      break
-    }
-
-    case "legendary":{
-      color = "yellow-400"
-      break
-    }
-
-    case "unique":{
-      color = "rose-400"
-      break
-    }
-
-    //default is case for common also
-    default:{
-      color = "white-400"
-      break
-    }
-
-  }
-
-  return color
-
+  return rarityColorRecord[rarity] ?? 'white-400'; //common and default are set to white.
 }
