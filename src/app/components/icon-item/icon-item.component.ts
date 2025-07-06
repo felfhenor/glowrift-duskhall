@@ -1,13 +1,13 @@
 import { Component, computed, input } from '@angular/core';
 import { TippyDirective } from '@ngneat/helipopper';
 import { itemBuyValue } from '../../helpers';
+import { rarityItemColor } from '../../helpers/rarity-item-color';
 import { EquipmentItemDefinition } from '../../interfaces';
 import { GameCurrencyPipe } from '../../pipes/game-currency.pipe';
 import { AtlasImageComponent } from '../atlas-image/atlas-image.component';
 import { IconBlankSlotComponent } from '../icon-blank-slot/icon-blank-slot.component';
 import { ItemStatsCompareComponent } from '../item-stats-compare/item-stats-compare.component';
 import { ItemStatsComponent } from '../item-stats/item-stats.component';
-import { RarityItemColor } from '../../helpers/rarity-item-color';
 
 @Component({
   selector: 'app-icon-item',
@@ -33,6 +33,6 @@ export class IconItemComponent {
 
   public itemOutlineClass = computed(
     () =>
-      `h-[64px] w-[64px] outline outline-2 z-0 absolute outline-${RarityItemColor(this.item().rarity)}`,
+      `h-[64px] w-[64px] outline outline-2 z-0 absolute outline-${rarityItemColor(this.item().rarity)}`,
   );
 }
