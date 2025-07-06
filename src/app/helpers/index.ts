@@ -47,7 +47,6 @@ export * from './notify';
 export * from './pixi-app-setup';
 export * from './pixi-sprite-factory';
 export * from './pixi-texture-loader';
-export * from './rarity-item-color';
 export * from './rng';
 export * from './setup';
 export * from './signal';

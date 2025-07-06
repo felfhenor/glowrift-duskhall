@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed } from '@angular/core';
 import { marked } from 'marked';
-import { combatLog } from '../../helpers';
-import { rarityItemColor } from '../../helpers/rarity-item-color';
+import { combatLog, rarityItemColor } from '../../helpers';
 import { DropRarity } from '../../interfaces/droppable';
 
 @Component({

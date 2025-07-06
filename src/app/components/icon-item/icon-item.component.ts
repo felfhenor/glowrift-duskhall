@@ -1,7 +1,6 @@
 import { Component, computed, input } from '@angular/core';
 import { TippyDirective } from '@ngneat/helipopper';
-import { itemBuyValue } from '../../helpers';
-import { rarityItemColor } from '../../helpers/rarity-item-color';
+import { itemBuyValue, rarityItemColor } from '../../helpers';
 import { EquipmentItemDefinition } from '../../interfaces';
 import { GameCurrencyPipe } from '../../pipes/game-currency.pipe';
 import { AtlasImageComponent } from '../atlas-image/atlas-image.component';
