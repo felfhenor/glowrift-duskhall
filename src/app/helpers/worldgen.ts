@@ -19,7 +19,10 @@ import {
   allItemDefinitions,
   pickRandomItemDefinition,
 } from './creator-equipment';
-import { pickRandomSkillDefinition } from './creator-skill';
+import {
+  allSkillDefinitions,
+  pickRandomSkillDefinition,
+} from './creator-skill';
 import { createGuardianForLocation } from './guardian';
 import {
   gamerng,
@@ -364,8 +367,12 @@ export function populateLocationWithLoot(location: WorldLocation): void {
 export function getLootForLocation(
   location: WorldLocation,
 ): DroppableEquippable[] {
-  const allValidDefinitions = allItemDefinitions().filter(
-    (d) => d.dropLevel >= location.encounterLevel,
+  const allValidItemDefinitions = allItemDefinitions().filter(
+    (d) => d.dropLevel <= location.encounterLevel,
+  );
+
+  const allValidSkillDefinitions = allSkillDefinitions().filter(
+    (d) => d.dropLevel <= location.encounterLevel,
   );
 
   const rng = seededrng(
@@ -375,8 +382,8 @@ export function getLootForLocation(
   return Array.from({ length: numLoot }, () => {
     return randomChoice(
       [
-        pickRandomItemDefinition(allValidDefinitions, rng),
-        pickRandomSkillDefinition(rng),
+        pickRandomItemDefinition(allValidItemDefinitions, rng),
+        pickRandomSkillDefinition(allValidSkillDefinitions, rng),
       ],
       rng,
     );

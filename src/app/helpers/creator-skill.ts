@@ -8,12 +8,15 @@ import { getEntriesByType, getEntry } from './content';
 import { cleanupDroppableDefinition } from './droppable';
 import { randomIdentifiableChoice, seededrng, uuid } from './rng';
 
+export function allSkillDefinitions(): EquipmentSkillDefinition[] {
+  return getEntriesByType<EquipmentSkillDefinition>('skill');
+}
+
 export function pickRandomSkillDefinition(
+  definitions = getEntriesByType<EquipmentSkillDefinition>('skill'),
   rng = seededrng(uuid()),
 ): EquipmentSkillDefinition {
-  const allItems = getEntriesByType<EquipmentSkillDefinition>('skill').filter(
-    (i) => !i.preventDrop,
-  );
+  const allItems = definitions.filter((i) => !i.preventDrop);
 
   const chosenItem = randomIdentifiableChoice<EquipmentSkillDefinition>(
     allItems,

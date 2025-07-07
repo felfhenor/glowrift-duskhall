@@ -1,3 +1,3 @@
 import { Content } from './identifiable';
 
-export interface Talent extends Content {}
+export interface TalentDefinition extends Content {}
