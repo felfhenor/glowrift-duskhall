@@ -8,7 +8,8 @@ export type ContentType =
   | 'trinket'
   | 'armor'
   | 'skill'
-  | 'festival';
+  | 'festival'
+  | 'talent';
 
 export interface Identifiable {
   id: string;

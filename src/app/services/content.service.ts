@@ -119,6 +119,7 @@ export class ContentService {
       trinket: undefined,
       weapon: undefined,
       festival: undefined,
+      talent: undefined,
     };
     const allJsons = Object.keys(contentTypeObject);
 

@@ -365,7 +365,7 @@ export function getLootForLocation(
   location: WorldLocation,
 ): DroppableEquippable[] {
   const allValidDefinitions = allItemDefinitions().filter(
-    (d) => d.dropLevel <= location.encounterLevel,
+    (d) => d.dropLevel >= location.encounterLevel,
   );
 
   const rng = seededrng(

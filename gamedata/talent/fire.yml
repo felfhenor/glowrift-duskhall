@@ -1,0 +1,13 @@
+- id: cde7a7a3-8fbc-4709-b405-affba74837ef
+  name: Strength of Firewisp
+  description: Boost the power of Firewisp skills by 25%.
+
+  levelRequirement: 0
+
+  boostedSkillIds:
+    - Firewisp I
+    - Firewisp II
+    - Firewisp III
+
+  boostStats:
+    Force: 0.25
