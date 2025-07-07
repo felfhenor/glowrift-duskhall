@@ -1,6 +1,6 @@
 import { EquipmentItem, EquipmentSlot, Hero } from '../interfaces';
 import { recalculateStats, updateHeroData } from './hero';
-import { updateGamestate, gamestate } from './state-game';
+import { updateGamestate } from './state-game';
 
 export function getItemSlot(item: EquipmentItem): EquipmentSlot {
   return item.__type;
@@ -36,9 +36,7 @@ export function equipItem(hero: Hero, item: EquipmentItem): void {
   });
 
   removeItemFromInventory(item);
-
-  const updatedHero = gamestate().hero.heroes.find((h) => h.id === hero.id)!;
-  recalculateStats(updatedHero);
+  recalculateStats(hero);
 }
 
 export function unequipItem(hero: Hero, item: EquipmentItem): void {

@@ -83,7 +83,10 @@ export function heroLevelUp(hero: Hero): void {
     hp: newStats.Health,
   });
 
-  recalculateStats(hero);
+  const newHero = gamestate().hero.heroes.find((h) => h.id === hero.id);
+  if (newHero) {
+    recalculateStats(newHero);
+  }
 }
 
 export function heroGainXp(hero: Hero, xp: number): void {

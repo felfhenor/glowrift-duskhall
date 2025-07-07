@@ -28,7 +28,9 @@ export class MarkerStatComponent {
     const deltaValue = this.delta();
     if (deltaValue === 0) return null;
 
-    return deltaValue > 0 ? `(+${deltaValue})` : `(${deltaValue})`;
+    const displayValue = deltaValue.toFixed(1);
+
+    return deltaValue > 0 ? `(+${displayValue})` : `(${displayValue})`;
   });
 
   public deltaColor = computed(() =>
