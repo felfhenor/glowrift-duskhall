@@ -364,6 +364,10 @@ export function populateLocationWithLoot(location: WorldLocation): void {
 export function getLootForLocation(
   location: WorldLocation,
 ): DroppableEquippable[] {
+  const allValidDefinitions = allItemDefinitions().filter(
+    (d) => d.dropLevel <= location.encounterLevel,
+  );
+
   const rng = seededrng(
     `$${gamestate().gameId}-${location.id}-${location.claimCount}`,
   );
@@ -371,7 +375,7 @@ export function getLootForLocation(
   return Array.from({ length: numLoot }, () => {
     return randomChoice(
       [
-        pickRandomItemDefinition(allItemDefinitions(), rng),
+        pickRandomItemDefinition(allValidDefinitions, rng),
         pickRandomSkillDefinition(rng),
       ],
       rng,
