@@ -9,7 +9,8 @@ import {
   travelHome,
   updateExploringAndGlobalStatusText,
 } from './explore';
-import { allHeroes, heroGainXp } from './hero';
+import { allHeroes } from './hero';
+import { heroGainXp } from './hero-xp';
 import { notify } from './notify';
 import { claimNode, getWorldNode } from './world';
 

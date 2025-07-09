@@ -1,0 +1,23 @@
+<h3 class="text-lg flex flex-row items-center justify-between">
+  <span>Talents ({{ pointsAvailable() }} points remaining)</span>
+
+  <div class="join mt-2">
+    @for (type of allTalents(); track type.element) {
+      <button
+        class="btn btn-neutral btn-active join-item"
+        [class.btn-outline]="currentElement() !== type.element"
+        (click)="changeElement(type.element)"
+      >
+        <app-icon-element [element]="type.element"></app-icon-element>
+        {{ type.element }}
+      </button>
+    }
+  </div>
+</h3>
+
+<div class="w-full mt-2">
+  <app-panel-heroes-talents-tree
+    [hero]="hero()"
+    [element]="currentElement()"
+  ></app-panel-heroes-talents-tree>
+</div>

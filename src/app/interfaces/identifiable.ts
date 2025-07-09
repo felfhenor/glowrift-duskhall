@@ -9,7 +9,8 @@ export type ContentType =
   | 'armor'
   | 'skill'
   | 'festival'
-  | 'talent';
+  | 'talent'
+  | 'talenttree';
 
 export interface Identifiable {
   id: string;

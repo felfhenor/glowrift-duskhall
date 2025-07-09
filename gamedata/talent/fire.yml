@@ -1,8 +1,37 @@
 - id: cde7a7a3-8fbc-4709-b405-affba74837ef
-  name: Strength of Firewisp
+  name: Strength of Firewisp I
   description: Boost the power of Firewisp skills by 25%.
+  sprite: '0008'
 
-  levelRequirement: 0
+  boostedSkillIds:
+    - Firewisp I
+    - Firewisp II
+    - Firewisp III
+
+  boostStats:
+    Force: 0.25
+
+- id: d758324d-4333-496a-8c54-222769cfbc38
+  name: Strength of Firewisp II
+  description: Boost the power of Firewisp skills by 25%.
+  sprite: '0008'
+
+  requireTalentId: Strength of Firewisp I
+
+  boostedSkillIds:
+    - Firewisp I
+    - Firewisp II
+    - Firewisp III
+
+  boostStats:
+    Force: 0.25
+
+- id: cb333d71-2d0b-4117-8ce4-16a0a55f7d3a
+  name: Strength of Firewisp III
+  description: Boost the power of Firewisp skills by 25%.
+  sprite: '0008'
+
+  requireTalentId: Strength of Firewisp II
 
   boostedSkillIds:
     - Firewisp I

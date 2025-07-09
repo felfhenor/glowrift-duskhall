@@ -1,0 +1,73 @@
+- id: f84a9bbe-8637-4ec0-9325-07995ca6e41d
+  name: Air Talent Tree
+
+  talents:
+    - level: 0
+      learnableTalents:
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+
+    - level: 10
+      learnableTalents:
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+
+    - level: 20
+      learnableTalents:
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+
+    - level: 30
+      learnableTalents:
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+
+    - level: 40
+      learnableTalents:
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+
+    - level: 50
+      learnableTalents:
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+
+    - level: 60
+      learnableTalents:
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+
+    - level: 70
+      learnableTalents:
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+
+    - level: 80
+      learnableTalents:
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+
+    - level: 90
+      learnableTalents:
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+        - talentId: Blank Talent

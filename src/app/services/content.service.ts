@@ -64,6 +64,7 @@ export class ContentService {
       'hero',
       'skill',
       'trinket',
+      'talent',
       'weapon',
       'world-object',
       'world-terrain',
@@ -120,6 +121,7 @@ export class ContentService {
       weapon: undefined,
       festival: undefined,
       talent: undefined,
+      talenttree: undefined,
     };
     const allJsons = Object.keys(contentTypeObject);
 

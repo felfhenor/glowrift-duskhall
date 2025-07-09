@@ -5,7 +5,6 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { RequireSetupDirective } from '../../directives/require-setup.directive';
 import { SFXDirective } from '../../directives/sfx.directive';
 import {
-  ALL_ICONS,
   closeAllMenus,
   focusCameraOnPlayer,
   gamestate,
@@ -19,7 +18,7 @@ import {
   showOptionsMenu,
   showTownMenu,
 } from '../../helpers';
-import { GameCurrency } from '../../interfaces';
+import { GameCurrency, Icon } from '../../interfaces';
 import { MetaService } from '../../services/meta.service';
 import { IconComponent } from '../icon/icon.component';
 import { MarkerCurrencyCurrentComponent } from '../marker-currency-current/marker-currency-current.component';
@@ -57,7 +56,7 @@ export class NavbarComponent {
 
   public readonly panelConfigs: Array<{
     name: string;
-    icon: keyof typeof ALL_ICONS;
+    icon: Icon;
     clickCb: () => void;
   }> = [
     {

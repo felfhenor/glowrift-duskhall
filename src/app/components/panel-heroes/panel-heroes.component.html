@@ -29,9 +29,21 @@
     <div
       class="flex-1 flex flex-col justify-between border-t border-r border-b p-4"
     >
-      <app-panel-heroes-stats [hero]="activeHero()"></app-panel-heroes-stats>
+      <div class="flex flex-row gap-2">
+        <div class="w-[300px]">
+          <app-panel-heroes-stats
+            [hero]="activeHero()"
+          ></app-panel-heroes-stats>
+        </div>
 
-      <div class="flex flex-row">
+        <div class="flex-1">
+          <app-panel-heroes-talents
+            [hero]="activeHero()"
+          ></app-panel-heroes-talents>
+        </div>
+      </div>
+
+      <div class="flex flex-row gap-2">
         <div class="flex-1">
           <app-panel-heroes-equipment
             [hero]="activeHero()"

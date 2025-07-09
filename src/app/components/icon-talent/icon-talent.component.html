@@ -1,0 +1,29 @@
+@let talentData = talent();
+
+<app-icon-blank-slot class="absolute"></app-icon-blank-slot>
+
+<div
+  class="h-[64px] w-[64px] outline outline-2 z-0 absolute"
+  [class.outline-green-400]="isBought()"
+></div>
+
+<app-atlas-image
+  class="z-10 absolute"
+  [assetName]="talentData.sprite"
+  [spritesheet]="'talent'"
+  [tp]="talentInfo"
+  [tpIsEnabled]="talentData.name !== 'Blank Talent'"
+></app-atlas-image>
+
+<ng-template #talentInfo let-hide>
+  <h3 class="text-lg">{{ talentData.name }}</h3>
+
+  <p class="my-2">{{ talentData.description }}</p>
+
+  @if (talentData.requireTalentId) {
+    <p class="text-xs italic mt-2">
+      Requires
+      <app-content-name [id]="talentData.requireTalentId"></app-content-name>
+    </p>
+  }
+</ng-template>

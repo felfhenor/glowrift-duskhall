@@ -1,10 +1,9 @@
 import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
-import { ALL_ICONS } from '../../helpers';
-import { GameCurrency } from '../../interfaces';
+import { GameCurrency, Icon } from '../../interfaces';
 import { IconComponent } from '../icon/icon.component';
 
-const icons: Record<GameCurrency, keyof typeof ALL_ICONS> = {
+const icons: Record<GameCurrency, Icon> = {
   'Air Core': 'gameGlassBall',
   'Air Crystal': 'gameEmerald',
   'Air Shard': 'gameStonePile',

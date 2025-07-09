@@ -1,10 +1,9 @@
 import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
-import { ALL_ICONS } from '../../helpers';
-import { GameElement } from '../../interfaces';
+import { GameElement, Icon } from '../../interfaces';
 import { IconComponent } from '../icon/icon.component';
 
-const icons: Record<GameElement, keyof typeof ALL_ICONS> = {
+const icons: Record<GameElement, Icon> = {
   Fire: 'gameSmallFire',
   Water: 'gameIceCube',
   Air: 'gameSwanBreeze',

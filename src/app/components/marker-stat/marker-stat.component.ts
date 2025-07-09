@@ -1,10 +1,9 @@
 import { DecimalPipe, TitleCasePipe } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
-import { ALL_ICONS } from '../../helpers';
-import { GameStat } from '../../interfaces';
+import { GameStat, Icon } from '../../interfaces';
 import { IconComponent } from '../icon/icon.component';
 
-const icons: Record<GameStat, keyof typeof ALL_ICONS> = {
+const icons: Record<GameStat, Icon> = {
   Aura: 'gameVibratingShield',
   Force: 'gameGooeyImpact',
   Health: 'gameGlassHeart',

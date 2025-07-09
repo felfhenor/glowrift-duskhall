@@ -1,4 +1,4 @@
-export * from './animatable';
+export * from './artable';
 export * from './camera';
 export * from './combat';
 export * from './content';
@@ -20,6 +20,7 @@ export * from './stat';
 export * from './state-game';
 export * from './state-options';
 export * from './talent';
+export * from './talenttree';
 export * from './texture';
 export * from './timer';
 export * from './town';

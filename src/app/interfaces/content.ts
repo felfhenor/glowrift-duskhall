@@ -6,5 +6,6 @@ export type AtlasedImage =
   | 'accessory'
   | 'weapon'
   | 'trinket'
+  | 'talent'
   | 'armor'
   | 'skill';

@@ -18,6 +18,7 @@ import { InventoryGridSkillComponent } from '../inventory-grid-skill/inventory-g
 import { PanelHeroesEquipmentComponent } from '../panel-heroes-equipment/panel-heroes-equipment.component';
 import { PanelHeroesSkillsComponent } from '../panel-heroes-skills/panel-heroes-skills.component';
 import { PanelHeroesStatsComponent } from '../panel-heroes-stats/panel-heroes-stats.component';
+import { PanelHeroesTalentsComponent } from '../panel-heroes-talents/panel-heroes-talents.component';
 
 @Component({
   selector: 'app-panel-heroes',
@@ -31,6 +32,7 @@ import { PanelHeroesStatsComponent } from '../panel-heroes-stats/panel-heroes-st
     TitleCasePipe,
     PanelHeroesSkillsComponent,
     InventoryGridSkillComponent,
+    PanelHeroesTalentsComponent,
   ],
   templateUrl: './panel-heroes.component.html',
   styleUrl: './panel-heroes.component.css',

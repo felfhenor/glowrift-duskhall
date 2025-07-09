@@ -1,11 +1,11 @@
-import { Artable } from './animatable';
+import { Animatable } from './artable';
 import { ElementBlock } from './element';
 import { Branded, Content } from './identifiable';
 import { StatBlock } from './stat';
 
 export type GuardianId = Branded<string, 'GuardianId'>;
 
-export type GuardianData = Artable &
+export type GuardianData = Animatable &
   Content & {
     id: GuardianId;
 

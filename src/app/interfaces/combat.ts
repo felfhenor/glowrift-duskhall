@@ -1,4 +1,4 @@
-import { Artable } from './animatable';
+import { Animatable } from './artable';
 import { ElementBlock } from './element';
 import { Branded } from './identifiable';
 import { EquipmentSkill } from './skill';
@@ -15,7 +15,7 @@ export interface CombatLog {
   message: string;
 }
 
-export type Combatant = Artable & {
+export type Combatant = Animatable & {
   id: string;
   name: string;
 

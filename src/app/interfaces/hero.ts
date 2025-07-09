@@ -1,4 +1,4 @@
-import { Artable } from './animatable';
+import { Animatable } from './artable';
 import { EquipmentBlock } from './equipment';
 import { Branded, Identifiable } from './identifiable';
 import { EquipmentSkill } from './skill';
@@ -9,7 +9,7 @@ export type HeroId = Branded<string, 'HeroId'>;
 export type HeroRiskTolerance = 'low' | 'medium' | 'high';
 
 export type Hero = Identifiable &
-  Artable & {
+  Animatable & {
     id: HeroId;
 
     level: number;
@@ -21,4 +21,5 @@ export type Hero = Identifiable &
 
     equipment: EquipmentBlock;
     skills: (EquipmentSkill | undefined)[];
+    talents: Record<string, number>;
   };
