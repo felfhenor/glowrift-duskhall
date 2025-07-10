@@ -28,7 +28,8 @@ export class PanelCombatCombatlogComponent {
       return text.replace(regex, (match, currentHp, maxHp) => {
         const current = parseInt(currentHp);
         const max = parseInt(maxHp);
-        return `<span class="text-${getHealthColor(current, max)}">${match}</span>`;
+        const colorClass = getHealthColor(current, max);
+        return `<span class="${colorClass}">${match}</span>`;
       });
     };
 

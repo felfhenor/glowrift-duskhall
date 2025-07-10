@@ -17,18 +17,13 @@ export function logCombatMessage(combat: Combat, message: string): void {
 }
 
 export function getHealthColor(health: number, totalHealth: number): string {
-  let healthColor: string;
-
   const healthPercentage = Math.round((100 * health) / totalHealth);
 
   if (healthPercentage >= 75) {
-    healthColor = 'green-400';
-  } else if (healthPercentage < 75 && healthPercentage > 25) {
-    healthColor = 'yellow-400';
-  } else {
-    healthColor = 'rose-400';
+    return 'text-green-400';
+  } else if (healthPercentage > 25) {
+    return 'text-yellow-400';
   }
 
-  console.log(healthColor);
-  return healthColor;
+  return 'text-rose-400';
 }
