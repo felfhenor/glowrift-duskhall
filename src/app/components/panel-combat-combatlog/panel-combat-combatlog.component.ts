@@ -3,6 +3,7 @@ import { Component, computed } from '@angular/core';
 import { marked } from 'marked';
 import { combatLog, rarityItemColor } from '../../helpers';
 import { DropRarity } from '../../interfaces/droppable';
+import { getHealthColor } from '../../helpers/combat-log';
 
 @Component({
   selector: 'app-panel-combat-combatlog',
@@ -13,6 +14,7 @@ import { DropRarity } from '../../interfaces/droppable';
 export class PanelCombatCombatlogComponent {
   private createCustomRenderer() {
     const renderer = new marked.Renderer();
+    const regex: RegExp = /\((\d+)\/(\d+) HP remaining\)/;
 
     renderer.codespan = ({ text }: { text: string }) => {
       if (text.startsWith('rarity:')) {
@@ -21,6 +23,14 @@ export class PanelCombatCombatlogComponent {
         return `<span class="text-${colorClass} font-bold">${itemName}</span>`;
       }
       return `<code>${text}</code>`;
+    };
+    renderer.text = ({ text }: { text: string }) => {
+      return text.replace(regex, (match, currentHp, maxHp) => {
+        const current = parseInt(currentHp);
+        const max = parseInt(maxHp);
+        const colorClass = getHealthColor(current, max);
+        return `<span class="${colorClass}">${match}</span>`;
+      });
     };
 
     return renderer;
