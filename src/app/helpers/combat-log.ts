@@ -16,6 +16,10 @@ export function logCombatMessage(combat: Combat, message: string): void {
   combatLog.update((logs) => [newLog, ...logs].slice(0, 500));
 }
 
+export function resetCombatLog(): void {
+  combatLog.set([]);
+}
+
 export function getHealthColor(health: number, totalHealth: number): string {
   const healthPercentage = Math.round((100 * health) / totalHealth);
 

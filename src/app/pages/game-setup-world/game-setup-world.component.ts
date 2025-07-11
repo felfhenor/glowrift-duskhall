@@ -10,7 +10,7 @@ import {
   gamestate,
   getEntriesByType,
   pickSpriteForHeroName,
-  resetGameState,
+  resetGame,
   setDiscordStatus,
   setWorldSeed,
   startGame,
@@ -63,7 +63,7 @@ export class GameSetupWorldComponent implements OnInit {
     this.isGeneratingWorld.set(true);
     closeAllMenus();
 
-    resetGameState();
+    resetGame();
     setWorldSeed(this.worldSeed());
 
     for (let h = 0; h < 4; h++) {

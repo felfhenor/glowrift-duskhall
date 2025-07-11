@@ -4,7 +4,7 @@ import { SwalComponent, SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { ConnectButtonsComponent } from '../../components/connect-buttons/connect-buttons.component';
 import { AnalyticsClickDirective } from '../../directives/analytics-click.directive';
 import { SFXDirective } from '../../directives/sfx.directive';
-import { isSetup, resetGameState, setDiscordStatus } from '../../helpers';
+import { isSetup, resetGame, setDiscordStatus } from '../../helpers';
 import { MetaService } from '../../services/meta.service';
 
 @Component({
@@ -39,7 +39,7 @@ export class HomeComponent implements OnInit {
       if (!res) return;
 
       if (res.isConfirmed) {
-        resetGameState();
+        resetGame();
         this.router.navigate(['/setup']);
       }
       return;
