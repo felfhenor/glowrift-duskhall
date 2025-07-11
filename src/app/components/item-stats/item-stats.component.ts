@@ -2,6 +2,7 @@ import { Component, computed, input } from '@angular/core';
 import { getItemStat } from '../../helpers';
 import { EquipmentItemDefinition, StatBlock } from '../../interfaces';
 import { MarkerStatComponent } from '../marker-stat/marker-stat.component';
+import { rarityItemColor } from '../../helpers/item';
 
 @Component({
   selector: 'app-item-stats',
@@ -13,6 +14,9 @@ export class ItemStatsComponent {
   public item = input.required<EquipmentItemDefinition>();
   public statDeltas = input<StatBlock>();
 
+  public itemRarityClass = computed(
+    () => `text-${rarityItemColor(this.item().rarity)}`,
+  );
   public itemAura = computed(() => getItemStat(this.item(), 'Aura'));
   public itemForce = computed(() => getItemStat(this.item(), 'Force'));
   public itemHealth = computed(() => getItemStat(this.item(), 'Health'));
