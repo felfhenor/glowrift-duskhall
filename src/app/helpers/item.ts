@@ -43,14 +43,27 @@ export function getItemStat(
   );
 }
 
-export function rarityItemColor(rarity: DropRarity): string {
+export function rarityItemTextColor(rarity: DropRarity): string {
   const rarityColorRecord: Record<DropRarity, string> = {
-    Common: 'white-400',
-    Uncommon: 'green-400',
-    Rare: 'blue-400',
-    Mystical: 'purple-400',
-    Legendary: 'yellow-400',
-    Unique: 'rose-400',
+    Common: 'text-white-400',
+    Uncommon: 'text-green-400',
+    Rare: 'text-blue-400',
+    Mystical: 'text-purple-400',
+    Legendary: 'text-yellow-400',
+    Unique: 'text-rose-400',
+  };
+
+  return rarityColorRecord[rarity];
+}
+
+export function rarityItemOutlineColor(rarity: DropRarity): string {
+  const rarityColorRecord: Record<DropRarity, string> = {
+    Common: 'outline-white-400',
+    Uncommon: 'outline-green-400',
+    Rare: 'outline-blue-400',
+    Mystical: 'outline-purple-400',
+    Legendary: 'outline-yellow-400',
+    Unique: 'outline-rose-400',
   };
 
   return rarityColorRecord[rarity];

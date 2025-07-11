@@ -2,8 +2,10 @@
 
 <app-icon-blank-slot class="absolute"></app-icon-blank-slot>
 
-<div [class]="itemOutlineClass()">
-</div>
+<div
+  class="h-[64px] w-[64px] outline outline-2 z-0 absolute"
+  [ngClass]="itemOutlineClass()"
+></div>
 
 <app-atlas-image
   class="z-10 absolute"

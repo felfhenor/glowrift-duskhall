@@ -1,7 +1,7 @@
 @let itemData = item();
 @let deltas = statDeltas();
 
-<h3 [class]="'text-lg ' + itemRarityClass()">
+<h3 class="text-lg" [ngClass]="itemRarityClass()">
   {{ itemData.name }}
 </h3>
 

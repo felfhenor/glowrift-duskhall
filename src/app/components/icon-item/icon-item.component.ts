@@ -1,6 +1,7 @@
+import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 import { TippyDirective } from '@ngneat/helipopper';
-import { itemBuyValue, rarityItemColor } from '../../helpers';
+import { itemBuyValue, rarityItemOutlineColor } from '../../helpers';
 import { EquipmentItemDefinition } from '../../interfaces';
 import { GameCurrencyPipe } from '../../pipes/game-currency.pipe';
 import { AtlasImageComponent } from '../atlas-image/atlas-image.component';
@@ -17,6 +18,7 @@ import { ItemStatsComponent } from '../item-stats/item-stats.component';
     ItemStatsCompareComponent,
     GameCurrencyPipe,
     IconBlankSlotComponent,
+    NgClass,
   ],
   templateUrl: './icon-item.component.html',
   styleUrl: './icon-item.component.scss',
@@ -31,7 +33,6 @@ export class IconItemComponent {
   public shopPrice = computed(() => itemBuyValue(this.item()));
 
   public itemOutlineClass = computed(
-    () =>
-      `h-[64px] w-[64px] outline outline-2 z-0 absolute outline-${rarityItemColor(this.item().rarity)}`,
+    () => `${rarityItemOutlineColor(this.item().rarity)}`,
   );
 }

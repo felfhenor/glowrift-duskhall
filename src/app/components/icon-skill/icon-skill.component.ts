@@ -1,19 +1,28 @@
+import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 import { TippyDirective } from '@ngneat/helipopper';
-import { uniq } from 'lodash';
+import { rarityItemOutlineColor } from '../../helpers';
 import { EquipmentSkillDefinition } from '../../interfaces';
 import { AtlasAnimationComponent } from '../atlas-animation/atlas-animation.component';
 import { IconBlankSlotComponent } from '../icon-blank-slot/icon-blank-slot.component';
+import { SkillStatsComponent } from '../skill-stats/skill-stats.component';
 
 @Component({
   selector: 'app-icon-skill',
-  imports: [AtlasAnimationComponent, TippyDirective, IconBlankSlotComponent],
+  imports: [
+    AtlasAnimationComponent,
+    TippyDirective,
+    IconBlankSlotComponent,
+    NgClass,
+    SkillStatsComponent,
+  ],
   templateUrl: './icon-skill.component.html',
   styleUrl: './icon-skill.component.scss',
 })
 export class IconSkillComponent {
   public skill = input.required<EquipmentSkillDefinition>();
-  public elements = computed(() =>
-    uniq(this.skill().techniques.map((t) => t.elements)),
+
+  public itemOutlineClass = computed(() =>
+    rarityItemOutlineColor(this.skill().rarity),
   );
 }
