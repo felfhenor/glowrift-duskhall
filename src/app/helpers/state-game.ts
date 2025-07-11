@@ -11,7 +11,6 @@ import {
 } from '../interfaces';
 import { uuid } from './rng';
 import { localStorageSignal } from './signal';
-import { resetCombatLog } from './combat-log';
 
 export function blankHero(props: Partial<Hero> = {}): Hero {
   return {
@@ -173,7 +172,6 @@ export const isGameStateReady = signal<boolean>(false);
 
 export function resetGameState(): void {
   _gamestate.set(blankGameState());
-  resetCombatLog();
 }
 
 export function setGameState(state: GameState): void {
