@@ -24,18 +24,18 @@ import {
 import { provideHotToastConfig } from '@ngxpert/hot-toast';
 
 import { provideNgIconsConfig } from '@ng-icons/core';
+import { routes } from '@routes/app.routes';
+import { AnalyticsService } from '@services/analytics.service';
+import { APIService } from '@services/api.service';
+import { CameraService } from '@services/camera.service';
+import { ContentService } from '@services/content.service';
+import { GamestateService } from '@services/gamestate.service';
+import { LoggerService, RollbarErrorHandler } from '@services/logger.service';
+import { MetaService } from '@services/meta.service';
+import { NotifyService } from '@services/notify.service';
+import { SoundService } from '@services/sound.service';
+import { ThemeService } from '@services/theme.service';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
-import { routes } from './app.routes';
-import { AnalyticsService } from './services/analytics.service';
-import { APIService } from './services/api.service';
-import { CameraService } from './services/camera.service';
-import { ContentService } from './services/content.service';
-import { GamestateService } from './services/gamestate.service';
-import { LoggerService, RollbarErrorHandler } from './services/logger.service';
-import { MetaService } from './services/meta.service';
-import { NotifyService } from './services/notify.service';
-import { SoundService } from './services/sound.service';
-import { ThemeService } from './services/theme.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [

@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { GameSetupWorldComponent } from './pages/game-setup-world/game-setup-world.component';
+import { GameSetupWorldComponent } from '@pages/game-setup-world/game-setup-world.component';
 
 export const setupRoutes: Routes = [
   {

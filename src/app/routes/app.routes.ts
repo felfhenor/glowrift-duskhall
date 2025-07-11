@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
-import { requireNotSetupGuard } from './guards/require-not-setup.guard';
-import { requireSetupGuard } from './guards/require-setup.guard';
-import { GameComponent } from './pages/game/game.component';
-import { HomeComponent } from './pages/home/home.component';
-import { SetupComponent } from './pages/setup/setup.component';
-import { TransitionComponent } from './pages/transition/transition.component';
+import { requireNotSetupGuard } from '@guards/require-not-setup.guard';
+import { requireSetupGuard } from '@guards/require-setup.guard';
+import { GameComponent } from '@pages/game/game.component';
+import { HomeComponent } from '@pages/home/home.component';
+import { SetupComponent } from '@pages/setup/setup.component';
+import { TransitionComponent } from '@pages/transition/transition.component';
 
 export const routes: Routes = [
   {

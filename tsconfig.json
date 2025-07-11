@@ -27,6 +27,7 @@
       "@guards/*": ["./src/app/guards/*"],
       "@pages/*": ["./src/app/pages/*"],
       "@pipes/*": ["./src/app/pipes/*"],
+      "@routes/*": ["./src/app/routes/*"],
       "@helpers/*": ["./src/app/helpers/*"],
       "@interfaces/*": ["./src/app/interfaces/*"],
       "@helpers": ["./src/app/helpers/index.ts"],
