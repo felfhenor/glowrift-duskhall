@@ -1,7 +1,7 @@
 import { Hero, HeroId, HeroRiskTolerance, WorldPosition } from '@interfaces';
-import { indexToSprite } from './sprite';
-import { gamestate, updateGamestate } from './state-game';
-import { getWorldNode } from './world';
+import { indexToSprite } from '@helpers/sprite';
+import { gamestate, updateGamestate } from '@helpers/state-game';
+import { getWorldNode } from '@helpers/world';
 
 export function allHeroes(): Hero[] {
   return gamestate().hero.heroes;

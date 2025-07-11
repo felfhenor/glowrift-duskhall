@@ -1,8 +1,8 @@
 import { EquipmentItem, EquipmentItemContent } from '@interfaces';
-import { gainCurrency } from './currency';
-import { removeItemFromInventory } from './inventory-equipment';
-import { getItemStat } from './item';
-import { notifySuccess } from './notify';
+import { gainCurrency } from '@helpers/currency';
+import { removeItemFromInventory } from '@helpers/inventory-equipment';
+import { getItemStat } from '@helpers/item';
+import { notifySuccess } from '@helpers/notify';
 
 export function itemSalvageValue(item: EquipmentItemContent): number {
   return (

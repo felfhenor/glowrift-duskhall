@@ -1,6 +1,6 @@
-import { GameElement } from './element';
-import { Identifiable } from './identifiable';
-import { LocationType } from './worldconfig';
+import { GameElement } from '@interfaces/element';
+import { Identifiable } from '@interfaces/identifiable';
+import { LocationType } from '@interfaces/worldconfig';
 
 export interface WorldPosition {
   x: number;

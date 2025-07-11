@@ -1,18 +1,18 @@
 import { Combat, Combatant, DroppableEquippable } from '@interfaces';
-import { currentCombat, resetCombat } from './combat';
-import { logCombatMessage } from './combat-log';
-import { getEntry } from './content';
-import { gainCurrency, updateCurrencyClaims } from './currency';
-import { gainDroppableItem, makeDroppableIntoRealItem } from './droppable';
+import { currentCombat, resetCombat } from '@helpers/combat';
+import { logCombatMessage } from '@helpers/combat-log';
+import { getEntry } from '@helpers/content';
+import { gainCurrency, updateCurrencyClaims } from '@helpers/currency';
+import { gainDroppableItem, makeDroppableIntoRealItem } from '@helpers/droppable';
 import {
   exploreProgressPercent,
   travelHome,
   updateExploringAndGlobalStatusText,
-} from './explore';
-import { allHeroes } from './hero';
-import { heroGainXp } from './hero-xp';
-import { notify } from './notify';
-import { claimNode, getWorldNode } from './world';
+} from '@helpers/explore';
+import { allHeroes } from '@helpers/hero';
+import { heroGainXp } from '@helpers/hero-xp';
+import { notify } from '@helpers/notify';
+import { claimNode, getWorldNode } from '@helpers/world';
 
 export function currentCombatHasGuardiansAlive(): boolean {
   const combat = currentCombat();

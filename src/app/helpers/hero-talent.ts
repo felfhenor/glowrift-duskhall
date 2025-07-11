@@ -1,7 +1,7 @@
 import { sum } from 'lodash';
 import { Hero, TalentContent } from '@interfaces';
-import { getEntry } from './content';
-import { updateHeroData } from './hero';
+import { getEntry } from '@helpers/content';
+import { updateHeroData } from '@helpers/hero';
 
 export function heroRemainingTalentPoints(hero: Hero): number {
   return hero.level - sum(Object.values(hero.talents));

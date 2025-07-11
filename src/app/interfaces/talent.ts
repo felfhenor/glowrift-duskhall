@@ -1,7 +1,7 @@
-import { Artable } from './artable';
-import { GameElement } from './element';
-import { Branded, Content } from './identifiable';
-import { StatBlock } from './stat';
+import { Artable } from '@interfaces/artable';
+import { GameElement } from '@interfaces/element';
+import { Branded, Content } from '@interfaces/identifiable';
+import { StatBlock } from '@interfaces/stat';
 
 export type TalentId = Branded<string, 'TalentId'>;
 

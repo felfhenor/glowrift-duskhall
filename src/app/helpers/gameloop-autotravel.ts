@@ -1,12 +1,12 @@
-import { isExploring } from './explore';
-import { isTraveling, travelToNode } from './travel';
-import { globalStatusText } from './ui';
+import { isExploring } from '@helpers/explore';
+import { isTraveling, travelToNode } from '@helpers/travel';
+import { globalStatusText } from '@helpers/ui';
 import {
   getAllNodesInOrderOfCloseness,
   getClosestUnclaimedClaimableNode,
   getCurrentWorldNode,
   getNodesWithinRiskTolerance,
-} from './world';
+} from '@helpers/world';
 
 export function autoTravelGameloop(): void {
   if (isExploring()) return;

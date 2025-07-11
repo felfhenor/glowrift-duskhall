@@ -1,7 +1,7 @@
-import { townMerchantGameloop } from './gameloop-town-merchant';
-import { allHeroes } from './hero';
-import { heroGainXp } from './hero-xp';
-import { getCurrentWorldNode } from './world';
+import { townMerchantGameloop } from '@helpers/gameloop-town-merchant';
+import { allHeroes } from '@helpers/hero';
+import { heroGainXp } from '@helpers/hero-xp';
+import { getCurrentWorldNode } from '@helpers/world';
 
 export function townGameloop(numTicks: number): void {
   townMerchantGameloop(numTicks);

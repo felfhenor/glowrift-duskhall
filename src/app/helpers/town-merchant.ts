@@ -1,13 +1,13 @@
 import { EquipmentItem } from '@interfaces';
-import { itemBuyValue } from './action-equipment';
+import { itemBuyValue } from '@helpers/action-equipment';
 import {
   allItemDefinitions,
   createItem,
   pickRandomItemDefinition,
-} from './creator-equipment';
-import { hasCurrency, loseCurrency } from './currency';
-import { addItemToInventory } from './inventory-equipment';
-import { gamestate, updateGamestate } from './state-game';
+} from '@helpers/creator-equipment';
+import { hasCurrency, loseCurrency } from '@helpers/currency';
+import { addItemToInventory } from '@helpers/inventory-equipment';
+import { gamestate, updateGamestate } from '@helpers/state-game';
 
 export function townMerchantItems(): number {
   return 8 + Math.floor(gamestate().town.buildingLevels.Merchant / 5);

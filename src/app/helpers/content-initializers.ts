@@ -15,7 +15,7 @@ import {
   TalentTreeContent,
   WorldConfigContent,
 } from '@interfaces';
-import { getDefaultAffinities, getDefaultStats } from './defaults';
+import { getDefaultAffinities, getDefaultStats } from '@helpers/defaults';
 
 // eat my ass, typescript
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

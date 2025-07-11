@@ -1,6 +1,6 @@
-import { DropRarity } from './droppable';
-import { GameElement } from './element';
-import { Content } from './identifiable';
+import { DropRarity } from '@interfaces/droppable';
+import { GameElement } from '@interfaces/element';
+import { Content } from '@interfaces/identifiable';
 
 export type GameCurrency =
   | 'Mana'

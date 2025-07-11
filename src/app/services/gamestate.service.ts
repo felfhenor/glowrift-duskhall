@@ -9,8 +9,8 @@ import {
   migrateOptionsState,
   spriteIterationCount,
 } from '@helpers';
-import { ContentService } from './content.service';
-import { LoggerService } from './logger.service';
+import { ContentService } from '@services/content.service';
+import { LoggerService } from '@services/logger.service';
 
 @Injectable({
   providedIn: 'root',

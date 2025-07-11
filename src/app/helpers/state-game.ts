@@ -9,8 +9,8 @@ import {
   LocationType,
   WorldPosition,
 } from '@interfaces';
-import { uuid } from './rng';
-import { localStorageSignal } from './signal';
+import { uuid } from '@helpers/rng';
+import { localStorageSignal } from '@helpers/signal';
 
 export function blankHero(props: Partial<Hero> = {}): Hero {
   return {

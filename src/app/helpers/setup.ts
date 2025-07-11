@@ -1,6 +1,6 @@
-import { getCurrencyClaimsForNode, mergeCurrencyClaims } from './currency';
-import { gamestate, setGameState } from './state-game';
-import { getWorldNode } from './world';
+import { getCurrencyClaimsForNode, mergeCurrencyClaims } from '@helpers/currency';
+import { gamestate, setGameState } from '@helpers/state-game';
+import { getWorldNode } from '@helpers/world';
 
 export function isSetup(): boolean {
   const state = gamestate();

@@ -1,10 +1,10 @@
 import { shuffle, sumBy } from 'lodash';
 import { DropRarity, FestivalContent } from '@interfaces';
-import { getTickTimer, isExpired } from './clock';
-import { getEntriesByType, getEntry } from './content';
-import { notify } from './notify';
-import { randomNumber, succeedsChance } from './rng';
-import { gamestate, updateGamestate } from './state-game';
+import { getTickTimer, isExpired } from '@helpers/clock';
+import { getEntriesByType, getEntry } from '@helpers/content';
+import { notify } from '@helpers/notify';
+import { randomNumber, succeedsChance } from '@helpers/rng';
+import { gamestate, updateGamestate } from '@helpers/state-game';
 
 export function getActiveFestivals(): FestivalContent[] {
   return Object.keys(gamestate().festival.festivals)

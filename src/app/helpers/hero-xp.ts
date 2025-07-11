@@ -1,9 +1,9 @@
 import { clamp } from 'lodash';
 import { Hero, StatBlock } from '@interfaces';
-import { updateHeroData } from './hero';
-import { recalculateStats } from './hero-stats';
-import { randomChoice, seededrng } from './rng';
-import { gamestate } from './state-game';
+import { updateHeroData } from '@helpers/hero';
+import { recalculateStats } from '@helpers/hero-stats';
+import { randomChoice, seededrng } from '@helpers/rng';
+import { gamestate } from '@helpers/state-game';
 
 export function heroXpRequiredForLevelUp(level: number): number {
   return 10 * (level + 1) ** 2;

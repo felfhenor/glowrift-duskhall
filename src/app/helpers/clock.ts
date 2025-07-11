@@ -1,4 +1,4 @@
-import { gamestate } from './state-game';
+import { gamestate } from '@helpers/state-game';
 
 export function getTickTimer(expiresInTicks: number): number {
   return gamestate().actionClock.numTicks + expiresInTicks;

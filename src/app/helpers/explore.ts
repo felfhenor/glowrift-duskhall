@@ -1,9 +1,9 @@
 import { signal } from '@angular/core';
-import { currentCombatHasGuardiansAlive } from './combat-end';
-import { gamestate } from './state-game';
-import { travelToNode } from './travel';
-import { globalStatusText } from './ui';
-import { getCurrentWorldNode, getWorldNode } from './world';
+import { currentCombatHasGuardiansAlive } from '@helpers/combat-end';
+import { gamestate } from '@helpers/state-game';
+import { travelToNode } from '@helpers/travel';
+import { globalStatusText } from '@helpers/ui';
+import { getCurrentWorldNode, getWorldNode } from '@helpers/world';
 
 export const exploreProgressText = signal<string>('');
 export const exploreProgressPercent = signal<number>(0);

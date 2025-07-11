@@ -1,5 +1,5 @@
 import { WorldLocation } from '@interfaces';
-import { getWorldNode } from './index';
+import { getWorldNode } from '@helpers/index';
 
 export interface MapTileData {
   x: number;

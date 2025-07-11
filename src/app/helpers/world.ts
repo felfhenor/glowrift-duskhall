@@ -5,13 +5,13 @@ import {
   LocationType,
   WorldLocation,
 } from '@interfaces';
-import { getCurrencyClaimsForNode, mergeCurrencyClaims } from './currency';
-import { notify } from './notify';
-import { uuid } from './rng';
-import { gamestate, updateGamestate } from './state-game';
-import { addTimerAndAction, getRegisterTick } from './timer';
-import { distanceBetweenNodes } from './travel';
-import { getGuardiansForLocation, getLootForLocation } from './worldgen';
+import { getCurrencyClaimsForNode, mergeCurrencyClaims } from '@helpers/currency';
+import { notify } from '@helpers/notify';
+import { uuid } from '@helpers/rng';
+import { gamestate, updateGamestate } from '@helpers/state-game';
+import { addTimerAndAction, getRegisterTick } from '@helpers/timer';
+import { distanceBetweenNodes } from '@helpers/travel';
+import { getGuardiansForLocation, getLootForLocation } from '@helpers/worldgen';
 
 export function setWorld(world: GameStateWorld): void {
   updateGamestate((state) => {

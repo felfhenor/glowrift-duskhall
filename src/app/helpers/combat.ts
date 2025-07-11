@@ -1,14 +1,14 @@
 import { sample, sampleSize, sortBy } from 'lodash';
 import { Combat, Combatant } from '@interfaces';
-import { applySkillToTarget } from './combat-damage';
-import { checkCombatOver, isCombatOver, isDead } from './combat-end';
-import { logCombatMessage } from './combat-log';
+import { applySkillToTarget } from '@helpers/combat-damage';
+import { checkCombatOver, isCombatOver, isDead } from '@helpers/combat-end';
+import { logCombatMessage } from '@helpers/combat-log';
 import {
   availableSkillsForCombatant,
   getPossibleCombatantTargetsForSkill,
   getPossibleCombatantTargetsForSkillTechnique,
-} from './combat-targetting';
-import { gamestate, updateGamestate } from './state-game';
+} from '@helpers/combat-targetting';
+import { gamestate, updateGamestate } from '@helpers/state-game';
 
 export function currentCombat(): Combat | undefined {
   return gamestate().hero.combat;

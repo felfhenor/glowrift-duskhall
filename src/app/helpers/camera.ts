@@ -1,7 +1,7 @@
 import { clamp } from 'lodash';
-import { getHeroPosition } from './hero';
-import { gamestate, updateGamestate } from './state-game';
-import { windowHeightTiles, windowWidthTiles } from './ui';
+import { getHeroPosition } from '@helpers/hero';
+import { gamestate, updateGamestate } from '@helpers/state-game';
+import { windowHeightTiles, windowWidthTiles } from '@helpers/ui';
 
 export function setCameraPosition(x: number, y: number) {
   const worldWidth = gamestate().world.width;

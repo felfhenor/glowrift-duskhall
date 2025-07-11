@@ -5,11 +5,11 @@ import {
   EquipmentSkill,
   EquipmentSkillContent,
 } from '@interfaces';
-import { getEntry } from './content';
-import { createItem } from './creator-equipment';
-import { createSkill } from './creator-skill';
-import { addItemToInventory } from './inventory-equipment';
-import { addSkillToInventory } from './inventory-skill';
+import { getEntry } from '@helpers/content';
+import { createItem } from '@helpers/creator-equipment';
+import { createSkill } from '@helpers/creator-skill';
+import { addItemToInventory } from '@helpers/inventory-equipment';
+import { addSkillToInventory } from '@helpers/inventory-skill';
 
 export function getDroppableEquippableBaseId(
   item: DroppableEquippable,

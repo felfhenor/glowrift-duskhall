@@ -14,16 +14,16 @@ import {
   WorldLocation,
   WorldPosition,
 } from '@interfaces';
-import { getEntriesByType, getEntry } from './content';
+import { getEntriesByType, getEntry } from '@helpers/content';
 import {
   allItemDefinitions,
   pickRandomItemDefinition,
-} from './creator-equipment';
+} from '@helpers/creator-equipment';
 import {
   allSkillDefinitions,
   pickRandomSkillDefinition,
-} from './creator-skill';
-import { createGuardianForLocation } from './guardian';
+} from '@helpers/creator-skill';
+import { createGuardianForLocation } from '@helpers/guardian';
 import {
   gamerng,
   randomChoice,
@@ -32,11 +32,11 @@ import {
   randomNumberRange,
   seededrng,
   uuid,
-} from './rng';
-import { getSpriteFromNodeType, indexToSprite } from './sprite';
-import { blankNodeCountBlock, gamestate, updateGamestate } from './state-game';
-import { distanceBetweenNodes } from './travel';
-import { blankWorldNode } from './world';
+} from '@helpers/rng';
+import { getSpriteFromNodeType, indexToSprite } from '@helpers/sprite';
+import { blankNodeCountBlock, gamestate, updateGamestate } from '@helpers/state-game';
+import { distanceBetweenNodes } from '@helpers/travel';
+import { blankWorldNode } from '@helpers/world';
 
 function fillEmptySpaceWithEmptyNodes(
   config: WorldConfigContent,

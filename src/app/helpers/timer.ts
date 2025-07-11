@@ -1,6 +1,6 @@
 import { Timer, TimerAction, TimerUnclaimVillage } from '@interfaces';
-import { gamestate, updateGamestate } from './state-game';
-import { getWorldNode, unclaimNode } from './world';
+import { gamestate, updateGamestate } from '@helpers/state-game';
+import { getWorldNode, unclaimNode } from '@helpers/world';
 
 export function totalTicksElapsed(): number {
   return gamestate().actionClock.numTicks;

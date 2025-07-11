@@ -1,4 +1,4 @@
-import { Content } from './identifiable';
+import { Content } from '@interfaces/identifiable';
 
 export interface TalentTreeContentNode {
   talentId: string;

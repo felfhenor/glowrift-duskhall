@@ -1,8 +1,8 @@
 import { EquipmentItem } from '@interfaces';
-import { getEntry } from './content';
-import { getDroppableEquippableBaseId } from './droppable';
-import { allHeroes, updateHeroData } from './hero';
-import { gamestate, updateGamestate } from './state-game';
+import { getEntry } from '@helpers/content';
+import { getDroppableEquippableBaseId } from '@helpers/droppable';
+import { allHeroes, updateHeroData } from '@helpers/hero';
+import { gamestate, updateGamestate } from '@helpers/state-game';
 
 export function getUpdatedItem(item: EquipmentItem): EquipmentItem {
   return Object.assign(item, getEntry(getDroppableEquippableBaseId(item)), {

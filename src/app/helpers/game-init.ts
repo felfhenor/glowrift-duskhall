@@ -1,11 +1,11 @@
 import { WorldConfigContent } from '@interfaces';
-import { focusCameraOnPlayer } from './camera';
-import { resetCombatLog } from './combat-log';
-import { setHeroPosition } from './hero';
-import { finishSetup } from './setup';
-import { resetGameState } from './state-game';
-import { setWorld } from './world';
-import { generateWorld } from './worldgen';
+import { focusCameraOnPlayer } from '@helpers/camera';
+import { resetCombatLog } from '@helpers/combat-log';
+import { setHeroPosition } from '@helpers/hero';
+import { finishSetup } from '@helpers/setup';
+import { resetGameState } from '@helpers/state-game';
+import { setWorld } from '@helpers/world';
+import { generateWorld } from '@helpers/worldgen';
 
 export function startGame(config: WorldConfigContent): void {
   const world = generateWorld(config);

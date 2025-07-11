@@ -1,7 +1,7 @@
 import { WorldLocation, WorldPosition } from '@interfaces';
-import { getExplorationTickMultiplier } from './festival-exploration';
-import { notify } from './notify';
-import { gamestate, updateGamestate } from './state-game';
+import { getExplorationTickMultiplier } from '@helpers/festival-exploration';
+import { notify } from '@helpers/notify';
+import { gamestate, updateGamestate } from '@helpers/state-game';
 
 export function isTraveling() {
   return gamestate().hero.travel.ticksLeft > 0;

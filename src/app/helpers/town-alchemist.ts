@@ -1,7 +1,7 @@
 import { EquipmentSkill, GameCurrency } from '@interfaces';
-import { gainCurrency } from './currency';
-import { removeSkillFromInventory } from './inventory-skill';
-import { getBuildingLevel } from './town';
+import { gainCurrency } from '@helpers/currency';
+import { removeSkillFromInventory } from '@helpers/inventory-skill';
+import { getBuildingLevel } from '@helpers/town';
 
 export function maxAlchemistSkills() {
   return Math.floor(Math.min(15, 3 + getBuildingLevel('Alchemist') / 3));

@@ -31,7 +31,8 @@
       "@helpers/*": ["./src/app/helpers/*"],
       "@interfaces/*": ["./src/app/interfaces/*"],
       "@helpers": ["./src/app/helpers/index.ts"],
-      "@interfaces": ["./src/app/interfaces/index.ts"]
+      "@interfaces": ["./src/app/interfaces/index.ts"],
+      "@/*": ["./src/*"]
     }
   },
   "angularCompilerOptions": {

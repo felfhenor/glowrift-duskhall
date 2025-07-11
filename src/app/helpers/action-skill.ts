@@ -1,7 +1,7 @@
 import { EquipmentSkill } from '@interfaces';
-import { gainCurrency } from './currency';
-import { removeSkillFromInventory } from './inventory-skill';
-import { notifySuccess } from './notify';
+import { gainCurrency } from '@helpers/currency';
+import { removeSkillFromInventory } from '@helpers/inventory-skill';
+import { notifySuccess } from '@helpers/notify';
 
 export function skillSalvageValue(item: EquipmentSkill): number {
   return item.dropLevel * 100;

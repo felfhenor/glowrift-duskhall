@@ -1,5 +1,5 @@
-import { checkFestivalExpirations, maybeStartNewFestival } from './festival';
-import { updateGamestate } from './state-game';
+import { checkFestivalExpirations, maybeStartNewFestival } from '@helpers/festival';
+import { updateGamestate } from '@helpers/state-game';
 
 export function festivalGameloop(numTicks: number): void {
   updateGamestate((state) => {

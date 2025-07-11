@@ -1,6 +1,6 @@
 import { sum } from 'lodash';
 import { GameCurrency } from '@interfaces';
-import { getActiveFestivals } from './festival';
+import { getActiveFestivals } from '@helpers/festival';
 
 export function getFestivalProductionMultiplier(
   currency: GameCurrency,

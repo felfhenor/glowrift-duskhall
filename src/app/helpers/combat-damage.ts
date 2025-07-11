@@ -10,14 +10,14 @@ import {
   GameStat,
   TalentContent,
 } from '@interfaces';
-import { isDead } from './combat-end';
-import { logCombatMessage } from './combat-log';
-import { getEntry } from './content';
-import { getDroppableEquippableBaseId } from './droppable';
+import { isDead } from '@helpers/combat-end';
+import { logCombatMessage } from '@helpers/combat-log';
+import { getEntry } from '@helpers/content';
+import { getDroppableEquippableBaseId } from '@helpers/droppable';
 import {
   getCombatIncomingAttributeMultiplier,
   getCombatOutgoingAttributeMultiplier,
-} from './festival-combat';
+} from '@helpers/festival-combat';
 
 export function techniqueHasAttribute(
   technique: EquipmentSkillContentTechnique,

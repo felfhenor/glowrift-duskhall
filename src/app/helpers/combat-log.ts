@@ -1,6 +1,6 @@
 import { Combat, CombatLog } from '@interfaces';
-import { uuid } from './rng';
-import { localStorageSignal } from './signal';
+import { uuid } from '@helpers/rng';
+import { localStorageSignal } from '@helpers/signal';
 
 export const combatLog = localStorageSignal<CombatLog[]>('combatLog', []);
 

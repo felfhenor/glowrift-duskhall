@@ -1,10 +1,10 @@
-import { currentCombat, doCombatIteration, resetCombat } from './combat';
-import { generateCombatForLocation } from './combat-create';
-import { currentCombatHasGuardiansAlive } from './combat-end';
-import { updateExploringAndGlobalStatusText } from './explore';
-import { updateGamestate } from './state-game';
-import { isTraveling } from './travel';
-import { getCurrentWorldNode } from './world';
+import { currentCombat, doCombatIteration, resetCombat } from '@helpers/combat';
+import { generateCombatForLocation } from '@helpers/combat-create';
+import { currentCombatHasGuardiansAlive } from '@helpers/combat-end';
+import { updateExploringAndGlobalStatusText } from '@helpers/explore';
+import { updateGamestate } from '@helpers/state-game';
+import { isTraveling } from '@helpers/travel';
+import { getCurrentWorldNode } from '@helpers/world';
 
 export function exploreGameloop(numTicks: number): void {
   if (isTraveling()) return;

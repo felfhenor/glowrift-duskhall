@@ -1,5 +1,5 @@
-import { gamestate, updateGamestate } from './state-game';
-import { generateMerchantItems, resetTownMerchantTicks } from './town-merchant';
+import { gamestate, updateGamestate } from '@helpers/state-game';
+import { generateMerchantItems, resetTownMerchantTicks } from '@helpers/town-merchant';
 
 export function townMerchantGameloop(numTicks: number): void {
   updateGamestate((state) => {

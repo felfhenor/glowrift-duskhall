@@ -1,8 +1,8 @@
-import { Animatable } from './artable';
-import { EquipmentBlock } from './equipment';
-import { Branded, Identifiable } from './identifiable';
-import { EquipmentSkill } from './skill';
-import { StatBlock } from './stat';
+import { Animatable } from '@interfaces/artable';
+import { EquipmentBlock } from '@interfaces/equipment';
+import { Branded, Identifiable } from '@interfaces/identifiable';
+import { EquipmentSkill } from '@interfaces/skill';
+import { StatBlock } from '@interfaces/stat';
 
 export type HeroId = Branded<string, 'HeroId'>;
 

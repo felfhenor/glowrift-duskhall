@@ -1,4 +1,4 @@
-import { doTimerActions, getTickActions, totalTicksElapsed } from './timer';
+import { doTimerActions, getTickActions, totalTicksElapsed } from '@helpers/timer';
 
 export function gameloopTimers(numTicks: number): void {
   const baseTicks = totalTicksElapsed();

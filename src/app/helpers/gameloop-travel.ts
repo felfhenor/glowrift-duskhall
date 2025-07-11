@@ -1,8 +1,8 @@
-import { notify } from './notify';
-import { gamestate, updateGamestate } from './state-game';
-import { isTraveling } from './travel';
-import { globalStatusText } from './ui';
-import { getCurrentWorldNode, getWorldNode } from './world';
+import { notify } from '@helpers/notify';
+import { gamestate, updateGamestate } from '@helpers/state-game';
+import { isTraveling } from '@helpers/travel';
+import { globalStatusText } from '@helpers/ui';
+import { getCurrentWorldNode, getWorldNode } from '@helpers/world';
 
 export function travelGameloop(numTicks: number): void {
   if (!isTraveling()) return;

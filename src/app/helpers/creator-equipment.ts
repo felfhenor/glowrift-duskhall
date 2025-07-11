@@ -4,9 +4,9 @@ import {
   EquipmentItemContent,
   EquipmentItemId,
 } from '@interfaces';
-import { getEntriesByType, getEntry } from './content';
-import { cleanupDroppableDefinition } from './droppable';
-import { randomIdentifiableChoice, seededrng, uuid } from './rng';
+import { getEntriesByType, getEntry } from '@helpers/content';
+import { cleanupDroppableDefinition } from '@helpers/droppable';
+import { randomIdentifiableChoice, seededrng, uuid } from '@helpers/rng';
 
 export function allItemDefinitions(): EquipmentItemContent[] {
   return [

@@ -1,7 +1,7 @@
 import { EquipmentSkill, Hero } from '@interfaces';
-import { updateHeroData } from './hero';
-import { recalculateStats } from './hero-stats';
-import { updateGamestate } from './state-game';
+import { updateHeroData } from '@helpers/hero';
+import { recalculateStats } from '@helpers/hero-stats';
+import { updateGamestate } from '@helpers/state-game';
 
 export function addSkillToInventory(item: EquipmentSkill): void {
   updateGamestate((state) => {

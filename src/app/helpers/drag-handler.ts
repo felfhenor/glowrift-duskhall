@@ -4,9 +4,9 @@ import {
   calculateCameraBounds,
   processCameraDrag,
   updateCameraPosition,
-} from './camera-controller';
-import { gamestate } from './index';
-import { resetContainerPositions } from './pixi-app-setup';
+} from '@helpers/camera-controller';
+import { gamestate } from '@helpers/index';
+import { resetContainerPositions } from '@helpers/pixi-app-setup';
 
 export interface DragHandlerConfig {
   app: Application;

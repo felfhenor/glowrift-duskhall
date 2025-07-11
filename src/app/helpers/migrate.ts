@@ -1,8 +1,8 @@
 import { merge } from 'lodash';
-import { migrateItems } from './migrate-items';
-import { migrateSkills } from './migrate-skills';
-import { blankGameState, gamestate, setGameState } from './state-game';
-import { defaultOptions, options, setOptions } from './state-options';
+import { migrateItems } from '@helpers/migrate-items';
+import { migrateSkills } from '@helpers/migrate-skills';
+import { blankGameState, gamestate, setGameState } from '@helpers/state-game';
+import { defaultOptions, options, setOptions } from '@helpers/state-options';
 
 export function migrateGameState() {
   const state = gamestate();

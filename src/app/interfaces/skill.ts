@@ -1,8 +1,8 @@
-import { Animatable } from './artable';
-import { DroppableEquippable } from './droppable';
-import { GameElement } from './element';
-import { Branded } from './identifiable';
-import { StatBlock } from './stat';
+import { Animatable } from '@interfaces/artable';
+import { DroppableEquippable } from '@interfaces/droppable';
+import { GameElement } from '@interfaces/element';
+import { Branded } from '@interfaces/identifiable';
+import { StatBlock } from '@interfaces/stat';
 
 export type EquipmentSkillTargetBehavior =
   | 'Always'

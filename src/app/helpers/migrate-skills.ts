@@ -1,8 +1,8 @@
 import { EquipmentSkill } from '@interfaces';
-import { getEntry } from './content';
-import { getDroppableEquippableBaseId } from './droppable';
-import { allHeroes, updateHeroData } from './hero';
-import { gamestate, updateGamestate } from './state-game';
+import { getEntry } from '@helpers/content';
+import { getDroppableEquippableBaseId } from '@helpers/droppable';
+import { allHeroes, updateHeroData } from '@helpers/hero';
+import { gamestate, updateGamestate } from '@helpers/state-game';
 
 export function getUpdatedSkill(skill: EquipmentSkill): EquipmentSkill {
   return Object.assign(skill, getEntry(getDroppableEquippableBaseId(skill)), {

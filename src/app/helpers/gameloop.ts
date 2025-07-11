@@ -1,17 +1,17 @@
 import { LoggerTimer } from 'logger-timer';
 
 import { computed } from '@angular/core';
-import { autoTravelGameloop } from './gameloop-autotravel';
-import { currencyGameloop } from './gameloop-currency';
-import { exploreGameloop } from './gameloop-explore';
-import { festivalGameloop } from './gameloop-festival';
-import { gameloopTimers } from './gameloop-timers';
-import { townGameloop } from './gameloop-town';
-import { travelGameloop } from './gameloop-travel';
-import { debug } from './logging';
-import { isSetup } from './setup';
-import { isGameStateReady, updateGamestate } from './state-game';
-import { getOption } from './state-options';
+import { autoTravelGameloop } from '@helpers/gameloop-autotravel';
+import { currencyGameloop } from '@helpers/gameloop-currency';
+import { exploreGameloop } from '@helpers/gameloop-explore';
+import { festivalGameloop } from '@helpers/gameloop-festival';
+import { gameloopTimers } from '@helpers/gameloop-timers';
+import { townGameloop } from '@helpers/gameloop-town';
+import { travelGameloop } from '@helpers/gameloop-travel';
+import { debug } from '@helpers/logging';
+import { isSetup } from '@helpers/setup';
+import { isGameStateReady, updateGamestate } from '@helpers/state-game';
+import { getOption } from '@helpers/state-options';
 
 export const isGameloopPaused = computed(() => getOption('gameloopPaused'));
 

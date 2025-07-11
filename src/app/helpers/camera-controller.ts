@@ -1,5 +1,5 @@
 import { CameraBounds, CameraState } from '@interfaces/camera';
-import { gamestate, updateGamestate } from './index';
+import { gamestate, updateGamestate } from '@helpers/index';
 
 /**
  * Calculates camera bounds based on world and viewport dimensions

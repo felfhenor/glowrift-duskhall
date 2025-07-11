@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HotToastService } from '@ngxpert/hot-toast';
 import { notification$ } from '@helpers';
-import { LoggerService } from './logger.service';
+import { LoggerService } from '@services/logger.service';
 
 @Injectable({
   providedIn: 'root',

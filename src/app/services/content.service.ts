@@ -15,8 +15,8 @@ import {
   setAllIdsByName,
 } from '@helpers';
 import { Content, ContentType } from '@interfaces';
-import { LoggerService } from './logger.service';
-import { MetaService } from './meta.service';
+import { LoggerService } from '@services/logger.service';
+import { MetaService } from '@services/meta.service';
 
 @Injectable({
   providedIn: 'root',

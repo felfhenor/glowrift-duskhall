@@ -1,10 +1,10 @@
-import { Animatable } from './artable';
-import { ElementBlock } from './element';
-import { Branded } from './identifiable';
-import { EquipmentSkill, EquipmentSkillId } from './skill';
-import { StatBlock } from './stat';
-import { TalentId } from './talent';
-import { WorldPosition } from './world';
+import { Animatable } from '@interfaces/artable';
+import { ElementBlock } from '@interfaces/element';
+import { Branded } from '@interfaces/identifiable';
+import { EquipmentSkill, EquipmentSkillId } from '@interfaces/skill';
+import { StatBlock } from '@interfaces/stat';
+import { TalentId } from '@interfaces/talent';
+import { WorldPosition } from '@interfaces/world';
 
 export type CombatId = Branded<string, 'CombatId'>;
 

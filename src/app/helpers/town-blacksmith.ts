@@ -1,7 +1,7 @@
 import { EquipmentItem, GameCurrency } from '@interfaces';
-import { gainCurrency } from './currency';
-import { removeItemFromInventory } from './inventory-equipment';
-import { getBuildingLevel } from './town';
+import { gainCurrency } from '@helpers/currency';
+import { removeItemFromInventory } from '@helpers/inventory-equipment';
+import { getBuildingLevel } from '@helpers/town';
 
 export function maxBlacksmithItems() {
   return Math.floor(Math.min(15, 3 + getBuildingLevel('Blacksmith') / 3));

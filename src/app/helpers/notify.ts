@@ -1,6 +1,6 @@
 import { Subject } from 'rxjs';
 import { NotificationCategory, ToggleableCategory } from '@interfaces';
-import { options } from './state-options';
+import { options } from '@helpers/state-options';
 
 function isPageVisible(): boolean {
   return !document.hidden;
