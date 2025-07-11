@@ -13,7 +13,7 @@ export type GameCurrency =
 
 export type CurrencyBlock = Record<GameCurrency, number>;
 
-export interface Currency extends Content {
+export interface CurrencyContent extends Content {
   name: GameCurrency;
   element?: GameElement;
   value: number;

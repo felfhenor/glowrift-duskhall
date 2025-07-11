@@ -2,7 +2,7 @@ import { Content } from './identifiable';
 
 export type LocationType = 'town' | 'village' | 'cave' | 'dungeon' | 'castle';
 
-export interface WorldConfig extends Content {
+export interface WorldConfigContent extends Content {
   width: number;
   height: number;
 

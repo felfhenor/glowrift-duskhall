@@ -1,14 +1,14 @@
 import { Content } from './identifiable';
 
-export interface TalentTreeDefinitionNode {
+export interface TalentTreeContentNode {
   talentId: string;
 }
 
-export interface TalentTreeDefinitionLevel {
+export interface TalentTreeContentLevel {
   level: number;
-  learnableTalents: TalentTreeDefinitionNode[];
+  learnableTalents: TalentTreeContentNode[];
 }
 
-export interface TalentTreeDefinition extends Content {
-  talents: TalentTreeDefinitionLevel[];
+export interface TalentTreeContent extends Content {
+  talents: TalentTreeContentLevel[];
 }

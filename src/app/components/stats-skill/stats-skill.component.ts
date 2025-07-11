@@ -2,7 +2,7 @@ import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 import { uniq } from 'lodash';
 import { rarityItemTextColor } from '../../helpers';
-import { EquipmentSkillDefinition, GameStat } from '../../interfaces';
+import { EquipmentSkillContent, GameStat } from '../../interfaces';
 
 @Component({
   selector: 'app-stats-skill',
@@ -11,7 +11,7 @@ import { EquipmentSkillDefinition, GameStat } from '../../interfaces';
   styleUrl: './stats-skill.component.scss',
 })
 export class StatsSkillComponent {
-  public skill = input.required<EquipmentSkillDefinition>();
+  public skill = input.required<EquipmentSkillContent>();
 
   public elements = computed(() =>
     uniq(this.skill().techniques.map((t) => t.elements)),

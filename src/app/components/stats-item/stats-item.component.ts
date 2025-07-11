@@ -1,7 +1,7 @@
 import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 import { getItemStat, rarityItemTextColor } from '../../helpers';
-import { EquipmentItemDefinition, StatBlock } from '../../interfaces';
+import { EquipmentItemContent, StatBlock } from '../../interfaces';
 import { MarkerStatComponent } from '../marker-stat/marker-stat.component';
 
 @Component({
@@ -11,7 +11,7 @@ import { MarkerStatComponent } from '../marker-stat/marker-stat.component';
   styleUrl: './stats-item.component.css',
 })
 export class StatsItemComponent {
-  public item = input.required<EquipmentItemDefinition>();
+  public item = input.required<EquipmentItemContent>();
   public statDeltas = input<StatBlock>();
 
   public itemRarityClass = computed(() =>

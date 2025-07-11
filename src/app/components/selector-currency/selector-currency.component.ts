@@ -2,7 +2,7 @@ import { Component, computed, model } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { getEntriesByType } from '../../helpers';
-import { Currency } from '../../interfaces';
+import { CurrencyContent } from '../../interfaces';
 import { IconItemComponent } from '../icon-currency/icon-currency.component';
 
 @Component({
@@ -12,7 +12,9 @@ import { IconItemComponent } from '../icon-currency/icon-currency.component';
   styleUrl: './selector-currency.component.scss',
 })
 export class SelectorCurrencyComponent {
-  public currency = model<Currency>();
+  public currency = model<CurrencyContent>();
 
-  public allCurrencies = computed(() => getEntriesByType<Currency>('currency'));
+  public allCurrencies = computed(() =>
+    getEntriesByType<CurrencyContent>('currency'),
+  );
 }

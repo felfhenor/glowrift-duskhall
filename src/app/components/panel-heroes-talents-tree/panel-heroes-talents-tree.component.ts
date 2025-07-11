@@ -9,24 +9,24 @@ import {
 import {
   GameElement,
   Hero,
-  TalentDefinition,
-  TalentTreeDefinition,
-  TalentTreeDefinitionLevel,
-  TalentTreeDefinitionNode,
+  TalentContent,
+  TalentTreeContent,
+  TalentTreeContentLevel,
+  TalentTreeContentNode,
 } from '../../interfaces';
 import { IconTalentComponent } from '../icon-talent/icon-talent.component';
 
-type TalentTreeHeroNode = TalentTreeDefinitionNode & {
-  talentData: TalentDefinition;
+type TalentTreeHeroNode = TalentTreeContentNode & {
+  talentData: TalentContent;
   canPurchase: boolean;
   isLearned: boolean;
 };
 
-type TalentTreeHeroLevel = TalentTreeDefinitionLevel & {
+type TalentTreeHeroLevel = TalentTreeContentLevel & {
   learnableTalents: TalentTreeHeroNode[];
 };
 
-type TalentTreeHeroDefinition = TalentTreeDefinition & {
+type TalentTreeHeroDefinition = TalentTreeContent & {
   talents: TalentTreeHeroLevel[];
 };
 
@@ -41,13 +41,13 @@ export class PanelHeroesTalentsTreeComponent {
   public element = input.required<GameElement>();
 
   public tree: Signal<TalentTreeHeroDefinition> = computed(() => {
-    const talentTree = getEntry<TalentTreeDefinition>(
+    const talentTree = getEntry<TalentTreeContent>(
       `${this.element()} Talent Tree`,
     )!;
 
     talentTree.talents = talentTree.talents.map((level) => {
       level.learnableTalents = level.learnableTalents.map((talentNode) => {
-        const talentData = getEntry<TalentDefinition>(talentNode.talentId)!;
+        const talentData = getEntry<TalentContent>(talentNode.talentId)!;
         return {
           ...talentNode,
           talentData,

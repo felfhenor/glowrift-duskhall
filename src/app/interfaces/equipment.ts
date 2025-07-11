@@ -12,13 +12,13 @@ export type EquipmentModifiable = {
   baseStats: StatBlock;
 };
 
-export type EquipmentItemDefinition = DroppableEquippable &
+export type EquipmentItemContent = DroppableEquippable &
   EquipmentModifiable & {
     __type: EquipmentSlot;
     id: EquipmentItemId;
   };
 
-export type EquipmentItem = EquipmentItemDefinition & {
+export type EquipmentItem = EquipmentItemContent & {
   mods: Partial<EquipmentModifiable>;
 };
 

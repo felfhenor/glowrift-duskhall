@@ -10,8 +10,7 @@
   frames: 14
 
   techniques:
-    - elements: []
-      attributes: [AllowPlink]
+    - attributes: [AllowPlink]
       targets: 1
       targetType: Enemies
       targetBehaviors: [NotZeroHealth]

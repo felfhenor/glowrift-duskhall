@@ -10,6 +10,7 @@ import { forkJoin, Observable } from 'rxjs';
 import {
   allContentById,
   allIdsByName,
+  ensureContent,
   setAllContentById,
   setAllIdsByName,
 } from '../helpers';
@@ -173,8 +174,10 @@ export class ContentService {
           return;
         }
 
-        allIdsByNameAssets.set(entry.name, entry.id);
-        allEntriesByIdAssets.set(entry.id, entry);
+        const cleanedEntry = ensureContent(entry);
+
+        allIdsByNameAssets.set(cleanedEntry.name, cleanedEntry.id);
+        allEntriesByIdAssets.set(cleanedEntry.id, cleanedEntry);
       });
     });
 

@@ -1,14 +1,14 @@
 import { shuffle, sumBy } from 'lodash';
-import { DropRarity, Festival } from '../interfaces';
+import { DropRarity, FestivalContent } from '../interfaces';
 import { getTickTimer, isExpired } from './clock';
 import { getEntriesByType, getEntry } from './content';
 import { notify } from './notify';
 import { randomNumber, succeedsChance } from './rng';
 import { gamestate, updateGamestate } from './state-game';
 
-export function getActiveFestivals(): Festival[] {
+export function getActiveFestivals(): FestivalContent[] {
   return Object.keys(gamestate().festival.festivals)
-    .map((f) => getEntry<Festival>(f)!)
+    .map((f) => getEntry<FestivalContent>(f)!)
     .filter(Boolean);
 }
 
@@ -17,7 +17,7 @@ export function isFestivalActive(festivalId: string): boolean {
 }
 
 export function startFestival(festivalId: string): void {
-  const festivalData = getEntry<Festival>(festivalId);
+  const festivalData = getEntry<FestivalContent>(festivalId);
   if (!festivalData) return;
 
   notify(festivalData.description, 'Festival');
@@ -30,7 +30,7 @@ export function startFestival(festivalId: string): void {
 }
 
 export function stopFestival(festivalId: string): void {
-  const festivalData = getEntry<Festival>(festivalId);
+  const festivalData = getEntry<FestivalContent>(festivalId);
   if (!festivalData) return;
 
   notify(festivalData.endDescription, 'Festival');
@@ -52,7 +52,7 @@ export function checkFestivalExpirations(): void {
 }
 
 export function pickRandomFestivalBasedOnRarity(): string | undefined {
-  const festivals = getEntriesByType<Festival>('festival').filter(
+  const festivals = getEntriesByType<FestivalContent>('festival').filter(
     (f) => !isFestivalActive(f.id),
   );
 

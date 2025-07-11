@@ -1,9 +1,9 @@
 import {
   DroppableEquippable,
   EquipmentItem,
-  EquipmentItemDefinition,
+  EquipmentItemContent,
   EquipmentSkill,
-  EquipmentSkillDefinition,
+  EquipmentSkillContent,
 } from '../interfaces';
 import { getEntry } from './content';
 import { createItem } from './creator-equipment';
@@ -30,12 +30,12 @@ export function makeDroppableIntoRealItem(
 ): DroppableEquippable {
   switch (droppable.__type) {
     case 'skill':
-      return createSkill(droppable as EquipmentSkillDefinition);
+      return createSkill(droppable as EquipmentSkillContent);
     case 'accessory':
     case 'armor':
     case 'trinket':
     case 'weapon':
-      return createItem(droppable as EquipmentItemDefinition);
+      return createItem(droppable as EquipmentItemContent);
 
     default:
       throw new Error(

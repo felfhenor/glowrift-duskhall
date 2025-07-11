@@ -3,10 +3,10 @@ import {
   Combat,
   Combatant,
   EquipmentSkill,
-  EquipmentSkillDefinition,
-  EquipmentSkillDefinitionTechnique,
-  EquippableSkillTargetBehavior,
-  EquippableSkillTargetType,
+  EquipmentSkillContent,
+  EquipmentSkillContentTechnique,
+  EquipmentSkillTargetBehavior,
+  EquipmentSkillTargetType,
 } from '../interfaces';
 import { getEntry } from './content';
 
@@ -21,10 +21,10 @@ export function availableSkillsForCombatant(
 
 export function filterCombatantTargetListForSkillTechniqueBehavior(
   combatants: Combatant[],
-  behavior: EquippableSkillTargetBehavior,
+  behavior: EquipmentSkillTargetBehavior,
 ): Combatant[] {
   const behaviors: Record<
-    EquippableSkillTargetBehavior,
+    EquipmentSkillTargetBehavior,
     (c: Combatant[]) => Combatant[]
   > = {
     Always: (list) => list,
@@ -40,7 +40,7 @@ export function filterCombatantTargetListForSkillTechniqueBehavior(
 
 export function filterCombatantTargetListForSkillTechnique(
   combatants: Combatant[],
-  technique: EquipmentSkillDefinitionTechnique,
+  technique: EquipmentSkillContentTechnique,
 ): Combatant[] {
   return intersection(
     ...technique.targetBehaviors.map((b) =>
@@ -52,13 +52,13 @@ export function filterCombatantTargetListForSkillTechnique(
 export function getBaseCombatantTargetListForSkillTechnique(
   combat: Combat,
   combatant: Combatant,
-  technique: EquipmentSkillDefinitionTechnique,
+  technique: EquipmentSkillContentTechnique,
 ): Combatant[] {
   const myType = combatant.isEnemy ? 'guardian' : 'hero';
   const allies = myType === 'guardian' ? combat.guardians : combat.heroes;
   const enemies = myType === 'guardian' ? combat.heroes : combat.guardians;
 
-  const targetTypes: Record<EquippableSkillTargetType, Combatant[]> = {
+  const targetTypes: Record<EquipmentSkillTargetType, Combatant[]> = {
     All: [...allies, ...enemies],
     Enemies: enemies,
     Allies: allies,
@@ -74,8 +74,8 @@ export function getBaseCombatantTargetListForSkillTechnique(
 export function getPossibleCombatantTargetsForSkillTechnique(
   combat: Combat,
   combatant: Combatant,
-  skill: EquipmentSkillDefinition,
-  tech: EquipmentSkillDefinitionTechnique,
+  skill: EquipmentSkillContent,
+  tech: EquipmentSkillContentTechnique,
 ): Combatant[] {
   const baseList = getBaseCombatantTargetListForSkillTechnique(
     combat,
@@ -88,7 +88,7 @@ export function getPossibleCombatantTargetsForSkillTechnique(
 export function getPossibleCombatantTargetsForSkill(
   combat: Combat,
   combatant: Combatant,
-  skill: EquipmentSkillDefinition,
+  skill: EquipmentSkillContent,
 ): Combatant[] {
   return union(
     skill.techniques.flatMap((t) =>

@@ -5,7 +5,7 @@ import { StatBlock } from './stat';
 
 export type TalentId = Branded<string, 'TalentId'>;
 
-export interface TalentDefinition extends Content, Artable {
+export interface TalentContent extends Content, Artable {
   id: TalentId;
 
   description: string;

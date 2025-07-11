@@ -6,7 +6,7 @@ export const allIdsByName: Signal<Map<string, string>> =
   _allIdsByName.asReadonly();
 
 const _allContentById = signal<Map<string, Content>>(new Map());
-export const allContentById: Signal<Map<string, Content>> =
+export const allContentById: Signal<Map<string, Readonly<Content>>> =
   _allContentById.asReadonly();
 
 export function setAllIdsByName(state: Map<string, string>): void {

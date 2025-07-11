@@ -3,41 +3,41 @@ import { GameElement } from './element';
 import { Branded } from './identifiable';
 import { StatBlock } from './stat';
 
-export type EquippableSkillTargetBehavior =
+export type EquipmentSkillTargetBehavior =
   | 'Always'
   | 'NotZeroHealth'
   | 'NotMaxHealth';
 
-export type EquippableSkillAttribute =
+export type EquipmentSkillAttribute =
   | 'BypassDefense'
   | 'AllowNegative'
   | 'AllowPlink';
 
-export type EquippableSkillTargetType = 'Allies' | 'Enemies' | 'Self' | 'All';
+export type EquipmentSkillTargetType = 'Allies' | 'Enemies' | 'Self' | 'All';
 
-export type EquippableSkillId = Branded<string, 'EquippableSkillId'>;
+export type EquipmentSkillId = Branded<string, 'EquipmentSkillId'>;
 
-export type EquipmentSkillDefinitionTechniqueModifiable = {
-  techniques: EquipmentSkillDefinitionTechnique[];
+export type EquipmentSkillContentTechniqueModifiable = {
+  techniques: EquipmentSkillContentTechnique[];
 };
 
-export type EquipmentSkillDefinitionTechnique = {
+export type EquipmentSkillContentTechnique = {
   targets: number;
-  targetType: EquippableSkillTargetType;
-  targetBehaviors: EquippableSkillTargetBehavior[];
+  targetType: EquipmentSkillTargetType;
+  targetBehaviors: EquipmentSkillTargetBehavior[];
   damageScaling: StatBlock;
   elements: GameElement[];
-  attributes: EquippableSkillAttribute[];
+  attributes: EquipmentSkillAttribute[];
 
   combatMessage: string;
 };
 
-export type EquipmentSkillDefinition = DroppableEquippable &
-  EquipmentSkillDefinitionTechniqueModifiable & {
+export type EquipmentSkillContent = DroppableEquippable &
+  EquipmentSkillContentTechniqueModifiable & {
     __type: 'skill';
-    id: EquippableSkillId;
+    id: EquipmentSkillId;
   };
 
-export type EquipmentSkill = EquipmentSkillDefinition & {
-  mods: Partial<EquipmentSkillDefinitionTechniqueModifiable>;
+export type EquipmentSkill = EquipmentSkillContent & {
+  mods: Partial<EquipmentSkillContentTechniqueModifiable>;
 };

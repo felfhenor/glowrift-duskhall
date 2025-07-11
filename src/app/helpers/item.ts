@@ -3,7 +3,7 @@ import {
   DroppableEquippable,
   DropRarity,
   EquipmentItem,
-  EquipmentItemDefinition,
+  EquipmentItemContent,
   GameStat,
 } from '../interfaces';
 
@@ -34,7 +34,7 @@ export function sortedRarityList<T extends DroppableEquippable>(
 }
 
 export function getItemStat(
-  item: EquipmentItemDefinition,
+  item: EquipmentItemContent,
   stat: GameStat,
 ): number {
   return (

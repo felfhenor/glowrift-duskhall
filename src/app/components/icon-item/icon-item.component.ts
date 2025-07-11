@@ -2,7 +2,7 @@ import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 import { TippyDirective } from '@ngneat/helipopper';
 import { itemBuyValue, rarityItemOutlineColor } from '../../helpers';
-import { EquipmentItemDefinition } from '../../interfaces';
+import { EquipmentItemContent } from '../../interfaces';
 import { GameCurrencyPipe } from '../../pipes/game-currency.pipe';
 import { AtlasImageComponent } from '../atlas-image/atlas-image.component';
 import { IconBlankSlotComponent } from '../icon-blank-slot/icon-blank-slot.component';
@@ -24,8 +24,8 @@ import { StatsItemComponent } from '../stats-item/stats-item.component';
   styleUrl: './icon-item.component.scss',
 })
 export class IconItemComponent {
-  public item = input.required<EquipmentItemDefinition>();
-  public compareItem = input<EquipmentItemDefinition>();
+  public item = input.required<EquipmentItemContent>();
+  public compareItem = input<EquipmentItemContent>();
 
   public showLevel = input<boolean>(true);
   public showPrice = input<boolean>(false);

@@ -1,5 +1,5 @@
 import { sum } from 'lodash';
-import { Hero, TalentDefinition } from '../interfaces';
+import { Hero, TalentContent } from '../interfaces';
 import { getEntry } from './content';
 import { updateHeroData } from './hero';
 
@@ -20,16 +20,16 @@ export function heroHasTalent(hero: Hero, talentId: string): boolean {
   return !!hero.talents[talentId];
 }
 
-export function allHeroTalents(hero: Hero): TalentDefinition[] {
+export function allHeroTalents(hero: Hero): TalentContent[] {
   return Object.entries(hero.talents)
     .filter(([, level]) => level > 0)
-    .map(([talentId]) => getEntry<TalentDefinition>(talentId))
-    .filter((talent): talent is TalentDefinition => !!talent);
+    .map(([talentId]) => getEntry<TalentContent>(talentId))
+    .filter((talent): talent is TalentContent => !!talent);
 }
 
 export function canHeroBuyTalent(
   hero: Hero,
-  talent: TalentDefinition,
+  talent: TalentContent,
   requiredLevel: number,
 ): boolean {
   return (

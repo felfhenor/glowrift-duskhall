@@ -1,4 +1,4 @@
-import { Animatable } from './artable';
+import { Artable } from './artable';
 import { Content } from './identifiable';
 
 export type DropRarity =
@@ -17,4 +17,4 @@ export interface Droppable {
   dropLevel: number;
 }
 
-export type DroppableEquippable = Content & Animatable & Droppable;
+export type DroppableEquippable = Content & Artable & Droppable;

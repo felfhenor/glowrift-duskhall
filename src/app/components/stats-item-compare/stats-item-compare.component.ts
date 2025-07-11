@@ -1,6 +1,6 @@
 import { Component, computed, input, Signal } from '@angular/core';
 import { getItemStat } from '../../helpers';
-import { EquipmentItemDefinition, StatBlock } from '../../interfaces';
+import { EquipmentItemContent, StatBlock } from '../../interfaces';
 import { StatsItemComponent } from '../stats-item/stats-item.component';
 
 @Component({
@@ -10,8 +10,8 @@ import { StatsItemComponent } from '../stats-item/stats-item.component';
   styleUrl: './stats-item-compare.component.css',
 })
 export class StatsItemCompareComponent {
-  public item = input.required<EquipmentItemDefinition>();
-  public compareWith = input.required<EquipmentItemDefinition>();
+  public item = input.required<EquipmentItemContent>();
+  public compareWith = input.required<EquipmentItemContent>();
 
   public itemAura = computed(() => getItemStat(this.item(), 'Aura'));
   public itemForce = computed(() => getItemStat(this.item(), 'Force'));

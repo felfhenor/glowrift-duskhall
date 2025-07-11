@@ -4,11 +4,11 @@ import {
   Combat,
   Combatant,
   EquipmentSkill,
-  EquipmentSkillDefinitionTechnique,
-  EquippableSkillAttribute,
+  EquipmentSkillAttribute,
+  EquipmentSkillContentTechnique,
   GameElement,
   GameStat,
-  TalentDefinition,
+  TalentContent,
 } from '../interfaces';
 import { isDead } from './combat-end';
 import { logCombatMessage } from './combat-log';
@@ -20,17 +20,17 @@ import {
 } from './festival-combat';
 
 export function techniqueHasAttribute(
-  technique: EquipmentSkillDefinitionTechnique,
-  attribute: EquippableSkillAttribute,
+  technique: EquipmentSkillContentTechnique,
+  attribute: EquipmentSkillAttribute,
 ): boolean {
   return technique.attributes?.includes(attribute);
 }
 
-export function allCombatantTalents(combatant: Combatant): TalentDefinition[] {
+export function allCombatantTalents(combatant: Combatant): TalentContent[] {
   return Object.entries(combatant.talents)
     .filter(([, level]) => level > 0)
-    .map(([talentId]) => getEntry<TalentDefinition>(talentId))
-    .filter((talent): talent is TalentDefinition => !!talent);
+    .map(([talentId]) => getEntry<TalentContent>(talentId))
+    .filter((talent): talent is TalentContent => !!talent);
 }
 
 export function combatantTalentElementBoost(
@@ -62,7 +62,7 @@ export function combatantTalentSkillBoost(
 export function getCombatantStatForTechnique(
   combatant: Combatant,
   skill: EquipmentSkill,
-  technique: EquipmentSkillDefinitionTechnique,
+  technique: EquipmentSkillContentTechnique,
   stat: GameStat,
 ): number {
   const baseMultiplier = technique.damageScaling[stat] ?? 0;
@@ -91,7 +91,7 @@ export function applySkillToTarget(
   combatant: Combatant,
   target: Combatant,
   skill: EquipmentSkill,
-  technique: EquipmentSkillDefinitionTechnique,
+  technique: EquipmentSkillContentTechnique,
 ): void {
   const baseDamage =
     getCombatantStatForTechnique(combatant, skill, technique, 'Force') +

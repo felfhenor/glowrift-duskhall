@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 import { TippyDirective } from '@ngneat/helipopper';
-import { TalentDefinition } from '../../interfaces';
+import { TalentContent } from '../../interfaces';
 import { AtlasImageComponent } from '../atlas-image/atlas-image.component';
 import { ContentNameComponent } from '../content-name/content-name.component';
 import { IconBlankSlotComponent } from '../icon-blank-slot/icon-blank-slot.component';
@@ -17,6 +17,6 @@ import { IconBlankSlotComponent } from '../icon-blank-slot/icon-blank-slot.compo
   styleUrl: './icon-talent.component.scss',
 })
 export class IconTalentComponent {
-  public talent = input.required<TalentDefinition>();
+  public talent = input.required<TalentContent>();
   public isBought = input<boolean>(false);
 }

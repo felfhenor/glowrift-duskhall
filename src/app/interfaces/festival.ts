@@ -21,7 +21,7 @@ export interface FestivalEffects {
   exploration?: FestivalEffectsExploration;
 }
 
-export interface Festival extends Content {
+export interface FestivalContent extends Content {
   description: string;
   endDescription: string;
   effectsDescription: string;

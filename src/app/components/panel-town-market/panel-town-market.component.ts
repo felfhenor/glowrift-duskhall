@@ -7,7 +7,7 @@ import {
   notifySuccess,
   townMarketBonus,
 } from '../../helpers';
-import { Currency } from '../../interfaces';
+import { CurrencyContent } from '../../interfaces';
 import { PanelTownBuildingUpgradeComponent } from '../panel-town-building-upgrade/panel-town-building-upgrade.component';
 import { SelectorCurrencyComponent } from '../selector-currency/selector-currency.component';
 
@@ -22,8 +22,8 @@ import { SelectorCurrencyComponent } from '../selector-currency/selector-currenc
   styleUrl: './panel-town-market.component.scss',
 })
 export class PanelTownMarketComponent {
-  public inputCurrency = signal<Currency | undefined>(undefined);
-  public outputCurrency = signal<Currency | undefined>(undefined);
+  public inputCurrency = signal<CurrencyContent | undefined>(undefined);
+  public outputCurrency = signal<CurrencyContent | undefined>(undefined);
 
   public inputAmount = signal<number>(0);
   public outputAmount = signal<number>(0);

@@ -8,9 +8,9 @@ import {
   GameId,
   GameStateWorld,
   Guardian,
-  GuardianData,
+  GuardianContent,
   LocationType,
-  WorldConfig,
+  WorldConfigContent,
   WorldLocation,
   WorldPosition,
 } from '../interfaces';
@@ -39,7 +39,7 @@ import { distanceBetweenNodes } from './travel';
 import { blankWorldNode } from './world';
 
 function fillEmptySpaceWithEmptyNodes(
-  config: WorldConfig,
+  config: WorldConfigContent,
   nodes: Record<string, WorldLocation>,
 ): void {
   for (let x = 0; x < config.width; x++) {
@@ -165,7 +165,7 @@ function getElementsForCardinalDirection(
 }
 
 function addElementsToWorld(
-  config: WorldConfig,
+  config: WorldConfigContent,
   nodes: Record<string, WorldLocation>,
 ): void {
   const centerPosition: WorldPosition = {
@@ -204,7 +204,7 @@ function addElementsToWorld(
 }
 
 function setEncounterLevels(
-  config: WorldConfig,
+  config: WorldConfigContent,
   nodes: Record<string, WorldLocation>,
   middleNode: WorldLocation,
 ): void {
@@ -269,7 +269,7 @@ export function setWorldSeed(seed: string | null): void {
   });
 }
 
-export function generateWorld(config: WorldConfig): GameStateWorld {
+export function generateWorld(config: WorldConfigContent): GameStateWorld {
   const rng = gamerng();
 
   const nodeSprites: Record<string, string> = {};
@@ -419,11 +419,11 @@ export function getGuardiansForLocation(location: WorldLocation): Guardian[] {
   );
   const numGuardians = numGuardiansForLocation(location);
   const guardians = Array.from({ length: numGuardians }, () => {
-    const randomGuardianDataId = randomIdentifiableChoice<GuardianData>(
-      getEntriesByType<GuardianData>('guardian'),
+    const randomGuardianDataId = randomIdentifiableChoice<GuardianContent>(
+      getEntriesByType<GuardianContent>('guardian'),
       rng,
     );
-    const randomGuardianData = getEntry<GuardianData>(randomGuardianDataId);
+    const randomGuardianData = getEntry<GuardianContent>(randomGuardianDataId);
     if (!randomGuardianData) return undefined;
 
     return createGuardianForLocation(location, randomGuardianData);

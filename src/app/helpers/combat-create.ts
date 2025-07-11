@@ -2,25 +2,16 @@ import {
   Combat,
   Combatant,
   CombatId,
-  ElementBlock,
   EquipmentSkill,
-  EquippableSkillId,
+  EquipmentSkillId,
   Guardian,
   WorldLocation,
 } from '../interfaces';
 import { getEntry } from './content';
+import { getDefaultAffinities } from './defaults';
 import { createGuardianForLocation } from './guardian';
 import { allHeroes } from './hero';
 import { uuid } from './rng';
-
-export function getDefaultAffinities(): ElementBlock {
-  return {
-    Air: 1,
-    Earth: 1,
-    Fire: 1,
-    Water: 1,
-  };
-}
 
 export function generateCombatForLocation(location: WorldLocation): Combat {
   const heroes: Combatant[] = allHeroes().map((h) => ({
@@ -34,7 +25,7 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
     level: h.level,
     sprite: h.sprite,
     frames: h.frames,
-    skillIds: ['Attack' as EquippableSkillId],
+    skillIds: ['Attack' as EquipmentSkillId],
     skillRefs: h.skills.filter(Boolean) as EquipmentSkill[],
 
     talents: h.talents,
@@ -63,7 +54,7 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
       level: location.encounterLevel,
       sprite: g.sprite,
       frames: g.frames,
-      skillIds: ['Attack' as EquippableSkillId, ...g.skillIds],
+      skillIds: ['Attack' as EquipmentSkillId, ...g.skillIds],
       skillRefs: [],
       talents: g.talentIds ?? {},
 

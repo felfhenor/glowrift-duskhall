@@ -1,41 +1,41 @@
 import { cloneDeep } from 'lodash';
 import {
   EquipmentItem,
-  EquipmentItemDefinition,
+  EquipmentItemContent,
   EquipmentItemId,
 } from '../interfaces';
 import { getEntriesByType, getEntry } from './content';
 import { cleanupDroppableDefinition } from './droppable';
 import { randomIdentifiableChoice, seededrng, uuid } from './rng';
 
-export function allItemDefinitions(): EquipmentItemDefinition[] {
+export function allItemDefinitions(): EquipmentItemContent[] {
   return [
-    ...getEntriesByType<EquipmentItemDefinition>('accessory'),
-    ...getEntriesByType<EquipmentItemDefinition>('armor'),
-    ...getEntriesByType<EquipmentItemDefinition>('trinket'),
-    ...getEntriesByType<EquipmentItemDefinition>('weapon'),
+    ...getEntriesByType<EquipmentItemContent>('accessory'),
+    ...getEntriesByType<EquipmentItemContent>('armor'),
+    ...getEntriesByType<EquipmentItemContent>('trinket'),
+    ...getEntriesByType<EquipmentItemContent>('weapon'),
   ].filter((i) => !i.preventDrop);
 }
 
 export function pickRandomItemDefinition(
   definitions = allItemDefinitions(),
   rng = seededrng(uuid()),
-): EquipmentItemDefinition {
+): EquipmentItemContent {
   const allItems = definitions;
 
-  const chosenItem = randomIdentifiableChoice<EquipmentItemDefinition>(
+  const chosenItem = randomIdentifiableChoice<EquipmentItemContent>(
     allItems,
     rng,
   );
   if (!chosenItem) throw new Error('Could not generate an item.');
 
-  const chosenItemDefinition = getEntry<EquipmentItemDefinition>(chosenItem);
+  const chosenItemDefinition = getEntry<EquipmentItemContent>(chosenItem);
   if (!chosenItemDefinition) throw new Error('Could not generate an item.');
 
   return cloneDeep(chosenItemDefinition);
 }
 
-export function createItem(def: EquipmentItemDefinition): EquipmentItem {
+export function createItem(def: EquipmentItemContent): EquipmentItem {
   const defClone = cloneDeep(def);
   cleanupDroppableDefinition(defClone);
 

@@ -1,8 +1,13 @@
-import { GameStat, Guardian, GuardianData, WorldLocation } from '../interfaces';
+import {
+  GameStat,
+  Guardian,
+  GuardianContent,
+  WorldLocation,
+} from '../interfaces';
 
 export function createGuardianForLocation(
   location: WorldLocation,
-  guardianData: GuardianData,
+  guardianData: GuardianContent,
 ): Guardian {
   const stats: Record<GameStat, number> = {
     Aura: location.encounterLevel * guardianData.statScaling.Aura,

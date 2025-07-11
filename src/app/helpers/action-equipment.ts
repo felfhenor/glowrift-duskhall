@@ -1,10 +1,10 @@
-import { EquipmentItem, EquipmentItemDefinition } from '../interfaces';
+import { EquipmentItem, EquipmentItemContent } from '../interfaces';
 import { gainCurrency } from './currency';
 import { removeItemFromInventory } from './inventory-equipment';
 import { getItemStat } from './item';
 import { notifySuccess } from './notify';
 
-export function itemSalvageValue(item: EquipmentItemDefinition): number {
+export function itemSalvageValue(item: EquipmentItemContent): number {
   return (
     getItemStat(item, 'Aura') * 4 +
     getItemStat(item, 'Force') * 6 +
@@ -22,6 +22,6 @@ export function itemSalvage(item: EquipmentItem): void {
   notifySuccess(`Salvaged ${item.name} for ${manaGained} mana!`);
 }
 
-export function itemBuyValue(item: EquipmentItemDefinition): number {
+export function itemBuyValue(item: EquipmentItemContent): number {
   return itemSalvageValue(item) * 10;
 }

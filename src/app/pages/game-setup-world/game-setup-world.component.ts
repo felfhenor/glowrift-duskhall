@@ -16,7 +16,7 @@ import {
   startGame,
   updateHeroData,
 } from '../../helpers';
-import { WorldConfig } from '../../interfaces';
+import { WorldConfigContent } from '../../interfaces';
 
 @Component({
   selector: 'app-game-setup-world',
@@ -33,7 +33,8 @@ import { WorldConfig } from '../../interfaces';
 export class GameSetupWorldComponent implements OnInit {
   private router = inject(Router);
 
-  public readonly allWorldSizes = getEntriesByType<WorldConfig>('worldconfig');
+  public readonly allWorldSizes =
+    getEntriesByType<WorldConfigContent>('worldconfig');
 
   public heroNames = [
     signal<string>('Ignatius'),
@@ -49,7 +50,7 @@ export class GameSetupWorldComponent implements OnInit {
     computed(() => pickSpriteForHeroName(this.heroNames[3]())),
   ];
 
-  public selectedWorldSize = signal<WorldConfig>(this.allWorldSizes[0]);
+  public selectedWorldSize = signal<WorldConfigContent>(this.allWorldSizes[0]);
   public isGeneratingWorld = signal<boolean>(false);
   public worldSeed = signal<string | null>(null);
 

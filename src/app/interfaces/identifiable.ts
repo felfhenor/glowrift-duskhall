@@ -7,7 +7,6 @@ export type ContentType =
   | 'accessory'
   | 'trinket'
   | 'armor'
-  | 'skill'
   | 'festival'
   | 'talent'
   | 'talenttree';

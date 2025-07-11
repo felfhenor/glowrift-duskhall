@@ -4,7 +4,6 @@
   sprite: '0008'
 
   boostedElements: [Fire]
-  boostedSkillIds: []
 
   boostStats:
     Force: 0.10
@@ -14,7 +13,6 @@
   description: Boost the power of Firewisp skills by 25%.
   sprite: '0008'
 
-  boostedElements: []
   boostedSkillIds:
     - Firewisp I
     - Firewisp II
@@ -30,7 +28,6 @@
 
   requireTalentId: Strength of Firewisp I
 
-  boostedElements: []
   boostedSkillIds:
     - Firewisp I
     - Firewisp II
@@ -46,7 +43,6 @@
 
   requireTalentId: Strength of Firewisp II
 
-  boostedElements: []
   boostedSkillIds:
     - Firewisp I
     - Firewisp II
