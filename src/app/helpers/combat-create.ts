@@ -4,6 +4,7 @@ import {
   CombatId,
   ElementBlock,
   EquipmentSkill,
+  EquippableSkillId,
   Guardian,
   WorldLocation,
 } from '../interfaces';
@@ -33,8 +34,10 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
     level: h.level,
     sprite: h.sprite,
     frames: h.frames,
-    skillIds: ['Attack'],
+    skillIds: ['Attack' as EquippableSkillId],
     skillRefs: h.skills.filter(Boolean) as EquipmentSkill[],
+
+    talents: h.talents,
 
     affinity: {
       ...getDefaultAffinities(),
@@ -60,8 +63,9 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
       level: location.encounterLevel,
       sprite: g.sprite,
       frames: g.frames,
-      skillIds: ['Attack', ...g.skillIds],
+      skillIds: ['Attack' as EquippableSkillId, ...g.skillIds],
       skillRefs: [],
+      talents: g.talentIds ?? {},
 
       affinity: {
         ...getDefaultAffinities(),

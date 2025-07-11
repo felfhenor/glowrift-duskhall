@@ -3,6 +3,7 @@
   description: Boost the power of Healsprite skills by 25%.
   sprite: '0019'
 
+  boostedElements: []
   boostedSkillIds:
     - Healsprite I
     - Healsprite II
@@ -18,6 +19,7 @@
 
   requireTalentId: Strength of Healsprite I
 
+  boostedElements: []
   boostedSkillIds:
     - Healsprite I
     - Healsprite II
@@ -33,6 +35,7 @@
 
   requireTalentId: Strength of Healsprite II
 
+  boostedElements: []
   boostedSkillIds:
     - Healsprite I
     - Healsprite II

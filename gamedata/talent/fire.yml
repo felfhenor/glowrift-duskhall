@@ -1,8 +1,20 @@
+- id: 62e841f4-0758-450b-9ade-848686dfe54f
+  name: Strength of Fire
+  description: Boost the power of Fire skills by 10%.
+  sprite: '0008'
+
+  boostedElements: [Fire]
+  boostedSkillIds: []
+
+  boostStats:
+    Force: 0.10
+
 - id: cde7a7a3-8fbc-4709-b405-affba74837ef
   name: Strength of Firewisp I
   description: Boost the power of Firewisp skills by 25%.
   sprite: '0008'
 
+  boostedElements: []
   boostedSkillIds:
     - Firewisp I
     - Firewisp II
@@ -18,6 +30,7 @@
 
   requireTalentId: Strength of Firewisp I
 
+  boostedElements: []
   boostedSkillIds:
     - Firewisp I
     - Firewisp II
@@ -33,6 +46,7 @@
 
   requireTalentId: Strength of Firewisp II
 
+  boostedElements: []
   boostedSkillIds:
     - Firewisp I
     - Firewisp II

@@ -1,4 +1,4 @@
-import { sum } from 'lodash';
+import { intersection, sum } from 'lodash';
 import Mustache from 'mustache';
 import {
   Combat,
@@ -6,9 +6,14 @@ import {
   EquipmentSkill,
   EquipmentSkillDefinitionTechnique,
   EquippableSkillAttribute,
+  GameElement,
+  GameStat,
+  TalentDefinition,
 } from '../interfaces';
 import { isDead } from './combat-end';
 import { logCombatMessage } from './combat-log';
+import { getEntry } from './content';
+import { getDroppableEquippableBaseId } from './droppable';
 import {
   getCombatIncomingAttributeMultiplier,
   getCombatOutgoingAttributeMultiplier,
@@ -21,6 +26,66 @@ export function techniqueHasAttribute(
   return technique.attributes?.includes(attribute);
 }
 
+export function allCombatantTalents(combatant: Combatant): TalentDefinition[] {
+  return Object.entries(combatant.talents)
+    .filter(([, level]) => level > 0)
+    .map(([talentId]) => getEntry<TalentDefinition>(talentId))
+    .filter((talent): talent is TalentDefinition => !!talent);
+}
+
+export function combatantTalentElementBoost(
+  combatant: Combatant,
+  elements: GameElement[],
+  stat: GameStat,
+): number {
+  return sum(
+    allCombatantTalents(combatant)
+      .filter((t) => intersection(t.boostedElements ?? [], elements).length > 0)
+      .map((t) => t.boostStats[stat] ?? 0),
+  );
+}
+
+export function combatantTalentSkillBoost(
+  combatant: Combatant,
+  skill: EquipmentSkill,
+  stat: GameStat,
+): number {
+  const skillContentId = getDroppableEquippableBaseId(skill);
+
+  return sum(
+    allCombatantTalents(combatant)
+      .filter((t) => t.boostedSkillIds?.includes(skillContentId))
+      .map((t) => t.boostStats[stat] ?? 0),
+  );
+}
+
+export function getCombatantStatForTechnique(
+  combatant: Combatant,
+  skill: EquipmentSkill,
+  technique: EquipmentSkillDefinitionTechnique,
+  stat: GameStat,
+): number {
+  const baseMultiplier = technique.damageScaling[stat] ?? 0;
+  if (baseMultiplier === 0) return 0;
+
+  const talentElementMultiplierBoost = combatantTalentElementBoost(
+    combatant,
+    technique.elements,
+    stat,
+  );
+
+  const talentSkillMultiplierBoost = combatantTalentSkillBoost(
+    combatant,
+    skill,
+    stat,
+  );
+
+  const totalMultiplier =
+    baseMultiplier + talentSkillMultiplierBoost + talentElementMultiplierBoost;
+
+  return combatant.totalStats[stat] * totalMultiplier;
+}
+
 export function applySkillToTarget(
   combat: Combat,
   combatant: Combatant,
@@ -29,10 +94,10 @@ export function applySkillToTarget(
   technique: EquipmentSkillDefinitionTechnique,
 ): void {
   const baseDamage =
-    combatant.totalStats.Force * (technique.damageScaling.Force ?? 0) +
-    combatant.totalStats.Aura * (technique.damageScaling.Aura ?? 0) +
-    combatant.totalStats.Health * (technique.damageScaling.Health ?? 0) +
-    combatant.totalStats.Speed * (technique.damageScaling.Speed ?? 0);
+    getCombatantStatForTechnique(combatant, skill, technique, 'Force') +
+    getCombatantStatForTechnique(combatant, skill, technique, 'Aura') +
+    getCombatantStatForTechnique(combatant, skill, technique, 'Health') +
+    getCombatantStatForTechnique(combatant, skill, technique, 'Speed');
 
   const damage =
     technique.elements.length === 0

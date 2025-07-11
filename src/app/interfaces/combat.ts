@@ -1,8 +1,9 @@
 import { Animatable } from './artable';
 import { ElementBlock } from './element';
 import { Branded } from './identifiable';
-import { EquipmentSkill } from './skill';
+import { EquipmentSkill, EquippableSkillId } from './skill';
 import { StatBlock } from './stat';
+import { TalentId } from './talent';
 import { WorldPosition } from './world';
 
 export type CombatId = Branded<string, 'CombatId'>;
@@ -30,8 +31,10 @@ export type Combatant = Animatable & {
   resistance: ElementBlock;
   affinity: ElementBlock;
 
-  skillIds: string[];
+  skillIds: EquippableSkillId[];
   skillRefs: EquipmentSkill[];
+
+  talents: Record<TalentId, number>;
 };
 
 export interface Combat {
