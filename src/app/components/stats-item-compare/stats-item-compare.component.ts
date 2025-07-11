@@ -1,15 +1,15 @@
 import { Component, computed, input, Signal } from '@angular/core';
 import { getItemStat } from '../../helpers';
 import { EquipmentItemDefinition, StatBlock } from '../../interfaces';
-import { ItemStatsComponent } from '../item-stats/item-stats.component';
+import { StatsItemComponent } from '../stats-item/stats-item.component';
 
 @Component({
-  selector: 'app-item-stats-compare',
-  imports: [ItemStatsComponent],
-  templateUrl: './item-stats-compare.component.html',
-  styleUrl: './item-stats-compare.component.scss',
+  selector: 'app-stats-item-compare',
+  imports: [StatsItemComponent],
+  templateUrl: './stats-item-compare.component.html',
+  styleUrl: './stats-item-compare.component.css',
 })
-export class ItemStatsCompareComponent {
+export class StatsItemCompareComponent {
   public item = input.required<EquipmentItemDefinition>();
   public compareWith = input.required<EquipmentItemDefinition>();
 

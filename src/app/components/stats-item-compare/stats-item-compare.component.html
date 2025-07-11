@@ -6,16 +6,16 @@
 
 <div class="flex gap-2">
   <div class="flex-1 min-w-[200px]">
-    <app-item-stats
+    <app-stats-item
       [item]="item()"
       [statDeltas]="leftSideDeltas()"
-    ></app-item-stats>
+    ></app-stats-item>
   </div>
 
   <div class="flex-11 min-w-[200px]">
-    <app-item-stats
+    <app-stats-item
       [item]="compareWith()"
       [statDeltas]="rightSideDeltas()"
-    ></app-item-stats>
+    ></app-stats-item>
   </div>
 </div>

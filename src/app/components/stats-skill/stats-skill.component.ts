@@ -5,12 +5,12 @@ import { rarityItemTextColor } from '../../helpers';
 import { EquipmentSkillDefinition } from '../../interfaces';
 
 @Component({
-  selector: 'app-skill-stats',
+  selector: 'app-stats-skill',
   imports: [NgClass],
-  templateUrl: './skill-stats.component.html',
-  styleUrl: './skill-stats.component.scss',
+  templateUrl: './stats-skill.component.html',
+  styleUrl: './stats-skill.component.scss',
 })
-export class SkillStatsComponent {
+export class StatsSkillComponent {
   public skill = input.required<EquipmentSkillDefinition>();
 
   public elements = computed(() =>

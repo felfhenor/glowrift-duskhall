@@ -6,16 +6,16 @@ import { EquipmentItemDefinition } from '../../interfaces';
 import { GameCurrencyPipe } from '../../pipes/game-currency.pipe';
 import { AtlasImageComponent } from '../atlas-image/atlas-image.component';
 import { IconBlankSlotComponent } from '../icon-blank-slot/icon-blank-slot.component';
-import { ItemStatsCompareComponent } from '../item-stats-compare/item-stats-compare.component';
-import { ItemStatsComponent } from '../item-stats/item-stats.component';
+import { StatsItemCompareComponent } from '../stats-item-compare/stats-item-compare.component';
+import { StatsItemComponent } from '../stats-item/stats-item.component';
 
 @Component({
   selector: 'app-icon-item',
   imports: [
     AtlasImageComponent,
     TippyDirective,
-    ItemStatsComponent,
-    ItemStatsCompareComponent,
+    StatsItemComponent,
+    StatsItemCompareComponent,
     GameCurrencyPipe,
     IconBlankSlotComponent,
     NgClass,

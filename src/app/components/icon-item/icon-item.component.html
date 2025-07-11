@@ -33,11 +33,11 @@
 
 <ng-template #itemInfo let-hide>
   @if (compareItem(); as compareWith) {
-    <app-item-stats-compare
+    <app-stats-item-compare
       [item]="itemData"
       [compareWith]="compareWith"
-    ></app-item-stats-compare>
+    ></app-stats-item-compare>
   } @else {
-    <app-item-stats [item]="itemData"></app-item-stats>
+    <app-stats-item [item]="itemData"></app-stats-item>
   }
 </ng-template>

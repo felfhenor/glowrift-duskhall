@@ -5,7 +5,7 @@ import { rarityItemOutlineColor } from '../../helpers';
 import { EquipmentSkillDefinition } from '../../interfaces';
 import { AtlasAnimationComponent } from '../atlas-animation/atlas-animation.component';
 import { IconBlankSlotComponent } from '../icon-blank-slot/icon-blank-slot.component';
-import { SkillStatsComponent } from '../skill-stats/skill-stats.component';
+import { StatsSkillComponent } from '../stats-skill/stats-skill.component';
 
 @Component({
   selector: 'app-icon-skill',
@@ -14,7 +14,7 @@ import { SkillStatsComponent } from '../skill-stats/skill-stats.component';
     TippyDirective,
     IconBlankSlotComponent,
     NgClass,
-    SkillStatsComponent,
+    StatsSkillComponent,
   ],
   templateUrl: './icon-skill.component.html',
   styleUrl: './icon-skill.component.scss',

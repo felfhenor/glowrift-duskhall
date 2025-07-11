@@ -5,12 +5,12 @@ import { EquipmentItemDefinition, StatBlock } from '../../interfaces';
 import { MarkerStatComponent } from '../marker-stat/marker-stat.component';
 
 @Component({
-  selector: 'app-item-stats',
+  selector: 'app-stats-item',
   imports: [MarkerStatComponent, NgClass],
-  templateUrl: './item-stats.component.html',
-  styleUrl: './item-stats.component.scss',
+  templateUrl: './stats-item.component.html',
+  styleUrl: './stats-item.component.css',
 })
-export class ItemStatsComponent {
+export class StatsItemComponent {
   public item = input.required<EquipmentItemDefinition>();
   public statDeltas = input<StatBlock>();
 
