@@ -3,7 +3,7 @@ import {
   EquipmentItem,
   EquipmentItemContent,
   EquipmentItemId,
-} from '../interfaces';
+} from '@interfaces';
 import { getEntriesByType, getEntry } from './content';
 import { cleanupDroppableDefinition } from './droppable';
 import { randomIdentifiableChoice, seededrng, uuid } from './rng';

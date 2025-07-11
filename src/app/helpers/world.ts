@@ -4,7 +4,7 @@ import {
   GameStateWorld,
   LocationType,
   WorldLocation,
-} from '../interfaces';
+} from '@interfaces';
 import { getCurrencyClaimsForNode, mergeCurrencyClaims } from './currency';
 import { notify } from './notify';
 import { uuid } from './rng';

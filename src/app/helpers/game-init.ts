@@ -1,4 +1,4 @@
-import { WorldConfigContent } from '../interfaces';
+import { WorldConfigContent } from '@interfaces';
 import { focusCameraOnPlayer } from './camera';
 import { resetCombatLog } from './combat-log';
 import { setHeroPosition } from './hero';

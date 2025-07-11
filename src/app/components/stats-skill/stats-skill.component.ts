@@ -1,8 +1,8 @@
 import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 import { uniq } from 'lodash';
-import { rarityItemTextColor } from '../../helpers';
-import { EquipmentSkillContent, GameStat } from '../../interfaces';
+import { rarityItemTextColor } from '@helpers';
+import { EquipmentSkillContent, GameStat } from '@interfaces';
 
 @Component({
   selector: 'app-stats-skill',

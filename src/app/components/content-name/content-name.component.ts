@@ -1,5 +1,5 @@
 import { Component, computed, input } from '@angular/core';
-import { getEntry } from '../../helpers';
+import { getEntry } from '@helpers';
 
 @Component({
   selector: 'app-content-name',

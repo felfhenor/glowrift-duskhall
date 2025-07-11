@@ -1,5 +1,7 @@
 import { DecimalPipe } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
+import { IconItemComponent } from '@components/icon-currency/icon-currency.component';
+import { IconLocationComponent } from '@components/icon-location/icon-location.component';
 import {
   buildingMaxLevel,
   buildingUpgradeCost,
@@ -9,10 +11,8 @@ import {
   hasClaimedNodeCount,
   hasCurrency,
   upgradeBuildingLevel,
-} from '../../helpers';
-import { GameCurrency, LocationType, TownBuilding } from '../../interfaces';
-import { IconItemComponent } from '../icon-currency/icon-currency.component';
-import { IconLocationComponent } from '../icon-location/icon-location.component';
+} from '@helpers';
+import { GameCurrency, LocationType, TownBuilding } from '@interfaces';
 
 @Component({
   selector: 'app-panel-town-building-upgrade',

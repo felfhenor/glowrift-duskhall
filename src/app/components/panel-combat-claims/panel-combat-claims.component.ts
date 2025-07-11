@@ -1,6 +1,6 @@
 import { Component, computed } from '@angular/core';
-import { gamestate } from '../../helpers';
-import { IconLocationComponent } from '../icon-location/icon-location.component';
+import { gamestate } from '@helpers';
+import { IconLocationComponent } from '@components/icon-location/icon-location.component';
 
 @Component({
   selector: 'app-panel-combat-claims',

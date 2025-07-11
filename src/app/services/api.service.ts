@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import * as helpers from '../helpers';
+import * as helpers from '@helpers';
 
 @Injectable({
   providedIn: 'root',

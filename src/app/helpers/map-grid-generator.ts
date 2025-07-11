@@ -1,4 +1,4 @@
-import { WorldLocation } from '../interfaces';
+import { WorldLocation } from '@interfaces';
 import { getWorldNode } from './index';
 
 export interface MapTileData {

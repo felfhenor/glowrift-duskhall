@@ -1,9 +1,9 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
+import { environment } from '@environments/environment.development';
+import { liveVersion, localVersion, versionInfoToSemver } from '@helpers';
+import { LoggerService } from '@services/logger.service';
 import { marked } from 'marked';
 import { interval } from 'rxjs';
-import { environment } from '../../environments/environment';
-import { liveVersion, localVersion, versionInfoToSemver } from '../helpers';
-import { LoggerService } from './logger.service';
 
 @Injectable({
   providedIn: 'root',

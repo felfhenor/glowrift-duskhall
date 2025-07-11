@@ -1,5 +1,5 @@
 import { sample, sampleSize, sortBy } from 'lodash';
-import { Combat, Combatant } from '../interfaces';
+import { Combat, Combatant } from '@interfaces';
 import { applySkillToTarget } from './combat-damage';
 import { checkCombatOver, isCombatOver, isDead } from './combat-end';
 import { logCombatMessage } from './combat-log';

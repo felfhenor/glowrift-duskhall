@@ -1,14 +1,14 @@
 import { Component, computed } from '@angular/core';
-import { AnalyticsClickDirective } from '../../directives/analytics-click.directive';
-import { options, showOptionsMenu } from '../../helpers';
-import { OptionsTab, OptionsTabLink } from '../../interfaces';
-import { CardPageComponent } from '../card-page/card-page.component';
-import { ConnectButtonsComponent } from '../connect-buttons/connect-buttons.component';
-import { IconComponent } from '../icon/icon.component';
-import { PanelOptionsDebugComponent } from '../panel-options-debug/panel-options-debug.component';
-import { PanelOptionsSavefileComponent } from '../panel-options-savefile/panel-options-savefile.component';
-import { PanelOptionsUIComponent } from '../panel-options-ui/panel-options-ui.component';
-import { OptionsBaseComponent } from './option-base-page.component';
+import { CardPageComponent } from '@components/card-page/card-page.component';
+import { ConnectButtonsComponent } from '@components/connect-buttons/connect-buttons.component';
+import { IconComponent } from '@components/icon/icon.component';
+import { PanelOptionsDebugComponent } from '@components/panel-options-debug/panel-options-debug.component';
+import { PanelOptionsSavefileComponent } from '@components/panel-options-savefile/panel-options-savefile.component';
+import { PanelOptionsUIComponent } from '@components/panel-options-ui/panel-options-ui.component';
+import { OptionsBaseComponent } from '@components/panel-options/option-base-page.component';
+import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
+import { options, showOptionsMenu } from '@helpers';
+import { OptionsTab, OptionsTabLink } from '@interfaces';
 
 @Component({
   selector: 'app-panel-options',

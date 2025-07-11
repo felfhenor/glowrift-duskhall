@@ -13,7 +13,7 @@ import {
   WorldConfigContent,
   WorldLocation,
   WorldPosition,
-} from '../interfaces';
+} from '@interfaces';
 import { getEntriesByType, getEntry } from './content';
 import {
   allItemDefinitions,

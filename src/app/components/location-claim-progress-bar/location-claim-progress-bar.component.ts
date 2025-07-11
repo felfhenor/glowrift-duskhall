@@ -1,5 +1,5 @@
 import { Component, computed } from '@angular/core';
-import { exploreProgressPercent } from '../../helpers';
+import { exploreProgressPercent } from '@helpers';
 
 @Component({
   selector: 'app-location-claim-progress-bar',

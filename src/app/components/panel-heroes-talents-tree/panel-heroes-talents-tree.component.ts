@@ -5,7 +5,7 @@ import {
   getEntry,
   heroHasTalent,
   heroSpendTalentPoint,
-} from '../../helpers';
+} from '@helpers';
 import {
   GameElement,
   Hero,
@@ -13,8 +13,8 @@ import {
   TalentTreeContent,
   TalentTreeContentLevel,
   TalentTreeContentNode,
-} from '../../interfaces';
-import { IconTalentComponent } from '../icon-talent/icon-talent.component';
+} from '@interfaces';
+import { IconTalentComponent } from '@components/icon-talent/icon-talent.component';
 
 type TalentTreeHeroNode = TalentTreeContentNode & {
   talentData: TalentContent;

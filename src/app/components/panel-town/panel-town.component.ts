@@ -1,21 +1,16 @@
 import { Component, computed, Signal } from '@angular/core';
+import { CardPageComponent } from '@components/card-page/card-page.component';
+import { IconComponent } from '@components/icon/icon.component';
+import { PanelTownAcademyComponent } from '@components/panel-town-academy/panel-town-academy.component';
+import { PanelTownAlchemistComponent } from '@components/panel-town-alchemist/panel-town-alchemist.component';
+import { PanelTownBlacksmithComponent } from '@components/panel-town-blacksmith/panel-town-blacksmith.component';
+import { PanelTownFestivalsComponent } from '@components/panel-town-festivals/panel-town-festivals.component';
+import { PanelTownMarketComponent } from '@components/panel-town-market/panel-town-market.component';
+import { PanelTownMerchantComponent } from '@components/panel-town-merchant/panel-town-merchant.component';
+import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
+import { getBuildingLevel, getOption, setOption, showTownMenu } from '@helpers';
+import { TownTab } from '@interfaces';
 import { TeleportOutletDirective } from '@ngneat/overview';
-import { AnalyticsClickDirective } from '../../directives/analytics-click.directive';
-import {
-  getBuildingLevel,
-  getOption,
-  setOption,
-  showTownMenu,
-} from '../../helpers';
-import { TownTab } from '../../interfaces';
-import { CardPageComponent } from '../card-page/card-page.component';
-import { IconComponent } from '../icon/icon.component';
-import { PanelTownAcademyComponent } from '../panel-town-academy/panel-town-academy.component';
-import { PanelTownAlchemistComponent } from '../panel-town-alchemist/panel-town-alchemist.component';
-import { PanelTownBlacksmithComponent } from '../panel-town-blacksmith/panel-town-blacksmith.component';
-import { PanelTownFestivalsComponent } from '../panel-town-festivals/panel-town-festivals.component';
-import { PanelTownMarketComponent } from '../panel-town-market/panel-town-market.component';
-import { PanelTownMerchantComponent } from '../panel-town-merchant/panel-town-merchant.component';
 
 @Component({
   selector: 'app-panel-town',

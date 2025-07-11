@@ -6,7 +6,7 @@ import {
   EquipmentSkillId,
   Guardian,
   WorldLocation,
-} from '../interfaces';
+} from '@interfaces';
 import { getEntry } from './content';
 import { getDefaultAffinities } from './defaults';
 import { createGuardianForLocation } from './guardian';

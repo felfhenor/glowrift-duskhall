@@ -1,7 +1,7 @@
 import { Component, computed, input } from '@angular/core';
-import { indexToSprite, spriteIterationCount } from '../../helpers';
-import { AtlasedImage } from '../../interfaces';
-import { AtlasImageComponent } from '../atlas-image/atlas-image.component';
+import { indexToSprite, spriteIterationCount } from '@helpers';
+import { AtlasedImage } from '@interfaces';
+import { AtlasImageComponent } from '@components/atlas-image/atlas-image.component';
 
 @Component({
   selector: 'app-atlas-animation',

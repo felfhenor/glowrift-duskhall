@@ -1,4 +1,4 @@
-import { EquipmentItem, GameCurrency } from '../interfaces';
+import { EquipmentItem, GameCurrency } from '@interfaces';
 import { gainCurrency } from './currency';
 import { removeItemFromInventory } from './inventory-equipment';
 import { getBuildingLevel } from './town';

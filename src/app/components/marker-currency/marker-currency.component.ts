@@ -1,8 +1,8 @@
 import { TitleCasePipe } from '@angular/common';
 import { Component, input } from '@angular/core';
-import { GameCurrency } from '../../interfaces';
-import { GameCurrencyPipe } from '../../pipes/game-currency.pipe';
-import { IconItemComponent } from '../icon-currency/icon-currency.component';
+import { GameCurrency } from '@interfaces';
+import { GameCurrencyPipe } from '@pipes/game-currency.pipe';
+import { IconItemComponent } from '@components/icon-currency/icon-currency.component';
 
 @Component({
   selector: 'app-marker-currency',

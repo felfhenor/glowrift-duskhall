@@ -1,4 +1,4 @@
-import { Combat, Combatant, DroppableEquippable } from '../interfaces';
+import { Combat, Combatant, DroppableEquippable } from '@interfaces';
 import { currentCombat, resetCombat } from './combat';
 import { logCombatMessage } from './combat-log';
 import { getEntry } from './content';

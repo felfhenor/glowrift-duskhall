@@ -25,12 +25,12 @@ import {
   windowHeightTiles,
   windowWidthTiles,
   type MapTileData,
-} from '../../helpers';
-import { WorldLocation } from '../../interfaces';
-import { NodeSpriteData } from '../../interfaces/sprite';
-import { LoadedTextures } from '../../interfaces/texture';
-import { ContentService } from '../../services/content.service';
-import { LoggerService } from '../../services/logger.service';
+} from '@helpers';
+import { WorldLocation } from '@interfaces';
+import { NodeSpriteData } from '@interfaces/sprite';
+import { LoadedTextures } from '@interfaces/texture';
+import { ContentService } from '@services/content.service';
+import { LoggerService } from '@services/logger.service';
 
 @Component({
   selector: 'app-game-map-pixi',

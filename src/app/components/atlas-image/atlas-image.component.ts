@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, input } from '@angular/core';
-import { AtlasedImage } from '../../interfaces';
-import { ContentService } from '../../services/content.service';
+import { AtlasedImage } from '@interfaces';
+import { ContentService } from '@services/content.service';
 
 @Component({
   selector: 'app-atlas-image',

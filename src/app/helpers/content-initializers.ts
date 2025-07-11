@@ -14,7 +14,7 @@ import {
   TalentId,
   TalentTreeContent,
   WorldConfigContent,
-} from '../interfaces';
+} from '@interfaces';
 import { getDefaultAffinities, getDefaultStats } from './defaults';
 
 // eat my ass, typescript

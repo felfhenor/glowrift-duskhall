@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
+import { environment } from '@environments/environment.development';
+import { analyticsEvent$ } from '@helpers';
+import { MetaService } from '@services/meta.service';
 import gameanalytics from 'gameanalytics';
-import { environment } from '../../environments/environment';
-import { analyticsEvent$ } from '../helpers';
-import { MetaService } from './meta.service';
 
 @Injectable({
   providedIn: 'root',

@@ -1,4 +1,4 @@
-import { EquipmentSkill } from '../interfaces';
+import { EquipmentSkill } from '@interfaces';
 import { gainCurrency } from './currency';
 import { removeSkillFromInventory } from './inventory-skill';
 import { notifySuccess } from './notify';

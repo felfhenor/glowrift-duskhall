@@ -1,5 +1,5 @@
 import { Component, computed } from '@angular/core';
-import { exploreProgressText } from '../../helpers';
+import { exploreProgressText } from '@helpers';
 
 @Component({
   selector: 'app-location-claim-progress-text',

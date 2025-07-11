@@ -1,4 +1,4 @@
-import { CameraBounds, CameraState } from '../interfaces/camera';
+import { CameraBounds, CameraState } from '@interfaces/camera';
 import { gamestate, updateGamestate } from './index';
 
 /**

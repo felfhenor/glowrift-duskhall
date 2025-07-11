@@ -13,8 +13,8 @@ import {
   ensureContent,
   setAllContentById,
   setAllIdsByName,
-} from '../helpers';
-import { Content, ContentType } from '../interfaces';
+} from '@helpers';
+import { Content, ContentType } from '@interfaces';
 import { LoggerService } from './logger.service';
 import { MetaService } from './meta.service';
 

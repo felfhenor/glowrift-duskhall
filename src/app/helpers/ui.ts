@@ -1,5 +1,5 @@
 import { computed, signal } from '@angular/core';
-import { WorldLocation } from '../interfaces';
+import { WorldLocation } from '@interfaces';
 
 export const windowWidth = signal<number>(-1);
 export const windowHeight = signal<number>(-1);

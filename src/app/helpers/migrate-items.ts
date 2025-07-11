@@ -1,4 +1,4 @@
-import { EquipmentItem } from '../interfaces';
+import { EquipmentItem } from '@interfaces';
 import { getEntry } from './content';
 import { getDroppableEquippableBaseId } from './droppable';
 import { allHeroes, updateHeroData } from './hero';

@@ -1,7 +1,7 @@
 import { Component, computed, input, Signal } from '@angular/core';
-import { getItemStat } from '../../helpers';
-import { EquipmentItemContent, StatBlock } from '../../interfaces';
-import { StatsItemComponent } from '../stats-item/stats-item.component';
+import { getItemStat } from '@helpers';
+import { EquipmentItemContent, StatBlock } from '@interfaces';
+import { StatsItemComponent } from '@components/stats-item/stats-item.component';
 
 @Component({
   selector: 'app-stats-item-compare',

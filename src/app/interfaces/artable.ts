@@ -1,4 +1,4 @@
-import { ALL_ICONS } from '../helpers';
+import { ALL_ICONS } from '@helpers';
 
 export type Icon = keyof typeof ALL_ICONS;
 

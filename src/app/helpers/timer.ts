@@ -1,4 +1,4 @@
-import { Timer, TimerAction, TimerUnclaimVillage } from '../interfaces';
+import { Timer, TimerAction, TimerUnclaimVillage } from '@interfaces';
 import { gamestate, updateGamestate } from './state-game';
 import { getWorldNode, unclaimNode } from './world';
 

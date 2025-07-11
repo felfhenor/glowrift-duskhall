@@ -1,4 +1,4 @@
-import { Combat, CombatLog } from '../interfaces';
+import { Combat, CombatLog } from '@interfaces';
 import { uuid } from './rng';
 import { localStorageSignal } from './signal';
 

@@ -1,7 +1,7 @@
 import { DecimalPipe, TitleCasePipe } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
-import { GameStat, Icon } from '../../interfaces';
-import { IconComponent } from '../icon/icon.component';
+import { GameStat, Icon } from '@interfaces';
+import { IconComponent } from '@components/icon/icon.component';
 
 const icons: Record<GameStat, Icon> = {
   Aura: 'gameVibratingShield',

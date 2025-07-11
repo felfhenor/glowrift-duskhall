@@ -1,9 +1,9 @@
 import { Component, computed, input, output } from '@angular/core';
 import { RepeatPipe } from 'ngxtension/repeat-pipe';
-import { maxSkillsForHero } from '../../helpers';
-import { Hero } from '../../interfaces';
-import { IconBlankSlotComponent } from '../icon-blank-slot/icon-blank-slot.component';
-import { IconSkillComponent } from '../icon-skill/icon-skill.component';
+import { maxSkillsForHero } from '@helpers';
+import { Hero } from '@interfaces';
+import { IconBlankSlotComponent } from '@components/icon-blank-slot/icon-blank-slot.component';
+import { IconSkillComponent } from '@components/icon-skill/icon-skill.component';
 
 @Component({
   selector: 'app-panel-heroes-skills',

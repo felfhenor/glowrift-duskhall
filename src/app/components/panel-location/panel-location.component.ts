@@ -12,23 +12,23 @@ import {
   totalTicksElapsed,
   travelTimeFromCurrentLocationTo,
   travelToNode,
-} from '../../helpers';
+} from '@helpers';
 import {
   DroppableEquippable,
   GameCurrency,
   Guardian,
   WorldLocation,
-} from '../../interfaces';
-import { AtlasImageComponent } from '../atlas-image/atlas-image.component';
-import { CardPageComponent } from '../card-page/card-page.component';
-import { CountdownComponent } from '../countdown/countdown.component';
-import { IconItemComponent } from '../icon-currency/icon-currency.component';
-import { IconElementComponent } from '../icon-element/icon-element.component';
-import { IconComponent } from '../icon/icon.component';
-import { LocationClaimProgressTextComponent } from '../location-claim-progress-text/location-claim-progress-text.component';
-import { LocationGuardianDisplayComponent } from '../location-guardian-display/location-guardian-display.component';
-import { LocationLootDisplayComponent } from '../location-loot-display/location-loot-display.component';
-import { MarkerLocationClaimComponent } from '../marker-location-claim/marker-location-claim.component';
+} from '@interfaces';
+import { AtlasImageComponent } from '@components/atlas-image/atlas-image.component';
+import { CardPageComponent } from '@components/card-page/card-page.component';
+import { CountdownComponent } from '@components/countdown/countdown.component';
+import { IconItemComponent } from '@components/icon-currency/icon-currency.component';
+import { IconElementComponent } from '@components/icon-element/icon-element.component';
+import { IconComponent } from '@components/icon/icon.component';
+import { LocationClaimProgressTextComponent } from '@components/location-claim-progress-text/location-claim-progress-text.component';
+import { LocationGuardianDisplayComponent } from '@components/location-guardian-display/location-guardian-display.component';
+import { LocationLootDisplayComponent } from '@components/location-loot-display/location-loot-display.component';
+import { MarkerLocationClaimComponent } from '@components/marker-location-claim/marker-location-claim.component';
 
 @Component({
   selector: 'app-panel-location',

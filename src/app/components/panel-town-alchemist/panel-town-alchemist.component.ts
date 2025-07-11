@@ -8,15 +8,15 @@ import {
   notifySuccess,
   salvageSkills,
   sortedRarityList,
-} from '../../helpers';
-import { EquipmentSkill, GameCurrency } from '../../interfaces';
-import { BlankSlateComponent } from '../blank-slate/blank-slate.component';
-import { CardPageComponent } from '../card-page/card-page.component';
-import { IconBlankSlotComponent } from '../icon-blank-slot/icon-blank-slot.component';
-import { IconSkillComponent } from '../icon-skill/icon-skill.component';
-import { InventoryGridSkillComponent } from '../inventory-grid-skill/inventory-grid-skill.component';
-import { MarkerCurrencyComponent } from '../marker-currency/marker-currency.component';
-import { PanelTownBuildingUpgradeComponent } from '../panel-town-building-upgrade/panel-town-building-upgrade.component';
+} from '@helpers';
+import { EquipmentSkill, GameCurrency } from '@interfaces';
+import { BlankSlateComponent } from '@components/blank-slate/blank-slate.component';
+import { CardPageComponent } from '@components/card-page/card-page.component';
+import { IconBlankSlotComponent } from '@components/icon-blank-slot/icon-blank-slot.component';
+import { IconSkillComponent } from '@components/icon-skill/icon-skill.component';
+import { InventoryGridSkillComponent } from '@components/inventory-grid-skill/inventory-grid-skill.component';
+import { MarkerCurrencyComponent } from '@components/marker-currency/marker-currency.component';
+import { PanelTownBuildingUpgradeComponent } from '@components/panel-town-building-upgrade/panel-town-building-upgrade.component';
 
 @Component({
   selector: 'app-panel-town-alchemist',

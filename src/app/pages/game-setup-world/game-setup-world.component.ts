@@ -2,9 +2,9 @@ import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
-import { AtlasAnimationComponent } from '../../components/atlas-animation/atlas-animation.component';
-import { AnalyticsClickDirective } from '../../directives/analytics-click.directive';
-import { SFXDirective } from '../../directives/sfx.directive';
+import { AtlasAnimationComponent } from '@components/atlas-animation/atlas-animation.component';
+import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
+import { SFXDirective } from '@directives/sfx.directive';
 import {
   closeAllMenus,
   gamestate,
@@ -15,8 +15,8 @@ import {
   setWorldSeed,
   startGame,
   updateHeroData,
-} from '../../helpers';
-import { WorldConfigContent } from '../../interfaces';
+} from '@helpers';
+import { WorldConfigContent } from '@interfaces';
 
 @Component({
   selector: 'app-game-setup-world',

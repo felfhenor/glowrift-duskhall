@@ -9,7 +9,7 @@ import {
   GameElement,
   GameStat,
   TalentContent,
-} from '../interfaces';
+} from '@interfaces';
 import { isDead } from './combat-end';
 import { logCombatMessage } from './combat-log';
 import { getEntry } from './content';

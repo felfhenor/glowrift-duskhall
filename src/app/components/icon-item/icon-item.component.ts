@@ -1,13 +1,13 @@
 import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 import { TippyDirective } from '@ngneat/helipopper';
-import { itemBuyValue, rarityItemOutlineColor } from '../../helpers';
-import { EquipmentItemContent } from '../../interfaces';
-import { GameCurrencyPipe } from '../../pipes/game-currency.pipe';
-import { AtlasImageComponent } from '../atlas-image/atlas-image.component';
-import { IconBlankSlotComponent } from '../icon-blank-slot/icon-blank-slot.component';
-import { StatsItemCompareComponent } from '../stats-item-compare/stats-item-compare.component';
-import { StatsItemComponent } from '../stats-item/stats-item.component';
+import { itemBuyValue, rarityItemOutlineColor } from '@helpers';
+import { EquipmentItemContent } from '@interfaces';
+import { GameCurrencyPipe } from '@pipes/game-currency.pipe';
+import { AtlasImageComponent } from '@components/atlas-image/atlas-image.component';
+import { IconBlankSlotComponent } from '@components/icon-blank-slot/icon-blank-slot.component';
+import { StatsItemCompareComponent } from '@components/stats-item-compare/stats-item-compare.component';
+import { StatsItemComponent } from '@components/stats-item/stats-item.component';
 
 @Component({
   selector: 'app-icon-item',

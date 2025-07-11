@@ -1,8 +1,8 @@
 import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
-import { getItemStat, rarityItemTextColor } from '../../helpers';
-import { EquipmentItemContent, StatBlock } from '../../interfaces';
-import { MarkerStatComponent } from '../marker-stat/marker-stat.component';
+import { getItemStat, rarityItemTextColor } from '@helpers';
+import { EquipmentItemContent, StatBlock } from '@interfaces';
+import { MarkerStatComponent } from '@components/marker-stat/marker-stat.component';
 
 @Component({
   selector: 'app-stats-item',

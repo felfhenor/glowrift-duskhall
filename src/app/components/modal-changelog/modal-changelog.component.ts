@@ -3,7 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { tablerPackage } from '@ng-icons/tabler-icons';
 import { TippyDirective } from '@ngneat/helipopper';
-import { MetaService } from '../../services/meta.service';
+import { MetaService } from '@services/meta.service';
 
 @Component({
   selector: 'app-modal-changelog',

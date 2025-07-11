@@ -5,7 +5,7 @@ import {
   EquipmentItem,
   EquipmentItemContent,
   GameStat,
-} from '../interfaces';
+} from '@interfaces';
 
 export function sortedRarityList<T extends DroppableEquippable>(
   items: T[],

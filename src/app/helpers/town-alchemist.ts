@@ -1,4 +1,4 @@
-import { EquipmentSkill, GameCurrency } from '../interfaces';
+import { EquipmentSkill, GameCurrency } from '@interfaces';
 import { gainCurrency } from './currency';
 import { removeSkillFromInventory } from './inventory-skill';
 import { getBuildingLevel } from './town';

@@ -1,5 +1,5 @@
 import { Directive, HostListener, inject, input } from '@angular/core';
-import { AnalyticsService } from '../services/analytics.service';
+import { AnalyticsService } from '@services/analytics.service';
 
 @Directive({
   selector: '[appAnalyticsClick]',

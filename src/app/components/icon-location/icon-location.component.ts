@@ -1,7 +1,7 @@
 import { Component, computed, input } from '@angular/core';
-import { getSpriteFromNodeType } from '../../helpers';
-import { LocationType } from '../../interfaces';
-import { AtlasImageComponent } from '../atlas-image/atlas-image.component';
+import { getSpriteFromNodeType } from '@helpers';
+import { LocationType } from '@interfaces';
+import { AtlasImageComponent } from '@components/atlas-image/atlas-image.component';
 
 @Component({
   selector: 'app-icon-location',

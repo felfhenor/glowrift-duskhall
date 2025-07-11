@@ -1,4 +1,4 @@
-import { EquipmentItem, EquipmentItemContent } from '../interfaces';
+import { EquipmentItem, EquipmentItemContent } from '@interfaces';
 import { gainCurrency } from './currency';
 import { removeItemFromInventory } from './inventory-equipment';
 import { getItemStat } from './item';

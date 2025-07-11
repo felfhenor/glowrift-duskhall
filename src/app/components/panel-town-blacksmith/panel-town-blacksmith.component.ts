@@ -8,15 +8,15 @@ import {
   notifySuccess,
   salvageItems,
   sortedRarityList,
-} from '../../helpers';
-import { EquipmentItem, GameCurrency } from '../../interfaces';
-import { BlankSlateComponent } from '../blank-slate/blank-slate.component';
-import { CardPageComponent } from '../card-page/card-page.component';
-import { IconBlankSlotComponent } from '../icon-blank-slot/icon-blank-slot.component';
-import { IconItemComponent } from '../icon-item/icon-item.component';
-import { InventoryGridItemComponent } from '../inventory-grid-item/inventory-grid-item.component';
-import { MarkerCurrencyComponent } from '../marker-currency/marker-currency.component';
-import { PanelTownBuildingUpgradeComponent } from '../panel-town-building-upgrade/panel-town-building-upgrade.component';
+} from '@helpers';
+import { EquipmentItem, GameCurrency } from '@interfaces';
+import { BlankSlateComponent } from '@components/blank-slate/blank-slate.component';
+import { CardPageComponent } from '@components/card-page/card-page.component';
+import { IconBlankSlotComponent } from '@components/icon-blank-slot/icon-blank-slot.component';
+import { IconItemComponent } from '@components/icon-item/icon-item.component';
+import { InventoryGridItemComponent } from '@components/inventory-grid-item/inventory-grid-item.component';
+import { MarkerCurrencyComponent } from '@components/marker-currency/marker-currency.component';
+import { PanelTownBuildingUpgradeComponent } from '@components/panel-town-building-upgrade/panel-town-building-upgrade.component';
 
 @Component({
   selector: 'app-panel-town-blacksmith',

@@ -6,11 +6,11 @@ import {
   hasCurrency,
   itemBuyValue,
   notifyError,
-} from '../../helpers';
-import { EquipmentItem } from '../../interfaces';
-import { CountdownComponent } from '../countdown/countdown.component';
-import { InventoryGridItemComponent } from '../inventory-grid-item/inventory-grid-item.component';
-import { PanelTownBuildingUpgradeComponent } from '../panel-town-building-upgrade/panel-town-building-upgrade.component';
+} from '@helpers';
+import { EquipmentItem } from '@interfaces';
+import { CountdownComponent } from '@components/countdown/countdown.component';
+import { InventoryGridItemComponent } from '@components/inventory-grid-item/inventory-grid-item.component';
+import { PanelTownBuildingUpgradeComponent } from '@components/panel-town-building-upgrade/panel-town-building-upgrade.component';
 
 @Component({
   selector: 'app-panel-town-merchant',

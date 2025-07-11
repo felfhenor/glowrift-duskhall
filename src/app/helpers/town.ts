@@ -1,4 +1,4 @@
-import { GameCurrency, LocationType, TownBuilding } from '../interfaces';
+import { GameCurrency, LocationType, TownBuilding } from '@interfaces';
 import { hasCurrency, loseCurrency } from './currency';
 import {
   blankCurrencyBlock,

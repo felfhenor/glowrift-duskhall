@@ -1,7 +1,7 @@
 import { Signal } from '@angular/core';
-import { environment } from '../../environments/environment';
-import { GameOptions } from '../interfaces';
-import { localStorageSignal } from './signal';
+import { environment } from '@environments/environment.development';
+import { localStorageSignal } from '@helpers/signal';
+import { GameOptions } from '@interfaces';
 
 export function defaultOptions(): GameOptions {
   return {

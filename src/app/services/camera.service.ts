@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy, signal } from '@angular/core';
-import { gamestate, setCameraPosition } from '../helpers';
+import { gamestate, setCameraPosition } from '@helpers';
 
 export interface Point {
   x: number;

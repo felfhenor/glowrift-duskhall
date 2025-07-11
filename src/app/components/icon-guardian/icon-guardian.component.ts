@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
-import { Guardian } from '../../interfaces';
-import { AtlasAnimationComponent } from '../atlas-animation/atlas-animation.component';
+import { Guardian } from '@interfaces';
+import { AtlasAnimationComponent } from '@components/atlas-animation/atlas-animation.component';
 
 @Component({
   selector: 'app-icon-guardian',

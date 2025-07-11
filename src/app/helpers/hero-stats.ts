@@ -1,5 +1,5 @@
 import { sum } from 'lodash';
-import { GameStat, Hero, StatBlock } from '../interfaces';
+import { GameStat, Hero, StatBlock } from '@interfaces';
 import { updateHeroData } from './hero';
 import { getItemStat } from './item';
 

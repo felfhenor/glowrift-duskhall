@@ -1,8 +1,8 @@
 import { Component, input } from '@angular/core';
 import { TippyDirective } from '@ngneat/helipopper';
-import { Guardian } from '../../interfaces';
-import { IconGuardianComponent } from '../icon-guardian/icon-guardian.component';
-import { MarkerStatComponent } from '../marker-stat/marker-stat.component';
+import { Guardian } from '@interfaces';
+import { IconGuardianComponent } from '@components/icon-guardian/icon-guardian.component';
+import { MarkerStatComponent } from '@components/marker-stat/marker-stat.component';
 
 @Component({
   selector: 'app-location-guardian-display',

@@ -4,9 +4,9 @@ import {
   DroppableEquippable,
   EquipmentItem,
   EquipmentSkill,
-} from '../../interfaces';
-import { IconItemComponent } from '../icon-item/icon-item.component';
-import { IconSkillComponent } from '../icon-skill/icon-skill.component';
+} from '@interfaces';
+import { IconItemComponent } from '@components/icon-item/icon-item.component';
+import { IconSkillComponent } from '@components/icon-skill/icon-skill.component';
 
 @Component({
   selector: 'app-location-loot-display',

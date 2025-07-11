@@ -1,8 +1,8 @@
 import { Component, computed, input, signal, Signal } from '@angular/core';
-import { heroRemainingTalentPoints } from '../../helpers';
-import { GameElement, Hero } from '../../interfaces';
-import { IconElementComponent } from '../icon-element/icon-element.component';
-import { PanelHeroesTalentsTreeComponent } from '../panel-heroes-talents-tree/panel-heroes-talents-tree.component';
+import { IconElementComponent } from '@components/icon-element/icon-element.component';
+import { PanelHeroesTalentsTreeComponent } from '@components/panel-heroes-talents-tree/panel-heroes-talents-tree.component';
+import { heroRemainingTalentPoints } from '@helpers';
+import { GameElement, Hero } from '@interfaces';
 
 @Component({
   selector: 'app-panel-heroes-talents',

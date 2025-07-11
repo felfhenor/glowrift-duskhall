@@ -1,12 +1,12 @@
 import { Component, computed } from '@angular/core';
-import { options, showCombatMenu } from '../../helpers';
-import { CombatTab, CombatTabLink } from '../../interfaces';
-import { CardPageComponent } from '../card-page/card-page.component';
-import { IconComponent } from '../icon/icon.component';
-import { PanelCombatClaimsComponent } from '../panel-combat-claims/panel-combat-claims.component';
-import { PanelCombatCombatlogComponent } from '../panel-combat-combatlog/panel-combat-combatlog.component';
-import { PanelCombatPreferencesComponent } from '../panel-combat-preferences/panel-combat-preferences.component';
-import { OptionsBaseComponent } from '../panel-options/option-base-page.component';
+import { CardPageComponent } from '@components/card-page/card-page.component';
+import { IconComponent } from '@components/icon/icon.component';
+import { PanelCombatClaimsComponent } from '@components/panel-combat-claims/panel-combat-claims.component';
+import { PanelCombatCombatlogComponent } from '@components/panel-combat-combatlog/panel-combat-combatlog.component';
+import { PanelCombatPreferencesComponent } from '@components/panel-combat-preferences/panel-combat-preferences.component';
+import { OptionsBaseComponent } from '@components/panel-options/option-base-page.component';
+import { options, showCombatMenu } from '@helpers';
+import { CombatTab, CombatTabLink } from '@interfaces';
 
 @Component({
   selector: 'app-panel-combat',

@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HotToastService } from '@ngxpert/hot-toast';
-import { notification$ } from '../helpers';
+import { notification$ } from '@helpers';
 import { LoggerService } from './logger.service';
 
 @Injectable({

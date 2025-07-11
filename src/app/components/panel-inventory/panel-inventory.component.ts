@@ -5,12 +5,12 @@ import {
   setOption,
   showInventoryMenu,
   sortedRarityList,
-} from '../../helpers';
-import { EquipmentItem, EquipmentSkill, EquipmentSlot, InventorySlotType } from '../../interfaces';
-import { CardPageComponent } from '../card-page/card-page.component';
-import { IconComponent } from '../icon/icon.component';
-import { InventoryGridItemComponent } from '../inventory-grid-item/inventory-grid-item.component';
-import { InventoryGridSkillComponent } from '../inventory-grid-skill/inventory-grid-skill.component';
+} from '@helpers';
+import { EquipmentItem, EquipmentSkill, EquipmentSlot, InventorySlotType } from '@interfaces';
+import { CardPageComponent } from '@components/card-page/card-page.component';
+import { IconComponent } from '@components/icon/icon.component';
+import { InventoryGridItemComponent } from '@components/inventory-grid-item/inventory-grid-item.component';
+import { InventoryGridSkillComponent } from '@components/inventory-grid-skill/inventory-grid-skill.component';
 
 @Component({
   selector: 'app-panel-inventory',

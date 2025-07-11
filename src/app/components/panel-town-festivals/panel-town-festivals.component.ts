@@ -1,7 +1,7 @@
 import { Component, computed } from '@angular/core';
-import { gamestate, getActiveFestivals } from '../../helpers';
-import { BlankSlateComponent } from '../blank-slate/blank-slate.component';
-import { CountdownComponent } from '../countdown/countdown.component';
+import { gamestate, getActiveFestivals } from '@helpers';
+import { BlankSlateComponent } from '@components/blank-slate/blank-slate.component';
+import { CountdownComponent } from '@components/countdown/countdown.component';
 
 @Component({
   selector: 'app-panel-town-festivals',

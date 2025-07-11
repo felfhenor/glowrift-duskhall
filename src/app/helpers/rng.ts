@@ -1,6 +1,6 @@
 import seedrandom, { type PRNG } from 'seedrandom';
 import { v4 as uuid4 } from 'uuid';
-import { Identifiable } from '../interfaces';
+import { Identifiable } from '@interfaces';
 import { myGameId } from './state-game';
 
 export function uuid(): string {

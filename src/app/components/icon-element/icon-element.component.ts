@@ -1,7 +1,7 @@
 import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
-import { GameElement, Icon } from '../../interfaces';
-import { IconComponent } from '../icon/icon.component';
+import { GameElement, Icon } from '@interfaces';
+import { IconComponent } from '@components/icon/icon.component';
 
 const icons: Record<GameElement, Icon> = {
   Fire: 'gameSmallFire',

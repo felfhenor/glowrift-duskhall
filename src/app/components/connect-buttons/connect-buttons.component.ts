@@ -7,8 +7,8 @@ import {
   tablerRss,
 } from '@ng-icons/tabler-icons';
 import { TippyDirective } from '@ngneat/helipopper';
-import { AnalyticsClickDirective } from '../../directives/analytics-click.directive';
-import { ModalChangelogComponent } from '../modal-changelog/modal-changelog.component';
+import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
+import { ModalChangelogComponent } from '@components/modal-changelog/modal-changelog.component';
 
 @Component({
   selector: 'app-connect-buttons',

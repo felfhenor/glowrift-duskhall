@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { AnalyticsClickDirective } from '../../directives/analytics-click.directive';
-import { gamestate } from '../../helpers';
+import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
+import { gamestate } from '@helpers';
 
 @Component({
   selector: 'app-button-savefile-export',

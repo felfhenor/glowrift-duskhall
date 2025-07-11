@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ErrorHandler, inject, Injectable, signal } from '@angular/core';
-import { cloneDeep } from 'lodash';
-import Rollbar from 'rollbar';
-import { environment } from '../../environments/environment';
+import { environment } from '@environments/environment.development';
 import {
   debug,
   error,
@@ -11,7 +9,9 @@ import {
   log,
   versionInfoToSemver,
   warn,
-} from '../helpers';
+} from '@helpers';
+import { cloneDeep } from 'lodash';
+import Rollbar from 'rollbar';
 
 @Injectable({
   providedIn: 'root',

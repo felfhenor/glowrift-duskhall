@@ -1,7 +1,7 @@
 import { Component, computed, input } from '@angular/core';
-import { gamestate } from '../../helpers';
-import { GameCurrency } from '../../interfaces';
-import { MarkerCurrencyComponent } from '../marker-currency/marker-currency.component';
+import { gamestate } from '@helpers';
+import { GameCurrency } from '@interfaces';
+import { MarkerCurrencyComponent } from '@components/marker-currency/marker-currency.component';
 
 @Component({
   selector: 'app-marker-currency-current',

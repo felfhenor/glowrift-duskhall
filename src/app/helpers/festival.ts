@@ -1,5 +1,5 @@
 import { shuffle, sumBy } from 'lodash';
-import { DropRarity, FestivalContent } from '../interfaces';
+import { DropRarity, FestivalContent } from '@interfaces';
 import { getTickTimer, isExpired } from './clock';
 import { getEntriesByType, getEntry } from './content';
 import { notify } from './notify';

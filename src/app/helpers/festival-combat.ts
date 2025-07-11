@@ -1,5 +1,5 @@
 import { sum } from 'lodash';
-import { FestivalEffectCombatAttribute } from '../interfaces';
+import { FestivalEffectCombatAttribute } from '@interfaces';
 import { getActiveFestivals } from './festival';
 
 export function getCombatOutgoingAttributeMultiplier(

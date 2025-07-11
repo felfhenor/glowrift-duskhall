@@ -1,7 +1,7 @@
 import { computed, Directive, input } from '@angular/core';
 import { hostBinding } from 'ngxtension/host-binding';
-import { getOption } from '../helpers';
-import { GameOption } from '../interfaces';
+import { getOption } from '@helpers';
+import { GameOption } from '@interfaces';
 
 @Directive({
   selector: '[appShowIfOption]',

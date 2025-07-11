@@ -3,7 +3,7 @@ import {
   Guardian,
   GuardianContent,
   WorldLocation,
-} from '../interfaces';
+} from '@interfaces';
 
 export function createGuardianForLocation(
   location: WorldLocation,

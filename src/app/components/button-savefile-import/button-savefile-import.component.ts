@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { AnalyticsClickDirective } from '../../directives/analytics-click.directive';
-import { migrateGameState, notifySuccess, setGameState } from '../../helpers';
-import { GameState } from '../../interfaces';
+import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
+import { migrateGameState, notifySuccess, setGameState } from '@helpers';
+import { GameState } from '@interfaces';
 
 @Component({
   selector: 'app-button-savefile-import',

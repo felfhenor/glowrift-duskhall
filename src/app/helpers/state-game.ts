@@ -8,7 +8,7 @@ import {
   HeroId,
   LocationType,
   WorldPosition,
-} from '../interfaces';
+} from '@interfaces';
 import { uuid } from './rng';
 import { localStorageSignal } from './signal';
 

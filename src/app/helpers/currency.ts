@@ -1,4 +1,4 @@
-import { CurrencyBlock, GameCurrency, WorldLocation } from '../interfaces';
+import { CurrencyBlock, GameCurrency, WorldLocation } from '@interfaces';
 import { getFestivalProductionMultiplier } from './festival-production';
 import { blankCurrencyBlock, gamestate, updateGamestate } from './state-game';
 import { getClaimedNodes } from './world';

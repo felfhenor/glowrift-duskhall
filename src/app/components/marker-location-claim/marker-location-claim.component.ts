@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
-import { WorldLocation } from '../../interfaces';
-import { IconComponent } from '../icon/icon.component';
+import { WorldLocation } from '@interfaces';
+import { IconComponent } from '@components/icon/icon.component';
 
 @Component({
   selector: 'app-marker-location-claim',

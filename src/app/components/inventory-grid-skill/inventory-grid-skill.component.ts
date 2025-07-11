@@ -2,9 +2,9 @@ import { Component, input, output } from '@angular/core';
 
 import { DecimalPipe } from '@angular/common';
 import { TippyDirective } from '@ngneat/helipopper';
-import { skillSalvage, skillSalvageValue } from '../../helpers';
-import { EquipmentSkill } from '../../interfaces';
-import { IconSkillComponent } from '../icon-skill/icon-skill.component';
+import { skillSalvage, skillSalvageValue } from '@helpers';
+import { EquipmentSkill } from '@interfaces';
+import { IconSkillComponent } from '@components/icon-skill/icon-skill.component';
 
 export type SkillAction = 'Salvage';
 

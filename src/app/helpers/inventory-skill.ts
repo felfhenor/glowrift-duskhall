@@ -1,4 +1,4 @@
-import { EquipmentSkill, Hero } from '../interfaces';
+import { EquipmentSkill, Hero } from '@interfaces';
 import { updateHeroData } from './hero';
 import { recalculateStats } from './hero-stats';
 import { updateGamestate } from './state-game';

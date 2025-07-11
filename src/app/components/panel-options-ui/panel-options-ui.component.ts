@@ -4,10 +4,10 @@ import { FormsModule } from '@angular/forms';
 import {
   getOption,
   setOption,
-} from '../../helpers';
-import { GameOptions } from '../../interfaces';
-import { OptionsBaseComponent } from '../panel-options/option-base-page.component';
-import { ToggleableCategory } from '../../interfaces';
+} from '@helpers';
+import { GameOptions } from '@interfaces';
+import { OptionsBaseComponent } from '@components/panel-options/option-base-page.component';
+import { ToggleableCategory } from '@interfaces';
 
 @Component({
   selector: 'app-panel-options-ui',

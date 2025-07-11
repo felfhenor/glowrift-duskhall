@@ -1,7 +1,7 @@
 import { Component, computed } from '@angular/core';
 import { TippyDirective } from '@ngneat/helipopper';
-import { gamestate, setHeroRiskTolerance } from '../../helpers';
-import { HeroRiskTolerance } from '../../interfaces';
+import { gamestate, setHeroRiskTolerance } from '@helpers';
+import { HeroRiskTolerance } from '@interfaces';
 
 @Component({
   selector: 'app-panel-combat-preferences',

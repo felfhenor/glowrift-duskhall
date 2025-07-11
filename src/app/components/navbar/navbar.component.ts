@@ -2,8 +2,8 @@ import { Component, computed, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { TippyDirective } from '@ngneat/helipopper';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
-import { RequireSetupDirective } from '../../directives/require-setup.directive';
-import { SFXDirective } from '../../directives/sfx.directive';
+import { RequireSetupDirective } from '@directives/require-setup.directive';
+import { SFXDirective } from '@directives/sfx.directive';
 import {
   closeAllMenus,
   focusCameraOnPlayer,
@@ -17,11 +17,11 @@ import {
   showInventoryMenu,
   showOptionsMenu,
   showTownMenu,
-} from '../../helpers';
-import { GameCurrency, Icon } from '../../interfaces';
-import { MetaService } from '../../services/meta.service';
-import { IconComponent } from '../icon/icon.component';
-import { MarkerCurrencyCurrentComponent } from '../marker-currency-current/marker-currency-current.component';
+} from '@helpers';
+import { GameCurrency, Icon } from '@interfaces';
+import { MetaService } from '@services/meta.service';
+import { IconComponent } from '@components/icon/icon.component';
+import { MarkerCurrencyCurrentComponent } from '@components/marker-currency-current/marker-currency-current.component';
 
 @Component({
   selector: 'app-navbar',

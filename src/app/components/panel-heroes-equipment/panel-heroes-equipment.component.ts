@@ -1,8 +1,8 @@
 import { TitleCasePipe } from '@angular/common';
 import { Component, computed, input, output, Signal } from '@angular/core';
-import { EquipmentItem, EquipmentSlot, Hero } from '../../interfaces';
-import { IconBlankSlotComponent } from '../icon-blank-slot/icon-blank-slot.component';
-import { IconItemComponent } from '../icon-item/icon-item.component';
+import { EquipmentItem, EquipmentSlot, Hero } from '@interfaces';
+import { IconBlankSlotComponent } from '@components/icon-blank-slot/icon-blank-slot.component';
+import { IconItemComponent } from '@components/icon-item/icon-item.component';
 
 @Component({
   selector: 'app-panel-heroes-equipment',

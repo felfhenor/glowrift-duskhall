@@ -8,7 +8,8 @@
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
         "plugin:@angular-eslint/recommended",
-        "plugin:@angular-eslint/template/process-inline-templates"
+        "plugin:@angular-eslint/template/process-inline-templates",
+        "plugin:typescript-paths/recommended"
       ],
       "rules": {
         "@angular-eslint/directive-selector": [
@@ -38,7 +39,8 @@
         "space-infix-ops": ["error"],
         "comma-spacing": ["error", { "before": false, "after": true }],
         "arrow-spacing": ["error", { "before": true, "after": true }],
-        "space-before-blocks": ["error"]
+        "space-before-blocks": ["error"],
+        "typescript-paths/absolute-import": ["error", { "enableAlias": true }]
       }
     },
     {

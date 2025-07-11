@@ -1,4 +1,4 @@
-import { ElementBlock, StatBlock } from '../interfaces';
+import { ElementBlock, StatBlock } from '@interfaces';
 
 export function getDefaultStats(): StatBlock {
   return {

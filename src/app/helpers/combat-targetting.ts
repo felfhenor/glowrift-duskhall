@@ -7,7 +7,7 @@ import {
   EquipmentSkillContentTechnique,
   EquipmentSkillTargetBehavior,
   EquipmentSkillTargetType,
-} from '../interfaces';
+} from '@interfaces';
 import { getEntry } from './content';
 
 export function availableSkillsForCombatant(

@@ -4,7 +4,7 @@ import {
   EquipmentItemContent,
   EquipmentSkill,
   EquipmentSkillContent,
-} from '../interfaces';
+} from '@interfaces';
 import { getEntry } from './content';
 import { createItem } from './creator-equipment';
 import { createSkill } from './creator-skill';

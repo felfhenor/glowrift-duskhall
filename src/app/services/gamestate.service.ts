@@ -8,7 +8,7 @@ import {
   migrateGameState,
   migrateOptionsState,
   spriteIterationCount,
-} from '../helpers';
+} from '@helpers';
 import { ContentService } from './content.service';
 import { LoggerService } from './logger.service';
 

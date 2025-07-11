@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed } from '@angular/core';
 import { marked } from 'marked';
-import { combatLog, rarityItemTextColor } from '../../helpers';
-import { getHealthColor } from '../../helpers/combat-log';
-import { DropRarity } from '../../interfaces/droppable';
+import { combatLog, rarityItemTextColor } from '@helpers';
+import { getHealthColor } from '@helpers/combat-log';
+import { DropRarity } from '@interfaces/droppable';
 
 @Component({
   selector: 'app-panel-combat-combatlog',

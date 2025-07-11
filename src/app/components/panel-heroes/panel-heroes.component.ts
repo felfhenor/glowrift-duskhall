@@ -1,5 +1,14 @@
 import { TitleCasePipe } from '@angular/common';
 import { Component, computed, signal } from '@angular/core';
+import { CardPageComponent } from '@components/card-page/card-page.component';
+import { IconHeroComponent } from '@components/icon-hero/icon-hero.component';
+import { IconComponent } from '@components/icon/icon.component';
+import { InventoryGridItemComponent } from '@components/inventory-grid-item/inventory-grid-item.component';
+import { InventoryGridSkillComponent } from '@components/inventory-grid-skill/inventory-grid-skill.component';
+import { PanelHeroesEquipmentComponent } from '@components/panel-heroes-equipment/panel-heroes-equipment.component';
+import { PanelHeroesSkillsComponent } from '@components/panel-heroes-skills/panel-heroes-skills.component';
+import { PanelHeroesStatsComponent } from '@components/panel-heroes-stats/panel-heroes-stats.component';
+import { PanelHeroesTalentsComponent } from '@components/panel-heroes-talents/panel-heroes-talents.component';
 import {
   equipItem,
   equipSkill,
@@ -8,17 +17,8 @@ import {
   sortedRarityList,
   unequipItem,
   unequipSkill,
-} from '../../helpers';
-import { EquipmentItem, EquipmentSkill, EquipmentSlot } from '../../interfaces';
-import { CardPageComponent } from '../card-page/card-page.component';
-import { IconHeroComponent } from '../icon-hero/icon-hero.component';
-import { IconComponent } from '../icon/icon.component';
-import { InventoryGridItemComponent } from '../inventory-grid-item/inventory-grid-item.component';
-import { InventoryGridSkillComponent } from '../inventory-grid-skill/inventory-grid-skill.component';
-import { PanelHeroesEquipmentComponent } from '../panel-heroes-equipment/panel-heroes-equipment.component';
-import { PanelHeroesSkillsComponent } from '../panel-heroes-skills/panel-heroes-skills.component';
-import { PanelHeroesStatsComponent } from '../panel-heroes-stats/panel-heroes-stats.component';
-import { PanelHeroesTalentsComponent } from '../panel-heroes-talents/panel-heroes-talents.component';
+} from '@helpers';
+import { EquipmentItem, EquipmentSkill, EquipmentSlot } from '@interfaces';
 
 @Component({
   selector: 'app-panel-heroes',
