@@ -2,7 +2,7 @@ import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 import { uniq } from 'lodash';
 import { rarityItemTextColor } from '../../helpers';
-import { EquipmentSkillDefinition } from '../../interfaces';
+import { EquipmentSkillDefinition, GameStat } from '../../interfaces';
 
 @Component({
   selector: 'app-stats-skill',
@@ -20,4 +20,14 @@ export class StatsSkillComponent {
   public skillRarityClass = computed(() =>
     rarityItemTextColor(this.skill().rarity),
   );
+
+  public techniqueTexts = computed(() => {
+    return this.skill().techniques.map((t) => {
+      const statString = Object.keys(t.damageScaling)
+        .map((d) => `${d} (${t.damageScaling[d as GameStat]}x)`)
+        .join(', ');
+
+      return `${t.targetType} (${t.targets}x): ${statString}`;
+    });
+  });
 }

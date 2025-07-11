@@ -8,3 +8,11 @@
     {{ elements().join(', ') }} {{ skillData.__type }}
   </div>
 </div>
+
+<div class="mt-3 font-bold">Techniques</div>
+
+@for (technique of techniqueTexts(); track $index) {
+  <div>
+    {{ technique }}
+  </div>
+}
