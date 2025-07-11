@@ -58,7 +58,7 @@ export function ensureGuardian(
     id: guardian.id ?? ('UNKNOWN' as GuardianId),
     name: guardian.name ?? 'UNKNOWN',
     __type: guardian.__type ?? 'guardian',
-    frames: guardian.frames ?? 0,
+    frames: guardian.frames ?? 1,
     sprite: guardian.sprite ?? '0000',
 
     statScaling: Object.assign({}, getDefaultStats(), guardian.statScaling),
@@ -85,6 +85,7 @@ export function ensureSkill(
     name: skill.name ?? 'UNKNOWN',
     __type: skill.__type ?? 'skill',
     sprite: skill.sprite ?? '0000',
+    frames: skill.frames ?? 1,
     rarity: skill.rarity ?? 'Common',
     dropLevel: skill.dropLevel ?? 0,
     preventDrop: skill.preventDrop ?? false,

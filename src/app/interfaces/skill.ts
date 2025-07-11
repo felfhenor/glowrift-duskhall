@@ -1,3 +1,4 @@
+import { Animatable } from './artable';
 import { DroppableEquippable } from './droppable';
 import { GameElement } from './element';
 import { Branded } from './identifiable';
@@ -33,6 +34,7 @@ export type EquipmentSkillContentTechnique = {
 };
 
 export type EquipmentSkillContent = DroppableEquippable &
+  Animatable &
   EquipmentSkillContentTechniqueModifiable & {
     __type: 'skill';
     id: EquipmentSkillId;
