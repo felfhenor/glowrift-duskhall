@@ -1,7 +1,12 @@
 import { sample, sampleSize, sortBy } from 'lodash';
 import { Combat, Combatant } from '@interfaces';
 import { applySkillToTarget } from '@helpers/combat-damage';
-import { checkCombatOver, isCombatOver, isDead } from '@helpers/combat-end';
+import {
+  checkCombatOver,
+  isCombatOver,
+  isDead,
+  handleCombatDefeat,
+} from '@helpers/combat-end';
 import { logCombatMessage } from '@helpers/combat-log';
 import {
   availableSkillsForCombatant,
@@ -9,6 +14,7 @@ import {
   getPossibleCombatantTargetsForSkillTechnique,
 } from '@helpers/combat-targetting';
 import { gamestate, updateGamestate } from '@helpers/state-game';
+import { notify } from '@helpers/notify';
 
 export function currentCombat(): Combat | undefined {
   return gamestate().hero.combat;
@@ -79,6 +85,17 @@ export function doCombatIteration(): void {
   });
 
   checkCombatOver(combat);
+}
+
+export function handleCombatFlee(): void {
+  const combat = currentCombat();
+  if (!combat) {
+    notify('You are not in combat!', 'Travel');
+  } else {
+    logCombatMessage(combat, 'The heroes have fled combat!');
+    handleCombatDefeat(combat);
+    resetCombat();
+  }
 }
 
 export function resetCombat(): void {

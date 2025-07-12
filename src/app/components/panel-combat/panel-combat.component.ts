@@ -5,7 +5,13 @@ import { PanelCombatClaimsComponent } from '@components/panel-combat-claims/pane
 import { PanelCombatCombatlogComponent } from '@components/panel-combat-combatlog/panel-combat-combatlog.component';
 import { PanelCombatPreferencesComponent } from '@components/panel-combat-preferences/panel-combat-preferences.component';
 import { OptionsBaseComponent } from '@components/panel-options/option-base-page.component';
-import { options, showCombatMenu } from '@helpers';
+import {
+  options,
+  showCombatMenu,
+  handleCombatFlee,
+  currentCombat,
+  isCombatOver,
+} from '@helpers';
 import { CombatTab, CombatTabLink } from '@interfaces';
 
 @Component({
@@ -38,5 +44,14 @@ export class PanelCombatComponent extends OptionsBaseComponent {
 
   closeMenu() {
     showCombatMenu.set(false);
+  }
+
+  combatTabVisibility(): boolean {
+    const combat = currentCombat();
+    return combat !== undefined && !isCombatOver(combat);
+  }
+
+  fleeFromCombat() {
+    handleCombatFlee();
   }
 }
