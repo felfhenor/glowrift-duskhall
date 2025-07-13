@@ -1,12 +1,7 @@
 import { sample, sampleSize, sortBy } from 'lodash';
 import { Combat, Combatant } from '@interfaces';
 import { applySkillToTarget } from '@helpers/combat-damage';
-import {
-  checkCombatOver,
-  isCombatOver,
-  isDead,
-  handleCombatDefeat,
-} from '@helpers/combat-end';
+import { checkCombatOver, isCombatOver, isDead } from '@helpers/combat-end';
 import { logCombatMessage } from '@helpers/combat-log';
 import {
   availableSkillsForCombatant,
