@@ -15,6 +15,7 @@ import {
 } from '@helpers/combat-targetting';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { notify } from '@helpers/notify';
+import { travelHome } from '@helpers/explore';
 
 export function currentCombat(): Combat | undefined {
   return gamestate().hero.combat;
@@ -91,11 +92,17 @@ export function handleCombatFlee(): void {
   const combat = currentCombat();
   if (!combat) {
     notify('You are not in combat!', 'Travel');
-  } else {
-    logCombatMessage(combat, 'The heroes have fled combat!');
-    handleCombatDefeat(combat);
-    resetCombat();
+    return;
   }
+  logCombatMessage(combat, 'You begin to make the journey home in defeat!');
+  logCombatMessage(
+    combat,
+    'The heroes have forfeited the battle and began to flee!',
+  );
+  // handleCombatDefeat(combat);
+
+  resetCombat();
+  travelHome();
 }
 
 export function resetCombat(): void {

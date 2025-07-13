@@ -24,7 +24,13 @@
       }
     </div>
     @if (combatTabVisibility()) {
-      <button class="btn btn-clear" (click)="fleeFromCombat()">FLEE</button>
+      <button
+        class="btn btn-warn"
+        style="text-transform: uppercase"
+        (click)="fleeFromCombat()"
+      >
+        Flee
+      </button>
     }
   </div>
 

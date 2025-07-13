@@ -48,7 +48,7 @@ export class PanelCombatComponent extends OptionsBaseComponent {
 
   combatTabVisibility(): boolean {
     const combat = currentCombat();
-    return combat !== undefined && !isCombatOver(combat);
+    return !!combat && !isCombatOver(combat);
   }
 
   fleeFromCombat() {
