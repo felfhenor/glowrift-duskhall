@@ -35,6 +35,8 @@ export type Combatant = Animatable & {
   skillRefs: EquipmentSkill[];
 
   talents: Record<TalentId, number>;
+
+  skillUses: Record<EquipmentSkillId, number>;
 };
 
 export interface Combat {

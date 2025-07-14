@@ -1,5 +1,3 @@
-import { sample, sampleSize, sortBy } from 'lodash';
-import { Combat, Combatant } from '@interfaces';
 import { applySkillToTarget } from '@helpers/combat-damage';
 import { checkCombatOver, isCombatOver, isDead } from '@helpers/combat-end';
 import { logCombatMessage } from '@helpers/combat-log';
@@ -9,6 +7,8 @@ import {
   getPossibleCombatantTargetsForSkillTechnique,
 } from '@helpers/combat-targetting';
 import { gamestate, updateGamestate } from '@helpers/state-game';
+import { Combat, Combatant, EquipmentSkill } from '@interfaces';
+import { sample, sampleSize, sortBy } from 'lodash';
 
 export function currentCombat(): Combat | undefined {
   return gamestate().hero.combat;
@@ -21,6 +21,14 @@ export function orderCombatantsBySpeed(combat: Combat): Combatant[] {
   );
 }
 
+export function combatantMarkSkillUse(
+  combatant: Combatant,
+  skill: EquipmentSkill,
+): void {
+  combatant.skillUses[skill.id] ??= 0;
+  combatant.skillUses[skill.id]++;
+}
+
 export function combatantTakeTurn(combat: Combat, combatant: Combatant): void {
   if (isDead(combatant)) {
     logCombatMessage(combat, `**${combatant.name}** is dead, skipping turn.`);
@@ -30,6 +38,7 @@ export function combatantTakeTurn(combat: Combat, combatant: Combatant): void {
   const skills = availableSkillsForCombatant(combatant).filter(
     (s) => getPossibleCombatantTargetsForSkill(combat, combatant, s).length > 0,
   );
+
   const chosenSkill = sample(skills);
   if (!chosenSkill) {
     logCombatMessage(
@@ -38,6 +47,8 @@ export function combatantTakeTurn(combat: Combat, combatant: Combatant): void {
     );
     return;
   }
+
+  combatantMarkSkillUse(combatant, chosenSkill);
 
   chosenSkill.techniques.forEach((tech) => {
     const targets = sampleSize(

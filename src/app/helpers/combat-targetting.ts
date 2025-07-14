@@ -1,4 +1,4 @@
-import { intersection, union } from 'lodash';
+import { getEntry } from '@helpers/content';
 import {
   Combat,
   Combatant,
@@ -8,7 +8,7 @@ import {
   EquipmentSkillTargetBehavior,
   EquipmentSkillTargetType,
 } from '@interfaces';
-import { getEntry } from '@helpers/content';
+import { intersection, union } from 'lodash';
 
 export function availableSkillsForCombatant(
   combatant: Combatant,
@@ -16,7 +16,11 @@ export function availableSkillsForCombatant(
   return [
     ...combatant.skillIds.map((s) => getEntry<EquipmentSkill>(s)!),
     ...combatant.skillRefs,
-  ];
+  ].filter(
+    (skill) =>
+      skill.usesPerCombat === -1 ||
+      (combatant.skillUses[skill.id] ?? 0) < skill.usesPerCombat,
+  );
 }
 
 export function filterCombatantTargetListForSkillTechniqueBehavior(

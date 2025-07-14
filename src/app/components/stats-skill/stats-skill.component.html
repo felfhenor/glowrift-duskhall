@@ -7,11 +7,16 @@
     Level {{ skillData.dropLevel }} {{ skillData.rarity }}
     {{ elements().join(', ') }} {{ skillData.__type }}
   </div>
+
+  <div class="mt-1">
+    {{ skillData.usesPerCombat === -1 ? '∞' : skillData.usesPerCombat }} uses
+    per combat
+  </div>
 </div>
 
-<div class="mt-3 font-bold">Techniques</div>
+<div class="mt-3 font-bold mb-1">Techniques</div>
 
-<ol class="list-decimal ps-4 mt-1">
+<ol class="list-decimal ps-4">
   @for (technique of techniqueTexts(); track $index) {
     <li>
       {{ technique }}
