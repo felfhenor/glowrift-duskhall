@@ -1,7 +1,7 @@
 import { EquipmentItem, EquipmentSlot, Hero } from '@interfaces';
 import { updateHeroData } from '@helpers/hero';
 import { recalculateStats } from '@helpers/hero-stats';
-import { updateGamestate, gamestate } from '@helpers/state-game';
+import { updateGamestate } from '@helpers/state-game';
 import { getHero } from '@helpers/hero';
 
 export function getItemSlot(item: EquipmentItem): EquipmentSlot {
