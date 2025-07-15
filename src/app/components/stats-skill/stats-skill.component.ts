@@ -1,8 +1,8 @@
 import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
-import { uniq } from 'lodash';
 import { rarityItemTextColor } from '@helpers';
 import { EquipmentSkillContent, GameStat } from '@interfaces';
+import { uniq } from 'lodash';
 
 @Component({
   selector: 'app-stats-skill',
@@ -24,6 +24,7 @@ export class StatsSkillComponent {
   public techniqueTexts = computed(() => {
     return this.skill().techniques.map((t) => {
       const statString = Object.keys(t.damageScaling)
+        .filter((d) => t.damageScaling[d as GameStat])
         .map((d) => `${d} (${t.damageScaling[d as GameStat]}x)`)
         .join(', ');
 

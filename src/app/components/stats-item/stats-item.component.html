@@ -10,6 +10,8 @@
     Level {{ itemData.dropLevel }} {{ itemData.rarity }} {{ itemData.__type }}
   </div>
 
+  <div class="mt-3 font-bold mb-1">Stats</div>
+
   @if (itemHealth() || deltas?.Health) {
     <app-marker-stat
       stat="Health"

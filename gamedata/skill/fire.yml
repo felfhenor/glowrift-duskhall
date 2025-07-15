@@ -7,6 +7,8 @@
   rarity: Common
   dropLevel: 1
 
+  usesPerCombat: 7
+
   techniques:
     - elements: [Fire]
       attributes: [AllowPlink]
@@ -27,6 +29,8 @@
   rarity: Uncommon
   dropLevel: 5
 
+  usesPerCombat: 5
+
   techniques:
     - elements: [Fire]
       attributes: [AllowPlink]
@@ -46,6 +50,8 @@
 
   rarity: Rare
   dropLevel: 15
+
+  usesPerCombat: 3
 
   techniques:
     - elements: [Fire]

@@ -1,3 +1,8 @@
+import { getEntry } from '@helpers/content';
+import { getDefaultAffinities } from '@helpers/defaults';
+import { createGuardianForLocation } from '@helpers/guardian';
+import { allHeroes } from '@helpers/hero';
+import { uuid } from '@helpers/rng';
 import {
   Combat,
   Combatant,
@@ -7,11 +12,6 @@ import {
   Guardian,
   WorldLocation,
 } from '@interfaces';
-import { getEntry } from '@helpers/content';
-import { getDefaultAffinities } from '@helpers/defaults';
-import { createGuardianForLocation } from '@helpers/guardian';
-import { allHeroes } from '@helpers/hero';
-import { uuid } from '@helpers/rng';
 
 export function generateCombatForLocation(location: WorldLocation): Combat {
   const heroes: Combatant[] = allHeroes().map((h) => ({
@@ -37,6 +37,8 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
     resistance: {
       ...getDefaultAffinities(),
     },
+
+    skillUses: {},
   }));
 
   const guardians: Combatant[] = location.guardianIds
@@ -67,6 +69,8 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
         ...getDefaultAffinities(),
         ...g.resistance,
       },
+
+      skillUses: {},
     }));
 
   return {

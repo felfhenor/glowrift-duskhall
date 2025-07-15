@@ -1,3 +1,4 @@
+import { getDefaultAffinities, getDefaultStats } from '@helpers/defaults';
 import {
   Content,
   ContentType,
@@ -15,7 +16,6 @@ import {
   TalentTreeContent,
   WorldConfigContent,
 } from '@interfaces';
-import { getDefaultAffinities, getDefaultStats } from '@helpers/defaults';
 
 // eat my ass, typescript
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -90,6 +90,7 @@ export function ensureSkill(
     dropLevel: skill.dropLevel ?? 0,
     preventDrop: skill.preventDrop ?? false,
     preventModification: skill.preventModification ?? false,
+    usesPerCombat: skill.usesPerCombat ?? -1,
     techniques: (skill.techniques ?? []).map(
       (tech: Partial<EquipmentSkillContentTechnique>) => {
         const techReq: Required<EquipmentSkillContentTechnique> = {
