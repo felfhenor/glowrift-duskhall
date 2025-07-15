@@ -39,8 +39,7 @@ export function equipItem(hero: Hero, item: EquipmentItem): void {
 
   removeItemFromInventory(item);
 
-  const updatedHero = getHero(hero.id);
-  recalculateStats(updatedHero!);
+  recalculateStats(hero.id);
 }
 
 export function unequipItem(hero: Hero, item: EquipmentItem): void {
