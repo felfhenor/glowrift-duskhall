@@ -1,5 +1,3 @@
-import { sample, sampleSize, sortBy } from 'lodash';
-import { Combat, Combatant } from '@interfaces';
 import { applySkillToTarget } from '@helpers/combat-damage';
 import {
   checkCombatOver,
@@ -16,6 +14,8 @@ import {
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { notify } from '@helpers/notify';
 import { travelHome } from '@helpers/explore';
+import { Combat, Combatant, EquipmentSkill } from '@interfaces';
+import { sample, sampleSize, sortBy } from 'lodash';
 
 export function currentCombat(): Combat | undefined {
   return gamestate().hero.combat;
