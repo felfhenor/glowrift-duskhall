@@ -31,7 +31,7 @@ export function heroLevelUp(hero: Hero): void {
 
   const newHero = gamestate().hero.heroes.find((h) => h.id === hero.id);
   if (newHero) {
-    recalculateStats(newHero);
+    recalculateStats(newHero.id);
   }
 }
 
