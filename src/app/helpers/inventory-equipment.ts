@@ -37,7 +37,8 @@ export function equipItem(hero: Hero, item: EquipmentItem): void {
   });
 
   removeItemFromInventory(item);
-  recalculateStats(hero);
+
+  recalculateStats(hero.id);
 }
 
 export function unequipItem(hero: Hero, item: EquipmentItem): void {
@@ -49,5 +50,5 @@ export function unequipItem(hero: Hero, item: EquipmentItem): void {
   });
 
   addItemToInventory(item);
-  recalculateStats(hero);
+  recalculateStats(hero.id);
 }

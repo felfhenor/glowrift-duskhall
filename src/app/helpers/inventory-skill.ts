@@ -41,7 +41,7 @@ export function equipSkill(
   });
 
   removeSkillFromInventory(item);
-  recalculateStats(hero);
+  recalculateStats(hero.id);
 }
 
 export function unequipSkill(
@@ -57,5 +57,5 @@ export function unequipSkill(
   });
 
   addSkillToInventory(item);
-  recalculateStats(hero);
+  recalculateStats(hero.id);
 }

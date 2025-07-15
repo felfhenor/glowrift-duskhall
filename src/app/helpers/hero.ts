@@ -58,3 +58,7 @@ export function setHeroRiskTolerance(riskTolerance: HeroRiskTolerance): void {
     return state;
   });
 }
+
+export function getHero(heroId: HeroId): Hero | undefined {
+  return allHeroes().find((h) => h.id === heroId);
+}
