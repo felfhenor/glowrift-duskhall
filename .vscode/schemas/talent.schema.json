@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      },
+      "description": {
+        "type": "string"
+      },
+      "sprite": {
+        "type": "string"
+      },
+      "boostedElements": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "boostStats": {
+        "type": "object",
+        "properties": {
+          "Force": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "Force"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "required": [
+      "id",
+      "name",
+      "description",
+      "sprite",
+      "boostedElements",
+      "boostStats"
+    ],
+    "additionalProperties": false
+  },
+  "title": "fire",
+  "description": "Auto-generated schema for C:\\Users\\K.Ajay Goud\\Downloads\\glowrift-duskhall\\gamedata\\talent\\fire.yml"
+}

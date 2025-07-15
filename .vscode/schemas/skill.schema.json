@@ -1,0 +1,93 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      },
+      "preventDrop": {
+        "type": "boolean"
+      },
+      "rarity": {
+        "type": "string"
+      },
+      "dropLevel": {
+        "type": "number"
+      },
+      "sprite": {
+        "type": "string"
+      },
+      "frames": {
+        "type": "number"
+      },
+      "techniques": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "attributes": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "targets": {
+              "type": "number"
+            },
+            "targetType": {
+              "type": "string"
+            },
+            "targetBehaviors": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "damageScaling": {
+              "type": "object",
+              "properties": {
+                "Force": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "Force"
+              ],
+              "additionalProperties": false
+            },
+            "combatMessage": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "attributes",
+            "targets",
+            "targetType",
+            "targetBehaviors",
+            "damageScaling",
+            "combatMessage"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "required": [
+      "id",
+      "name",
+      "preventDrop",
+      "rarity",
+      "dropLevel",
+      "sprite",
+      "frames",
+      "techniques"
+    ],
+    "additionalProperties": false
+  },
+  "title": "basic",
+  "description": "Auto-generated schema for C:\\Users\\K.Ajay Goud\\Downloads\\glowrift-duskhall\\gamedata\\skill\\basic.yml"
+}

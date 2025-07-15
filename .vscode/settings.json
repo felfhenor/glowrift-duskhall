@@ -12,5 +12,18 @@
   "eslint.format.enable": true,
   "eslint.lintTask.enable": true,
   "eslint.validate": ["typescript", "javascript"],
-  "eslint.workingDirectories": [{ "mode": "auto" }]
+  "eslint.workingDirectories": [{ "mode": "auto" }],
+  "yaml.schemas": {
+    "./.vscode/schemas/accessory.schema.json": "gamedata/accessory/*.yml",
+    "./.vscode/schemas/armor.schema.json": "gamedata/armor/*.yml",
+    "./.vscode/schemas/currency.schema.json": "gamedata/currency/*.yml",
+    "./.vscode/schemas/festival.schema.json": "gamedata/festival/*.yml",
+    "./.vscode/schemas/guardian.schema.json": "gamedata/guardian/*.yml",
+    "./.vscode/schemas/skill.schema.json": "gamedata/skill/*.yml",
+    "./.vscode/schemas/talent.schema.json": "gamedata/talent/*.yml",
+    "./.vscode/schemas/talenttree.schema.json": "gamedata/talenttree/*.yml",
+    "./.vscode/schemas/trinket.schema.json": "gamedata/trinket/*.yml",
+    "./.vscode/schemas/weapon.schema.json": "gamedata/weapon/*.yml",
+    "./.vscode/schemas/worldconfig.schema.json": "gamedata/worldconfig/*.yml"
+  }
 }
