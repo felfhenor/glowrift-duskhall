@@ -15,4 +15,8 @@ export interface TalentContent extends Content, Artable {
   boostedElements: GameElement[];
   boostedSkillIds: string[];
   boostStats: StatBlock;
+
+  boostedStatusEffectIds: string[];
+  boostedStatusEffectChance: number;
+  boostStatusEffectStats: StatBlock;
 }

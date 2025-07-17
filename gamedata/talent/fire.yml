@@ -1,7 +1,7 @@
 - id: 62e841f4-0758-450b-9ade-848686dfe54f
   name: Strength of Fire
   description: Boost the power of Fire skills by 10%.
-  sprite: '0008'
+  sprite: '0009'
 
   boostedElements: [Fire]
 
@@ -50,3 +50,24 @@
 
   boostStats:
     Force: 0.25
+
+- id: 4997998a-ea6b-421d-b3e7-3b3f5f133c66
+  name: Heating Up
+  description: Boost the chance of Burning by 5%.
+  sprite: '0010'
+
+  boostedStatusEffectIds:
+    - Burning
+
+  boostedStatusEffectChance: 100
+
+- id: 918995df-f0ac-407b-98a8-7601573f4f94
+  name: Fire Force
+  description: Boost the damage of Burning by 20%.
+  sprite: '0010'
+
+  boostedStatusEffectIds:
+    - Burning
+
+  boostStatusEffectStats:
+    Force: 0.20

@@ -10,8 +10,9 @@ import {
   getPossibleCombatantTargetsForSkill,
   getPossibleCombatantTargetsForSkillTechnique,
 } from '@helpers/combat-targetting';
+import { getEntry } from '@helpers/content';
 import { gamestate, updateGamestate } from '@helpers/state-game';
-import { Combat, Combatant, EquipmentSkill } from '@interfaces';
+import { Combat, Combatant, EquipmentSkill, TalentContent } from '@interfaces';
 import { sample, sampleSize, sortBy } from 'lodash';
 
 export function currentCombat(): Combat | undefined {
@@ -23,6 +24,13 @@ export function orderCombatantsBySpeed(combat: Combat): Combatant[] {
     [...combat.guardians, ...combat.heroes],
     (c) => -c.totalStats.Speed,
   );
+}
+
+export function allCombatantTalents(combatant: Combatant): TalentContent[] {
+  return Object.entries(combatant.talents)
+    .filter(([, level]) => level > 0)
+    .map(([talentId]) => getEntry<TalentContent>(talentId))
+    .filter((talent): talent is TalentContent => !!talent);
 }
 
 export function combatantMarkSkillUse(

@@ -159,6 +159,14 @@ export function ensureTalent(
     boostedElements: talent.boostedElements ?? [],
     boostedSkillIds: talent.boostedSkillIds ?? [],
     boostStats: Object.assign({}, getDefaultStats(), talent.boostStats ?? {}),
+
+    boostedStatusEffectChance: talent.boostedStatusEffectChance ?? 0,
+    boostedStatusEffectIds: talent.boostedStatusEffectIds ?? [],
+    boostStatusEffectStats: Object.assign(
+      {},
+      getDefaultStats(),
+      talent.boostStatusEffectStats ?? {},
+    ),
   };
 }
 

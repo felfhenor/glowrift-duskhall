@@ -1,8 +1,10 @@
+import { allCombatantTalents } from '@helpers/combat';
 import { isDead } from '@helpers/combat-end';
 import { formatCombatMessage, logCombatMessage } from '@helpers/combat-log';
 import {
   applyStatusEffectToTarget,
   createStatusEffect,
+  statusEffectChanceTalentBoost,
 } from '@helpers/combat-statuseffects';
 import { getEntry } from '@helpers/content';
 import { getDroppableEquippableBaseId } from '@helpers/droppable';
@@ -20,7 +22,6 @@ import {
   GameElement,
   GameStat,
   StatusEffectContent,
-  TalentContent,
 } from '@interfaces';
 import { intersection, sum } from 'lodash';
 
@@ -29,13 +30,6 @@ export function techniqueHasAttribute(
   attribute: EquipmentSkillAttribute,
 ): boolean {
   return technique.attributes?.includes(attribute);
-}
-
-export function allCombatantTalents(combatant: Combatant): TalentContent[] {
-  return Object.entries(combatant.talents)
-    .filter(([, level]) => level > 0)
-    .map(([talentId]) => getEntry<TalentContent>(talentId))
-    .filter((talent): talent is TalentContent => !!talent);
 }
 
 export function combatantTalentElementBoost(
@@ -171,14 +165,18 @@ export function applySkillToTarget(
   }
 
   technique.statusEffects.forEach((effData) => {
-    if (!succeedsChance(effData.chance)) return;
-
     const effectContent = getEntry<StatusEffectContent>(effData.statusEffectId);
     if (!effectContent) return;
+
+    const totalChance =
+      effData.chance + statusEffectChanceTalentBoost(combatant, effectContent);
+
+    if (!succeedsChance(totalChance)) return;
 
     const statusEffect = createStatusEffect(effectContent, combatant, {
       duration: effData.duration,
     });
+
     applyStatusEffectToTarget(combat, target, statusEffect);
   });
 
