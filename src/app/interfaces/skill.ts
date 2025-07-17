@@ -7,7 +7,9 @@ import { StatBlock } from '@interfaces/stat';
 export type EquipmentSkillTargetBehavior =
   | 'Always'
   | 'NotZeroHealth'
-  | 'NotMaxHealth';
+  | 'NotMaxHealth'
+  | 'IfStatusEffect'
+  | 'IfNotStatusEffect';
 
 export type EquipmentSkillAttribute =
   | 'BypassDefense'
@@ -25,6 +27,14 @@ export type EquipmentSkillContentModifiable = {
 
 export type EquipmentSkillTargetBehaviorData = {
   behavior: EquipmentSkillTargetBehavior;
+
+  statusEffectId?: string;
+};
+
+export type EquipmentSkillTechniqueStatusEffectApplication = {
+  statusEffectId: string;
+  chance: number;
+  duration: number;
 };
 
 export type EquipmentSkillContentTechnique = {
@@ -34,6 +44,7 @@ export type EquipmentSkillContentTechnique = {
   damageScaling: StatBlock;
   elements: GameElement[];
   attributes: EquipmentSkillAttribute[];
+  statusEffects: EquipmentSkillTechniqueStatusEffectApplication[];
 
   combatMessage: string;
 };

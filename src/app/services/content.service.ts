@@ -6,7 +6,6 @@ import {
   signal,
   WritableSignal,
 } from '@angular/core';
-import { forkJoin, Observable } from 'rxjs';
 import {
   allContentById,
   allIdsByName,
@@ -17,6 +16,7 @@ import {
 import { Content, ContentType } from '@interfaces';
 import { LoggerService } from '@services/logger.service';
 import { MetaService } from '@services/meta.service';
+import { forkJoin, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -121,6 +121,7 @@ export class ContentService {
       trinket: undefined,
       weapon: undefined,
       festival: undefined,
+      statuseffect: undefined,
       talent: undefined,
       talenttree: undefined,
     };

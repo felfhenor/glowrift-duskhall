@@ -3,6 +3,7 @@ import { ElementBlock } from '@interfaces/element';
 import { Branded } from '@interfaces/identifiable';
 import { EquipmentSkill, EquipmentSkillId } from '@interfaces/skill';
 import { StatBlock } from '@interfaces/stat';
+import { StatusEffect } from '@interfaces/statuseffect';
 import { TalentId } from '@interfaces/talent';
 import { WorldPosition } from '@interfaces/world';
 
@@ -15,6 +16,10 @@ export interface CombatLog {
   locationName: string;
   message: string;
 }
+
+export type CombatantStatusEffectData = {
+  isFrozen?: boolean;
+};
 
 export type Combatant = Animatable & {
   id: string;
@@ -37,6 +42,9 @@ export type Combatant = Animatable & {
   talents: Record<TalentId, number>;
 
   skillUses: Record<EquipmentSkillId, number>;
+
+  statusEffects: StatusEffect[];
+  statusEffectData: CombatantStatusEffectData;
 };
 
 export interface Combat {

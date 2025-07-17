@@ -19,6 +19,7 @@ export * from './sprite';
 export * from './stat';
 export * from './state-game';
 export * from './state-options';
+export * from './statuseffect';
 export * from './talent';
 export * from './talenttree';
 export * from './texture';

@@ -11,6 +11,8 @@ import {
   FestivalContent,
   GuardianContent,
   GuardianId,
+  StatusEffectContent,
+  StatusEffectId,
   TalentContent,
   TalentId,
   TalentTreeContent,
@@ -28,6 +30,7 @@ const initializers: Record<ContentType, (entry: any) => any> = {
   festival: ensureFestival,
   guardian: ensureGuardian,
   skill: ensureSkill,
+  statuseffect: ensureStatusEffect,
   talent: ensureTalent,
   talenttree: ensureTalentTree,
   worldconfig: ensureWorldConfig,
@@ -101,6 +104,7 @@ export function ensureSkill(
           targetBehaviors: tech.targetBehaviors ?? [
             { behavior: 'NotZeroHealth' },
           ],
+          statusEffects: tech.statusEffects ?? [],
           combatMessage: tech.combatMessage ?? 'UNKNOWN',
           damageScaling: Object.assign(
             {},
@@ -154,7 +158,7 @@ export function ensureTalent(
 
     boostedElements: talent.boostedElements ?? [],
     boostedSkillIds: talent.boostedSkillIds ?? [],
-    boostStats: talent.boostStats ?? getDefaultStats(),
+    boostStats: Object.assign({}, getDefaultStats(), talent.boostStats ?? {}),
   };
 }
 
@@ -163,5 +167,24 @@ export function ensureTalentTree(
 ): Required<TalentTreeContent> {
   return {
     ...tree,
+  };
+}
+
+export function ensureStatusEffect(
+  statusEffect: Partial<StatusEffectContent>,
+): Required<StatusEffectContent> {
+  return {
+    id: statusEffect.id ?? ('UNKNOWN' as StatusEffectId),
+    name: statusEffect.name ?? 'UNKNOWN',
+    __type: statusEffect.__type ?? 'statuseffect',
+    trigger: statusEffect.trigger ?? 'TurnEnd',
+    onApply: statusEffect.onApply ?? [],
+    onTick: statusEffect.onTick ?? [],
+    onUnapply: statusEffect.onUnapply ?? [],
+    statScaling: Object.assign(
+      {},
+      getDefaultStats(),
+      statusEffect.statScaling ?? {},
+    ),
   };
 }

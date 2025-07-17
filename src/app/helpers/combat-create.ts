@@ -39,6 +39,8 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
     },
 
     skillUses: {},
+    statusEffects: [],
+    statusEffectData: {},
   }));
 
   const guardians: Combatant[] = location.guardianIds
@@ -71,6 +73,8 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
       },
 
       skillUses: {},
+      statusEffects: [],
+      statusEffectData: {},
     }));
 
   return {

@@ -2,6 +2,10 @@ import { applySkillToTarget } from '@helpers/combat-damage';
 import { checkCombatOver, isCombatOver, isDead } from '@helpers/combat-end';
 import { logCombatMessage } from '@helpers/combat-log';
 import {
+  canTakeTurn,
+  handleCombatantStatusEffects,
+} from '@helpers/combat-statuseffects';
+import {
   availableSkillsForCombatant,
   getPossibleCombatantTargetsForSkill,
   getPossibleCombatantTargetsForSkillTechnique,
@@ -32,6 +36,18 @@ export function combatantMarkSkillUse(
 export function combatantTakeTurn(combat: Combat, combatant: Combatant): void {
   if (isDead(combatant)) {
     logCombatMessage(combat, `**${combatant.name}** is dead, skipping turn.`);
+    return;
+  }
+
+  handleCombatantStatusEffects(combat, combatant, 'TurnStart');
+
+  if (isDead(combatant)) {
+    logCombatMessage(combat, `**${combatant.name}** has died!`);
+    return;
+  }
+
+  if (!canTakeTurn(combatant)) {
+    logCombatMessage(combat, `**${combatant.name}** lost their turn!`);
     return;
   }
 
@@ -68,6 +84,13 @@ export function combatantTakeTurn(combat: Combat, combatant: Combatant): void {
       applySkillToTarget(combat, combatant, target, chosenSkill, tech);
     });
   });
+
+  handleCombatantStatusEffects(combat, combatant, 'TurnEnd');
+
+  if (isDead(combatant)) {
+    logCombatMessage(combat, `**${combatant.name}** has died!`);
+    return;
+  }
 }
 
 export function doCombatIteration(): void {

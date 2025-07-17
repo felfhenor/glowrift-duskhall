@@ -8,6 +8,7 @@ export type ContentType =
   | 'trinket'
   | 'armor'
   | 'festival'
+  | 'statuseffect'
   | 'talent'
   | 'talenttree';
 
