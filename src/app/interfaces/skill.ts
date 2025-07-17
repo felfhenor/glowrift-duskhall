@@ -23,10 +23,14 @@ export type EquipmentSkillContentModifiable = {
   usesPerCombat: -1 | number;
 };
 
+export type EquipmentSkillTargetBehaviorData = {
+  behavior: EquipmentSkillTargetBehavior;
+};
+
 export type EquipmentSkillContentTechnique = {
   targets: number;
   targetType: EquipmentSkillTargetType;
-  targetBehaviors: EquipmentSkillTargetBehavior[];
+  targetBehaviors: EquipmentSkillTargetBehaviorData[];
   damageScaling: StatBlock;
   elements: GameElement[];
   attributes: EquipmentSkillAttribute[];

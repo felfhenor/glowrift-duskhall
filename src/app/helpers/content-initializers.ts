@@ -98,7 +98,9 @@ export function ensureSkill(
           elements: tech.elements ?? [],
           targets: tech.targets ?? 1,
           targetType: tech.targetType ?? 'Enemies',
-          targetBehaviors: tech.targetBehaviors ?? ['NotZeroHealth'],
+          targetBehaviors: tech.targetBehaviors ?? [
+            { behavior: 'NotZeroHealth' },
+          ],
           combatMessage: tech.combatMessage ?? 'UNKNOWN',
           damageScaling: Object.assign(
             {},

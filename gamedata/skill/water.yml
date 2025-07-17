@@ -14,7 +14,9 @@
       attributes: [BypassDefense, AllowNegative]
       targets: 1
       targetType: Allies
-      targetBehaviors: [NotMaxHealth, NotZeroHealth]
+      targetBehaviors:
+        - behavior: NotZeroHealth
+        - behavior: NotMaxHealth
       damageScaling:
         Force: -0.5
         Aura: -0.25
@@ -37,7 +39,9 @@
       attributes: [BypassDefense, AllowNegative]
       targets: 1
       targetType: Allies
-      targetBehaviors: [NotMaxHealth, NotZeroHealth]
+      targetBehaviors:
+        - behavior: NotZeroHealth
+        - behavior: NotMaxHealth
       damageScaling:
         Force: -1
         Aura: -0.25
@@ -60,7 +64,9 @@
       attributes: [BypassDefense, AllowNegative]
       targets: 1
       targetType: Allies
-      targetBehaviors: [NotMaxHealth, NotZeroHealth]
+      targetBehaviors:
+        - behavior: NotZeroHealth
+        - behavior: NotMaxHealth
       damageScaling:
         Force: -1.5
         Aura: -0.25

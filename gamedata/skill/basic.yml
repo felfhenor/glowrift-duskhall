@@ -13,7 +13,8 @@
     - attributes: [AllowPlink]
       targets: 1
       targetType: Enemies
-      targetBehaviors: [NotZeroHealth]
+      targetBehaviors:
+        - behavior: NotZeroHealth
       damageScaling:
         Force: 1
 

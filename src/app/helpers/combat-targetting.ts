@@ -48,7 +48,10 @@ export function filterCombatantTargetListForSkillTechnique(
 ): Combatant[] {
   return intersection(
     ...technique.targetBehaviors.map((b) =>
-      filterCombatantTargetListForSkillTechniqueBehavior(combatants, b),
+      filterCombatantTargetListForSkillTechniqueBehavior(
+        combatants,
+        b.behavior,
+      ),
     ),
   );
 }

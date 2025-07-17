@@ -14,7 +14,8 @@
       attributes: [AllowPlink]
       targets: 1
       targetType: Enemies
-      targetBehaviors: [NotZeroHealth]
+      targetBehaviors:
+        - behavior: NotZeroHealth
       damageScaling:
         Force: 1
 
@@ -36,7 +37,8 @@
       attributes: [AllowPlink]
       targets: 1
       targetType: Enemies
-      targetBehaviors: [NotZeroHealth]
+      targetBehaviors:
+        - behavior: NotZeroHealth
       damageScaling:
         Force: 1.5
 
@@ -58,7 +60,8 @@
       attributes: [AllowPlink]
       targets: 1
       targetType: Enemies
-      targetBehaviors: [NotZeroHealth]
+      targetBehaviors:
+        - behavior: NotZeroHealth
       damageScaling:
         Force: 2
 
