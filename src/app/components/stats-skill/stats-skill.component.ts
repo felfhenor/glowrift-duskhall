@@ -1,7 +1,11 @@
 import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
-import { rarityItemTextColor } from '@helpers';
-import { EquipmentSkillContent, GameStat } from '@interfaces';
+import { getEntry, rarityItemTextColor } from '@helpers';
+import {
+  EquipmentSkillContent,
+  GameStat,
+  StatusEffectContent,
+} from '@interfaces';
 import { uniq } from 'lodash';
 
 @Component({
@@ -28,7 +32,16 @@ export class StatsSkillComponent {
         .map((d) => `${d} (${t.damageScaling[d as GameStat]}x)`)
         .join(', ');
 
-      return `${t.targetType} (${t.targets}x): ${statString}`;
+      const statusString = t.statusEffects
+        .map(
+          (s) =>
+            `${getEntry<StatusEffectContent>(s.statusEffectId)!.name} (${s.chance}% - ${s.duration} turns)`,
+        )
+        .join(', ');
+
+      const endString = [statString, statusString].filter(Boolean).join(' + ');
+
+      return `${t.targetType} (${t.targets}x): ${endString}`;
     });
   });
 }
