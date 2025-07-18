@@ -9,11 +9,12 @@ import {
   availableSkillsForCombatant,
   getPossibleCombatantTargetsForSkill,
   getPossibleCombatantTargetsForSkillTechnique,
+  getTargetsFromListBasedOnType,
 } from '@helpers/combat-targetting';
 import { getEntry } from '@helpers/content';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { Combat, Combatant, EquipmentSkill, TalentContent } from '@interfaces';
-import { sample, sampleSize, sortBy } from 'lodash';
+import { sample, sortBy } from 'lodash';
 
 export function currentCombat(): Combat | undefined {
   return gamestate().hero.combat;
@@ -75,13 +76,16 @@ export function combatantTakeTurn(combat: Combat, combatant: Combatant): void {
   combatantMarkSkillUse(combatant, chosenSkill);
 
   chosenSkill.techniques.forEach((tech) => {
-    const targets = sampleSize(
-      getPossibleCombatantTargetsForSkillTechnique(
-        combat,
-        combatant,
-        chosenSkill,
-        tech,
-      ),
+    const baseTargetList = getPossibleCombatantTargetsForSkillTechnique(
+      combat,
+      combatant,
+      chosenSkill,
+      tech,
+    );
+
+    const targets = getTargetsFromListBasedOnType(
+      baseTargetList,
+      combatant.targettingType,
       tech.targets,
     );
 

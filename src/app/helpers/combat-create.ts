@@ -19,6 +19,8 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
     name: h.name,
     isEnemy: false,
 
+    targettingType: h.targettingType,
+
     baseStats: h.baseStats,
     totalStats: h.baseStats,
     hp: h.baseStats.Health,
@@ -51,6 +53,8 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
       id: g.id,
       name: `${g.name} Lv.${location.encounterLevel} [${String.fromCharCode(i + 65)}]`,
       isEnemy: true,
+
+      targettingType: g.targettingType,
 
       baseStats: g.stats,
       totalStats: g.stats,

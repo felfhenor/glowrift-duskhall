@@ -1,5 +1,6 @@
 import { Signal, signal } from '@angular/core';
-import { cloneDeep } from 'lodash';
+import { uuid } from '@helpers/rng';
+import { localStorageSignal } from '@helpers/signal';
 import {
   CurrencyBlock,
   GameId,
@@ -9,8 +10,7 @@ import {
   LocationType,
   WorldPosition,
 } from '@interfaces';
-import { uuid } from '@helpers/rng';
-import { localStorageSignal } from '@helpers/signal';
+import { cloneDeep } from 'lodash';
 
 export function blankHero(props: Partial<Hero> = {}): Hero {
   return {
@@ -18,6 +18,7 @@ export function blankHero(props: Partial<Hero> = {}): Hero {
     name: '',
     sprite: '',
     frames: 4,
+    targettingType: 'Random',
     level: 1,
     xp: 0,
     hp: 10,

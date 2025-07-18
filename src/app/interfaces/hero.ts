@@ -1,4 +1,5 @@
 import { Animatable } from '@interfaces/artable';
+import { CombatantTargettingType } from '@interfaces/combat';
 import { EquipmentBlock } from '@interfaces/equipment';
 import { Branded, Identifiable } from '@interfaces/identifiable';
 import { EquipmentSkill } from '@interfaces/skill';
@@ -22,4 +23,6 @@ export type Hero = Identifiable &
     equipment: EquipmentBlock;
     skills: (EquipmentSkill | undefined)[];
     talents: Record<string, number>;
+
+    targettingType: CombatantTargettingType;
   };

@@ -1,0 +1,13 @@
+<h3 class="text-lg">Enemy Targetting</h3>
+
+<select
+  class="select"
+  [(ngModel)]="heroTargettingType"
+  (ngModelChange)="setTargettingType($event)"
+>
+  <option disabled selected>Pick a targetting type</option>
+
+  @for (type of targettingTypes; track type) {
+    <option [value]="type">{{ type }}</option>
+  }
+</select>

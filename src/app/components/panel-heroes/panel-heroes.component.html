@@ -30,10 +30,14 @@
       class="flex-1 flex flex-col justify-between border-t border-r border-b p-4"
     >
       <div class="flex flex-row h-full gap-2 mb-4">
-        <div class="w-[300px]">
+        <div class="w-[300px] flex flex-col gap-4">
           <app-panel-heroes-stats
             [hero]="activeHero()"
           ></app-panel-heroes-stats>
+
+          <app-panel-heroes-targetting
+            [hero]="activeHero()"
+          ></app-panel-heroes-targetting>
         </div>
 
         <div class="flex-1">

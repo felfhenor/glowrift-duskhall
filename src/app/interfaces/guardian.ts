@@ -1,4 +1,5 @@
 import { Animatable } from '@interfaces/artable';
+import { CombatantTargettingType } from '@interfaces/combat';
 import { ElementBlock } from '@interfaces/element';
 import { Branded, Content } from '@interfaces/identifiable';
 import { EquipmentSkillId } from '@interfaces/skill';
@@ -18,6 +19,8 @@ export type GuardianContent = Animatable &
     affinity: ElementBlock;
 
     talentIds: Record<TalentId, number>;
+
+    targettingType: CombatantTargettingType;
   };
 
 export type Guardian = GuardianContent & {

@@ -64,6 +64,8 @@ export function ensureGuardian(
     frames: guardian.frames ?? 1,
     sprite: guardian.sprite ?? '0000',
 
+    targettingType: guardian.targettingType ?? 'Random',
+
     statScaling: Object.assign({}, getDefaultStats(), guardian.statScaling),
     skillIds: guardian.skillIds ?? [],
     resistance: Object.assign(

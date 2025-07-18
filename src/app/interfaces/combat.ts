@@ -21,6 +21,8 @@ export type CombatantStatusEffectData = {
   isFrozen?: boolean;
 };
 
+export type CombatantTargettingType = 'Random' | 'Strongest' | 'Weakest';
+
 export type Combatant = Animatable & {
   id: string;
   name: string;
@@ -29,6 +31,8 @@ export type Combatant = Animatable & {
 
   level: number;
   hp: number;
+
+  targettingType: CombatantTargettingType;
 
   baseStats: StatBlock;
   totalStats: StatBlock;
