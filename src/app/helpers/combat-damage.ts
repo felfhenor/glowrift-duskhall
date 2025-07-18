@@ -148,7 +148,7 @@ export function applySkillToTarget(
     effectiveDamage *= damageMultiplierFromFestivals;
     effectiveDamage = Math.floor(effectiveDamage);
 
-    combatantTakeDamage(combatant, effectiveDamage);
+    combatantTakeDamage(target, effectiveDamage);
 
     const templateData = {
       combat,
