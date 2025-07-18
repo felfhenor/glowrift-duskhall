@@ -1,11 +1,11 @@
 import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
-import { TippyDirective } from '@ngneat/helipopper';
-import { rarityItemOutlineColor } from '@helpers';
-import { EquipmentSkillContent } from '@interfaces';
 import { AtlasAnimationComponent } from '@components/atlas-animation/atlas-animation.component';
 import { IconBlankSlotComponent } from '@components/icon-blank-slot/icon-blank-slot.component';
 import { StatsSkillComponent } from '@components/stats-skill/stats-skill.component';
+import { rarityItemOutlineColor } from '@helpers';
+import { EquipmentSkillContent } from '@interfaces';
+import { TippyDirective } from '@ngneat/helipopper';
 
 @Component({
   selector: 'app-icon-skill',
@@ -21,6 +21,7 @@ import { StatsSkillComponent } from '@components/stats-skill/stats-skill.compone
 })
 export class IconSkillComponent {
   public skill = input.required<EquipmentSkillContent>();
+  public shouldAnimate = input<boolean>(false);
 
   public itemOutlineClass = computed(() =>
     rarityItemOutlineColor(this.skill().rarity),
