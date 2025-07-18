@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      },
+      "sprite": {
+        "type": "string"
+      },
+      "statScaling": {
+        "type": "object",
+        "properties": {
+          "Force": {
+            "type": "number"
+          },
+          "Health": {
+            "type": "number"
+          },
+          "Speed": {
+            "type": "number"
+          },
+          "Aura": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "Force",
+          "Health",
+          "Speed",
+          "Aura"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "required": [
+      "id",
+      "name",
+      "sprite",
+      "statScaling"
+    ],
+    "additionalProperties": false
+  },
+  "title": "basic",
+  "description": "Auto-generated schema for C:\\Users\\K.Ajay Goud\\Downloads\\glowrift-duskhall\\gamedata\\guardian\\basic.yml"
+}

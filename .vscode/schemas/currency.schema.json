@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      },
+      "value": {
+        "type": "number"
+      }
+    },
+    "required": [
+      "id",
+      "name",
+      "value"
+    ],
+    "additionalProperties": false
+  },
+  "title": "all",
+  "description": "Auto-generated schema for C:\\Users\\K.Ajay Goud\\Downloads\\glowrift-duskhall\\gamedata\\currency\\all.yml"
+}

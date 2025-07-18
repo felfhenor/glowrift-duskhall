@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      },
+      "talents": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "level": {
+              "type": "number"
+            },
+            "learnableTalents": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "talentId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "talentId"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "level",
+            "learnableTalents"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "required": [
+      "id",
+      "name",
+      "talents"
+    ],
+    "additionalProperties": false
+  },
+  "title": "air",
+  "description": "Auto-generated schema for C:\\Users\\K.Ajay Goud\\Downloads\\glowrift-duskhall\\gamedata\\talenttree\\air.yml"
+}

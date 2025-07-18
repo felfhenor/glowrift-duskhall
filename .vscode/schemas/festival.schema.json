@@ -1,0 +1,86 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      },
+      "description": {
+        "type": "string"
+      },
+      "endDescription": {
+        "type": "string"
+      },
+      "effectsDescription": {
+        "type": "string"
+      },
+      "duration": {
+        "type": "number"
+      },
+      "rarity": {
+        "type": "string"
+      },
+      "effects": {
+        "type": "object",
+        "properties": {
+          "combat": {
+            "type": "object",
+            "properties": {
+              "outgoing": {
+                "type": "object",
+                "properties": {
+                  "damage": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "damage"
+                ],
+                "additionalProperties": false
+              },
+              "incoming": {
+                "type": "object",
+                "properties": {
+                  "damage": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "damage"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "outgoing",
+              "incoming"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "combat"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "required": [
+      "id",
+      "name",
+      "description",
+      "endDescription",
+      "effectsDescription",
+      "duration",
+      "rarity",
+      "effects"
+    ],
+    "additionalProperties": false
+  },
+  "title": "combat",
+  "description": "Auto-generated schema for C:\\Users\\K.Ajay Goud\\Downloads\\glowrift-duskhall\\gamedata\\festival\\combat.yml"
+}
