@@ -23,7 +23,7 @@
 
 - id: d758324d-4333-496a-8c54-222769cfbc38
   name: Strength of Firewisp II
-  description: Boost the power of Firewisp skills by 25%.
+  description: Boost the burning chance of Firewisp skills by 10%.
   sprite: '0008'
 
   requireTalentId: Strength of Firewisp I
@@ -33,8 +33,10 @@
     - Firewisp II
     - Firewisp III
 
-  boostStats:
-    Force: 0.25
+  boostedStatusEffectIds:
+    - Burning
+
+  boostedStatusEffectChance: 10
 
 - id: cb333d71-2d0b-4117-8ce4-16a0a55f7d3a
   name: Strength of Firewisp III
@@ -59,7 +61,7 @@
   boostedStatusEffectIds:
     - Burning
 
-  boostedStatusEffectChance: 100
+  boostedStatusEffectChance: 5
 
 - id: 918995df-f0ac-407b-98a8-7601573f4f94
   name: Fire Force

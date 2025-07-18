@@ -169,7 +169,8 @@ export function applySkillToTarget(
     if (!effectContent) return;
 
     const totalChance =
-      effData.chance + statusEffectChanceTalentBoost(combatant, effectContent);
+      effData.chance +
+      statusEffectChanceTalentBoost(combatant, skill, effectContent);
 
     if (!succeedsChance(totalChance)) return;
 

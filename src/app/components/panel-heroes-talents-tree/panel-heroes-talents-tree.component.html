@@ -7,10 +7,10 @@
         <app-icon-talent
           [talent]="talent.talentData"
           [isBought]="talent.isLearned"
-          [swal]="learnSwal"
           [class.opacity-50]="!talent.canPurchase"
           [class.cursor-pointer]="talent.canPurchase && !talent.isLearned"
-          [class.pointer-events-none]="!talent.canPurchase"
+          [class.cursor-disabled]="!talent.canPurchase"
+          (click)="tryLearnTalent(learnSwal, talent)"
         ></app-icon-talent>
 
         <swal

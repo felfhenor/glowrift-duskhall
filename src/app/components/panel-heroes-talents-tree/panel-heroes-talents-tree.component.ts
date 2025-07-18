@@ -1,5 +1,5 @@
 import { Component, computed, input, Signal } from '@angular/core';
-import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { IconTalentComponent } from '@components/icon-talent/icon-talent.component';
 import {
   canHeroBuyTalent,
   getEntry,
@@ -14,7 +14,7 @@ import {
   TalentTreeContentLevel,
   TalentTreeContentNode,
 } from '@interfaces';
-import { IconTalentComponent } from '@components/icon-talent/icon-talent.component';
+import { SwalComponent, SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 type TalentTreeHeroNode = TalentTreeContentNode & {
   talentData: TalentContent;
@@ -61,6 +61,11 @@ export class PanelHeroesTalentsTreeComponent {
 
     return talentTree as TalentTreeHeroDefinition;
   });
+
+  tryLearnTalent(swal: SwalComponent, talent: TalentTreeHeroNode): void {
+    if (!talent.canPurchase) return;
+    swal.fire();
+  }
 
   learnTalent(talent: TalentTreeHeroNode): void {
     heroSpendTalentPoint(this.hero(), talent.talentData.id);

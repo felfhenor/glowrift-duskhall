@@ -1,9 +1,9 @@
 import { Component, input } from '@angular/core';
-import { TippyDirective } from '@ngneat/helipopper';
-import { TalentContent } from '@interfaces';
 import { AtlasImageComponent } from '@components/atlas-image/atlas-image.component';
-import { ContentNameComponent } from '@components/content-name/content-name.component';
 import { IconBlankSlotComponent } from '@components/icon-blank-slot/icon-blank-slot.component';
+import { StatsTalentComponent } from '@components/stats-talent/stats-talent.component';
+import { TalentContent } from '@interfaces';
+import { TippyDirective } from '@ngneat/helipopper';
 
 @Component({
   selector: 'app-icon-talent',
@@ -11,7 +11,7 @@ import { IconBlankSlotComponent } from '@components/icon-blank-slot/icon-blank-s
     IconBlankSlotComponent,
     AtlasImageComponent,
     TippyDirective,
-    ContentNameComponent,
+    StatsTalentComponent,
   ],
   templateUrl: './icon-talent.component.html',
   styleUrl: './icon-talent.component.scss',

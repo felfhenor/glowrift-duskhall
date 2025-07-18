@@ -1,7 +1,9 @@
 import { allCombatantTalents } from '@helpers/combat';
 import { combatantTakeDamage } from '@helpers/combat-damage';
 import { formatCombatMessage, logCombatMessage } from '@helpers/combat-log';
+import { getDroppableEquippableBaseId } from '@helpers/droppable';
 import { Combat, Combatant } from '@interfaces/combat';
+import { EquipmentSkill } from '@interfaces/skill';
 import { GameStat } from '@interfaces/stat';
 import {
   StatusEffect,
@@ -19,10 +21,16 @@ export function canTakeTurn(combatant: Combatant): boolean {
 
 export function statusEffectChanceTalentBoost(
   combatant: Combatant,
+  skill: EquipmentSkill,
   effect: StatusEffectContent,
 ): number {
   return sum(
     allCombatantTalents(combatant)
+      .filter((t) =>
+        t.boostedSkillIds.length === 0
+          ? true
+          : t.boostedSkillIds.includes(getDroppableEquippableBaseId(skill)),
+      )
       .filter((t) => t.boostedStatusEffectIds.includes(effect.id))
       .map((t) => t.boostedStatusEffectChance),
   );
