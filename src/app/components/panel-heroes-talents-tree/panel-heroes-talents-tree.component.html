@@ -10,7 +10,7 @@
           [swal]="learnSwal"
           [class.opacity-50]="!talent.canPurchase"
           [class.cursor-pointer]="talent.canPurchase && !talent.isLearned"
-          [class.cursor-not-allowed]="!talent.canPurchase"
+          [class.pointer-events-none]="!talent.canPurchase"
         ></app-icon-talent>
 
         <swal
