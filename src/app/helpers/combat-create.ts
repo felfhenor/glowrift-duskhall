@@ -47,9 +47,9 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
     .map((g) => getEntry<Guardian>(g)!)
     .filter(Boolean)
     .map((g) => createGuardianForLocation(location, g))
-    .map((g) => ({
+    .map((g, i) => ({
       id: g.id,
-      name: `${g.name} Lv.${location.encounterLevel}`,
+      name: `${g.name} Lv.${location.encounterLevel} [${String.fromCharCode(i + 65)}]`,
       isEnemy: true,
 
       baseStats: g.stats,
