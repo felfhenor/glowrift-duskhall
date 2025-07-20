@@ -1,7 +1,7 @@
 import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 import { getEntry, rarityItemTextColor } from '@helpers';
-import {
+import type {
   EquipmentSkillContent,
   GameStat,
   StatusEffectContent,

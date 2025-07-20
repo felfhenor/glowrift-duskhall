@@ -1,6 +1,6 @@
 import { uuid } from '@helpers/rng';
 import { localStorageSignal } from '@helpers/signal';
-import { Combat, CombatLog } from '@interfaces';
+import type { Combat, CombatLog } from '@interfaces';
 import mustache from 'mustache';
 
 export const combatLog = localStorageSignal<CombatLog[]>('combatLog', []);

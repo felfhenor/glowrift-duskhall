@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
+import type {
+  WritableSignal } from '@angular/core';
 import {
   computed,
   inject,
   Injectable,
-  signal,
-  WritableSignal,
+  signal
 } from '@angular/core';
 import {
   allContentById,
@@ -13,10 +14,11 @@ import {
   setAllContentById,
   setAllIdsByName,
 } from '@helpers';
-import { Content, ContentType } from '@interfaces';
+import type { Content, ContentType } from '@interfaces';
 import { LoggerService } from '@services/logger.service';
 import { MetaService } from '@services/meta.service';
-import { forkJoin, Observable } from 'rxjs';
+import type { Observable } from 'rxjs';
+import { forkJoin } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',

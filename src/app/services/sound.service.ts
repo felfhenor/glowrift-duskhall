@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { zip } from 'lodash';
 import { getOption } from '@helpers';
-import { SFX } from '@interfaces';
+import type { SFX } from '@interfaces';
 
 @Injectable({
   providedIn: 'root',

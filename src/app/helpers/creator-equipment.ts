@@ -1,5 +1,5 @@
 import { cloneDeep } from 'lodash';
-import {
+import type {
   EquipmentItem,
   EquipmentItemContent,
   EquipmentItemId,

@@ -2,7 +2,7 @@ import { hasCurrency, loseCurrency } from '@helpers/currency';
 import { defaultCurrencyBlock, defaultNodeCountBlock } from '@helpers/defaults';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { hasClaimedNodeCount } from '@helpers/world';
-import { GameCurrency, LocationType, TownBuilding } from '@interfaces';
+import type { GameCurrency, LocationType, TownBuilding } from '@interfaces';
 
 export function getBuildingLevel(building: TownBuilding): number {
   return gamestate().town.buildingLevels[building] ?? 1;

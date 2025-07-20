@@ -1,6 +1,7 @@
+import type {
+  ApplicationConfig } from '@angular/core';
 import {
   APP_INITIALIZER,
-  ApplicationConfig,
   ENVIRONMENT_INITIALIZER,
   ErrorHandler,
   importProvidersFrom,

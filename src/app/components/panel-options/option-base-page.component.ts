@@ -1,5 +1,5 @@
 import { getOption, setOption } from '@helpers';
-import { GameOptions } from '@interfaces';
+import type { GameOptions } from '@interfaces';
 
 export class OptionsBaseComponent {
   public currentValueForOption(option: keyof GameOptions) {

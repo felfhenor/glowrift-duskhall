@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 import { ContentNameComponent } from '@components/content-name/content-name.component';
-import { TalentContent } from '@interfaces';
+import type { TalentContent } from '@interfaces';
 
 @Component({
   selector: 'app-stats-talent',

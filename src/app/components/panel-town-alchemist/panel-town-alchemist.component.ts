@@ -9,7 +9,7 @@ import {
   salvageSkills,
   sortedRarityList,
 } from '@helpers';
-import { EquipmentSkill, GameCurrency } from '@interfaces';
+import type { EquipmentSkill, GameCurrency } from '@interfaces';
 import { BlankSlateComponent } from '@components/blank-slate/blank-slate.component';
 import { CardPageComponent } from '@components/card-page/card-page.component';
 import { IconBlankSlotComponent } from '@components/icon-blank-slot/icon-blank-slot.component';

@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 import { TippyDirective } from '@ngneat/helipopper';
-import { Guardian } from '@interfaces';
+import type { Guardian } from '@interfaces';
 import { IconGuardianComponent } from '@components/icon-guardian/icon-guardian.component';
 import { MarkerStatComponent } from '@components/marker-stat/marker-stat.component';
 

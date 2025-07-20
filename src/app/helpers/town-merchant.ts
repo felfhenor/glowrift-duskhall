@@ -1,4 +1,4 @@
-import { EquipmentItem } from '@interfaces';
+import type { EquipmentItem } from '@interfaces';
 import { itemBuyValue } from '@helpers/action-equipment';
 import {
   allItemDefinitions,

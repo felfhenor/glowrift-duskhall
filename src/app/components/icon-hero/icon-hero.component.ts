@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { Hero } from '@interfaces';
+import type { Hero } from '@interfaces';
 import { AtlasAnimationComponent } from '@components/atlas-animation/atlas-animation.component';
 
 @Component({

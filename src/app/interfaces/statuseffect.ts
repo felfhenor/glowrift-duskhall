@@ -1,6 +1,6 @@
-import { CombatantStatusEffectData } from '@interfaces/combat';
-import { Branded, Content } from '@interfaces/identifiable';
-import { StatBlock } from '@interfaces/stat';
+import type { CombatantStatusEffectData } from '@interfaces/combat';
+import type { Branded, Content } from '@interfaces/identifiable';
+import type { StatBlock } from '@interfaces/stat';
 
 export type StatusEffectId = Branded<string, 'StatusEffectId'>;
 

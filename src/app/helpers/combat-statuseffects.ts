@@ -2,10 +2,10 @@ import { allCombatantTalents } from '@helpers/combat';
 import { combatantTakeDamage } from '@helpers/combat-damage';
 import { formatCombatMessage, logCombatMessage } from '@helpers/combat-log';
 import { getDroppableEquippableBaseId } from '@helpers/droppable';
-import { Combat, Combatant } from '@interfaces/combat';
-import { EquipmentSkill } from '@interfaces/skill';
-import { GameStat } from '@interfaces/stat';
-import {
+import type { Combat, Combatant } from '@interfaces/combat';
+import type { EquipmentSkill } from '@interfaces/skill';
+import type { GameStat } from '@interfaces/stat';
+import type {
   StatusEffect,
   StatusEffectBehavior,
   StatusEffectBehaviorDataChange,

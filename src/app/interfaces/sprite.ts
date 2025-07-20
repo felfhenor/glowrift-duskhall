@@ -1,4 +1,4 @@
-import { Sprite } from 'pixi.js';
+import type { Sprite } from 'pixi.js';
 
 export interface NodeSpriteData {
   terrain: Sprite;

@@ -6,7 +6,7 @@ import { PanelCombatCombatlogComponent } from '@components/panel-combat-combatlo
 import { PanelCombatPreferencesComponent } from '@components/panel-combat-preferences/panel-combat-preferences.component';
 import { OptionsBaseComponent } from '@components/panel-options/option-base-page.component';
 import { options, showCombatMenu } from '@helpers';
-import { CombatTab, CombatTabLink } from '@interfaces';
+import type { CombatTab, CombatTabLink } from '@interfaces';
 
 @Component({
   selector: 'app-panel-combat',

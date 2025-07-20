@@ -8,7 +8,7 @@ import { gamestate, updateGamestate } from '@helpers/state-game';
 import { addTimerAndAction, getRegisterTick } from '@helpers/timer';
 import { distanceBetweenNodes } from '@helpers/travel';
 import { getGuardiansForLocation, getLootForLocation } from '@helpers/worldgen';
-import {
+import type {
   GameCurrency,
   GameStateWorld,
   LocationType,

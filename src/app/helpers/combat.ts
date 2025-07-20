@@ -13,7 +13,7 @@ import {
 } from '@helpers/combat-targetting';
 import { getEntry } from '@helpers/content';
 import { gamestate, updateGamestate } from '@helpers/state-game';
-import { Combat, Combatant, EquipmentSkill, TalentContent } from '@interfaces';
+import type { Combat, Combatant, EquipmentSkill, TalentContent } from '@interfaces';
 import { sample, sortBy } from 'lodash';
 
 export function currentCombat(): Combat | undefined {

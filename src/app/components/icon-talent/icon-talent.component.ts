@@ -2,7 +2,7 @@ import { Component, input } from '@angular/core';
 import { AtlasImageComponent } from '@components/atlas-image/atlas-image.component';
 import { IconBlankSlotComponent } from '@components/icon-blank-slot/icon-blank-slot.component';
 import { StatsTalentComponent } from '@components/stats-talent/stats-talent.component';
-import { TalentContent } from '@interfaces';
+import type { TalentContent } from '@interfaces';
 import { TippyDirective } from '@ngneat/helipopper';
 
 @Component({

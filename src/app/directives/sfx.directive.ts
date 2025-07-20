@@ -1,5 +1,5 @@
 import { Directive, HostListener, inject, input } from '@angular/core';
-import { SFX } from '@interfaces';
+import type { SFX } from '@interfaces';
 import { SoundService } from '@services/sound.service';
 
 type SFXTrigger = 'click' | 'hover';

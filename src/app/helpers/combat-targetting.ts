@@ -1,5 +1,5 @@
 import { getEntry } from '@helpers/content';
-import {
+import type {
   Combat,
   Combatant,
   CombatantTargettingType,

@@ -3,7 +3,7 @@ import {
   getCurrencyClaimsForNode,
   hasCurrency,
 } from '@helpers/currency';
-import { CurrencyBlock, GameCurrency, WorldLocation } from '@interfaces';
+import type { CurrencyBlock, GameCurrency, WorldLocation } from '@interfaces';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock dependencies

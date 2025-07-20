@@ -1,4 +1,4 @@
-import { Content } from '@interfaces/identifiable';
+import type { Content } from '@interfaces/identifiable';
 
 export type LocationType = 'town' | 'village' | 'cave' | 'dungeon' | 'castle';
 

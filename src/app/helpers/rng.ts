@@ -1,5 +1,5 @@
 import { myGameId } from '@helpers/state-game';
-import { Identifiable } from '@interfaces';
+import type { Identifiable } from '@interfaces';
 import seedrandom, { type PRNG } from 'seedrandom';
 import { v4 as uuid4 } from 'uuid';
 

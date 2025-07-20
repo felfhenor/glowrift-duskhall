@@ -19,7 +19,7 @@ import {
   unequipItem,
   unequipSkill,
 } from '@helpers';
-import { EquipmentItem, EquipmentSkill, EquipmentSlot } from '@interfaces';
+import type { EquipmentItem, EquipmentSkill, EquipmentSlot } from '@interfaces';
 
 @Component({
   selector: 'app-panel-heroes',

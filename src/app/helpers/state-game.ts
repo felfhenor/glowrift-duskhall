@@ -1,4 +1,5 @@
-import { Signal, signal } from '@angular/core';
+import type { Signal } from '@angular/core';
+import { signal } from '@angular/core';
 import {
   defaultCurrencyBlock,
   defaultHero,
@@ -7,7 +8,7 @@ import {
 } from '@helpers/defaults';
 import { uuid } from '@helpers/rng';
 import { localStorageSignal } from '@helpers/signal';
-import { GameId, GameState } from '@interfaces';
+import type { GameId, GameState } from '@interfaces';
 import { cloneDeep } from 'lodash';
 
 export function blankGameState(): GameState {

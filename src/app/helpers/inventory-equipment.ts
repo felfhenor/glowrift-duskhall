@@ -1,4 +1,4 @@
-import { EquipmentItem, EquipmentSlot, Hero } from '@interfaces';
+import type { EquipmentItem, EquipmentSlot, Hero } from '@interfaces';
 import { updateHeroData } from '@helpers/hero';
 import { recalculateStats } from '@helpers/hero-stats';
 import { updateGamestate } from '@helpers/state-game';

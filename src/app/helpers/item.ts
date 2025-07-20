@@ -1,4 +1,4 @@
-import {
+import type {
   DroppableEquippable,
   DropRarity,
   EquipmentItem,

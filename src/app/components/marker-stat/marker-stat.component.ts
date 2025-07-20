@@ -1,6 +1,6 @@
 import { DecimalPipe, TitleCasePipe } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
-import { GameStat, Icon } from '@interfaces';
+import type { GameStat, Icon } from '@interfaces';
 import { IconComponent } from '@components/icon/icon.component';
 
 const icons: Record<GameStat, Icon> = {

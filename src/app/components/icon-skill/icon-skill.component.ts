@@ -4,7 +4,7 @@ import { AtlasAnimationComponent } from '@components/atlas-animation/atlas-anima
 import { IconBlankSlotComponent } from '@components/icon-blank-slot/icon-blank-slot.component';
 import { StatsSkillComponent } from '@components/stats-skill/stats-skill.component';
 import { rarityItemOutlineColor } from '@helpers';
-import { EquipmentSkillContent } from '@interfaces';
+import type { EquipmentSkillContent } from '@interfaces';
 import { TippyDirective } from '@ngneat/helipopper';
 
 @Component({

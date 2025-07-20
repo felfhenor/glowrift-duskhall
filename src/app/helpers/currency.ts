@@ -2,7 +2,7 @@ import { defaultCurrencyBlock } from '@helpers/defaults';
 import { getFestivalProductionMultiplier } from '@helpers/festival-production';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { getClaimedNodes } from '@helpers/world';
-import { CurrencyBlock, GameCurrency, WorldLocation } from '@interfaces';
+import type { CurrencyBlock, GameCurrency, WorldLocation } from '@interfaces';
 
 export function getCurrency(currency: GameCurrency): number {
   return gamestate().currency.currencies[currency] ?? 0;

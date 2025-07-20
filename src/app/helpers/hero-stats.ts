@@ -1,9 +1,9 @@
 import { sum } from 'lodash';
-import { GameStat, Hero, StatBlock } from '@interfaces';
+import type { GameStat, Hero, StatBlock } from '@interfaces';
 import { updateHeroData } from '@helpers/hero';
 import { getItemStat } from '@helpers/item';
 import { getHero } from '@helpers/hero';
-import { HeroId } from '@interfaces/hero';
+import type { HeroId } from '@interfaces/hero';
 
 export function heroBaseStat(hero: Hero, stat: GameStat): number {
   return hero.baseStats[stat];

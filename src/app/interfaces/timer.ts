@@ -1,4 +1,4 @@
-import { WorldPosition } from '@interfaces/world';
+import type { WorldPosition } from '@interfaces/world';
 
 export type TimerAction = 'UnclaimVillage';
 

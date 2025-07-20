@@ -3,7 +3,7 @@ import { Component, input, output, signal } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { IconSkillComponent } from '@components/icon-skill/icon-skill.component';
 import { skillSalvage, skillSalvageValue } from '@helpers';
-import { EquipmentSkill } from '@interfaces';
+import type { EquipmentSkill } from '@interfaces';
 import { TippyDirective } from '@ngneat/helipopper';
 
 export type SkillAction = 'Salvage';

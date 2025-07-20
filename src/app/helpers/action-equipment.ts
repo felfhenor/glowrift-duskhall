@@ -1,4 +1,4 @@
-import { EquipmentItem, EquipmentItemContent } from '@interfaces';
+import type { EquipmentItem, EquipmentItemContent } from '@interfaces';
 import { gainCurrency } from '@helpers/currency';
 import { removeItemFromInventory } from '@helpers/inventory-equipment';
 import { getItemStat } from '@helpers/item';

@@ -1,4 +1,4 @@
-import { Hero, HeroId, HeroRiskTolerance, WorldPosition } from '@interfaces';
+import type { Hero, HeroId, HeroRiskTolerance, WorldPosition } from '@interfaces';
 import { indexToSprite } from '@helpers/sprite';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { getWorldNode } from '@helpers/world';

@@ -3,7 +3,7 @@ import { getDefaultAffinities } from '@helpers/defaults';
 import { createGuardianForLocation } from '@helpers/guardian';
 import { allHeroes } from '@helpers/hero';
 import { uuid } from '@helpers/rng';
-import {
+import type {
   Combat,
   Combatant,
   CombatId,

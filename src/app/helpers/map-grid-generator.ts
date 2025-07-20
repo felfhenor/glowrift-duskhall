@@ -1,5 +1,5 @@
 import { getWorldNode } from '@helpers/world';
-import { MapGridData, MapTileData } from '@interfaces/ui';
+import type { MapGridData, MapTileData } from '@interfaces/ui';
 
 /**
  * Generates map grid data for the current camera view

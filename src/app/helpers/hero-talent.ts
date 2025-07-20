@@ -1,5 +1,5 @@
 import { sum } from 'lodash';
-import { Hero, TalentContent } from '@interfaces';
+import type { Hero, TalentContent } from '@interfaces';
 import { getEntry } from '@helpers/content';
 import { updateHeroData } from '@helpers/hero';
 

@@ -1,6 +1,6 @@
-import { DroppableEquippable } from '@interfaces/droppable';
-import { Branded } from '@interfaces/identifiable';
-import { StatBlock } from '@interfaces/stat';
+import type { DroppableEquippable } from '@interfaces/droppable';
+import type { Branded } from '@interfaces/identifiable';
+import type { StatBlock } from '@interfaces/stat';
 
 export type EquipmentSlot = 'accessory' | 'armor' | 'trinket' | 'weapon';
 

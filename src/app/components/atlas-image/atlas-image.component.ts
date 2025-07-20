@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, input } from '@angular/core';
-import { AtlasedImage } from '@interfaces';
+import type { AtlasedImage } from '@interfaces';
 import { ContentService } from '@services/content.service';
 
 @Component({

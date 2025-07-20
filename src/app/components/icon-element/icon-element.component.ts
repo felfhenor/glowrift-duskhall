@@ -1,6 +1,6 @@
 import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
-import { GameElement, Icon } from '@interfaces';
+import type { GameElement, Icon } from '@interfaces';
 import { IconComponent } from '@components/icon/icon.component';
 
 const icons: Record<GameElement, Icon> = {

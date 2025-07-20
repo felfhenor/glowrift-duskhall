@@ -1,6 +1,7 @@
-import { Component, computed, input, Signal } from '@angular/core';
+import type { Signal } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import { getItemStat } from '@helpers';
-import { EquipmentItemContent, StatBlock } from '@interfaces';
+import type { EquipmentItemContent, StatBlock } from '@interfaces';
 import { StatsItemComponent } from '@components/stats-item/stats-item.component';
 
 @Component({

@@ -1,4 +1,4 @@
-import { WorldLocation } from '@interfaces/world';
+import type { WorldLocation } from '@interfaces/world';
 
 export interface MapTileData {
   x: number;

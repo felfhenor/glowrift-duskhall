@@ -3,7 +3,7 @@ import { Component, input, output } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { TippyDirective } from '@ngneat/helipopper';
 import { itemSalvage, itemSalvageValue } from '@helpers';
-import { EquipmentItem, Hero } from '@interfaces';
+import type { EquipmentItem, Hero } from '@interfaces';
 import { IconBlankSlotComponent } from '@components/icon-blank-slot/icon-blank-slot.component';
 import { IconItemComponent } from '@components/icon-item/icon-item.component';
 

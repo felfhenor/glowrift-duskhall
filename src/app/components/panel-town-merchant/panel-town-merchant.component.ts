@@ -1,5 +1,6 @@
 import { Component, computed, signal, viewChild } from '@angular/core';
-import { SwalComponent, SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import type { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import {
   buyItem,
   gamestate,
@@ -7,7 +8,7 @@ import {
   itemBuyValue,
   notifyError,
 } from '@helpers';
-import { EquipmentItem } from '@interfaces';
+import type { EquipmentItem } from '@interfaces';
 import { CountdownComponent } from '@components/countdown/countdown.component';
 import { InventoryGridItemComponent } from '@components/inventory-grid-item/inventory-grid-item.component';
 import { PanelTownBuildingUpgradeComponent } from '@components/panel-town-building-upgrade/panel-town-building-upgrade.component';

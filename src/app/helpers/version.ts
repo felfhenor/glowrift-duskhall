@@ -1,5 +1,5 @@
 import { signal } from '@angular/core';
-import { VersionInfo } from '@interfaces';
+import type { VersionInfo } from '@interfaces';
 
 export const localVersion = signal<VersionInfo | undefined>(undefined);
 export const liveVersion = signal<VersionInfo | undefined>(undefined);

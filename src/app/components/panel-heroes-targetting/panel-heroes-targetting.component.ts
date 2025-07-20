@@ -1,8 +1,9 @@
-import { Component, input, OnChanges, OnInit, signal } from '@angular/core';
+import type { OnChanges, OnInit } from '@angular/core';
+import { Component, input, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { updateHeroData } from '@helpers/hero';
-import { CombatantTargettingType } from '@interfaces/combat';
-import { Hero } from '@interfaces/hero';
+import type { CombatantTargettingType } from '@interfaces/combat';
+import type { Hero } from '@interfaces/hero';
 
 @Component({
   selector: 'app-panel-heroes-targetting',

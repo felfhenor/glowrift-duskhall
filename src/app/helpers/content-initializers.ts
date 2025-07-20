@@ -1,5 +1,5 @@
 import { getDefaultAffinities, getDefaultStats } from '@helpers/defaults';
-import {
+import type {
   Content,
   ContentType,
   CurrencyContent,

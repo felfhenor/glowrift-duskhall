@@ -13,7 +13,7 @@ import {
   getCombatOutgoingAttributeMultiplier,
 } from '@helpers/festival-combat';
 import { succeedsChance } from '@helpers/rng';
-import {
+import type {
   Combat,
   Combatant,
   EquipmentSkill,

@@ -1,5 +1,5 @@
 import * as Compass from 'cardinal-direction';
-import { PRNG } from 'seedrandom';
+import type { PRNG } from 'seedrandom';
 
 import { getEntriesByType, getEntry } from '@helpers/content';
 import {
@@ -24,7 +24,7 @@ import {
 import { getSpriteFromNodeType, indexToSprite } from '@helpers/sprite';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { distanceBetweenNodes } from '@helpers/travel';
-import {
+import type {
   DroppableEquippable,
   GameElement,
   GameId,

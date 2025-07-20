@@ -1,5 +1,5 @@
 import { clamp } from 'lodash';
-import { Hero, StatBlock } from '@interfaces';
+import type { Hero, StatBlock } from '@interfaces';
 import { updateHeroData } from '@helpers/hero';
 import { recalculateStats } from '@helpers/hero-stats';
 import { randomChoice, seededrng } from '@helpers/rng';

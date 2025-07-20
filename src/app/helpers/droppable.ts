@@ -3,7 +3,7 @@ import { createItem } from '@helpers/creator-equipment';
 import { createSkill } from '@helpers/creator-skill';
 import { addItemToInventory } from '@helpers/inventory-equipment';
 import { addSkillToInventory } from '@helpers/inventory-skill';
-import {
+import type {
   DroppableEquippable,
   EquipmentItem,
   EquipmentItemContent,

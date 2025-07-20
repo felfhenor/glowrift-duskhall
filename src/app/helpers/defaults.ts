@@ -1,5 +1,5 @@
 import { uuid } from '@helpers/rng';
-import {
+import type {
   CurrencyBlock,
   ElementBlock,
   Hero,
