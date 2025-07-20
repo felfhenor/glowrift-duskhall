@@ -6,6 +6,7 @@
     "start:app": "ng serve --open --port 9866",
     "setup": "npm run gamedata:build",
     "lint": "ng lint",
+    "test": "vitest run",
     "build:copychangelog": "cpy CHANGELOG.md CHANGELOG-current.md dist/glowrift-duskhall/browser",
     "build:syncversion": "ts-node scripts/build-syncversion",
     "build:versioninfo": "ts-node scripts/build-versioninfo",
@@ -25,7 +26,7 @@
     "util:changelog:commit": "git commit CHANGELOG.md CHANGELOG-current.md -m \"Update changelog\" || true",
     "util:dirtycheck": "ts-node scripts/util-dirtycheck",
     "util:version:reversion": "ts-node scripts/util-postversion-reversion",
-    "preversion": "npm run util:dirtycheck && npm run lint && npm run build",
+    "preversion": "npm run util:dirtycheck && npm run lint && npm run test && npm run build",
     "postversion": "npm run util:changelog:generate && npm run util:changelog:generate:current && npm run util:changelog:commit && npm run util:version:reversion && npm run push",
     "push": "git push && git push --tags",
     "postinstall": "npm run gamedata:art:spritesheets && npm run gamedata:build"
@@ -106,7 +107,10 @@
     "recursive-readdir": "^2.2.3",
     "tailwindcss": "^4.1.7",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.2.4",
+    "vitest-tsconfig-paths": "^3.4.1"
   },
   "overrides": {
     "@ngxpert/hot-toast": {
