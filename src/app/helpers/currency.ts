@@ -1,7 +1,8 @@
-import { CurrencyBlock, GameCurrency, WorldLocation } from '@interfaces';
+import { defaultCurrencyBlock } from '@helpers/defaults';
 import { getFestivalProductionMultiplier } from '@helpers/festival-production';
-import { blankCurrencyBlock, gamestate, updateGamestate } from '@helpers/state-game';
+import { gamestate, updateGamestate } from '@helpers/state-game';
 import { getClaimedNodes } from '@helpers/world';
+import { CurrencyBlock, GameCurrency, WorldLocation } from '@interfaces';
 
 export function getCurrency(currency: GameCurrency): number {
   return gamestate().currency.currencies[currency] ?? 0;
@@ -43,7 +44,7 @@ export function gainCurrentCurrencyClaims(): void {
 }
 
 export function getCurrencyClaimsForNode(node: WorldLocation): CurrencyBlock {
-  const base = blankCurrencyBlock();
+  const base = defaultCurrencyBlock();
 
   switch (node.nodeType) {
     case 'cave': {
@@ -84,7 +85,7 @@ export function getCurrencyClaimsForNode(node: WorldLocation): CurrencyBlock {
 }
 
 export function getUpdatedCurrencyClaims(): CurrencyBlock {
-  const base = blankCurrencyBlock();
+  const base = defaultCurrencyBlock();
   const allClaimed = getClaimedNodes();
 
   allClaimed.forEach((node) => {

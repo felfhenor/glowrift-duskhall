@@ -1,12 +1,8 @@
-import { GameCurrency, LocationType, TownBuilding } from '@interfaces';
 import { hasCurrency, loseCurrency } from '@helpers/currency';
-import {
-  blankCurrencyBlock,
-  blankNodeCountBlock,
-  gamestate,
-  updateGamestate,
-} from '@helpers/state-game';
+import { defaultCurrencyBlock, defaultNodeCountBlock } from '@helpers/defaults';
+import { gamestate, updateGamestate } from '@helpers/state-game';
 import { hasClaimedNodeCount } from '@helpers/world';
+import { GameCurrency, LocationType, TownBuilding } from '@interfaces';
 
 export function getBuildingLevel(building: TownBuilding): number {
   return gamestate().town.buildingLevels[building] ?? 1;
@@ -15,54 +11,54 @@ export function getBuildingLevel(building: TownBuilding): number {
 export function buildingUpgradeCost(building: TownBuilding) {
   const liberationCosts: Record<TownBuilding, Record<LocationType, number>> = {
     Academy: {
-      ...blankNodeCountBlock(),
+      ...defaultNodeCountBlock(),
       dungeon: 3,
     },
 
     Alchemist: {
-      ...blankNodeCountBlock(),
+      ...defaultNodeCountBlock(),
       cave: 25,
     },
 
     Blacksmith: {
-      ...blankNodeCountBlock(),
+      ...defaultNodeCountBlock(),
       cave: 25,
     },
 
     Market: {
-      ...blankNodeCountBlock(),
+      ...defaultNodeCountBlock(),
       town: 1,
     },
 
     Merchant: {
-      ...blankNodeCountBlock(),
+      ...defaultNodeCountBlock(),
       village: 3,
     },
   };
 
   const currencyCosts: Record<TownBuilding, Record<GameCurrency, number>> = {
     Academy: {
-      ...blankCurrencyBlock(),
+      ...defaultCurrencyBlock(),
       Mana: 5000,
     },
 
     Alchemist: {
-      ...blankCurrencyBlock(),
+      ...defaultCurrencyBlock(),
       Mana: 1000,
     },
 
     Blacksmith: {
-      ...blankCurrencyBlock(),
+      ...defaultCurrencyBlock(),
       Mana: 1000,
     },
 
     Market: {
-      ...blankCurrencyBlock(),
+      ...defaultCurrencyBlock(),
       Mana: 500,
     },
 
     Merchant: {
-      ...blankCurrencyBlock(),
+      ...defaultCurrencyBlock(),
       Mana: 5000,
     },
   };

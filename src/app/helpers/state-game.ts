@@ -1,97 +1,14 @@
 import { Signal, signal } from '@angular/core';
+import {
+  defaultCurrencyBlock,
+  defaultHero,
+  defaultNodeCountBlock,
+  defaultPosition,
+} from '@helpers/defaults';
 import { uuid } from '@helpers/rng';
 import { localStorageSignal } from '@helpers/signal';
-import {
-  CurrencyBlock,
-  GameId,
-  GameState,
-  Hero,
-  HeroId,
-  LocationType,
-  WorldPosition,
-} from '@interfaces';
+import { GameId, GameState } from '@interfaces';
 import { cloneDeep } from 'lodash';
-
-export function blankHero(props: Partial<Hero> = {}): Hero {
-  return {
-    id: uuid() as HeroId,
-    name: '',
-    sprite: '',
-    frames: 4,
-    targettingType: 'Random',
-    level: 1,
-    xp: 0,
-    hp: 10,
-    baseStats: {
-      Force: 5,
-      Health: 10,
-      Speed: 1,
-      Aura: 1,
-    },
-    totalStats: {
-      Force: 5,
-      Health: 10,
-      Speed: 1,
-      Aura: 1,
-    },
-
-    equipment: {
-      accessory: undefined,
-      armor: undefined,
-      trinket: undefined,
-      weapon: undefined,
-    },
-
-    skills: [],
-
-    talents: {},
-
-    ...props,
-  };
-}
-
-export function blankPosition(): WorldPosition {
-  return { x: 0, y: 0 };
-}
-
-export function blankCurrencyBlock(): CurrencyBlock {
-  return {
-    'Fire Sliver': 0,
-    'Fire Shard': 0,
-    'Fire Crystal': 0,
-    'Fire Core': 0,
-    'Water Sliver': 0,
-    'Water Shard': 0,
-    'Water Crystal': 0,
-    'Water Core': 0,
-    'Air Sliver': 0,
-    'Air Shard': 0,
-    'Air Crystal': 0,
-    'Air Core': 0,
-    'Earth Sliver': 0,
-    'Earth Shard': 0,
-    'Earth Crystal': 0,
-    'Earth Core': 0,
-    'Soul Essence': 0,
-    'Common Dust': 0,
-    'Uncommon Dust': 0,
-    'Rare Dust': 0,
-    'Legendary Dust': 0,
-    'Mystical Dust': 0,
-    'Unique Dust': 0,
-    Mana: 0,
-  };
-}
-
-export function blankNodeCountBlock(): Record<LocationType, number> {
-  return {
-    castle: 0,
-    cave: 0,
-    dungeon: 0,
-    town: 0,
-    village: 0,
-  };
-}
 
 export function blankGameState(): GameState {
   return {
@@ -106,27 +23,27 @@ export function blankGameState(): GameState {
       width: 0,
       height: 0,
       nodes: {},
-      homeBase: blankPosition(),
-      nodeCounts: blankNodeCountBlock(),
-      claimedCounts: blankNodeCountBlock(),
+      homeBase: defaultPosition(),
+      nodeCounts: defaultNodeCountBlock(),
+      claimedCounts: defaultNodeCountBlock(),
     },
-    camera: blankPosition(),
+    camera: defaultPosition(),
     hero: {
       respawnTicks: 0,
       riskTolerance: 'low',
       heroes: [
-        blankHero({ name: 'Ignatius', sprite: '0004' }),
-        blankHero({ name: 'Aquara', sprite: '0000' }),
-        blankHero({ name: 'Terrus', sprite: '0060' }),
-        blankHero({ name: 'Zephyra', sprite: '0036' }),
+        defaultHero({ name: 'Ignatius', sprite: '0004' }),
+        defaultHero({ name: 'Aquara', sprite: '0000' }),
+        defaultHero({ name: 'Terrus', sprite: '0060' }),
+        defaultHero({ name: 'Zephyra', sprite: '0036' }),
       ],
       position: {
         nodeId: '',
-        ...blankPosition(),
+        ...defaultPosition(),
       },
       travel: {
         nodeId: '',
-        ...blankPosition(),
+        ...defaultPosition(),
         ticksLeft: 0,
       },
       location: {
@@ -139,8 +56,8 @@ export function blankGameState(): GameState {
       skills: [],
     },
     currency: {
-      currencyPerTickEarnings: blankCurrencyBlock(),
-      currencies: blankCurrencyBlock(),
+      currencyPerTickEarnings: defaultCurrencyBlock(),
+      currencies: defaultCurrencyBlock(),
     },
     actionClock: {
       numTicks: 0,

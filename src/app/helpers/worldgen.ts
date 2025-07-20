@@ -1,7 +1,29 @@
 import * as Compass from 'cardinal-direction';
 import { PRNG } from 'seedrandom';
 
-import { clamp } from 'lodash';
+import { getEntriesByType, getEntry } from '@helpers/content';
+import {
+  allItemDefinitions,
+  pickRandomItemDefinition,
+} from '@helpers/creator-equipment';
+import {
+  allSkillDefinitions,
+  pickRandomSkillDefinition,
+} from '@helpers/creator-skill';
+import { defaultNodeCountBlock, defaultWorldNode } from '@helpers/defaults';
+import { createGuardianForLocation } from '@helpers/guardian';
+import {
+  gamerng,
+  randomChoice,
+  randomIdentifiableChoice,
+  randomNumber,
+  randomNumberRange,
+  seededrng,
+  uuid,
+} from '@helpers/rng';
+import { getSpriteFromNodeType, indexToSprite } from '@helpers/sprite';
+import { gamestate, updateGamestate } from '@helpers/state-game';
+import { distanceBetweenNodes } from '@helpers/travel';
 import {
   DroppableEquippable,
   GameElement,
@@ -14,29 +36,7 @@ import {
   WorldLocation,
   WorldPosition,
 } from '@interfaces';
-import { getEntriesByType, getEntry } from '@helpers/content';
-import {
-  allItemDefinitions,
-  pickRandomItemDefinition,
-} from '@helpers/creator-equipment';
-import {
-  allSkillDefinitions,
-  pickRandomSkillDefinition,
-} from '@helpers/creator-skill';
-import { createGuardianForLocation } from '@helpers/guardian';
-import {
-  gamerng,
-  randomChoice,
-  randomIdentifiableChoice,
-  randomNumber,
-  randomNumberRange,
-  seededrng,
-  uuid,
-} from '@helpers/rng';
-import { getSpriteFromNodeType, indexToSprite } from '@helpers/sprite';
-import { blankNodeCountBlock, gamestate, updateGamestate } from '@helpers/state-game';
-import { distanceBetweenNodes } from '@helpers/travel';
-import { blankWorldNode } from '@helpers/world';
+import { clamp } from 'lodash';
 
 function fillEmptySpaceWithEmptyNodes(
   config: WorldConfigContent,
@@ -47,7 +47,7 @@ function fillEmptySpaceWithEmptyNodes(
       if (nodes[`${x},${y}`]) continue;
 
       nodes[`${x},${y}`] = {
-        ...blankWorldNode(x, y),
+        ...defaultWorldNode(x, y),
       };
     }
   }
@@ -303,7 +303,7 @@ export function generateWorld(config: WorldConfigContent): GameStateWorld {
   };
 
   const firstTown: WorldLocation = {
-    ...blankWorldNode(),
+    ...defaultWorldNode(),
     id: uuid(),
     x: Math.floor(config.width / 2),
     y: Math.floor(config.height / 2),
@@ -314,7 +314,7 @@ export function generateWorld(config: WorldConfigContent): GameStateWorld {
 
   addNode(firstTown);
 
-  const counts: Record<LocationType, number> = blankNodeCountBlock();
+  const counts: Record<LocationType, number> = defaultNodeCountBlock();
   counts.town++;
 
   Object.keys(config.nodeCount).forEach((key) => {
@@ -324,7 +324,7 @@ export function generateWorld(config: WorldConfigContent): GameStateWorld {
     for (let i = 0; i < nodeCount; i++) {
       const { x, y } = findUnusedPosition();
       const node: WorldLocation = {
-        ...blankWorldNode(),
+        ...defaultWorldNode(),
         id: uuid(),
         x,
         y,
@@ -354,7 +354,7 @@ export function generateWorld(config: WorldConfigContent): GameStateWorld {
       y: firstTown.y,
     },
     nodeCounts: counts,
-    claimedCounts: blankNodeCountBlock(),
+    claimedCounts: defaultNodeCountBlock(),
   };
 }
 
