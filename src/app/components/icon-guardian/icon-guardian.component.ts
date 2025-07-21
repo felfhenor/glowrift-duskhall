@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { Guardian } from '@interfaces';
+import type { Guardian } from '@interfaces';
 import { AtlasAnimationComponent } from '@components/atlas-animation/atlas-animation.component';
 
 @Component({

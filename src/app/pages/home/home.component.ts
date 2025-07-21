@@ -1,6 +1,8 @@
-import { Component, computed, inject, OnInit, viewChild } from '@angular/core';
+import type { OnInit } from '@angular/core';
+import { Component, computed, inject, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { SwalComponent, SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import type { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { ConnectButtonsComponent } from '@components/connect-buttons/connect-buttons.component';
 import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
 import { SFXDirective } from '@directives/sfx.directive';

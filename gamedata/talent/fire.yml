@@ -1,7 +1,7 @@
 - id: 62e841f4-0758-450b-9ade-848686dfe54f
   name: Strength of Fire
   description: Boost the power of Fire skills by 10%.
-  sprite: '0008'
+  sprite: '0009'
 
   boostedElements: [Fire]
 
@@ -23,7 +23,7 @@
 
 - id: d758324d-4333-496a-8c54-222769cfbc38
   name: Strength of Firewisp II
-  description: Boost the power of Firewisp skills by 25%.
+  description: Boost the burning chance of Firewisp skills by 10%.
   sprite: '0008'
 
   requireTalentId: Strength of Firewisp I
@@ -33,8 +33,10 @@
     - Firewisp II
     - Firewisp III
 
-  boostStats:
-    Force: 0.25
+  boostedStatusEffectIds:
+    - Burning
+
+  boostedStatusEffectChance: 10
 
 - id: cb333d71-2d0b-4117-8ce4-16a0a55f7d3a
   name: Strength of Firewisp III
@@ -50,3 +52,24 @@
 
   boostStats:
     Force: 0.25
+
+- id: 4997998a-ea6b-421d-b3e7-3b3f5f133c66
+  name: Heating Up
+  description: Boost the chance of Burning by 5%.
+  sprite: '0010'
+
+  boostedStatusEffectIds:
+    - Burning
+
+  boostedStatusEffectChance: 5
+
+- id: 918995df-f0ac-407b-98a8-7601573f4f94
+  name: Fire Force
+  description: Boost the damage of Burning by 20%.
+  sprite: '0010'
+
+  boostedStatusEffectIds:
+    - Burning
+
+  boostStatusEffectStats:
+    Force: 0.20

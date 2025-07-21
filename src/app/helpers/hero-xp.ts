@@ -1,5 +1,5 @@
 import { clamp } from 'lodash';
-import { Hero, StatBlock } from '@interfaces';
+import type { Hero, StatBlock } from '@interfaces';
 import { updateHeroData } from '@helpers/hero';
 import { recalculateStats } from '@helpers/hero-stats';
 import { randomChoice, seededrng } from '@helpers/rng';
@@ -31,7 +31,7 @@ export function heroLevelUp(hero: Hero): void {
 
   const newHero = gamestate().hero.heroes.find((h) => h.id === hero.id);
   if (newHero) {
-    recalculateStats(newHero);
+    recalculateStats(newHero.id);
   }
 }
 

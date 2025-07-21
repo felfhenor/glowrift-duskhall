@@ -1,10 +1,11 @@
-import { Animatable } from '@interfaces/artable';
-import { ElementBlock } from '@interfaces/element';
-import { Branded } from '@interfaces/identifiable';
-import { EquipmentSkill, EquipmentSkillId } from '@interfaces/skill';
-import { StatBlock } from '@interfaces/stat';
-import { TalentId } from '@interfaces/talent';
-import { WorldPosition } from '@interfaces/world';
+import type { Animatable } from '@interfaces/artable';
+import type { ElementBlock } from '@interfaces/element';
+import type { Branded } from '@interfaces/identifiable';
+import type { EquipmentSkill, EquipmentSkillId } from '@interfaces/skill';
+import type { StatBlock } from '@interfaces/stat';
+import type { StatusEffect } from '@interfaces/statuseffect';
+import type { TalentId } from '@interfaces/talent';
+import type { WorldPosition } from '@interfaces/world';
 
 export type CombatId = Branded<string, 'CombatId'>;
 
@@ -16,6 +17,12 @@ export interface CombatLog {
   message: string;
 }
 
+export type CombatantStatusEffectData = {
+  isFrozen?: boolean;
+};
+
+export type CombatantTargettingType = 'Random' | 'Strongest' | 'Weakest';
+
 export type Combatant = Animatable & {
   id: string;
   name: string;
@@ -24,6 +31,8 @@ export type Combatant = Animatable & {
 
   level: number;
   hp: number;
+
+  targettingType: CombatantTargettingType;
 
   baseStats: StatBlock;
   totalStats: StatBlock;
@@ -37,6 +46,9 @@ export type Combatant = Animatable & {
   talents: Record<TalentId, number>;
 
   skillUses: Record<EquipmentSkillId, number>;
+
+  statusEffects: StatusEffect[];
+  statusEffectData: CombatantStatusEffectData;
 };
 
 export interface Combat {

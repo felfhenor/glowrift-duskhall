@@ -1,4 +1,4 @@
-import { EquipmentSkill, Hero } from '@interfaces';
+import type { EquipmentSkill, Hero } from '@interfaces';
 import { updateHeroData } from '@helpers/hero';
 import { recalculateStats } from '@helpers/hero-stats';
 import { updateGamestate } from '@helpers/state-game';
@@ -41,7 +41,7 @@ export function equipSkill(
   });
 
   removeSkillFromInventory(item);
-  recalculateStats(hero);
+  recalculateStats(hero.id);
 }
 
 export function unequipSkill(
@@ -57,5 +57,5 @@ export function unequipSkill(
   });
 
   addSkillToInventory(item);
-  recalculateStats(hero);
+  recalculateStats(hero.id);
 }

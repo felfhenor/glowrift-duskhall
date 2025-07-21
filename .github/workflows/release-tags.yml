@@ -29,6 +29,8 @@ jobs:
 
       - run: npm run lint
 
+      - run: npm run test
+
       - run: npm run build
 
       - uses: pCYSl5EDgo/cat@master
@@ -111,6 +113,8 @@ jobs:
       - run: cd electron && npm install
 
       - run: npm run lint
+
+      - run: npm run test
 
       - run: npm run build:electron
 

@@ -1,4 +1,4 @@
-import { WorldLocation, WorldPosition } from '@interfaces';
+import type { WorldLocation, WorldPosition } from '@interfaces';
 import { getExplorationTickMultiplier } from '@helpers/festival-exploration';
 import { notify } from '@helpers/notify';
 import { gamestate, updateGamestate } from '@helpers/state-game';

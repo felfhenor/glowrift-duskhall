@@ -1,7 +1,7 @@
 import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 import { getItemStat, rarityItemTextColor } from '@helpers';
-import { EquipmentItemContent, StatBlock } from '@interfaces';
+import type { EquipmentItemContent, StatBlock } from '@interfaces';
 import { MarkerStatComponent } from '@components/marker-stat/marker-stat.component';
 
 @Component({

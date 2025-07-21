@@ -1,5 +1,5 @@
 import { Assets, Rectangle, Texture } from 'pixi.js';
-import { LoadedTextures, TextureAtlas } from '@interfaces';
+import type { LoadedTextures, TextureAtlas } from '@interfaces';
 
 /**
  * Loads textures from a spritesheet and atlas data

@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { WorldLocation } from '@interfaces';
+import type { WorldLocation } from '@interfaces';
 import { IconComponent } from '@components/icon/icon.component';
 
 @Component({

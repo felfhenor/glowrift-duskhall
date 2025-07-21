@@ -1,6 +1,7 @@
 import { TitleCasePipe } from '@angular/common';
-import { Component, computed, input, output, Signal } from '@angular/core';
-import { EquipmentItem, EquipmentSlot, Hero } from '@interfaces';
+import type { Signal } from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
+import type { EquipmentItem, EquipmentSlot, Hero } from '@interfaces';
 import { IconBlankSlotComponent } from '@components/icon-blank-slot/icon-blank-slot.component';
 import { IconItemComponent } from '@components/icon-item/icon-item.component';
 

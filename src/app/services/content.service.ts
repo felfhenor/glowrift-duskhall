@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
+import type {
+  WritableSignal } from '@angular/core';
 import {
   computed,
   inject,
   Injectable,
-  signal,
-  WritableSignal,
+  signal
 } from '@angular/core';
-import { forkJoin, Observable } from 'rxjs';
 import {
   allContentById,
   allIdsByName,
@@ -14,9 +14,11 @@ import {
   setAllContentById,
   setAllIdsByName,
 } from '@helpers';
-import { Content, ContentType } from '@interfaces';
+import type { Content, ContentType } from '@interfaces';
 import { LoggerService } from '@services/logger.service';
 import { MetaService } from '@services/meta.service';
+import type { Observable } from 'rxjs';
+import { forkJoin } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -121,6 +123,7 @@ export class ContentService {
       trinket: undefined,
       weapon: undefined,
       festival: undefined,
+      statuseffect: undefined,
       talent: undefined,
       talenttree: undefined,
     };

@@ -1,6 +1,6 @@
 import { TitleCasePipe } from '@angular/common';
 import { Component, input } from '@angular/core';
-import { GameCurrency } from '@interfaces';
+import type { GameCurrency } from '@interfaces';
 import { GameCurrencyPipe } from '@pipes/game-currency.pipe';
 import { IconItemComponent } from '@components/icon-currency/icon-currency.component';
 

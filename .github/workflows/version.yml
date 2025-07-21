@@ -41,6 +41,8 @@ jobs:
 
       - run: npm run lint
 
+      - run: npm run test
+
       - run: npm run build
 
       - name: Run Versioning

@@ -1,4 +1,5 @@
-import { Component, computed, Signal } from '@angular/core';
+import type { Signal } from '@angular/core';
+import { Component, computed } from '@angular/core';
 import { CardPageComponent } from '@components/card-page/card-page.component';
 import { IconComponent } from '@components/icon/icon.component';
 import { PanelTownAcademyComponent } from '@components/panel-town-academy/panel-town-academy.component';
@@ -9,7 +10,7 @@ import { PanelTownMarketComponent } from '@components/panel-town-market/panel-to
 import { PanelTownMerchantComponent } from '@components/panel-town-merchant/panel-town-merchant.component';
 import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
 import { getBuildingLevel, getOption, setOption, showTownMenu } from '@helpers';
-import { TownTab } from '@interfaces';
+import type { TownTab } from '@interfaces';
 import { TeleportOutletDirective } from '@ngneat/overview';
 
 @Component({

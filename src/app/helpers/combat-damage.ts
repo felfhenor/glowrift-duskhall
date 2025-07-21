@@ -1,6 +1,19 @@
-import { intersection, sum } from 'lodash';
-import Mustache from 'mustache';
+import { allCombatantTalents } from '@helpers/combat';
+import { isDead } from '@helpers/combat-end';
+import { formatCombatMessage, logCombatMessage } from '@helpers/combat-log';
 import {
+  applyStatusEffectToTarget,
+  createStatusEffect,
+  statusEffectChanceTalentBoost,
+} from '@helpers/combat-statuseffects';
+import { getEntry } from '@helpers/content';
+import { getDroppableEquippableBaseId } from '@helpers/droppable';
+import {
+  getCombatIncomingAttributeMultiplier,
+  getCombatOutgoingAttributeMultiplier,
+} from '@helpers/festival-combat';
+import { succeedsChance } from '@helpers/rng';
+import type {
   Combat,
   Combatant,
   EquipmentSkill,
@@ -8,29 +21,15 @@ import {
   EquipmentSkillContentTechnique,
   GameElement,
   GameStat,
-  TalentContent,
+  StatusEffectContent,
 } from '@interfaces';
-import { isDead } from '@helpers/combat-end';
-import { logCombatMessage } from '@helpers/combat-log';
-import { getEntry } from '@helpers/content';
-import { getDroppableEquippableBaseId } from '@helpers/droppable';
-import {
-  getCombatIncomingAttributeMultiplier,
-  getCombatOutgoingAttributeMultiplier,
-} from '@helpers/festival-combat';
+import { intersection, sum } from 'lodash';
 
 export function techniqueHasAttribute(
   technique: EquipmentSkillContentTechnique,
   attribute: EquipmentSkillAttribute,
 ): boolean {
   return technique.attributes?.includes(attribute);
-}
-
-export function allCombatantTalents(combatant: Combatant): TalentContent[] {
-  return Object.entries(combatant.talents)
-    .filter(([, level]) => level > 0)
-    .map(([talentId]) => getEntry<TalentContent>(talentId))
-    .filter((talent): talent is TalentContent => !!talent);
 }
 
 export function combatantTalentElementBoost(
@@ -86,6 +85,10 @@ export function getCombatantStatForTechnique(
   return combatant.totalStats[stat] * totalMultiplier;
 }
 
+export function combatantTakeDamage(combatant: Combatant, damage: number) {
+  combatant.hp = Math.max(0, combatant.hp - damage);
+}
+
 export function applySkillToTarget(
   combat: Combat,
   combatant: Combatant,
@@ -99,65 +102,84 @@ export function applySkillToTarget(
     getCombatantStatForTechnique(combatant, skill, technique, 'Health') +
     getCombatantStatForTechnique(combatant, skill, technique, 'Speed');
 
-  const damage =
-    technique.elements.length === 0
-      ? baseDamage
-      : sum(
-          technique.elements.map((el) => baseDamage * combatant.affinity[el]),
-        ) / technique.elements.length;
+  if (baseDamage > 0) {
+    const damage =
+      technique.elements.length === 0
+        ? baseDamage
+        : sum(
+            technique.elements.map((el) => baseDamage * combatant.affinity[el]),
+          ) / technique.elements.length;
 
-  const baseTargetDefense = target.totalStats.Aura;
-  const targetDefense =
-    technique.elements.length === 0
-      ? baseTargetDefense
-      : sum(
-          technique.elements.map(
-            (el) => baseTargetDefense * target.resistance[el],
-          ),
-        ) / technique.elements.length;
+    const baseTargetDefense = target.totalStats.Aura;
+    const targetDefense =
+      technique.elements.length === 0
+        ? baseTargetDefense
+        : sum(
+            technique.elements.map(
+              (el) => baseTargetDefense * target.resistance[el],
+            ),
+          ) / technique.elements.length;
 
-  let effectiveDamage = damage;
+    let effectiveDamage = damage;
 
-  if (!techniqueHasAttribute(technique, 'AllowNegative')) {
-    effectiveDamage = Math.max(0, effectiveDamage);
+    if (!techniqueHasAttribute(technique, 'AllowNegative')) {
+      effectiveDamage = Math.max(0, effectiveDamage);
+    }
+
+    if (!techniqueHasAttribute(technique, 'BypassDefense')) {
+      effectiveDamage = Math.max(0, effectiveDamage - targetDefense);
+    }
+
+    if (techniqueHasAttribute(technique, 'AllowPlink')) {
+      effectiveDamage = Math.max(damage > 0 ? 1 : 0, effectiveDamage);
+    }
+
+    let damageMultiplierFromFestivals = 1;
+    if (combatant.isEnemy && !target.isEnemy && effectiveDamage > 0) {
+      damageMultiplierFromFestivals =
+        1 + getCombatIncomingAttributeMultiplier('damage');
+    }
+
+    if (!combatant.isEnemy && target.isEnemy && effectiveDamage > 0) {
+      damageMultiplierFromFestivals =
+        1 + getCombatOutgoingAttributeMultiplier('damage');
+    }
+
+    effectiveDamage *= damageMultiplierFromFestivals;
+    effectiveDamage = Math.floor(effectiveDamage);
+
+    combatantTakeDamage(target, effectiveDamage);
+
+    const templateData = {
+      combat,
+      combatant,
+      target,
+      skill,
+      technique,
+      damage: effectiveDamage,
+      absdamage: Math.abs(effectiveDamage),
+    };
+
+    const message = formatCombatMessage(technique.combatMessage, templateData);
+    logCombatMessage(combat, message);
   }
 
-  if (!techniqueHasAttribute(technique, 'BypassDefense')) {
-    effectiveDamage = Math.max(0, effectiveDamage - targetDefense);
-  }
+  technique.statusEffects.forEach((effData) => {
+    const effectContent = getEntry<StatusEffectContent>(effData.statusEffectId);
+    if (!effectContent) return;
 
-  if (techniqueHasAttribute(technique, 'AllowPlink')) {
-    effectiveDamage = Math.max(damage > 0 ? 1 : 0, effectiveDamage);
-  }
+    const totalChance =
+      effData.chance +
+      statusEffectChanceTalentBoost(combatant, skill, effectContent);
 
-  let damageMultiplierFromFestivals = 1;
-  if (combatant.isEnemy && !target.isEnemy && effectiveDamage > 0) {
-    damageMultiplierFromFestivals =
-      1 + getCombatIncomingAttributeMultiplier('damage');
-  }
+    if (!succeedsChance(totalChance)) return;
 
-  if (!combatant.isEnemy && target.isEnemy && effectiveDamage > 0) {
-    damageMultiplierFromFestivals =
-      1 + getCombatOutgoingAttributeMultiplier('damage');
-  }
+    const statusEffect = createStatusEffect(effectContent, combatant, {
+      duration: effData.duration,
+    });
 
-  effectiveDamage *= damageMultiplierFromFestivals;
-
-  effectiveDamage = Math.floor(effectiveDamage);
-
-  target.hp = Math.max(0, target.hp - effectiveDamage);
-
-  const templateData = {
-    combat,
-    combatant,
-    target,
-    skill,
-    technique,
-    damage: effectiveDamage,
-    absdamage: Math.abs(effectiveDamage),
-  };
-  const message = Mustache.render(technique.combatMessage, templateData);
-  logCombatMessage(combat, message);
+    applyStatusEffectToTarget(combat, target, statusEffect);
+  });
 
   if (isDead(target)) {
     logCombatMessage(combat, `**${target.name}** has been defeated!`);

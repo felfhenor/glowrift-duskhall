@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import type { Routes } from '@angular/router';
 import { requireNotSetupGuard } from '@guards/require-not-setup.guard';
 import { requireSetupGuard } from '@guards/require-setup.guard';
 import { GameComponent } from '@pages/game/game.component';

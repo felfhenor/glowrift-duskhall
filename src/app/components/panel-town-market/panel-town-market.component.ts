@@ -7,7 +7,7 @@ import {
   notifySuccess,
   townMarketBonus,
 } from '@helpers';
-import { CurrencyContent } from '@interfaces';
+import type { CurrencyContent } from '@interfaces';
 import { PanelTownBuildingUpgradeComponent } from '@components/panel-town-building-upgrade/panel-town-building-upgrade.component';
 import { SelectorCurrencyComponent } from '@components/selector-currency/selector-currency.component';
 

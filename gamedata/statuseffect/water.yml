@@ -1,0 +1,20 @@
+- id: bb242a20-0a49-41fe-bf13-c52edbe39c2a
+  name: Frozen
+
+  trigger: TurnStart
+
+  onApply:
+    - type: SendMessage
+      combatMessage: '**{{ combatant.name }}** has been frozen!'
+
+    - type: ModifyStatusEffectData
+      key: isFrozen
+      value: true
+
+  onUnapply:
+    - type: SendMessage
+      combatMessage: '**{{ combatant.name }}** is no longer frozen!'
+
+    - type: ModifyStatusEffectData
+      key: isFrozen
+      value: false

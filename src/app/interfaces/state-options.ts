@@ -1,6 +1,6 @@
-import { Signal } from '@angular/core';
-import { InventorySlotType } from '@interfaces/equipment';
-import { TownBuilding } from '@interfaces/town';
+import type { Signal } from '@angular/core';
+import type { InventorySlotType } from '@interfaces/equipment';
+import type { TownBuilding } from '@interfaces/town';
 
 export type GameOption =
   | 'showDebug'

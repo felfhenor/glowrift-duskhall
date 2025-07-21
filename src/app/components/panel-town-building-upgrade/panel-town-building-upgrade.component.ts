@@ -12,7 +12,7 @@ import {
   hasCurrency,
   upgradeBuildingLevel,
 } from '@helpers';
-import { GameCurrency, LocationType, TownBuilding } from '@interfaces';
+import type { GameCurrency, LocationType, TownBuilding } from '@interfaces';
 
 @Component({
   selector: 'app-panel-town-building-upgrade',

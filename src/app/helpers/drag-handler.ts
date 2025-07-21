@@ -1,5 +1,5 @@
-import { Application, Container, FederatedPointerEvent } from 'pixi.js';
-import { DragState } from '@interfaces/camera';
+import type { Application, Container, FederatedPointerEvent } from 'pixi.js';
+import type { DragState } from '@interfaces/camera';
 import {
   calculateCameraBounds,
   processCameraDrag,

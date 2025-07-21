@@ -1,10 +1,10 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, signal } from '@angular/core';
 
 import { DecimalPipe } from '@angular/common';
-import { TippyDirective } from '@ngneat/helipopper';
-import { skillSalvage, skillSalvageValue } from '@helpers';
-import { EquipmentSkill } from '@interfaces';
 import { IconSkillComponent } from '@components/icon-skill/icon-skill.component';
+import { skillSalvage, skillSalvageValue } from '@helpers';
+import type { EquipmentSkill } from '@interfaces';
+import { TippyDirective } from '@ngneat/helipopper';
 
 export type SkillAction = 'Salvage';
 
@@ -21,6 +21,8 @@ export class InventoryGridSkillComponent {
   public allowedActions = input<SkillAction[]>([]);
 
   public itemClicked = output<EquipmentSkill>();
+
+  public animateItem = signal<string>('');
 
   salvageValue(item: EquipmentSkill) {
     return skillSalvageValue(item);

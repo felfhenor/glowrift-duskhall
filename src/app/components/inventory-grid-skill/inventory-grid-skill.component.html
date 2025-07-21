@@ -9,6 +9,9 @@
       [tpData]="skill"
       tpVariation="contextMenu"
       [class.cursor-pointer]="clickableSkills()"
+      (mouseenter)="animateItem.set(skill.id)"
+      (mouseleave)="animateItem.set('')"
+      [shouldAnimate]="animateItem() === skill.id"
     ></app-icon-skill>
 
     <ng-template #contextMenu let-hide let-item="data">

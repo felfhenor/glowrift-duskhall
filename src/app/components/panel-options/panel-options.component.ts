@@ -8,7 +8,7 @@ import { PanelOptionsUIComponent } from '@components/panel-options-ui/panel-opti
 import { OptionsBaseComponent } from '@components/panel-options/option-base-page.component';
 import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
 import { options, showOptionsMenu } from '@helpers';
-import { OptionsTab, OptionsTabLink } from '@interfaces';
+import type { OptionsTab, OptionsTabLink } from '@interfaces';
 
 @Component({
   selector: 'app-panel-options',

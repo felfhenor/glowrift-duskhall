@@ -2,7 +2,7 @@ import { Component, computed, input } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { hostBinding } from 'ngxtension/host-binding';
 import { ALL_ICONS } from '@helpers';
-import { Icon } from '@interfaces';
+import type { Icon } from '@interfaces';
 
 @Component({
   selector: 'app-icon',
