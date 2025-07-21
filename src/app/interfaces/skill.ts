@@ -18,8 +18,9 @@ export type EquipmentSkillTargetType = 'Allies' | 'Enemies' | 'Self' | 'All';
 
 export type EquipmentSkillId = Branded<string, 'EquipmentSkillId'>;
 
-export type EquipmentSkillContentTechniqueModifiable = {
+export type EquipmentSkillContentModifiable = {
   techniques: EquipmentSkillContentTechnique[];
+  usesPerCombat: -1 | number;
 };
 
 export type EquipmentSkillContentTechnique = {
@@ -35,11 +36,11 @@ export type EquipmentSkillContentTechnique = {
 
 export type EquipmentSkillContent = DroppableEquippable &
   Animatable &
-  EquipmentSkillContentTechniqueModifiable & {
+  EquipmentSkillContentModifiable & {
     __type: 'skill';
     id: EquipmentSkillId;
   };
 
 export type EquipmentSkill = EquipmentSkillContent & {
-  mods: Partial<EquipmentSkillContentTechniqueModifiable>;
+  mods: Partial<EquipmentSkillContentModifiable>;
 };

@@ -1,6 +1,6 @@
 @let actions = allowedActions();
 
-<div class="flex flex-wrap flex-row gap-2 p-2">
+<div class="flex flex-wrap flex-row gap-2">
   @for (skill of skills(); track skill.id) {
     <app-icon-skill
       [skill]="skill"
