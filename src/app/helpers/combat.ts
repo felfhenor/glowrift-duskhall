@@ -1,9 +1,9 @@
 import { applySkillToTarget } from '@helpers/combat-damage';
 import {
   checkCombatOver,
+  handleCombatDefeat,
   isCombatOver,
   isDead,
-  handleCombatDefeat,
 } from '@helpers/combat-end';
 import { logCombatMessage } from '@helpers/combat-log';
 import {
@@ -20,7 +20,6 @@ import { getEntry } from '@helpers/content';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 
 import { notify } from '@helpers/notify';
-import { travelHome } from '@helpers/explore';
 
 import { sample, sortBy } from 'lodash';
 
@@ -148,9 +147,10 @@ export function handleCombatFlee(): void {
     notify('You are not in combat!', 'Travel');
     return;
   }
+
   logCombatMessage(combat, 'The heroes have fled!');
   handleCombatDefeat(combat);
-  travelHome();
+  resetCombat();
 }
 
 export function resetCombat(): void {

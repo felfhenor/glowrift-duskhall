@@ -23,18 +23,13 @@
         </button>
       }
     </div>
-    @if (combatTabVisibility()) {
-      <button
-        class="btn btn-warn"
-        style="text-transform: uppercase"
-        (click)="fleeFromCombat()"
-      >
-        Flee
-      </button>
+
+    @if (canFlee()) {
+      <button class="btn btn-warning" (click)="fleeFromCombat()">Flee</button>
     }
   </div>
 
-  <div class="p-3 max-h-[500px] overflow-y-auto">
+  <div class="mt-1 p-3 max-h-[500px] overflow-y-auto">
     @switch (currentTab) {
       @case ('Preferences') {
         <app-panel-combat-preferences></app-panel-combat-preferences>

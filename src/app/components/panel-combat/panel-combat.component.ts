@@ -7,14 +7,13 @@ import { PanelCombatPreferencesComponent } from '@components/panel-combat-prefer
 import { OptionsBaseComponent } from '@components/panel-options/option-base-page.component';
 
 import {
+  currentCombat,
+  handleCombatFlee,
+  isCombatOver,
   options,
   showCombatMenu,
-  handleCombatFlee,
-  currentCombat,
-  isCombatOver,
 } from '@helpers';
 import type { CombatTab, CombatTabLink } from '@interfaces';
-
 
 @Component({
   selector: 'app-panel-combat',
@@ -48,7 +47,7 @@ export class PanelCombatComponent extends OptionsBaseComponent {
     showCombatMenu.set(false);
   }
 
-  combatTabVisibility(): boolean {
+  canFlee(): boolean {
     const combat = currentCombat();
     return !!combat && !isCombatOver(combat);
   }
