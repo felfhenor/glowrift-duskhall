@@ -1,5 +1,10 @@
 import { applySkillToTarget } from '@helpers/combat-damage';
-import { checkCombatOver, isCombatOver, isDead } from '@helpers/combat-end';
+import {
+  checkCombatOver,
+  isCombatOver,
+  isDead,
+  handleCombatDefeat,
+} from '@helpers/combat-end';
 import { logCombatMessage } from '@helpers/combat-log';
 import {
   canTakeTurn,
@@ -13,8 +18,18 @@ import {
 } from '@helpers/combat-targetting';
 import { getEntry } from '@helpers/content';
 import { gamestate, updateGamestate } from '@helpers/state-game';
-import type { Combat, Combatant, EquipmentSkill, TalentContent } from '@interfaces';
+
+import { notify } from '@helpers/notify';
+import { travelHome } from '@helpers/explore';
+
 import { sample, sortBy } from 'lodash';
+
+import type {
+  Combat,
+  Combatant,
+  EquipmentSkill,
+  TalentContent,
+} from '@interfaces';
 
 export function currentCombat(): Combat | undefined {
   return gamestate().hero.combat;
@@ -125,6 +140,17 @@ export function doCombatIteration(): void {
   });
 
   checkCombatOver(combat);
+}
+
+export function handleCombatFlee(): void {
+  const combat = currentCombat();
+  if (!combat) {
+    notify('You are not in combat!', 'Travel');
+    return;
+  }
+  logCombatMessage(combat, 'The heroes have fled!');
+  handleCombatDefeat(combat);
+  travelHome();
 }
 
 export function resetCombat(): void {

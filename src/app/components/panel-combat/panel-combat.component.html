@@ -9,16 +9,27 @@
     </button>
   </div>
 
-  <div role="tablist" class="tabs tabs-boxed">
-    @for (tab of tabs; track $index) {
+  <div class="flex justify-between items-center">
+    <div role="tablist" class="tabs tabs-boxed">
+      @for (tab of tabs; track $index) {
+        <button
+          role="tab"
+          class="tab"
+          [class.tab-active]="currentTab === tab.link"
+          (click)="changeActiveTab(tab.link)"
+          (keydown)="changeActiveTab(tab.link)"
+        >
+          {{ tab.name }}
+        </button>
+      }
+    </div>
+    @if (combatTabVisibility()) {
       <button
-        role="tab"
-        class="tab"
-        [class.tab-active]="currentTab === tab.link"
-        (click)="changeActiveTab(tab.link)"
-        (keydown)="changeActiveTab(tab.link)"
+        class="btn btn-warn"
+        style="text-transform: uppercase"
+        (click)="fleeFromCombat()"
       >
-        {{ tab.name }}
+        Flee
       </button>
     }
   </div>
