@@ -22,11 +22,14 @@ import { gamestate, updateGamestate } from '@helpers/state-game';
 import { notify } from '@helpers/notify';
 import { travelHome } from '@helpers/explore';
 
-import { sample, sampleSize, sortBy } from 'lodash';
+import { sample, sortBy } from 'lodash';
 
-import type { Combat, Combatant, EquipmentSkill, TalentContent } from '@interfaces';
-
-
+import type {
+  Combat,
+  Combatant,
+  EquipmentSkill,
+  TalentContent,
+} from '@interfaces';
 
 export function currentCombat(): Combat | undefined {
   return gamestate().hero.combat;
