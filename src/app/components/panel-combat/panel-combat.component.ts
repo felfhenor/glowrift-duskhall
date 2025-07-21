@@ -12,7 +12,7 @@ import {
   currentCombat,
   isCombatOver,
 } from '@helpers';
-import { CombatTab, CombatTabLink } from '@interfaces';
+import type { CombatTab, CombatTabLink } from '@interfaces';
 
 @Component({
   selector: 'app-panel-combat',
