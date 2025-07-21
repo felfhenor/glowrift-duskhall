@@ -1,17 +1,5 @@
-import { WorldLocation } from '@interfaces';
-import { getWorldNode } from '@helpers/index';
-
-export interface MapTileData {
-  x: number;
-  y: number;
-  nodeData: WorldLocation;
-}
-
-export interface MapGridData {
-  tiles: MapTileData[][];
-  width: number;
-  height: number;
-}
+import { getWorldNode } from '@helpers/world';
+import type { MapGridData, MapTileData } from '@interfaces/ui';
 
 /**
  * Generates map grid data for the current camera view

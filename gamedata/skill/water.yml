@@ -14,7 +14,9 @@
       attributes: [BypassDefense, AllowNegative]
       targets: 1
       targetType: Allies
-      targetBehaviors: [NotMaxHealth, NotZeroHealth]
+      targetBehaviors:
+        - behavior: NotZeroHealth
+        - behavior: NotMaxHealth
       damageScaling:
         Force: -0.5
         Aura: -0.25
@@ -37,7 +39,9 @@
       attributes: [BypassDefense, AllowNegative]
       targets: 1
       targetType: Allies
-      targetBehaviors: [NotMaxHealth, NotZeroHealth]
+      targetBehaviors:
+        - behavior: NotZeroHealth
+        - behavior: NotMaxHealth
       damageScaling:
         Force: -1
         Aura: -0.25
@@ -60,9 +64,92 @@
       attributes: [BypassDefense, AllowNegative]
       targets: 1
       targetType: Allies
-      targetBehaviors: [NotMaxHealth, NotZeroHealth]
+      targetBehaviors:
+        - behavior: NotZeroHealth
+        - behavior: NotMaxHealth
       damageScaling:
         Force: -1.5
         Aura: -0.25
 
       combatMessage: '**{{ combatant.name }}** cast **{{ skill.name }}** on **{{ target.name }}** for {{ absdamage }} healing ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
+
+- id: 9b6e323f-e29b-448f-9fb2-ed42a1e869f9
+  name: Frostdrop I
+
+  sprite: '0000'
+  frames: 11
+
+  rarity: Uncommon
+  dropLevel: 10
+
+  usesPerCombat: 3
+
+  techniques:
+    - elements: [Water]
+      targets: 1
+      targetType: Enemies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+        - behavior: IfNotStatusEffect
+          statusEffectId: Frozen
+
+      statusEffects:
+        - statusEffectId: Frozen
+          chance: 100
+          duration: 1
+
+      combatMessage: '**{{ combatant.name }}** cast **{{ skill.name }}** on **{{ target.name }}**.'
+
+- id: 403e7b59-6e73-4acc-866a-dda915927085
+  name: Frostdrop II
+
+  sprite: '0000'
+  frames: 11
+
+  rarity: Rare
+  dropLevel: 15
+
+  usesPerCombat: 3
+
+  techniques:
+    - elements: [Water]
+      targets: 1
+      targetType: Enemies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+        - behavior: IfNotStatusEffect
+          statusEffectId: Frozen
+
+      statusEffects:
+        - statusEffectId: Frozen
+          chance: 100
+          duration: 2
+
+      combatMessage: '**{{ combatant.name }}** cast **{{ skill.name }}** on **{{ target.name }}**.'
+
+- id: 75865047-a506-4af9-8f88-c7422e809b10
+  name: Frostdrop III
+
+  sprite: '0000'
+  frames: 11
+
+  rarity: Mystical
+  dropLevel: 20
+
+  usesPerCombat: 3
+
+  techniques:
+    - elements: [Water]
+      targets: 1
+      targetType: Enemies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+        - behavior: IfNotStatusEffect
+          statusEffectId: Frozen
+
+      statusEffects:
+        - statusEffectId: Frozen
+          chance: 100
+          duration: 3
+
+      combatMessage: '**{{ combatant.name }}** cast **{{ skill.name }}** on **{{ target.name }}**.'

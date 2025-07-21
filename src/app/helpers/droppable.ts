@@ -1,15 +1,15 @@
-import {
+import { getEntry } from '@helpers/content';
+import { createItem } from '@helpers/creator-equipment';
+import { createSkill } from '@helpers/creator-skill';
+import { addItemToInventory } from '@helpers/inventory-equipment';
+import { addSkillToInventory } from '@helpers/inventory-skill';
+import type {
   DroppableEquippable,
   EquipmentItem,
   EquipmentItemContent,
   EquipmentSkill,
   EquipmentSkillContent,
 } from '@interfaces';
-import { getEntry } from '@helpers/content';
-import { createItem } from '@helpers/creator-equipment';
-import { createSkill } from '@helpers/creator-skill';
-import { addItemToInventory } from '@helpers/inventory-equipment';
-import { addSkillToInventory } from '@helpers/inventory-skill';
 
 export function getDroppableEquippableBaseId(
   item: DroppableEquippable,
@@ -66,4 +66,15 @@ export function gainDroppableItem(droppable: DroppableEquippable): void {
         `Could not handle adding a real item with type: ${droppable.__type}`,
       );
   }
+}
+
+/**
+ * Used entirely for debugging to add items to the inventory quickly.
+ *
+ * @param id the item id/name to add
+ */
+export function gainDroppableItemById(id: string): void {
+  gainDroppableItem(
+    makeDroppableIntoRealItem(getEntry<DroppableEquippable>(id)!),
+  );
 }

@@ -1,5 +1,5 @@
 import { Component, computed, input } from '@angular/core';
-import {
+import type {
   ContentType,
   DroppableEquippable,
   EquipmentItem,

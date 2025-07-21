@@ -1,0 +1,12 @@
+@let talentData = talent();
+
+<h3 class="text-lg">{{ talentData.name }}</h3>
+
+<p class="my-2">{{ talentData.description }}</p>
+
+@if (talentData.requireTalentId) {
+  <p class="text-xs italic mt-2">
+    Requires
+    <app-content-name [id]="talentData.requireTalentId"></app-content-name>
+  </p>
+}

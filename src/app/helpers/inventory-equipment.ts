@@ -1,4 +1,4 @@
-import { EquipmentItem, EquipmentSlot, Hero } from '@interfaces';
+import type { EquipmentItem, EquipmentSlot, Hero } from '@interfaces';
 import { updateHeroData } from '@helpers/hero';
 import { recalculateStats } from '@helpers/hero-stats';
 import { updateGamestate } from '@helpers/state-game';
@@ -37,7 +37,8 @@ export function equipItem(hero: Hero, item: EquipmentItem): void {
   });
 
   removeItemFromInventory(item);
-  recalculateStats(hero);
+
+  recalculateStats(hero.id);
 }
 
 export function unequipItem(hero: Hero, item: EquipmentItem): void {
@@ -49,5 +50,5 @@ export function unequipItem(hero: Hero, item: EquipmentItem): void {
   });
 
   addItemToInventory(item);
-  recalculateStats(hero);
+  recalculateStats(hero.id);
 }

@@ -13,7 +13,7 @@ import {
   travelTimeFromCurrentLocationTo,
   travelToNode,
 } from '@helpers';
-import {
+import type {
   DroppableEquippable,
   GameCurrency,
   Guardian,

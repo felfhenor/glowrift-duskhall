@@ -1,5 +1,5 @@
-import { Artable } from '@interfaces/artable';
-import { Content } from '@interfaces/identifiable';
+import type { Artable } from '@interfaces/artable';
+import type { Content } from '@interfaces/identifiable';
 
 export type DropRarity =
   | 'Common'

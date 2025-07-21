@@ -2,6 +2,8 @@
   name: Slash Goblin
   sprite: '0136'
 
+  targettingType: Random
+
   statScaling:
     Force: 0.5
     Health: 5
@@ -11,6 +13,8 @@
 - id: be3d7ddc-dcc6-47c1-afe0-6ac4286216f8
   name: Shield Goblin
   sprite: '0140'
+
+  targettingType: Random
 
   statScaling:
     Force: 0.2
@@ -22,6 +26,7 @@
   name: Fire Goblin
   sprite: '0144'
 
+  targettingType: Weakest
   statScaling:
     Force: 0.7
     Health: 4

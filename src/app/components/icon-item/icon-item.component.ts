@@ -2,7 +2,7 @@ import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 import { TippyDirective } from '@ngneat/helipopper';
 import { itemBuyValue, rarityItemOutlineColor } from '@helpers';
-import { EquipmentItemContent } from '@interfaces';
+import type { EquipmentItemContent } from '@interfaces';
 import { GameCurrencyPipe } from '@pipes/game-currency.pipe';
 import { AtlasImageComponent } from '@components/atlas-image/atlas-image.component';
 import { IconBlankSlotComponent } from '@components/icon-blank-slot/icon-blank-slot.component';

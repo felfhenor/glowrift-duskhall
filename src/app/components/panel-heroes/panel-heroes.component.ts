@@ -9,6 +9,7 @@ import { PanelHeroesEquipmentComponent } from '@components/panel-heroes-equipmen
 import { PanelHeroesSkillsComponent } from '@components/panel-heroes-skills/panel-heroes-skills.component';
 import { PanelHeroesStatsComponent } from '@components/panel-heroes-stats/panel-heroes-stats.component';
 import { PanelHeroesTalentsComponent } from '@components/panel-heroes-talents/panel-heroes-talents.component';
+import { PanelHeroesTargettingComponent } from '@components/panel-heroes-targetting/panel-heroes-targetting.component';
 import {
   equipItem,
   equipSkill,
@@ -18,7 +19,7 @@ import {
   unequipItem,
   unequipSkill,
 } from '@helpers';
-import { EquipmentItem, EquipmentSkill, EquipmentSlot } from '@interfaces';
+import type { EquipmentItem, EquipmentSkill, EquipmentSlot } from '@interfaces';
 
 @Component({
   selector: 'app-panel-heroes',
@@ -33,6 +34,7 @@ import { EquipmentItem, EquipmentSkill, EquipmentSlot } from '@interfaces';
     PanelHeroesSkillsComponent,
     InventoryGridSkillComponent,
     PanelHeroesTalentsComponent,
+    PanelHeroesTargettingComponent,
   ],
   templateUrl: './panel-heroes.component.html',
   styleUrl: './panel-heroes.component.css',

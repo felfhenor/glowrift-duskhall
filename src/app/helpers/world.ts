@@ -1,17 +1,20 @@
-import { sortBy } from 'lodash';
 import {
+  getCurrencyClaimsForNode,
+  mergeCurrencyClaims,
+} from '@helpers/currency';
+import { defaultWorldNode } from '@helpers/defaults';
+import { notify } from '@helpers/notify';
+import { gamestate, updateGamestate } from '@helpers/state-game';
+import { addTimerAndAction, getRegisterTick } from '@helpers/timer';
+import { distanceBetweenNodes } from '@helpers/travel';
+import { getGuardiansForLocation, getLootForLocation } from '@helpers/worldgen';
+import type {
   GameCurrency,
   GameStateWorld,
   LocationType,
   WorldLocation,
 } from '@interfaces';
-import { getCurrencyClaimsForNode, mergeCurrencyClaims } from '@helpers/currency';
-import { notify } from '@helpers/notify';
-import { uuid } from '@helpers/rng';
-import { gamestate, updateGamestate } from '@helpers/state-game';
-import { addTimerAndAction, getRegisterTick } from '@helpers/timer';
-import { distanceBetweenNodes } from '@helpers/travel';
-import { getGuardiansForLocation, getLootForLocation } from '@helpers/worldgen';
+import { sortBy } from 'lodash';
 
 export function setWorld(world: GameStateWorld): void {
   updateGamestate((state) => {
@@ -20,31 +23,12 @@ export function setWorld(world: GameStateWorld): void {
   });
 }
 
-export function blankWorldNode(x = -1, y = -1): WorldLocation {
-  return {
-    id: uuid(),
-    elements: [],
-    name: '',
-    nodeType: undefined,
-    sprite: '',
-    objectSprite: '',
-    x,
-    y,
-    claimCount: 0,
-    currentlyClaimed: false,
-    encounterLevel: 0,
-    guardianIds: [],
-    claimLootIds: [],
-    unclaimTime: 0,
-  };
-}
-
 export function getWorldNode(
   x: number,
   y: number,
   state = gamestate(),
 ): WorldLocation {
-  return state.world.nodes[`${x},${y}`] ?? blankWorldNode(x, y);
+  return state.world.nodes[`${x},${y}`] ?? defaultWorldNode(x, y);
 }
 
 export function getCurrentWorldNode(

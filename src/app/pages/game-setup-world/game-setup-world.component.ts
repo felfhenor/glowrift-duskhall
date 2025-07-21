@@ -1,4 +1,5 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import type { OnInit } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
@@ -16,7 +17,7 @@ import {
   startGame,
   updateHeroData,
 } from '@helpers';
-import { WorldConfigContent } from '@interfaces';
+import type { WorldConfigContent } from '@interfaces';
 
 @Component({
   selector: 'app-game-setup-world',

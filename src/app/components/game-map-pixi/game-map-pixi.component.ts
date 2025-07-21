@@ -1,14 +1,14 @@
+import type {
+  ElementRef,
+  OnDestroy,
+  OnInit } from '@angular/core';
 import {
   Component,
   computed,
   effect,
-  ElementRef,
   inject,
-  OnDestroy,
-  OnInit,
   viewChild,
 } from '@angular/core';
-import { Application, Container, Texture } from 'pixi.js';
 import {
   createClaimIndicatorTextures,
   createGameMapContainers,
@@ -24,13 +24,13 @@ import {
   showLocationMenu,
   windowHeightTiles,
   windowWidthTiles,
-  type MapTileData,
 } from '@helpers';
-import { WorldLocation } from '@interfaces';
-import { NodeSpriteData } from '@interfaces/sprite';
-import { LoadedTextures } from '@interfaces/texture';
+import type { MapTileData, WorldLocation } from '@interfaces';
+import type { NodeSpriteData } from '@interfaces/sprite';
+import type { LoadedTextures } from '@interfaces/texture';
 import { ContentService } from '@services/content.service';
 import { LoggerService } from '@services/logger.service';
+import type { Application, Container, Texture } from 'pixi.js';
 
 @Component({
   selector: 'app-game-map-pixi',

@@ -18,7 +18,7 @@ import {
   showOptionsMenu,
   showTownMenu,
 } from '@helpers';
-import { GameCurrency, Icon } from '@interfaces';
+import type { GameCurrency, Icon } from '@interfaces';
 import { MetaService } from '@services/meta.service';
 import { IconComponent } from '@components/icon/icon.component';
 import { MarkerCurrencyCurrentComponent } from '@components/marker-currency-current/marker-currency-current.component';

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ErrorHandler, inject, Injectable, signal } from '@angular/core';
+import type { ErrorHandler } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '@environments/environment.development';
 import {
   debug,

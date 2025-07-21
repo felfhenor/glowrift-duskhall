@@ -14,9 +14,15 @@
       attributes: [AllowPlink]
       targets: 1
       targetType: Enemies
-      targetBehaviors: [NotZeroHealth]
+      targetBehaviors:
+        - behavior: NotZeroHealth
       damageScaling:
         Force: 1
+
+      statusEffects:
+        - statusEffectId: Burning
+          chance: 3
+          duration: 3
 
       combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
 
@@ -36,9 +42,15 @@
       attributes: [AllowPlink]
       targets: 1
       targetType: Enemies
-      targetBehaviors: [NotZeroHealth]
+      targetBehaviors:
+        - behavior: NotZeroHealth
       damageScaling:
         Force: 1.5
+
+      statusEffects:
+        - statusEffectId: Burning
+          chance: 6
+          duration: 3
 
       combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
 
@@ -58,8 +70,98 @@
       attributes: [AllowPlink]
       targets: 1
       targetType: Enemies
-      targetBehaviors: [NotZeroHealth]
+      targetBehaviors:
+        - behavior: NotZeroHealth
       damageScaling:
         Force: 2
+
+      statusEffects:
+        - statusEffectId: Burning
+          chance: 9
+          duration: 3
+
+      combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
+
+- id: 2ca859ea-df62-43b5-9961-4a4644b094a4
+  name: Fireball I
+
+  sprite: '0149'
+  frames: 6
+
+  rarity: Uncommon
+  dropLevel: 10
+
+  usesPerCombat: 3
+
+  techniques:
+    - elements: [Fire]
+      attributes: [AllowPlink]
+      targets: 3
+      targetType: Enemies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+      damageScaling:
+        Force: 0.3
+
+      statusEffects:
+        - statusEffectId: Burning
+          chance: 5
+          duration: 3
+
+      combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
+
+- id: 5e055bba-3a56-47fd-9e52-6330a5e10cd5
+  name: Fireball II
+
+  sprite: '0149'
+  frames: 6
+
+  rarity: Rare
+  dropLevel: 15
+
+  usesPerCombat: 2
+
+  techniques:
+    - elements: [Fire]
+      attributes: [AllowPlink]
+      targets: 3
+      targetType: Enemies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+      damageScaling:
+        Force: 0.6
+
+      statusEffects:
+        - statusEffectId: Burning
+          chance: 10
+          duration: 3
+
+      combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
+
+- id: 1525be9c-5f5a-48dd-b021-153ad4df5044
+  name: Fireball III
+
+  sprite: '0149'
+  frames: 6
+
+  rarity: Mystical
+  dropLevel: 20
+
+  usesPerCombat: 1
+
+  techniques:
+    - elements: [Fire]
+      attributes: [AllowPlink]
+      targets: 3
+      targetType: Enemies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+      damageScaling:
+        Force: 1
+
+      statusEffects:
+        - statusEffectId: Burning
+          chance: 15
+          duration: 3
 
       combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'

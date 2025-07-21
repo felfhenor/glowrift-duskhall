@@ -6,7 +6,7 @@ import {
   showInventoryMenu,
   sortedRarityList,
 } from '@helpers';
-import { EquipmentItem, EquipmentSkill, EquipmentSlot, InventorySlotType } from '@interfaces';
+import type { EquipmentItem, EquipmentSkill, EquipmentSlot, InventorySlotType } from '@interfaces';
 import { CardPageComponent } from '@components/card-page/card-page.component';
 import { IconComponent } from '@components/icon/icon.component';
 import { InventoryGridItemComponent } from '@components/inventory-grid-item/inventory-grid-item.component';

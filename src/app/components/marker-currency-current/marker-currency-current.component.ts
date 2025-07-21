@@ -1,6 +1,6 @@
 import { Component, computed, input } from '@angular/core';
 import { gamestate } from '@helpers';
-import { GameCurrency } from '@interfaces';
+import type { GameCurrency } from '@interfaces';
 import { MarkerCurrencyComponent } from '@components/marker-currency/marker-currency.component';
 
 @Component({

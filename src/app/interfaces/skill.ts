@@ -1,13 +1,15 @@
-import { Animatable } from '@interfaces/artable';
-import { DroppableEquippable } from '@interfaces/droppable';
-import { GameElement } from '@interfaces/element';
-import { Branded } from '@interfaces/identifiable';
-import { StatBlock } from '@interfaces/stat';
+import type { Animatable } from '@interfaces/artable';
+import type { DroppableEquippable } from '@interfaces/droppable';
+import type { GameElement } from '@interfaces/element';
+import type { Branded } from '@interfaces/identifiable';
+import type { StatBlock } from '@interfaces/stat';
 
 export type EquipmentSkillTargetBehavior =
   | 'Always'
   | 'NotZeroHealth'
-  | 'NotMaxHealth';
+  | 'NotMaxHealth'
+  | 'IfStatusEffect'
+  | 'IfNotStatusEffect';
 
 export type EquipmentSkillAttribute =
   | 'BypassDefense'
@@ -23,13 +25,26 @@ export type EquipmentSkillContentModifiable = {
   usesPerCombat: -1 | number;
 };
 
+export type EquipmentSkillTargetBehaviorData = {
+  behavior: EquipmentSkillTargetBehavior;
+
+  statusEffectId?: string;
+};
+
+export type EquipmentSkillTechniqueStatusEffectApplication = {
+  statusEffectId: string;
+  chance: number;
+  duration: number;
+};
+
 export type EquipmentSkillContentTechnique = {
   targets: number;
   targetType: EquipmentSkillTargetType;
-  targetBehaviors: EquipmentSkillTargetBehavior[];
+  targetBehaviors: EquipmentSkillTargetBehaviorData[];
   damageScaling: StatBlock;
   elements: GameElement[];
   attributes: EquipmentSkillAttribute[];
+  statusEffects: EquipmentSkillTechniqueStatusEffectApplication[];
 
   combatMessage: string;
 };

@@ -12,8 +12,8 @@
     - level: 10
       learnableTalents:
         - talentId: Strength of Firewisp II
-        - talentId: Blank Talent
-        - talentId: Blank Talent
+        - talentId: Heating Up
+        - talentId: Fire Force
         - talentId: Blank Talent
 
     - level: 20

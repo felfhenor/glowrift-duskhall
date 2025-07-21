@@ -3,7 +3,7 @@ import { getDefaultAffinities } from '@helpers/defaults';
 import { createGuardianForLocation } from '@helpers/guardian';
 import { allHeroes } from '@helpers/hero';
 import { uuid } from '@helpers/rng';
-import {
+import type {
   Combat,
   Combatant,
   CombatId,
@@ -18,6 +18,8 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
     id: h.id,
     name: h.name,
     isEnemy: false,
+
+    targettingType: h.targettingType,
 
     baseStats: h.baseStats,
     totalStats: h.baseStats,
@@ -39,16 +41,20 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
     },
 
     skillUses: {},
+    statusEffects: [],
+    statusEffectData: {},
   }));
 
   const guardians: Combatant[] = location.guardianIds
     .map((g) => getEntry<Guardian>(g)!)
     .filter(Boolean)
     .map((g) => createGuardianForLocation(location, g))
-    .map((g) => ({
+    .map((g, i) => ({
       id: g.id,
-      name: `${g.name} Lv.${location.encounterLevel}`,
+      name: `${g.name} Lv.${location.encounterLevel} [${String.fromCharCode(i + 65)}]`,
       isEnemy: true,
+
+      targettingType: g.targettingType,
 
       baseStats: g.stats,
       totalStats: g.stats,
@@ -71,6 +77,8 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
       },
 
       skillUses: {},
+      statusEffects: [],
+      statusEffectData: {},
     }));
 
   return {

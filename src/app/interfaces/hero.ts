@@ -1,8 +1,9 @@
-import { Animatable } from '@interfaces/artable';
-import { EquipmentBlock } from '@interfaces/equipment';
-import { Branded, Identifiable } from '@interfaces/identifiable';
-import { EquipmentSkill } from '@interfaces/skill';
-import { StatBlock } from '@interfaces/stat';
+import type { Animatable } from '@interfaces/artable';
+import type { CombatantTargettingType } from '@interfaces/combat';
+import type { EquipmentBlock } from '@interfaces/equipment';
+import type { Branded, Identifiable } from '@interfaces/identifiable';
+import type { EquipmentSkill } from '@interfaces/skill';
+import type { StatBlock } from '@interfaces/stat';
 
 export type HeroId = Branded<string, 'HeroId'>;
 
@@ -22,4 +23,6 @@ export type Hero = Identifiable &
     equipment: EquipmentBlock;
     skills: (EquipmentSkill | undefined)[];
     talents: Record<string, number>;
+
+    targettingType: CombatantTargettingType;
   };

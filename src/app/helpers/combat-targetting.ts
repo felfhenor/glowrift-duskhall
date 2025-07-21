@@ -1,14 +1,16 @@
 import { getEntry } from '@helpers/content';
-import {
+import type {
   Combat,
   Combatant,
+  CombatantTargettingType,
   EquipmentSkill,
   EquipmentSkillContent,
   EquipmentSkillContentTechnique,
   EquipmentSkillTargetBehavior,
+  EquipmentSkillTargetBehaviorData,
   EquipmentSkillTargetType,
 } from '@interfaces';
-import { intersection, union } from 'lodash';
+import { intersection, sampleSize, sortBy, union } from 'lodash';
 
 export function availableSkillsForCombatant(
   combatant: Combatant,
@@ -25,7 +27,7 @@ export function availableSkillsForCombatant(
 
 export function filterCombatantTargetListForSkillTechniqueBehavior(
   combatants: Combatant[],
-  behavior: EquipmentSkillTargetBehavior,
+  behaviorData: EquipmentSkillTargetBehaviorData,
 ): Combatant[] {
   const behaviors: Record<
     EquipmentSkillTargetBehavior,
@@ -34,12 +36,21 @@ export function filterCombatantTargetListForSkillTechniqueBehavior(
     Always: (list) => list,
     NotMaxHealth: (list) => list.filter((c) => c.hp < c.totalStats.Health),
     NotZeroHealth: (list) => list.filter((c) => c.hp > 0),
+    IfStatusEffect: (list) =>
+      list.filter((c) =>
+        c.statusEffects.find((s) => s.id === behaviorData.statusEffectId),
+      ),
+    IfNotStatusEffect: (list) =>
+      list.filter(
+        (c) =>
+          !c.statusEffects.find((s) => s.id === behaviorData.statusEffectId),
+      ),
   };
 
-  if (!behaviors[behavior])
-    throw new Error(`Invalid target behavior: ${behavior}`);
+  if (!behaviors[behaviorData.behavior])
+    throw new Error(`Invalid target behavior: ${behaviorData.behavior}`);
 
-  return behaviors[behavior](combatants);
+  return behaviors[behaviorData.behavior](combatants);
 }
 
 export function filterCombatantTargetListForSkillTechnique(
@@ -99,4 +110,19 @@ export function getPossibleCombatantTargetsForSkill(
       getPossibleCombatantTargetsForSkillTechnique(combat, combatant, skill, t),
     ),
   );
+}
+
+export function getTargetsFromListBasedOnType(
+  combatants: Combatant[],
+  type: CombatantTargettingType,
+  select: number,
+): Combatant[] {
+  const targettingActions: Record<CombatantTargettingType, () => Combatant[]> =
+    {
+      Random: () => sampleSize(combatants, select),
+      Strongest: () => sortBy(combatants, (c) => -c.hp).slice(0, select),
+      Weakest: () => sortBy(combatants, (c) => c.hp).slice(0, select),
+    };
+
+  return targettingActions[type]();
 }

@@ -1,4 +1,4 @@
-import { Hero, HeroId, HeroRiskTolerance, WorldPosition } from '@interfaces';
+import type { Hero, HeroId, HeroRiskTolerance, WorldPosition } from '@interfaces';
 import { indexToSprite } from '@helpers/sprite';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { getWorldNode } from '@helpers/world';
@@ -57,4 +57,8 @@ export function setHeroRiskTolerance(riskTolerance: HeroRiskTolerance): void {
     state.hero.riskTolerance = riskTolerance;
     return state;
   });
+}
+
+export function getHero(heroId: HeroId): Hero | undefined {
+  return allHeroes().find((h) => h.id === heroId);
 }

@@ -1,13 +1,13 @@
-import { Combat } from '@interfaces/combat';
-import { CurrencyBlock } from '@interfaces/currency';
-import { EquipmentItem } from '@interfaces/equipment';
-import { Hero, HeroRiskTolerance } from '@interfaces/hero';
-import { Branded } from '@interfaces/identifiable';
-import { EquipmentSkill } from '@interfaces/skill';
-import { Timer } from '@interfaces/timer';
-import { TownBuilding } from '@interfaces/town';
-import { WorldLocation, WorldPosition } from '@interfaces/world';
-import { LocationType } from '@interfaces/worldconfig';
+import type { Combat } from '@interfaces/combat';
+import type { CurrencyBlock } from '@interfaces/currency';
+import type { EquipmentItem } from '@interfaces/equipment';
+import type { Hero, HeroRiskTolerance } from '@interfaces/hero';
+import type { Branded } from '@interfaces/identifiable';
+import type { EquipmentSkill } from '@interfaces/skill';
+import type { Timer } from '@interfaces/timer';
+import type { TownBuilding } from '@interfaces/town';
+import type { WorldLocation, WorldPosition } from '@interfaces/world';
+import type { LocationType } from '@interfaces/worldconfig';
 
 export type GameId = Branded<string, 'GameId'>;
 

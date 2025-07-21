@@ -1,5 +1,5 @@
 import { signal } from '@angular/core';
-import { LocationType } from '@interfaces';
+import type { LocationType } from '@interfaces';
 
 export const spriteIterationCount = signal<number>(0);
 

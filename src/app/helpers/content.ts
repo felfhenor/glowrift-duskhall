@@ -1,5 +1,6 @@
-import { signal, Signal } from '@angular/core';
-import { Content, ContentType } from '@interfaces';
+import type { Signal } from '@angular/core';
+import { signal } from '@angular/core';
+import type { Content, ContentType } from '@interfaces';
 
 const _allIdsByName = signal<Map<string, string>>(new Map());
 export const allIdsByName: Signal<Map<string, string>> =

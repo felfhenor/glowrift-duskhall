@@ -1,6 +1,6 @@
-import { GameCurrency } from '@interfaces/currency';
-import { DropRarity } from '@interfaces/droppable';
-import { Content } from '@interfaces/identifiable';
+import type { GameCurrency } from '@interfaces/currency';
+import type { DropRarity } from '@interfaces/droppable';
+import type { Content } from '@interfaces/identifiable';
 
 export type FestivalEffectCombatAttribute = 'damage';
 

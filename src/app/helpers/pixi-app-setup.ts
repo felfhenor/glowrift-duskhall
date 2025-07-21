@@ -1,5 +1,5 @@
 import { Application, Container } from 'pixi.js';
-import { PixiAppConfig } from '@interfaces/pixi-config';
+import type { PixiAppConfig } from '@interfaces/pixi-config';
 
 /**
  * Initializes a pixijs with the specified configuration

@@ -1,7 +1,9 @@
 import { sum } from 'lodash';
-import { GameStat, Hero, StatBlock } from '@interfaces';
+import type { GameStat, Hero, StatBlock } from '@interfaces';
 import { updateHeroData } from '@helpers/hero';
 import { getItemStat } from '@helpers/item';
+import { getHero } from '@helpers/hero';
+import type { HeroId } from '@interfaces/hero';
 
 export function heroBaseStat(hero: Hero, stat: GameStat): number {
   return hero.baseStats[stat];
@@ -28,10 +30,16 @@ export function heroStats(hero: Hero): StatBlock {
   };
 }
 
-export function recalculateStats(hero: Hero): void {
-  const newStats = heroStats(hero);
+export function recalculateStats(heroId: HeroId): void {
+  const thisHero = getHero(heroId);
 
-  updateHeroData(hero.id, {
+  if (!thisHero) {
+    return;
+  }
+
+  const newStats = heroStats(thisHero);
+
+  updateHeroData(thisHero.id, {
     totalStats: newStats,
     hp: newStats.Health,
   });
