@@ -8,6 +8,7 @@ import { PanelTownBlacksmithComponent } from '@components/panel-town-blacksmith/
 import { PanelTownFestivalsComponent } from '@components/panel-town-festivals/panel-town-festivals.component';
 import { PanelTownMarketComponent } from '@components/panel-town-market/panel-town-market.component';
 import { PanelTownMerchantComponent } from '@components/panel-town-merchant/panel-town-merchant.component';
+import { PanelTownSalvagerComponent } from '@components/panel-town-salvager/panel-town-salvager.component';
 import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
 import { getBuildingLevel, getOption, setOption, showTownMenu } from '@helpers';
 import type { TownTab } from '@interfaces';
@@ -26,6 +27,7 @@ import { TeleportOutletDirective } from '@ngneat/overview';
     TeleportOutletDirective,
     PanelTownAlchemistComponent,
     PanelTownFestivalsComponent,
+    PanelTownSalvagerComponent,
   ],
   templateUrl: './panel-town.component.html',
   styleUrl: './panel-town.component.scss',
@@ -55,10 +57,10 @@ export class PanelTownComponent {
       level: computed(() => getBuildingLevel('Merchant')),
     },
     {
-      name: 'Blacksmith',
-      link: 'Blacksmith',
+      name: 'Salvager',
+      link: 'Salvager',
       showIf: computed(() => true),
-      level: computed(() => getBuildingLevel('Blacksmith')),
+      level: computed(() => getBuildingLevel('Salvager')),
     },
     {
       name: 'Alchemist',
@@ -71,6 +73,12 @@ export class PanelTownComponent {
       link: 'Academy',
       showIf: computed(() => false),
       level: computed(() => getBuildingLevel('Academy')),
+    },
+    {
+      name: 'Blacksmith',
+      link: 'Blacksmith',
+      showIf: computed(() => false),
+      level: computed(() => getBuildingLevel('Blacksmith')),
     },
     {
       name: 'Festivals',

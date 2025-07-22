@@ -71,6 +71,7 @@ export function blankGameState(): GameState {
         Blacksmith: 1,
         Market: 1,
         Merchant: 1,
+        Salvager: 1,
       },
       merchant: {
         soldItems: [],

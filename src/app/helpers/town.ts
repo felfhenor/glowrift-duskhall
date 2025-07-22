@@ -34,6 +34,11 @@ export function buildingUpgradeCost(building: TownBuilding) {
       ...defaultNodeCountBlock(),
       village: 3,
     },
+
+    Salvager: {
+      ...defaultNodeCountBlock(),
+      cave: 25,
+    },
   };
 
   const currencyCosts: Record<TownBuilding, Record<GameCurrency, number>> = {
@@ -60,6 +65,11 @@ export function buildingUpgradeCost(building: TownBuilding) {
     Merchant: {
       ...defaultCurrencyBlock(),
       Mana: 5000,
+    },
+
+    Salvager: {
+      ...defaultCurrencyBlock(),
+      Mana: 1000,
     },
   };
 
@@ -88,6 +98,7 @@ export function buildingMaxLevel(building: TownBuilding) {
     Blacksmith: 99,
     Market: 99,
     Merchant: 99,
+    Salvager: 99,
   };
 
   return maxLevels[building] ?? 1;

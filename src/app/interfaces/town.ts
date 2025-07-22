@@ -3,4 +3,5 @@ export type TownBuilding =
   | 'Merchant'
   | 'Blacksmith'
   | 'Academy'
-  | 'Alchemist';
+  | 'Alchemist'
+  | 'Salvager';

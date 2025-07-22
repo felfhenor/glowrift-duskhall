@@ -96,13 +96,6 @@ export function getCombatantStatForTechnique(
   const totalMultiplier =
     baseMultiplier + talentSkillMultiplierBoost + talentElementMultiplierBoost;
 
-  console.log(combatant.name, skill.name, {
-    talentElementMultiplierBoost,
-    talentSkillMultiplierBoost,
-    baseMultiplier,
-    totalMultiplier,
-  });
-
   return combatant.totalStats[stat] * totalMultiplier;
 }
 
