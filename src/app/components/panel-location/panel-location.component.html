@@ -122,7 +122,7 @@
         >
           <app-icon-currency [currency]="res.resource"></app-icon-currency>
           <div class="min-w-[128px] flex-1">{{ res.resource }}</div>
-          <div class="min-w-[56px]">+{{ res.amount }}</div>
+          <div class="min-w-[56px]">+{{ res.amount | number: '1.0-2' }}</div>
         </div>
       } @empty {
         None
