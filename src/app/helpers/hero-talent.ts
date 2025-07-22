@@ -1,7 +1,7 @@
-import { sum } from 'lodash';
-import type { Hero, TalentContent } from '@interfaces';
 import { getEntry } from '@helpers/content';
 import { updateHeroData } from '@helpers/hero';
+import type { Hero, TalentContent, TalentId } from '@interfaces';
+import { sum } from 'lodash';
 
 export function heroRemainingTalentPoints(hero: Hero): number {
   return hero.level - sum(Object.values(hero.talents));
@@ -20,11 +20,43 @@ export function heroHasTalent(hero: Hero, talentId: string): boolean {
   return !!hero.talents[talentId];
 }
 
-export function allHeroTalents(hero: Hero): TalentContent[] {
-  return Object.entries(hero.talents)
-    .filter(([, level]) => level > 0)
-    .map(([talentId]) => getEntry<TalentContent>(talentId))
-    .filter((talent): talent is TalentContent => !!talent);
+export function allHeroEquipmentTalents(
+  hero: Hero,
+): Array<{ talent: TalentContent; level: number }> {
+  const equipment = Object.values(hero.equipment)
+    .filter(Boolean)
+    .flatMap((item) =>
+      item!.talentBoosts.concat(item!.mods?.talentBoosts ?? []),
+    );
+
+  return equipment.map((boost) => ({
+    talent: getEntry<TalentContent>(boost.talentId)!,
+    level: boost.value,
+  }));
+}
+
+export function heroEquipmentTalentLevel(hero: Hero, talentId: string): number {
+  return sum(
+    allHeroEquipmentTalents(hero)
+      .filter((boost) => boost.talent.id === talentId)
+      .map((boost) => boost.level),
+  );
+}
+
+export function heroTotalTalentLevel(hero: Hero, talentId: string): number {
+  return (
+    (hero.talents[talentId] ?? 0) + heroEquipmentTalentLevel(hero, talentId)
+  );
+}
+
+export function getFullHeroTalentHash(hero: Hero): Record<TalentId, number> {
+  const baseLevels = Object.assign({}, hero.talents);
+  allHeroEquipmentTalents(hero).forEach((boost) => {
+    baseLevels[boost.talent.id] =
+      (baseLevels[boost.talent.id] ?? 0) + boost.level;
+  });
+
+  return baseLevels;
 }
 
 export function canHeroBuyTalent(

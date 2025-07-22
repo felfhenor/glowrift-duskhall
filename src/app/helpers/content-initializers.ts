@@ -135,6 +135,7 @@ export function ensureItem(
     preventModification: item.preventModification ?? false,
 
     baseStats: Object.assign({}, getDefaultStats(), item.baseStats ?? {}),
+    talentBoosts: item.talentBoosts ?? [],
   };
 }
 

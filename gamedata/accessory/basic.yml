@@ -28,3 +28,14 @@
 
   baseStats:
     Speed: 1
+
+- id: e0f18a63-cbbf-4ee1-b115-a4d286299c9c
+  name: Shield of Firewisp I
+  sprite: '0025'
+
+  rarity: Rare
+  dropLevel: 10
+
+  talentBoosts:
+    - talentId: Strength of Firewisp I
+      value: 1

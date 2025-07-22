@@ -1,5 +1,4 @@
 import {
-  allHeroTalents,
   canHeroBuyTalent,
   heroHasTalent,
   heroRemainingTalentPoints,
@@ -23,7 +22,6 @@ vi.mock('@helpers/hero', () => ({
   updateHeroData: vi.fn(),
 }));
 
-import { getEntry } from '@helpers/content';
 import { updateHeroData } from '@helpers/hero';
 
 describe('Hero Talent Functions', () => {
@@ -103,47 +101,6 @@ describe('Hero Talent Functions', () => {
 
     it('should return false for unlearned talents', () => {
       expect(heroHasTalent(testHero, 'talent-3')).toBe(false);
-    });
-  });
-
-  describe('allHeroTalents', () => {
-    it('should return array of all learned talent contents', () => {
-      const talentContent1: TalentContent = {
-        id: 'talent-1' as TalentId,
-        name: 'Talent 1',
-        __type: 'talent',
-        sprite: 'talent-1',
-        description: 'Test talent 1',
-        boostedElements: [],
-        boostedSkillIds: [],
-        boostStats: baseStats,
-        boostedStatusEffectIds: [],
-        boostedStatusEffectChance: 0,
-        boostStatusEffectStats: baseStats,
-      };
-
-      const talentContent2: TalentContent = {
-        id: 'talent-2' as TalentId,
-        name: 'Talent 2',
-        __type: 'talent',
-        sprite: 'talent-2',
-        description: 'Test talent 2',
-        boostedElements: [],
-        boostedSkillIds: [],
-        boostStats: baseStats,
-        boostedStatusEffectIds: [],
-        boostedStatusEffectChance: 0,
-        boostStatusEffectStats: baseStats,
-      };
-
-      vi.mocked(getEntry)
-        .mockReturnValueOnce(talentContent1)
-        .mockReturnValueOnce(talentContent2);
-
-      const talents = allHeroTalents(testHero);
-      expect(talents).toHaveLength(2);
-      expect(talents[0].id).toBe('talent-1');
-      expect(talents[1].id).toBe('talent-2');
     });
   });
 

@@ -2,6 +2,7 @@ import { getEntry } from '@helpers/content';
 import { getDefaultAffinities } from '@helpers/defaults';
 import { createGuardianForLocation } from '@helpers/guardian';
 import { allHeroes } from '@helpers/hero';
+import { getFullHeroTalentHash } from '@helpers/hero-talent';
 import { uuid } from '@helpers/rng';
 import type {
   Combat,
@@ -30,7 +31,7 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
     skillIds: ['Attack' as EquipmentSkillId],
     skillRefs: h.skills.filter(Boolean) as EquipmentSkill[],
 
-    talents: h.talents,
+    talents: getFullHeroTalentHash(h),
 
     affinity: {
       ...getDefaultAffinities(),

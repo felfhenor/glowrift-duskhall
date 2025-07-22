@@ -6,6 +6,7 @@ import {
   getEntry,
   heroHasTalent,
   heroSpendTalentPoint,
+  heroTotalTalentLevel,
 } from '@helpers';
 import type {
   GameElement,
@@ -22,6 +23,7 @@ type TalentTreeHeroNode = TalentTreeContentNode & {
   talentData: TalentContent;
   canPurchase: boolean;
   isLearned: boolean;
+  talentLevel: number;
 };
 
 type TalentTreeHeroLevel = TalentTreeContentLevel & {
@@ -55,6 +57,7 @@ export class PanelHeroesTalentsTreeComponent {
           talentData,
           isLearned: heroHasTalent(this.hero(), talentData.id),
           canPurchase: canHeroBuyTalent(this.hero(), talentData, level.level),
+          talentLevel: heroTotalTalentLevel(this.hero(), talentData.id),
         } as TalentTreeHeroNode;
       }) as TalentTreeHeroNode[];
 

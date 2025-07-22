@@ -22,6 +22,7 @@ import type {
   GameElement,
   GameStat,
   StatusEffectContent,
+  TalentId,
 } from '@interfaces';
 import { intersection, sum } from 'lodash';
 
@@ -32,6 +33,13 @@ export function techniqueHasAttribute(
   return technique.attributes?.includes(attribute);
 }
 
+export function combatantTalentLevel(
+  combatant: Combatant,
+  talentId: TalentId,
+): number {
+  return combatant.talents[talentId] ?? 0;
+}
+
 export function combatantTalentElementBoost(
   combatant: Combatant,
   elements: GameElement[],
@@ -40,7 +48,10 @@ export function combatantTalentElementBoost(
   return sum(
     allCombatantTalents(combatant)
       .filter((t) => intersection(t.boostedElements ?? [], elements).length > 0)
-      .map((t) => t.boostStats[stat] ?? 0),
+      .map(
+        (t) =>
+          combatantTalentLevel(combatant, t.id) * (t.boostStats[stat] ?? 0),
+      ),
   );
 }
 
@@ -54,7 +65,10 @@ export function combatantTalentSkillBoost(
   return sum(
     allCombatantTalents(combatant)
       .filter((t) => t.boostedSkillIds?.includes(skillContentId))
-      .map((t) => t.boostStats[stat] ?? 0),
+      .map(
+        (t) =>
+          combatantTalentLevel(combatant, t.id) * (t.boostStats[stat] ?? 0),
+      ),
   );
 }
 
@@ -81,6 +95,13 @@ export function getCombatantStatForTechnique(
 
   const totalMultiplier =
     baseMultiplier + talentSkillMultiplierBoost + talentElementMultiplierBoost;
+
+  console.log(combatant.name, skill.name, {
+    talentElementMultiplierBoost,
+    talentSkillMultiplierBoost,
+    baseMultiplier,
+    totalMultiplier,
+  });
 
   return combatant.totalStats[stat] * totalMultiplier;
 }
