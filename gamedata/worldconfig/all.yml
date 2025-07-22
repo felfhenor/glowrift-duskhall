@@ -22,9 +22,9 @@
   nodeCount:
     town: { min: 2, max: 5 }
     village: { min: 25, max: 50 }
-    cave: { min: 1500, max: 1900 }
-    dungeon: { min: 700, max: 1000 }
-    castle: { min: 100, max: 250 }
+    cave: { min: 500, max: 900 }
+    dungeon: { min: 200, max: 400 }
+    castle: { min: 50, max: 150 }
 
 - id: c8d7c7ed-700f-40f0-bf23-2e5a274b497e
   name: Medium
