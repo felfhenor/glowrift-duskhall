@@ -1,30 +1,27 @@
-import { cloneDeep } from 'lodash';
+import { getEntriesByType, getEntry } from '@helpers/content';
+import { cleanupDroppableDefinition } from '@helpers/droppable';
+import { randomChoiceByRarity, seededrng, uuid } from '@helpers/rng';
 import type {
   EquipmentSkill,
   EquipmentSkillContent,
   EquipmentSkillId,
 } from '@interfaces';
-import { getEntriesByType, getEntry } from '@helpers/content';
-import { cleanupDroppableDefinition } from '@helpers/droppable';
-import { randomIdentifiableChoice, seededrng, uuid } from '@helpers/rng';
+import { cloneDeep } from 'lodash';
 
 export function allSkillDefinitions(): EquipmentSkillContent[] {
   return getEntriesByType<EquipmentSkillContent>('skill');
 }
 
-export function pickRandomSkillDefinition(
+export function pickRandomSkillDefinitionBasedOnRarity(
   definitions = getEntriesByType<EquipmentSkillContent>('skill'),
   rng = seededrng(uuid()),
 ): EquipmentSkillContent {
   const allItems = definitions.filter((i) => !i.preventDrop);
 
-  const chosenItem = randomIdentifiableChoice<EquipmentSkillContent>(
-    allItems,
-    rng,
-  );
+  const chosenItem = randomChoiceByRarity(allItems, rng);
   if (!chosenItem) throw new Error('Could not generate a skill.');
 
-  const chosenItemDefinition = getEntry<EquipmentSkillContent>(chosenItem);
+  const chosenItemDefinition = getEntry<EquipmentSkillContent>(chosenItem.id);
   if (!chosenItemDefinition) throw new Error('Could not generate a skill.');
 
   return cloneDeep(chosenItemDefinition);

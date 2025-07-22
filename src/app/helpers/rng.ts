@@ -1,5 +1,6 @@
 import { myGameId } from '@helpers/state-game';
-import type { Identifiable } from '@interfaces';
+import type { DropRarity, HasRarity, Identifiable } from '@interfaces';
+import { pull, sumBy } from 'lodash';
 import seedrandom, { type PRNG } from 'seedrandom';
 import { v4 as uuid4 } from 'uuid';
 
@@ -17,6 +18,24 @@ export function seededrng(seed = uuid()): PRNG {
 
 export function gamerng(): PRNG {
   return seededrng(myGameId());
+}
+
+export function randomChoice<T>(choices: T[], rng = seededrng(uuid())): T {
+  return choices[Math.floor(rng() * choices.length)];
+}
+
+export function shufflerng<T>(choices: T[], rng = seededrng(uuid())): T[] {
+  const baseArray = choices.slice();
+
+  const shuffled = [];
+
+  for (let i = 0; i < choices.length; i++) {
+    const chosen = randomChoice(baseArray, rng);
+    shuffled.push(chosen);
+    pull(baseArray, chosen);
+  }
+
+  return shuffled;
 }
 
 export function randomIdentifiableChoice<T extends Identifiable>(
@@ -42,10 +61,31 @@ export function succeedsChance(max: number, rng = seededrng(uuid())): boolean {
   return rng() * 100 <= max;
 }
 
-export function randomChoice<T>(choices: T[], rng = seededrng(uuid())): T {
-  // throw away the first 2 rng values. who needs 'em anyway?
-  rng();
-  rng();
+export function randomChoiceByRarity<T extends HasRarity>(
+  items: T[],
+  rng = seededrng(uuid()),
+): T | undefined {
+  const rarityWeights: Record<DropRarity, number> = {
+    Common: 100,
+    Uncommon: 25,
+    Rare: 10,
+    Mystical: 5,
+    Legendary: 2,
+    Unique: 1,
+  };
 
-  return choices[Math.floor(rng() * choices.length)];
+  const totalRarity = sumBy(items, (f) => rarityWeights[f.rarity]);
+  const itemOrdering = shufflerng(items, rng);
+
+  const randomValue = randomNumber(totalRarity, rng);
+  let cumulativeRarity = 0;
+
+  for (const item of itemOrdering) {
+    cumulativeRarity += rarityWeights[item.rarity];
+    if (randomValue < cumulativeRarity) {
+      return item;
+    }
+  }
+
+  return undefined;
 }

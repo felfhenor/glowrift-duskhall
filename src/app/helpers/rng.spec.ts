@@ -5,6 +5,7 @@ import {
   randomNumber,
   randomNumberRange,
   seededrng,
+  shufflerng,
   succeedsChance,
   uuid,
 } from '@helpers/rng';
@@ -111,15 +112,32 @@ describe('RNG Helper Functions', () => {
       expect(choices).toContain(result);
     });
 
-    it('should skip first two random values', () => {
-      const calls: number[] = [];
-      const mockRng: PRNG = () => {
-        calls.push(1);
-        return 0.5;
-      };
+    describe('shufflerng', () => {
+      it('should return array with same length as input', () => {
+        const choices = ['a', 'b', 'c'];
+        const result = shufflerng(choices, seededrng('test-seed'));
+        expect(result.length).toBe(choices.length);
+      });
 
-      randomChoice(['a'], mockRng);
-      expect(calls.length).toBe(3); // Two skipped + one used
+      it('should contain all original elements', () => {
+        const choices = ['a', 'b', 'c'];
+        const result = shufflerng(choices, seededrng('test-seed'));
+        expect(result).toEqual(expect.arrayContaining(choices));
+      });
+
+      it('should maintain consistent order with same seed', () => {
+        const choices = ['a', 'b', 'c'];
+        const result1 = shufflerng(choices, seededrng('test-seed'));
+        const result2 = shufflerng(choices, seededrng('test-seed'));
+        expect(result1).toEqual(result2);
+      });
+
+      it('should not modify original array', () => {
+        const choices = ['a', 'b', 'c'];
+        const original = [...choices];
+        shufflerng(choices, seededrng('test-seed'));
+        expect(choices).toEqual(original);
+      });
     });
   });
 });

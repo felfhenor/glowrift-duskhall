@@ -1,5 +1,5 @@
 import type { GameCurrency } from '@interfaces/currency';
-import type { DropRarity } from '@interfaces/droppable';
+import type { HasRarity } from '@interfaces/droppable';
 import type { Content } from '@interfaces/identifiable';
 
 export type FestivalEffectCombatAttribute = 'damage';
@@ -21,11 +21,11 @@ export interface FestivalEffects {
   exploration?: FestivalEffectsExploration;
 }
 
-export interface FestivalContent extends Content {
-  description: string;
-  endDescription: string;
-  effectsDescription: string;
-  duration: number;
-  rarity: DropRarity;
-  effects: FestivalEffects;
-}
+export type FestivalContent = HasRarity &
+  Content & {
+    description: string;
+    endDescription: string;
+    effectsDescription: string;
+    duration: number;
+    effects: FestivalEffects;
+  };

@@ -1,10 +1,9 @@
-import { shuffle, sumBy } from 'lodash';
-import type { DropRarity, FestivalContent } from '@interfaces';
 import { getTickTimer, isExpired } from '@helpers/clock';
 import { getEntriesByType, getEntry } from '@helpers/content';
 import { notify } from '@helpers/notify';
-import { randomNumber, succeedsChance } from '@helpers/rng';
+import { randomChoiceByRarity, succeedsChance } from '@helpers/rng';
 import { gamestate, updateGamestate } from '@helpers/state-game';
+import type { FestivalContent } from '@interfaces';
 
 export function getActiveFestivals(): FestivalContent[] {
   return Object.keys(gamestate().festival.festivals)
@@ -56,29 +55,7 @@ export function pickRandomFestivalBasedOnRarity(): string | undefined {
     (f) => !isFestivalActive(f.id),
   );
 
-  const festivalRarities: Record<DropRarity, number> = {
-    Common: 100,
-    Uncommon: 25,
-    Rare: 10,
-    Mystical: 5,
-    Legendary: 2,
-    Unique: 1,
-  };
-
-  const totalRarity = sumBy(festivals, (f) => festivalRarities[f.rarity]);
-  const festivalOrdering = shuffle(festivals);
-
-  const randomValue = randomNumber(totalRarity);
-  let cumulativeRarity = 0;
-
-  for (const festival of festivalOrdering) {
-    cumulativeRarity += festivalRarities[festival.rarity];
-    if (randomValue < cumulativeRarity) {
-      return festival.id;
-    }
-  }
-
-  return undefined;
+  return randomChoiceByRarity(festivals)?.id;
 }
 
 export function maybeStartNewFestival(): void {

@@ -4,11 +4,11 @@ import type { PRNG } from 'seedrandom';
 import { getEntriesByType, getEntry } from '@helpers/content';
 import {
   allItemDefinitions,
-  pickRandomItemDefinition,
+  pickRandomItemDefinitionBasedOnRarity,
 } from '@helpers/creator-equipment';
 import {
   allSkillDefinitions,
-  pickRandomSkillDefinition,
+  pickRandomSkillDefinitionBasedOnRarity,
 } from '@helpers/creator-skill';
 import { defaultNodeCountBlock, defaultWorldNode } from '@helpers/defaults';
 import { createGuardianForLocation } from '@helpers/guardian';
@@ -382,8 +382,8 @@ export function getLootForLocation(
   return Array.from({ length: numLoot }, () => {
     return randomChoice(
       [
-        pickRandomItemDefinition(allValidItemDefinitions, rng),
-        pickRandomSkillDefinition(allValidSkillDefinitions, rng),
+        pickRandomItemDefinitionBasedOnRarity(allValidItemDefinitions, rng),
+        pickRandomSkillDefinitionBasedOnRarity(allValidSkillDefinitions, rng),
       ],
       rng,
     );

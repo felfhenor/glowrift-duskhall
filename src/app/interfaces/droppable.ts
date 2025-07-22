@@ -9,12 +9,14 @@ export type DropRarity =
   | 'Legendary'
   | 'Unique';
 
-export interface Droppable {
+export interface HasRarity {
+  rarity: DropRarity;
+}
+
+export type Droppable = HasRarity & {
   preventModification?: boolean;
   preventDrop?: boolean;
-
-  rarity: DropRarity;
   dropLevel: number;
-}
+};
 
 export type DroppableEquippable = Content & Artable & Droppable;

@@ -1,13 +1,13 @@
-import type { EquipmentItem } from '@interfaces';
 import { itemBuyValue } from '@helpers/action-equipment';
 import {
   allItemDefinitions,
   createItem,
-  pickRandomItemDefinition,
+  pickRandomItemDefinitionBasedOnRarity,
 } from '@helpers/creator-equipment';
 import { hasCurrency, loseCurrency } from '@helpers/currency';
 import { addItemToInventory } from '@helpers/inventory-equipment';
 import { gamestate, updateGamestate } from '@helpers/state-game';
+import type { EquipmentItem } from '@interfaces';
 
 export function townMerchantItems(): number {
   return 8 + Math.floor(gamestate().town.buildingLevels.Merchant / 5);
@@ -17,7 +17,7 @@ export function generateMerchantItem(): EquipmentItem {
   const allItems = allItemDefinitions().filter(
     (item) => item.dropLevel <= gamestate().town.buildingLevels.Merchant,
   );
-  const chosenItem = pickRandomItemDefinition(allItems);
+  const chosenItem = pickRandomItemDefinitionBasedOnRarity(allItems);
 
   return createItem(chosenItem);
 }
