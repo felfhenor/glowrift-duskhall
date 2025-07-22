@@ -19,4 +19,5 @@ import { TippyDirective } from '@ngneat/helipopper';
 export class IconTalentComponent {
   public talent = input.required<TalentContent>();
   public isBought = input<boolean>(false);
+  public boostValue = input<number>(0);
 }

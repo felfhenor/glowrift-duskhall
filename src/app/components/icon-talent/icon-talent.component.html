@@ -15,6 +15,14 @@
   [tpIsEnabled]="talentData.name !== 'Blank Talent'"
 ></app-atlas-image>
 
+@if (boostValue()) {
+  <div
+    class="z-20 absolute bottom-0 right-1 text-xs font-bold italic text-black text-shadow-white"
+  >
+    + {{ boostValue() }}
+  </div>
+}
+
 <ng-template #talentInfo let-hide>
   <app-stats-talent [talent]="talentData"></app-stats-talent>
 </ng-template>
