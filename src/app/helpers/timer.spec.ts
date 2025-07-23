@@ -6,7 +6,12 @@ import {
   timerUnclaimVillage,
   totalTicksElapsed,
 } from '@helpers/timer';
-import type { Timer, TimerUnclaimVillage, WorldPosition } from '@interfaces';
+import type {
+  Timer,
+  TimerUnclaimVillage,
+  WorldLocation,
+  WorldPosition,
+} from '@interfaces';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock dependencies
@@ -120,12 +125,11 @@ describe('Timer Functions', () => {
       };
 
       const mockNode = {
-        id: 'node-1',
         x: 1,
         y: 1,
-      };
+      } as WorldLocation;
 
-      vi.mocked(getWorldNode).mockReturnValue(mockNode as any);
+      vi.mocked(getWorldNode).mockReturnValue(mockNode);
 
       timerUnclaimVillage(mockTimer);
 
