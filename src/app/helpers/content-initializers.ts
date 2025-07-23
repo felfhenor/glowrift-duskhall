@@ -136,6 +136,7 @@ export function ensureItem(
 
     baseStats: Object.assign({}, getDefaultStats(), item.baseStats ?? {}),
     talentBoosts: item.talentBoosts ?? [],
+    elementMultipliers: item.elementMultipliers ?? [],
   };
 }
 

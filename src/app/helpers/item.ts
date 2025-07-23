@@ -3,7 +3,9 @@ import type {
   DropRarity,
   EquipmentItem,
   EquipmentItemContent,
+  GameElement,
   GameStat,
+  WorldLocationElement,
 } from '@interfaces';
 import { sortBy } from 'lodash';
 
@@ -33,6 +35,15 @@ export function sortedRarityList<T extends DroppableEquippable>(
   ]);
 }
 
+export function isEquipment(item: DroppableEquippable): item is EquipmentItem {
+  return (
+    item.__type === 'weapon' ||
+    item.__type === 'armor' ||
+    item.__type === 'accessory' ||
+    item.__type === 'trinket'
+  );
+}
+
 export function getItemStat(
   item: EquipmentItemContent,
   stat: GameStat,
@@ -41,6 +52,30 @@ export function getItemStat(
     (item.baseStats[stat] ?? 0) +
     ((item as EquipmentItem)?.mods?.baseStats?.[stat] ?? 0)
   );
+}
+
+export function getItemElementMultiplier(
+  item: EquipmentItemContent,
+  element: GameElement,
+): number {
+  return (
+    (item.elementMultipliers.find((e) => e.element === element)?.multiplier ??
+      0) +
+    ((item as EquipmentItem)?.mods?.elementMultipliers?.find(
+      (e) => e.element === element,
+    )?.multiplier ?? 0)
+  );
+}
+
+export function addItemElement(
+  item: EquipmentItem,
+  locElement: WorldLocationElement,
+): void {
+  item.mods.elementMultipliers ??= [];
+  item.mods.elementMultipliers.push({
+    element: locElement.element,
+    multiplier: locElement.intensity / 100,
+  });
 }
 
 export function rarityItemTextColor(rarity: DropRarity): string {

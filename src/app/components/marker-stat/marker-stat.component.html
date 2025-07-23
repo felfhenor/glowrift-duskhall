@@ -1,7 +1,10 @@
 <div class="flex flex-row gap-2 items-center">
-  <app-icon size="1.25em" [name]="icon()"></app-icon>
+  <app-icon-stat [stat]="stat()"></app-icon-stat>
+
   <div class="min-w-[96px]">{{ stat() | titlecase }}</div>
+
   <div>{{ value() | number }}</div>
+
   @if (displayDelta()) {
     <div [class]="deltaColor()">{{ displayDelta() }}</div>
   }

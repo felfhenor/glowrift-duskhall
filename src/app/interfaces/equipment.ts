@@ -1,4 +1,5 @@
 import type { DroppableEquippable } from '@interfaces/droppable';
+import type { GameElement } from '@interfaces/element';
 import type { Branded } from '@interfaces/identifiable';
 import type { StatBlock } from '@interfaces/stat';
 
@@ -10,9 +11,15 @@ export type EquipmentBlock = Record<EquipmentSlot, EquipmentItem | undefined>;
 
 export type EquipmentTalent = { talentId: string; value: number };
 
+export type EquipmentElement = {
+  element: GameElement;
+  multiplier: number;
+};
+
 export type EquipmentModifiable = {
   baseStats: StatBlock;
   talentBoosts: EquipmentTalent[];
+  elementMultipliers: EquipmentElement[];
 };
 
 export type EquipmentItemContent = DroppableEquippable &

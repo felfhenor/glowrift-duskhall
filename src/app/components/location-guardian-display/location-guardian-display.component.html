@@ -7,18 +7,18 @@
 <ng-template #guardianInfo let-hide>
   <h3 class="text-lg">{{ guardianData.name }}</h3>
   <div class="mt-3">
-    <app-marker-stat stat="Health" [value]="guardianData.hp"></app-marker-stat>
-    <app-marker-stat
+    <app-marker-element stat="Health" [value]="guardianData.hp"></app-marker-element>
+    <app-marker-element
       stat="Force"
       [value]="guardianData.stats.Force"
-    ></app-marker-stat>
-    <app-marker-stat
+    ></app-marker-element>
+    <app-marker-element
       stat="Aura"
       [value]="guardianData.stats.Aura"
-    ></app-marker-stat>
-    <app-marker-stat
+    ></app-marker-element>
+    <app-marker-element
       stat="Speed"
       [value]="guardianData.stats.Speed"
-    ></app-marker-stat>
+    ></app-marker-element>
   </div>
 </ng-template>

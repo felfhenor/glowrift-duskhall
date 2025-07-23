@@ -1,21 +1,21 @@
 import { DecimalPipe, TitleCasePipe } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
-import { IconStatComponent } from '@components/icon-stat/icon-stat.component';
-import type { GameStat } from '@interfaces';
+import { IconElementComponent } from '@components/icon-element/icon-element.component';
+import type { GameElement } from '@interfaces';
 
 @Component({
-  selector: 'app-marker-stat',
-  imports: [DecimalPipe, TitleCasePipe, IconStatComponent],
-  templateUrl: './marker-stat.component.html',
-  styleUrl: './marker-stat.component.css',
+  selector: 'app-marker-element',
+  imports: [DecimalPipe, TitleCasePipe, IconElementComponent],
+  templateUrl: './marker-element.component.html',
+  styleUrl: './marker-element.component.css',
 })
-export class MarkerStatComponent {
-  public stat = input.required<GameStat>();
+export class MarkerElementComponent {
+  public element = input.required<GameElement>();
   public value = input.required<number>();
   public delta = input<number>(0);
 
   public displayDelta = computed(() => {
-    const deltaValue = this.delta();
+    const deltaValue = this.delta() * 100;
     if (deltaValue === 0) return null;
 
     const displayValue = deltaValue.toFixed(1);

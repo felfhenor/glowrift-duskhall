@@ -1,21 +1,23 @@
 <div class="flex gap-2">
-  <div class="flex-1 min-w-[200px] italic text-sm">This Item</div>
+  <div class="flex-1 min-w-[300px] italic text-sm">This Item</div>
 
-  <div class="flex-1 min-w-[200px] italic text-sm">Currently Equipped</div>
+  <div class="flex-1 min-w-[300px] italic text-sm">Currently Equipped</div>
 </div>
 
 <div class="flex gap-2">
-  <div class="flex-1 min-w-[200px]">
+  <div class="flex-1 min-w-[300px]">
     <app-stats-item
       [item]="item()"
-      [statDeltas]="leftSideDeltas()"
+      [statDeltas]="leftSideStatDeltas()"
+      [elementDeltas]="leftSideElementDeltas()"
     ></app-stats-item>
   </div>
 
-  <div class="flex-11 min-w-[200px]">
+  <div class="flex-11 min-w-[300px]">
     <app-stats-item
       [item]="compareWith()"
-      [statDeltas]="rightSideDeltas()"
+      [statDeltas]="rightSideStatDeltas()"
+      [elementDeltas]="rightSideElementDeltas()"
     ></app-stats-item>
   </div>
 </div>

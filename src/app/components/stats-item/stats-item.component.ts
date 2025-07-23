@@ -1,8 +1,14 @@
 import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
+import { MarkerElementComponent } from '@components/marker-element/marker-element.component';
 import { MarkerStatComponent } from '@components/marker-stat/marker-stat.component';
-import { getEntry, getItemStat, rarityItemTextColor } from '@helpers';
-import type { TalentContent } from '@interfaces';
+import {
+  getEntry,
+  getItemElementMultiplier,
+  getItemStat,
+  rarityItemTextColor,
+} from '@helpers';
+import type { ElementBlock, GameElement, TalentContent } from '@interfaces';
 import {
   type EquipmentItem,
   type EquipmentItemContent,
@@ -11,13 +17,14 @@ import {
 
 @Component({
   selector: 'app-stats-item',
-  imports: [MarkerStatComponent, NgClass],
+  imports: [MarkerStatComponent, NgClass, MarkerElementComponent],
   templateUrl: './stats-item.component.html',
   styleUrl: './stats-item.component.css',
 })
 export class StatsItemComponent {
   public item = input.required<EquipmentItemContent | EquipmentItem>();
   public statDeltas = input<StatBlock>();
+  public elementDeltas = input<ElementBlock>();
 
   public itemRarityClass = computed(() =>
     rarityItemTextColor(this.item().rarity),
@@ -40,5 +47,14 @@ export class StatsItemComponent {
         ...t,
         name: getEntry<TalentContent>(t.talentId)?.name ?? t.talentId,
       })),
+  );
+
+  public elementBoosts = computed(() =>
+    (['Fire', 'Water', 'Earth', 'Air'] as GameElement[])
+      .map((el) => ({
+        element: el,
+        multiplier: getItemElementMultiplier(this.item(), el),
+      }))
+      .filter((e) => e.multiplier !== 0),
   );
 }
