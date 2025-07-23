@@ -7,7 +7,7 @@ import type {
   GameStat,
   WorldLocationElement,
 } from '@interfaces';
-import { sortBy } from 'lodash';
+import { sortBy, sum } from 'lodash';
 
 export function sortedRarityList<T extends DroppableEquippable>(
   items: T[],
@@ -58,13 +58,14 @@ export function getItemElementMultiplier(
   item: EquipmentItemContent,
   element: GameElement,
 ): number {
-  return (
-    (item.elementMultipliers.find((e) => e.element === element)?.multiplier ??
-      0) +
-    ((item as EquipmentItem)?.mods?.elementMultipliers?.find(
-      (e) => e.element === element,
-    )?.multiplier ?? 0)
-  );
+  return sum([
+    ...item.elementMultipliers
+      .filter((e) => e.element === element)
+      .map((i) => i.multiplier ?? 0),
+    ...((item as EquipmentItem)?.mods?.elementMultipliers ?? [])
+      .filter((e) => e.element === element)
+      .map((i) => i.multiplier ?? 0),
+  ]);
 }
 
 export function addItemElement(
