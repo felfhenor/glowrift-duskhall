@@ -17,35 +17,35 @@
 
   <div class="flex flex-col gap-4">
     <div>
-      <app-marker-element
+      <app-marker-stat
         stat="Health"
         [value]="heroStatTotals.Health"
         [delta]="heroStatTotals.Health - hero().baseStats.Health"
-      ></app-marker-element>
+      ></app-marker-stat>
     </div>
 
     <div>
-      <app-marker-element
+      <app-marker-stat
         stat="Force"
         [value]="heroStatTotals.Force"
         [delta]="heroStatTotals.Force - hero().baseStats.Force"
-      ></app-marker-element>
+      ></app-marker-stat>
     </div>
 
     <div>
-      <app-marker-element
+      <app-marker-stat
         stat="Aura"
         [value]="heroStatTotals.Aura"
         [delta]="heroStatTotals.Aura - hero().baseStats.Aura"
-      ></app-marker-element>
+      ></app-marker-stat>
     </div>
 
     <div>
-      <app-marker-element
+      <app-marker-stat
         stat="Speed"
         [value]="heroStatTotals.Speed"
         [delta]="heroStatTotals.Speed - hero().baseStats.Speed"
-      ></app-marker-element>
+      ></app-marker-stat>
     </div>
   </div>
 </div>
