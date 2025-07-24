@@ -107,6 +107,7 @@ describe('Item Helper Functions', () => {
         rarity: 'Common',
         dropLevel: 1,
         sprite: '',
+        traitIds: [],
       };
 
       expect(getItemStat(item, baseStat)).toBe(5);
@@ -124,6 +125,7 @@ describe('Item Helper Functions', () => {
         rarity: 'Common',
         dropLevel: 1,
         sprite: '',
+        traitIds: [],
       };
 
       expect(getItemStat(item, baseStat)).toBe(8);
