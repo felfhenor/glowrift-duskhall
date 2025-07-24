@@ -1,4 +1,4 @@
-import type { Content } from '@interfaces/identifiable';
+import type { IsContentItem } from '@interfaces/identifiable';
 
 export interface TalentTreeContentNode {
   talentId: string;
@@ -9,6 +9,6 @@ export interface TalentTreeContentLevel {
   learnableTalents: TalentTreeContentNode[];
 }
 
-export interface TalentTreeContent extends Content {
+export interface TalentTreeContent extends IsContentItem {
   talents: TalentTreeContentLevel[];
 }

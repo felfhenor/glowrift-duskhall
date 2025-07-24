@@ -74,7 +74,6 @@ export function gainDroppableItem(droppable: DroppableEquippable): void {
  * @param id the item id/name to add
  */
 export function gainDroppableItemById(id: string): void {
-  gainDroppableItem(
-    makeDroppableIntoRealItem(getEntry<DroppableEquippable>(id)!),
-  );
+  const item = makeDroppableIntoRealItem(getEntry<DroppableEquippable>(id)!);
+  gainDroppableItem(item);
 }

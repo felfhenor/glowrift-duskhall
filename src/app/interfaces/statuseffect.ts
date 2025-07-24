@@ -1,5 +1,5 @@
 import type { CombatantStatusEffectData } from '@interfaces/combat';
-import type { Branded, Content } from '@interfaces/identifiable';
+import type { Branded, IsContentItem } from '@interfaces/identifiable';
 import type { StatBlock } from '@interfaces/stat';
 
 export type StatusEffectId = Branded<string, 'StatusEffectId'>;
@@ -33,7 +33,7 @@ export type StatusEffectBehavior =
   | StatusEffectBehaviorDataChange
   | StatusEffectBehaviorTakeDamage;
 
-export interface StatusEffectContent extends Content {
+export interface StatusEffectContent extends IsContentItem {
   id: StatusEffectId;
   __type: 'statuseffect';
 

@@ -1,12 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import type {
-  WritableSignal } from '@angular/core';
-import {
-  computed,
-  inject,
-  Injectable,
-  signal
-} from '@angular/core';
+import type { WritableSignal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import {
   allContentById,
   allIdsByName,
@@ -14,7 +8,7 @@ import {
   setAllContentById,
   setAllIdsByName,
 } from '@helpers';
-import type { Content, ContentType } from '@interfaces';
+import type { ContentType, IsContentItem } from '@interfaces';
 import { LoggerService } from '@services/logger.service';
 import { MetaService } from '@services/meta.service';
 import type { Observable } from 'rxjs';
@@ -126,19 +120,20 @@ export class ContentService {
       statuseffect: undefined,
       talent: undefined,
       talenttree: undefined,
+      traitequipment: undefined,
     };
     const allJsons = Object.keys(contentTypeObject);
 
     const jsonMaps = allJsons.reduce(
       (prev, cur) => {
-        prev[cur] = this.http.get<Content[]>(this.toJSONURL(cur));
+        prev[cur] = this.http.get<IsContentItem[]>(this.toJSONURL(cur));
         return prev;
       },
-      {} as Record<string, Observable<Content[]>>,
+      {} as Record<string, Observable<IsContentItem[]>>,
     );
 
     forkJoin(jsonMaps).subscribe((assets) => {
-      this.unfurlAssets(assets as unknown as Record<string, Content[]>);
+      this.unfurlAssets(assets as unknown as Record<string, IsContentItem[]>);
 
       this.logger.info(
         'Content:LoadJSON',
@@ -148,9 +143,9 @@ export class ContentService {
     });
   }
 
-  private unfurlAssets(assets: Record<string, Content[]>) {
+  private unfurlAssets(assets: Record<string, IsContentItem[]>) {
     const allIdsByNameAssets: Map<string, string> = allIdsByName();
-    const allEntriesByIdAssets: Map<string, Content> = allContentById();
+    const allEntriesByIdAssets: Map<string, IsContentItem> = allContentById();
 
     Object.keys(assets).forEach((subtype) => {
       Object.values(assets[subtype]).forEach((entry) => {

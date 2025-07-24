@@ -25,6 +25,7 @@ export * from './talenttree';
 export * from './texture';
 export * from './timer';
 export * from './town';
+export * from './trait-equipment';
 export * from './ui';
 export * from './world';
 export * from './worldconfig';

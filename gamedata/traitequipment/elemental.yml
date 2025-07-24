@@ -1,0 +1,35 @@
+- id: b81cf228-fd89-47c9-8fa6-9d32f6cf415c
+  name: Warm
+
+  rarity: Uncommon
+
+  elementMultipliers:
+    - element: Fire
+      multiplier: 0.05
+
+- id: 600c318c-0474-49d1-945e-09cd5ce3cc00
+  name: Cold
+
+  rarity: Uncommon
+
+  elementMultipliers:
+    - element: Water
+      multiplier: 0.05
+
+- id: 85635446-e5c0-4f0f-aad4-a50d63880d6d
+  name: Wispy
+
+  rarity: Uncommon
+
+  elementMultipliers:
+    - element: Air
+      multiplier: 0.05
+
+- id: f8a58e93-02f9-4692-9673-06deb81e99cc
+  name: Pebbled
+
+  rarity: Uncommon
+
+  elementMultipliers:
+    - element: Earth
+      multiplier: 0.05

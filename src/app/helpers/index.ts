@@ -65,6 +65,7 @@ export * from './town-alchemist';
 export * from './town-blacksmith';
 export * from './town-market';
 export * from './town-merchant';
+export * from './trait-equipment';
 export * from './travel';
 export * from './ui';
 export * from './version';

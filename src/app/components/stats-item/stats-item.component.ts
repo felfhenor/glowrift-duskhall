@@ -2,13 +2,19 @@ import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 import { MarkerElementComponent } from '@components/marker-element/marker-element.component';
 import { MarkerStatComponent } from '@components/marker-stat/marker-stat.component';
+import { MarkerTraitComponent } from '@components/marker-trait/marker-trait.component';
 import {
   getEntry,
   getItemElementMultiplier,
   getItemStat,
   rarityItemTextColor,
 } from '@helpers';
-import type { ElementBlock, GameElement, TalentContent } from '@interfaces';
+import type {
+  ElementBlock,
+  GameElement,
+  TalentContent,
+  TraitEquipmentContent,
+} from '@interfaces';
 import {
   type EquipmentItem,
   type EquipmentItemContent,
@@ -17,7 +23,12 @@ import {
 
 @Component({
   selector: 'app-stats-item',
-  imports: [MarkerStatComponent, NgClass, MarkerElementComponent],
+  imports: [
+    MarkerStatComponent,
+    NgClass,
+    MarkerElementComponent,
+    MarkerTraitComponent,
+  ],
   templateUrl: './stats-item.component.html',
   styleUrl: './stats-item.component.css',
 })
@@ -33,6 +44,10 @@ export class StatsItemComponent {
   public itemForce = computed(() => getItemStat(this.item(), 'Force'));
   public itemHealth = computed(() => getItemStat(this.item(), 'Health'));
   public itemSpeed = computed(() => getItemStat(this.item(), 'Speed'));
+
+  public itemTraits = computed(() =>
+    this.item().traitIds.map((t) => getEntry<TraitEquipmentContent>(t)!),
+  );
 
   public hasStats = computed(
     () =>

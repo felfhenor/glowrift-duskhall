@@ -1,7 +1,7 @@
 import type { Animatable } from '@interfaces/artable';
 import type { CombatantTargettingType } from '@interfaces/combat';
 import type { ElementBlock } from '@interfaces/element';
-import type { Branded, Content } from '@interfaces/identifiable';
+import type { Branded, IsContentItem } from '@interfaces/identifiable';
 import type { EquipmentSkillId } from '@interfaces/skill';
 import type { StatBlock } from '@interfaces/stat';
 import type { TalentId } from '@interfaces/talent';
@@ -9,7 +9,7 @@ import type { TalentId } from '@interfaces/talent';
 export type GuardianId = Branded<string, 'GuardianId'>;
 
 export type GuardianContent = Animatable &
-  Content & {
+  IsContentItem & {
     id: GuardianId;
 
     statScaling: StatBlock;

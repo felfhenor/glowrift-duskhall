@@ -1,11 +1,13 @@
-import type {
-  DroppableEquippable,
-  DropRarity,
-  EquipmentItem,
-  EquipmentItemContent,
-  GameElement,
-  GameStat,
-  WorldLocationElement,
+import { getEntry } from '@helpers/content';
+import type { TraitEquipmentContent } from '@interfaces';
+import {
+  type DroppableEquippable,
+  type DropRarity,
+  type EquipmentItem,
+  type EquipmentItemContent,
+  type GameElement,
+  type GameStat,
+  type WorldLocationElement,
 } from '@interfaces';
 import { sortBy, sum } from 'lodash';
 
@@ -50,7 +52,12 @@ export function getItemStat(
 ): number {
   return (
     (item.baseStats[stat] ?? 0) +
-    ((item as EquipmentItem)?.mods?.baseStats?.[stat] ?? 0)
+    ((item as EquipmentItem)?.mods?.baseStats?.[stat] ?? 0) +
+    sum(
+      item.traitIds.map(
+        (t) => getEntry<TraitEquipmentContent>(t)?.baseStats?.[stat] ?? 0,
+      ),
+    )
   );
 }
 
@@ -58,13 +65,27 @@ export function getItemElementMultiplier(
   item: EquipmentItemContent,
   element: GameElement,
 ): number {
+  const itemMultipliers = item.elementMultipliers
+    .filter((e) => e.element === element)
+    .map((i) => i.multiplier ?? 0);
+
+  const itemModMultipliers = (
+    (item as EquipmentItem)?.mods?.elementMultipliers ?? []
+  )
+    .filter((e) => e.element === element)
+    .map((i) => i.multiplier ?? 0);
+
+  const itemTraitMultipliers = (item as EquipmentItem)?.traitIds
+    ?.flatMap(
+      (t) => getEntry<TraitEquipmentContent>(t)?.elementMultipliers ?? [],
+    )
+    .filter((e) => e.element === element)
+    .map((i) => i.multiplier ?? 0);
+
   return sum([
-    ...item.elementMultipliers
-      .filter((e) => e.element === element)
-      .map((i) => i.multiplier ?? 0),
-    ...((item as EquipmentItem)?.mods?.elementMultipliers ?? [])
-      .filter((e) => e.element === element)
-      .map((i) => i.multiplier ?? 0),
+    ...itemMultipliers,
+    ...itemModMultipliers,
+    ...itemTraitMultipliers,
   ]);
 }
 

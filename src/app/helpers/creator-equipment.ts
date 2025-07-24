@@ -1,6 +1,10 @@
 import { getEntriesByType, getEntry } from '@helpers/content';
 import { cleanupDroppableDefinition } from '@helpers/droppable';
 import { randomChoiceByRarity, seededrng, uuid } from '@helpers/rng';
+import {
+  addTraitToEquipment,
+  canAddTraitToEquipment,
+} from '@helpers/trait-equipment';
 import type {
   EquipmentItem,
   EquipmentItemContent,
@@ -36,9 +40,16 @@ export function createItem(def: EquipmentItemContent): EquipmentItem {
   const defClone = cloneDeep(def);
   cleanupDroppableDefinition(defClone);
 
-  return {
+  const item: EquipmentItem = {
     ...defClone,
     id: `${defClone.id}|${uuid()}` as EquipmentItemId,
     mods: {},
+    traitIds: defClone.traitIds ?? [],
   };
+
+  if (canAddTraitToEquipment()) {
+    addTraitToEquipment(item);
+  }
+
+  return item;
 }

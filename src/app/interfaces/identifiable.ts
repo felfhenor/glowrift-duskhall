@@ -10,14 +10,15 @@ export type ContentType =
   | 'festival'
   | 'statuseffect'
   | 'talent'
-  | 'talenttree';
+  | 'talenttree'
+  | 'traitequipment';
 
 export interface Identifiable {
   id: string;
   name: string;
 }
 
-export interface Content extends Identifiable {
+export interface IsContentItem extends Identifiable {
   __type: ContentType;
 }
 

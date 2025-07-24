@@ -2,6 +2,7 @@ import type { DroppableEquippable } from '@interfaces/droppable';
 import type { GameElement } from '@interfaces/element';
 import type { Branded } from '@interfaces/identifiable';
 import type { StatBlock } from '@interfaces/stat';
+import type { TraitEquipmentId } from '@interfaces/trait-equipment';
 
 export type EquipmentSlot = 'accessory' | 'armor' | 'trinket' | 'weapon';
 
@@ -26,6 +27,8 @@ export type EquipmentItemContent = DroppableEquippable &
   EquipmentModifiable & {
     __type: EquipmentSlot;
     id: EquipmentItemId;
+
+    traitIds: TraitEquipmentId[];
   };
 
 export type EquipmentItem = EquipmentItemContent & {
