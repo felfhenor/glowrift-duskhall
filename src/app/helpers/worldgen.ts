@@ -36,7 +36,7 @@ import type {
   WorldLocation,
   WorldPosition,
 } from '@interfaces';
-import { clamp } from 'lodash';
+import { clamp } from 'es-toolkit/compat';
 
 function fillEmptySpaceWithEmptyNodes(
   config: WorldConfigContent,

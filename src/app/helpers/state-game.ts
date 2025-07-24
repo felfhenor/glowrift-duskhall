@@ -9,7 +9,7 @@ import {
 import { uuid } from '@helpers/rng';
 import { localStorageSignal } from '@helpers/signal';
 import type { GameId, GameState } from '@interfaces';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'es-toolkit/compat';
 
 export function blankGameState(): GameState {
   return {

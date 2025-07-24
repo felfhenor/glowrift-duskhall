@@ -21,7 +21,7 @@ import { gamestate, updateGamestate } from '@helpers/state-game';
 
 import { notify } from '@helpers/notify';
 
-import { sample, sortBy } from 'lodash';
+import { sample, sortBy } from 'es-toolkit/compat';
 
 import type {
   Combat,

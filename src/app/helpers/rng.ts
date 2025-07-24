@@ -1,6 +1,6 @@
 import { myGameId } from '@helpers/state-game';
 import type { DropRarity, HasRarity, Identifiable } from '@interfaces';
-import { pull, sumBy } from 'lodash';
+import { pull, sumBy } from 'es-toolkit/compat';
 import seedrandom, { type PRNG } from 'seedrandom';
 import { v4 as uuid4 } from 'uuid';
 

@@ -6,7 +6,7 @@ import type {
   EquipmentSkillContent,
   EquipmentSkillId,
 } from '@interfaces';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'es-toolkit/compat';
 
 export function allSkillDefinitions(): EquipmentSkillContent[] {
   return getEntriesByType<EquipmentSkillContent>('skill');

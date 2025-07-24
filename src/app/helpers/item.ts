@@ -9,7 +9,7 @@ import {
   type GameStat,
   type WorldLocationElement,
 } from '@interfaces';
-import { sortBy, sum } from 'lodash';
+import { sortBy, sum } from 'es-toolkit/compat';
 
 export function sortedRarityList<T extends DroppableEquippable>(
   items: T[],

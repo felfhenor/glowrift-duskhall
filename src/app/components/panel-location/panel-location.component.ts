@@ -28,7 +28,7 @@ import type {
   Guardian,
   WorldLocation,
 } from '@interfaces';
-import { sortBy } from 'lodash';
+import { sortBy } from 'es-toolkit/compat';
 
 @Component({
   selector: 'app-panel-location',

@@ -10,7 +10,7 @@ import type {
   EquipmentSkillTargetBehaviorData,
   EquipmentSkillTargetType,
 } from '@interfaces';
-import { intersection, sampleSize, sortBy, union } from 'lodash';
+import { intersection, sampleSize, sortBy, union } from 'es-toolkit/compat';
 
 export function availableSkillsForCombatant(
   combatant: Combatant,

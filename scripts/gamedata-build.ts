@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-var-requires */
 
-const { isArray, isString } = require('lodash');
+const { isArray, isString } = require('es-toolkit/compat');
 const yaml = require('js-yaml');
 const fs = require('fs-extra');
 const path = require('path');

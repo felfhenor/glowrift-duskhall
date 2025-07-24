@@ -24,7 +24,7 @@ import type {
   StatusEffectContent,
   TalentId,
 } from '@interfaces';
-import { intersection, sum } from 'lodash';
+import { intersection, sum } from 'es-toolkit/compat';
 
 export function techniqueHasAttribute(
   technique: EquipmentSkillContentTechnique,

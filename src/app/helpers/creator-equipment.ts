@@ -10,7 +10,7 @@ import type {
   EquipmentItemContent,
   EquipmentItemId,
 } from '@interfaces';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'es-toolkit/compat';
 
 export function allItemDefinitions(): EquipmentItemContent[] {
   return [

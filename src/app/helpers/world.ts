@@ -14,7 +14,7 @@ import type {
   LocationType,
   WorldLocation,
 } from '@interfaces';
-import { sortBy } from 'lodash';
+import { sortBy } from 'es-toolkit/compat';
 
 export function setWorld(world: GameStateWorld): void {
   updateGamestate((state) => {

@@ -1,6 +1,6 @@
-import { sum } from 'lodash';
-import type { FestivalEffectCombatAttribute } from '@interfaces';
 import { getActiveFestivals } from '@helpers/festival';
+import type { FestivalEffectCombatAttribute } from '@interfaces';
+import { sum } from 'es-toolkit/compat';
 
 export function getCombatOutgoingAttributeMultiplier(
   attribute: FestivalEffectCombatAttribute,

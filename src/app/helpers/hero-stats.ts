@@ -8,7 +8,7 @@ import type {
   StatBlock,
 } from '@interfaces';
 import type { HeroId } from '@interfaces/hero';
-import { sum } from 'lodash';
+import { sum } from 'es-toolkit/compat';
 
 export function heroBaseStat(hero: Hero, stat: GameStat): number {
   return hero.baseStats[stat];

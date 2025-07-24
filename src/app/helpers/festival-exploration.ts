@@ -1,5 +1,5 @@
-import { sum } from 'lodash';
 import { getActiveFestivals } from '@helpers/festival';
+import { sum } from 'es-toolkit/compat';
 
 export function getExplorationTickMultiplier(): number {
   return sum(
