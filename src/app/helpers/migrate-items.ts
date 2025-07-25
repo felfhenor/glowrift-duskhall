@@ -7,7 +7,6 @@ import type { EquipmentItem } from '@interfaces';
 export function getUpdatedItem(item: EquipmentItem): EquipmentItem {
   return Object.assign(item, getEntry(getDroppableEquippableBaseId(item)), {
     id: item.id,
-    traitIds: item.traitIds ?? [],
   } as Partial<EquipmentItem>);
 }
 

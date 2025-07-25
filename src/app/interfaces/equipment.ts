@@ -1,6 +1,7 @@
 import type { DroppableEquippable } from '@interfaces/droppable';
 import type { GameElement } from '@interfaces/element';
 import type { Branded } from '@interfaces/identifiable';
+import type { EquipmentSkillId } from '@interfaces/skill';
 import type { StatBlock } from '@interfaces/stat';
 import type { TraitEquipmentId } from '@interfaces/trait-equipment';
 
@@ -21,14 +22,14 @@ export type EquipmentModifiable = {
   baseStats: StatBlock;
   talentBoosts: EquipmentTalent[];
   elementMultipliers: EquipmentElement[];
+  traitIds: TraitEquipmentId[];
+  skillIds: EquipmentSkillId[];
 };
 
 export type EquipmentItemContent = DroppableEquippable &
   EquipmentModifiable & {
     __type: EquipmentSlot;
     id: EquipmentItemId;
-
-    traitIds: TraitEquipmentId[];
   };
 
 export type EquipmentItem = EquipmentItemContent & {

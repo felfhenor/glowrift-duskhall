@@ -56,12 +56,22 @@ export class StatsItemComponent {
   );
 
   public talents = computed(() =>
-    (this.item().talentBoosts ?? [])
-      .concat((this.item() as EquipmentItem).mods?.talentBoosts ?? [])
-      .map((t) => ({
-        ...t,
-        name: getEntry<TalentContent>(t.talentId)?.name ?? t.talentId,
-      })),
+    [
+      ...(this.item().talentBoosts ?? []),
+      ...((this.item() as EquipmentItem).mods?.talentBoosts ?? []),
+    ].map((t) => ({
+      ...t,
+      name: getEntry<TalentContent>(t.talentId)?.name ?? t.talentId,
+    })),
+  );
+
+  public skills = computed(() =>
+    [
+      ...(this.item().skillIds ?? []),
+      ...((this.item() as EquipmentItem).mods?.skillIds ?? []),
+    ].map((t) => ({
+      name: getEntry<TalentContent>(t)?.name ?? 'Unknown',
+    })),
   );
 
   public elementBoosts = computed(() =>

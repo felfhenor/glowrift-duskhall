@@ -8,12 +8,12 @@ export function canAddTraitToEquipment() {
 }
 
 export function addTraitToEquipment(item: EquipmentItem) {
-  item.traitIds ??= [];
+  item.mods.traitIds ??= [];
 
   const allValidTraits =
     getEntriesByType<TraitEquipmentContent>('traitequipment');
   const chosenTrait = randomChoiceByRarity(allValidTraits);
   if (!chosenTrait) return;
 
-  item.traitIds.push(chosenTrait.id);
+  item.mods.traitIds.push(chosenTrait.id);
 }

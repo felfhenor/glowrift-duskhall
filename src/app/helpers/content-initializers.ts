@@ -153,6 +153,7 @@ function ensureItem(
       ensureEquipmentElement,
     ),
     traitIds: item.traitIds ?? [],
+    skillIds: item.skillIds ?? [],
   };
 }
 
@@ -217,6 +218,8 @@ function ensureTraitEquipment(
     elementMultipliers: (traitEquipment.elementMultipliers ?? []).map(
       ensureEquipmentElement,
     ),
+    skillIds: traitEquipment.skillIds ?? [],
+    traitIds: traitEquipment.traitIds ?? [],
     talentBoosts: traitEquipment.talentBoosts ?? [],
   };
 }

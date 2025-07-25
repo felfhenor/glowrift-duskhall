@@ -37,6 +37,7 @@ export * from './gameloop-town-merchant';
 export * from './gameloop-travel';
 export * from './guardian';
 export * from './hero';
+export * from './hero-skills';
 export * from './hero-stats';
 export * from './hero-talent';
 export * from './hero-xp';

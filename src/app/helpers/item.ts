@@ -16,22 +16,15 @@ export function sortedRarityList<T extends DroppableEquippable>(
 ): T[] {
   return sortBy(items, [
     (i) => {
-      switch (i.rarity) {
-        case 'Common':
-          return 0;
-        case 'Uncommon':
-          return -1;
-        case 'Rare':
-          return -2;
-        case 'Mystical':
-          return -3;
-        case 'Legendary':
-          return -4;
-        case 'Unique':
-          return -5;
-        default:
-          return 0;
-      }
+      const rarityOrder: Record<DropRarity, number> = {
+        Common: 0,
+        Uncommon: -1,
+        Rare: -2,
+        Mystical: -3,
+        Legendary: -4,
+        Unique: -5,
+      };
+      return rarityOrder[i.rarity] ?? 0;
     },
     (i) => -i.dropLevel,
   ]);
