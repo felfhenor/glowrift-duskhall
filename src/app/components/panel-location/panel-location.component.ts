@@ -15,6 +15,7 @@ import {
   gamestate,
   getCurrencyClaimsForNode,
   getEntry,
+  getSpriteFromNodeType,
   isAtNode,
   isTravelingToNode,
   showLocationMenu,
@@ -51,6 +52,10 @@ import { sortBy } from 'es-toolkit/compat';
 })
 export class PanelLocationComponent {
   public location = input.required<WorldLocation>();
+
+  public objectSprite = computed(() =>
+    getSpriteFromNodeType(this.location().nodeType),
+  );
 
   public travelTimeSeconds = computed(() => {
     if (this.isTravelingToThisNode()) {
