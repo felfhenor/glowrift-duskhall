@@ -135,8 +135,6 @@ describe('defaultWorldNode', () => {
       elements: [],
       name: '',
       nodeType: undefined,
-      sprite: '',
-      objectSprite: '',
       x: -1,
       y: -1,
       claimCount: 0,
