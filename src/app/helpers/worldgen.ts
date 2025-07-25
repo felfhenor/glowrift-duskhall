@@ -300,29 +300,27 @@ export function generateWorld(config: WorldConfigContent): GameStateWorld {
     firstTown,
   );
 
-  for (let x = 0; x < config.width; x++) {
-    for (let y = 0; y < config.height; y++) {
-      nodePositionsAvailable[`${x},${y}`] = { x, y, taken: false };
-    }
-  }
+  const minDistancesForLocationNode: Record<LocationType, number> = {
+    cave: 0,
+    town: maxDistance * 0.5,
+    village: maxDistance * 0.75,
+    dungeon: maxDistance * 0.3,
+    castle: maxDistance * 0.7,
+  };
 
-  const findUnusedPosition: (newNodeLocationType: LocationType) => {
+  const findUnusedPosition: (
+    distMin: number,
+    distMax: number,
+  ) => {
     x: number;
     y: number;
-  } = (newNodeLocationType: LocationType) => {
-    const minDistancesForLocationNode: Record<LocationType, number> = {
-      cave: 0,
-      town: maxDistance * 0.5,
-      village: maxDistance * 0.75,
-      dungeon: maxDistance * 0.3,
-      castle: maxDistance * 0.7,
-    };
-
-    const minDistance = minDistancesForLocationNode[newNodeLocationType];
-
-    const freeNodes = Object.values(nodePositionsAvailable).filter(
-      (n) => !n.taken && distanceBetweenNodes(n, firstTown) >= minDistance,
-    );
+  } = (distMin: number, distMax: number) => {
+    const freeNodes = Object.values(nodePositionsAvailable).filter((n) => {
+      const dist = distanceBetweenNodes(n, firstTown);
+      if (dist < distMin || dist > distMax) return false;
+      if (n.taken) return false;
+      return true;
+    });
     if (freeNodes.length === 0) return { x: -1, y: -1 };
 
     const chosenNode = randomChoice<{ x: number; y: number }>(freeNodes, rng);
@@ -335,17 +333,62 @@ export function generateWorld(config: WorldConfigContent): GameStateWorld {
     nodePositionsAvailable[`${node.x},${node.y}`].taken = true;
   };
 
-  addNode(firstTown);
-
   const counts: Record<LocationType, number> = defaultNodeCountBlock();
   counts.town++;
+
+  const minCavesNearStart = [
+    { minDist: 0, maxDist: 1, minNodes: 2, maxNodes: 4 },
+    { minDist: 1, maxDist: 2, minNodes: 3, maxNodes: 4 },
+    { minDist: 2, maxDist: 3, minNodes: 4, maxNodes: 5 },
+    { minDist: 4, maxDist: 7, minNodes: 10, maxNodes: 20 },
+  ];
+
+  for (let x = 0; x < config.width; x++) {
+    for (let y = 0; y < config.height; y++) {
+      nodePositionsAvailable[`${x},${y}`] = { x, y, taken: false };
+    }
+  }
+
+  addNode(firstTown);
+
+  minCavesNearStart.forEach((caveConfig) => {
+    const nodeCount = randomNumberRange(
+      caveConfig.minNodes,
+      caveConfig.maxNodes,
+      rng,
+    );
+
+    for (let i = 0; i < nodeCount; i++) {
+      const { x, y } = findUnusedPosition(
+        caveConfig.minDist,
+        caveConfig.maxDist,
+      );
+      if (x === -1 || y === -1) continue;
+
+      const node: WorldLocation = {
+        ...defaultWorldNode(),
+        id: uuid(),
+        x,
+        y,
+        nodeType: 'cave',
+        name: `starter cave ${caveConfig.minDist}-${i + 1}`,
+      };
+
+      counts.cave++;
+
+      addNode(node);
+    }
+  });
 
   Object.keys(config.nodeCount).forEach((key) => {
     const count = config.nodeCount[key as LocationType];
     const nodeCount = randomNumberRange(count.min, count.max, rng);
 
     for (let i = 0; i < nodeCount; i++) {
-      const { x, y } = findUnusedPosition(key as LocationType);
+      const { x, y } = findUnusedPosition(
+        minDistancesForLocationNode[key as LocationType],
+        maxDistance,
+      );
       if (x === -1 || y === -1) continue;
 
       const node: WorldLocation = {
