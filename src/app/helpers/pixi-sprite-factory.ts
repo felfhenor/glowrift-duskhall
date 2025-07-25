@@ -1,7 +1,7 @@
-import type { Container, Texture, Ticker } from 'pixi.js';
-import { Graphics, Sprite } from 'pixi.js';
 import type { WorldLocation } from '@interfaces';
 import type { NodeSpriteData } from '@interfaces/sprite';
+import type { Container, Texture, Ticker } from 'pixi.js';
+import { Graphics, Sprite } from 'pixi.js';
 
 /**
  * Creates terrain and object sprites for a single map node
@@ -20,6 +20,7 @@ export function createNodeSprites(
   x: number,
   y: number,
   nodeData: WorldLocation,
+  tileSprite: string,
   terrainTextures: Record<string, Texture>,
   objectTextures: Record<string, Texture>,
   mapContainer: Container,
@@ -30,7 +31,7 @@ export function createNodeSprites(
   const pixelX = x * 64;
   const pixelY = y * 64;
 
-  const terrainTexture = terrainTextures[nodeData.sprite];
+  const terrainTexture = terrainTextures[tileSprite];
   if (!terrainTexture) return null;
 
   const terrainSprite = new Sprite(terrainTexture);

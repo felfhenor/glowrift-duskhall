@@ -31,6 +31,14 @@ export function getWorldNode(
   return state.world.nodes[`${x},${y}`] ?? defaultWorldNode(x, y);
 }
 
+export function getWorldNodeTileSprite(
+  x: number,
+  y: number,
+  state = gamestate(),
+): string {
+  return state.world.terrainSpriteMap[`${x},${y}`] ?? '0000';
+}
+
 export function getCurrentWorldNode(
   state = gamestate(),
 ): WorldLocation | undefined {

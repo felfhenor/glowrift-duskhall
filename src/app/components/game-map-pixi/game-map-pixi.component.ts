@@ -1,14 +1,5 @@
-import type {
-  ElementRef,
-  OnDestroy,
-  OnInit } from '@angular/core';
-import {
-  Component,
-  computed,
-  effect,
-  inject,
-  viewChild,
-} from '@angular/core';
+import type { ElementRef, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, effect, inject, viewChild } from '@angular/core';
 import {
   createClaimIndicatorTextures,
   createGameMapContainers,
@@ -157,15 +148,20 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     this.nodeSprites = {};
 
     mapData.forEach((row) => {
-      row.forEach(({ x, y, nodeData }) => {
-        this.createNodeSprites(x, y, nodeData);
+      row.forEach(({ x, y, nodeData, tileSprite }) => {
+        this.createNodeSprites(x, y, nodeData, tileSprite);
       });
     });
 
     this.updatePlayerIndicators(mapData);
   }
 
-  private createNodeSprites(x: number, y: number, nodeData: WorldLocation) {
+  private createNodeSprites(
+    x: number,
+    y: number,
+    nodeData: WorldLocation,
+    tileSprite: string,
+  ) {
     if (!this.mapContainer) return;
 
     const nodeKey = `${x}-${y}`;
@@ -173,6 +169,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       x,
       y,
       nodeData,
+      tileSprite,
       this.terrainTextures,
       this.objectTextures,
       this.mapContainer,

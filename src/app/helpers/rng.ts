@@ -66,10 +66,10 @@ export function randomChoiceByRarity<T extends HasRarity>(
   rng = seededrng(uuid()),
 ): T | undefined {
   const rarityWeights: Record<DropRarity, number> = {
-    Common: 100,
-    Uncommon: 25,
-    Rare: 10,
-    Mystical: 5,
+    Common: 25,
+    Uncommon: 15,
+    Rare: 5,
+    Mystical: 3,
     Legendary: 2,
     Unique: 1,
   };

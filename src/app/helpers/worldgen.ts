@@ -220,6 +220,8 @@ function setEncounterLevels(
   );
 
   Object.values(nodes).forEach((node) => {
+    if (!node.nodeType) return;
+
     const dist = distanceBetweenNodes(node, middleNode);
     node.encounterLevel = Math.floor((dist / maxDistance) * maxLevel);
   });
@@ -227,7 +229,6 @@ function setEncounterLevels(
 
 function determineSpritesForWorld(
   nodes: Record<string, WorldLocation>,
-  sprites: Record<string, string>,
   rng: PRNG,
 ): void {
   const elementStartSprites: Record<GameElement, number> = {
@@ -250,14 +251,37 @@ function determineSpritesForWorld(
 
 function fillSpacesWithGuardians(nodes: Record<string, WorldLocation>): void {
   Object.values(nodes).forEach((node) => {
+    if (!node.nodeType) return;
+
     populateLocationWithGuardians(node);
   });
 }
 
 function fillSpacesWithLoot(nodes: Record<string, WorldLocation>): void {
   Object.values(nodes).forEach((node) => {
+    if (!node.nodeType) return;
+
     populateLocationWithLoot(node);
   });
+}
+
+function cleanUpEmptyNodes(nodes: Record<string, WorldLocation>): void {
+  Object.keys(nodes).forEach((nodePos) => {
+    if (!nodes[nodePos].nodeType) {
+      delete nodes[nodePos];
+    }
+  });
+}
+
+function getTerrainSpriteMap(
+  nodes: Record<string, WorldLocation>,
+): Record<string, string> {
+  const terrainSpriteMap: Record<string, string> = {};
+  Object.values(nodes).forEach((node) => {
+    terrainSpriteMap[`${node.x},${node.y}`] = node.sprite;
+  });
+
+  return terrainSpriteMap;
 }
 
 export function setWorldSeed(seed: string | null): void {
@@ -272,7 +296,6 @@ export function setWorldSeed(seed: string | null): void {
 export function generateWorld(config: WorldConfigContent): GameStateWorld {
   const rng = gamerng();
 
-  const nodeSprites: Record<string, string> = {};
   const nodes: Record<string, WorldLocation> = {};
   const nodeList: WorldLocation[] = [];
   const nodePositionsAvailable: Record<
@@ -411,12 +434,16 @@ export function generateWorld(config: WorldConfigContent): GameStateWorld {
   addElementsToWorld(config, nodes);
   fillSpacesWithGuardians(nodes);
   fillSpacesWithLoot(nodes);
-  determineSpritesForWorld(nodes, nodeSprites, rng);
+  determineSpritesForWorld(nodes, rng);
+
+  const terrainSpriteMap = getTerrainSpriteMap(nodes);
+  cleanUpEmptyNodes(nodes);
 
   return {
     width: config.width,
     height: config.height,
     nodes,
+    terrainSpriteMap,
     homeBase: {
       x: firstTown.x,
       y: firstTown.y,
@@ -426,7 +453,7 @@ export function generateWorld(config: WorldConfigContent): GameStateWorld {
   };
 }
 
-export function populateLocationWithLoot(location: WorldLocation): void {
+function populateLocationWithLoot(location: WorldLocation): void {
   if (location.currentlyClaimed) return;
 
   location.claimLootIds = getLootForLocation(location).map((i) => i.id);
@@ -458,7 +485,7 @@ export function getLootForLocation(
   }).filter(Boolean);
 }
 
-export function numLootForLocation(location: WorldLocation): number {
+function numLootForLocation(location: WorldLocation): number {
   const nodeTypes: Record<LocationType, number> = {
     castle: 5,
     town: 4,
@@ -470,7 +497,7 @@ export function numLootForLocation(location: WorldLocation): number {
   return nodeTypes[location.nodeType ?? 'cave'] ?? 0;
 }
 
-export function populateLocationWithGuardians(location: WorldLocation): void {
+function populateLocationWithGuardians(location: WorldLocation): void {
   if (location.currentlyClaimed) return;
 
   location.guardianIds = getGuardiansForLocation(location).map((i) => i.id);
@@ -495,7 +522,7 @@ export function getGuardiansForLocation(location: WorldLocation): Guardian[] {
   return guardians;
 }
 
-export function numGuardiansForLocation(location: WorldLocation): number {
+function numGuardiansForLocation(location: WorldLocation): number {
   const nodeTypes: Record<LocationType, number> = {
     castle: 10,
     town: 7,

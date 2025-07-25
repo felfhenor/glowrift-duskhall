@@ -4,6 +4,7 @@ export interface MapTileData {
   x: number;
   y: number;
   nodeData: WorldLocation;
+  tileSprite: string;
 }
 
 export interface MapGridData {
