@@ -9,6 +9,8 @@ import type {
   EquipmentSkillContent,
   EquipmentSkillContentTechnique,
   EquipmentSkillId,
+  EquipmentSkillTechniqueStatusEffectApplication,
+  EquipmentTalent,
   FestivalContent,
   GuardianContent,
   GuardianId,
@@ -58,6 +60,40 @@ function ensureEquipmentElement(
   return {
     element: el.element ?? 'Fire',
     multiplier: el.multiplier ?? 0,
+  };
+}
+
+function ensureTechnique(
+  tech: Partial<EquipmentSkillContentTechnique>,
+): Required<EquipmentSkillContentTechnique> {
+  return {
+    attributes: tech.attributes ?? [],
+    elements: tech.elements ?? [],
+    targets: tech.targets ?? 1,
+    targetType: tech.targetType ?? 'Enemies',
+    targetBehaviors: tech.targetBehaviors ?? [{ behavior: 'NotZeroHealth' }],
+    statusEffects: (tech.statusEffects ?? []).map(ensureTechniqueStatusEffect),
+    combatMessage: tech.combatMessage ?? 'UNKNOWN',
+    damageScaling: ensureStats(tech.damageScaling),
+  };
+}
+
+function ensureTechniqueStatusEffect(
+  tech: Partial<EquipmentSkillTechniqueStatusEffectApplication>,
+): Required<EquipmentSkillTechniqueStatusEffectApplication> {
+  return {
+    chance: tech.chance ?? 0,
+    duration: tech.duration ?? 0,
+    statusEffectId: tech.statusEffectId ?? ('UNKNOWN' as StatusEffectId),
+  };
+}
+
+function ensureEquipmentTalentBoost(
+  boost: Partial<EquipmentTalent>,
+): Required<EquipmentTalent> {
+  return {
+    talentId: boost.talentId ?? ('UNKNOWN' as TalentId),
+    value: boost.value ?? 0,
   };
 }
 
@@ -113,24 +149,7 @@ function ensureSkill(
     preventDrop: skill.preventDrop ?? false,
     preventModification: skill.preventModification ?? false,
     usesPerCombat: skill.usesPerCombat ?? -1,
-    techniques: (skill.techniques ?? []).map(
-      (tech: Partial<EquipmentSkillContentTechnique>) => {
-        const techReq: Required<EquipmentSkillContentTechnique> = {
-          attributes: tech.attributes ?? [],
-          elements: tech.elements ?? [],
-          targets: tech.targets ?? 1,
-          targetType: tech.targetType ?? 'Enemies',
-          targetBehaviors: tech.targetBehaviors ?? [
-            { behavior: 'NotZeroHealth' },
-          ],
-          statusEffects: tech.statusEffects ?? [],
-          combatMessage: tech.combatMessage ?? 'UNKNOWN',
-          damageScaling: ensureStats(tech.damageScaling),
-        };
-
-        return techReq;
-      },
-    ),
+    techniques: (skill.techniques ?? []).map(ensureTechnique),
   };
 }
 
@@ -148,7 +167,7 @@ function ensureItem(
     preventModification: item.preventModification ?? false,
 
     baseStats: ensureStats(item.baseStats),
-    talentBoosts: item.talentBoosts ?? [],
+    talentBoosts: (item.talentBoosts ?? []).map(ensureEquipmentTalentBoost),
     elementMultipliers: (item.elementMultipliers ?? []).map(
       ensureEquipmentElement,
     ),
@@ -220,6 +239,8 @@ function ensureTraitEquipment(
     ),
     skillIds: traitEquipment.skillIds ?? [],
     traitIds: traitEquipment.traitIds ?? [],
-    talentBoosts: traitEquipment.talentBoosts ?? [],
+    talentBoosts: (traitEquipment.talentBoosts ?? []).map(
+      ensureEquipmentTalentBoost,
+    ),
   };
 }
