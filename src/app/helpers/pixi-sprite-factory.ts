@@ -21,6 +21,7 @@ export function createNodeSprites(
   y: number,
   nodeData: WorldLocation,
   tileSprite: string,
+  objectSprite: string,
   terrainTextures: Record<string, Texture>,
   objectTextures: Record<string, Texture>,
   mapContainer: Container,
@@ -42,8 +43,8 @@ export function createNodeSprites(
 
   const spriteData: NodeSpriteData = { terrain: terrainSprite };
 
-  if (nodeData.objectSprite) {
-    const objectTexture = objectTextures[nodeData.objectSprite];
+  if (objectSprite) {
+    const objectTexture = objectTextures[objectSprite];
     if (objectTexture) {
       const objectSprite = new Sprite(objectTexture);
       objectSprite.x = pixelX;
@@ -63,7 +64,7 @@ export function createNodeSprites(
     }
   }
 
-  if (nodeData.objectSprite && checkTexture && xTexture) {
+  if (objectSprite && checkTexture && xTexture) {
     const claimIndicator = createClaimIndicator(
       nodeData.currentlyClaimed,
       x,

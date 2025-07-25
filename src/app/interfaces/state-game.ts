@@ -26,7 +26,6 @@ export interface GameStateWorld {
   width: number;
   height: number;
   nodes: Record<string, WorldLocation>;
-  terrainSpriteMap: Record<string, string>;
   homeBase: WorldPosition;
 
   nodeCounts: Record<LocationType, number>;

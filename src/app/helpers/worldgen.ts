@@ -1,5 +1,4 @@
 import * as Compass from 'cardinal-direction';
-import type { PRNG } from 'seedrandom';
 
 import { getEntriesByType, getEntry } from '@helpers/content';
 import {
@@ -21,7 +20,7 @@ import {
   seededrng,
   uuid,
 } from '@helpers/rng';
-import { getSpriteFromNodeType, indexToSprite } from '@helpers/sprite';
+import { indexToSprite } from '@helpers/sprite';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { distanceBetweenNodes } from '@helpers/travel';
 import type {
@@ -227,28 +226,6 @@ function setEncounterLevels(
   });
 }
 
-function determineSpritesForWorld(
-  nodes: Record<string, WorldLocation>,
-  rng: PRNG,
-): void {
-  const elementStartSprites: Record<GameElement, number> = {
-    Air: 16,
-    Earth: 0,
-    Fire: 24,
-    Water: 12,
-  };
-
-  Object.values(nodes).forEach((node) => {
-    const dominantElement = node.elements[0]?.element ?? 'Air';
-
-    node.sprite = indexToSprite(
-      elementStartSprites[dominantElement] + randomNumber(4, rng),
-    );
-
-    node.objectSprite = getSpriteFromNodeType(node.nodeType);
-  });
-}
-
 function fillSpacesWithGuardians(nodes: Record<string, WorldLocation>): void {
   Object.values(nodes).forEach((node) => {
     if (!node.nodeType) return;
@@ -271,17 +248,6 @@ function cleanUpEmptyNodes(nodes: Record<string, WorldLocation>): void {
       delete nodes[nodePos];
     }
   });
-}
-
-function getTerrainSpriteMap(
-  nodes: Record<string, WorldLocation>,
-): Record<string, string> {
-  const terrainSpriteMap: Record<string, string> = {};
-  Object.values(nodes).forEach((node) => {
-    terrainSpriteMap[`${node.x},${node.y}`] = node.sprite;
-  });
-
-  return terrainSpriteMap;
 }
 
 export function setWorldSeed(seed: string | null): void {
@@ -434,16 +400,12 @@ export function generateWorld(config: WorldConfigContent): GameStateWorld {
   addElementsToWorld(config, nodes);
   fillSpacesWithGuardians(nodes);
   fillSpacesWithLoot(nodes);
-  determineSpritesForWorld(nodes, rng);
-
-  const terrainSpriteMap = getTerrainSpriteMap(nodes);
   cleanUpEmptyNodes(nodes);
 
   return {
     width: config.width,
     height: config.height,
     nodes,
-    terrainSpriteMap,
     homeBase: {
       x: firstTown.x,
       y: firstTown.y,
@@ -532,4 +494,38 @@ function numGuardiansForLocation(location: WorldLocation): number {
   };
 
   return nodeTypes[location.nodeType ?? 'cave'] ?? 0;
+}
+
+export function getSpriteForPosition(x: number, y: number): string {
+  const state = gamestate();
+
+  const elementStartSprites: Record<GameElement, number> = {
+    Air: 16,
+    Earth: 0,
+    Fire: 24,
+    Water: 12,
+  };
+
+  const centerPosition: WorldPosition = {
+    x: Math.floor(state.world.width / 2),
+    y: Math.floor(state.world.height / 2),
+  };
+
+  const cardinality = Compass.cardinalFromDegree(
+    getAngleBetweenPoints(centerPosition, { x, y }),
+    Compass.CardinalSubset.Intercardinal,
+  );
+
+  const elements = getElementsForCardinalDirection(
+    Compass.CardinalDirection[
+      cardinality as unknown as number
+    ] as unknown as Compass.CardinalDirection,
+  );
+
+  const dominantElement = elements[0]?.element ?? 'Air';
+
+  return indexToSprite(
+    elementStartSprites[dominantElement] +
+      randomNumber(4, seededrng(`${state.gameId}-${x},${y}`)),
+  );
 }

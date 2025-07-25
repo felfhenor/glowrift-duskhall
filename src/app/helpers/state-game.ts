@@ -24,7 +24,6 @@ export function blankGameState(): GameState {
       width: 0,
       height: 0,
       nodes: {},
-      terrainSpriteMap: {},
       homeBase: defaultPosition(),
       nodeCounts: defaultNodeCountBlock(),
       claimedCounts: defaultNodeCountBlock(),

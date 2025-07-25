@@ -16,8 +16,6 @@ export type WorldLocation = WorldPosition &
   Identifiable & {
     nodeType?: LocationType;
     elements: WorldLocationElement[];
-    sprite: string;
-    objectSprite: string;
 
     currentlyClaimed: boolean;
     claimCount: number;

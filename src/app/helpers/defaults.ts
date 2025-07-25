@@ -115,8 +115,6 @@ export function defaultWorldNode(x = -1, y = -1): WorldLocation {
     elements: [],
     name: '',
     nodeType: undefined,
-    sprite: '',
-    objectSprite: '',
     x,
     y,
     claimCount: 0,
