@@ -280,15 +280,48 @@ export function generateWorld(config: WorldConfigContent): GameStateWorld {
     { x: number; y: number; taken: boolean }
   > = {};
 
+  const centerPosition: WorldPosition = {
+    x: Math.floor(config.width / 2),
+    y: Math.floor(config.height / 2),
+  };
+
+  const firstTown: WorldLocation = {
+    ...defaultWorldNode(),
+    id: uuid(),
+    x: Math.floor(config.width / 2),
+    y: Math.floor(config.height / 2),
+    nodeType: 'town',
+    name: 'LaFlotte',
+    currentlyClaimed: true,
+  };
+
+  const maxDistance = distanceBetweenNodes(
+    { x: centerPosition.x, y: 0 },
+    firstTown,
+  );
+
   for (let x = 0; x < config.width; x++) {
     for (let y = 0; y < config.height; y++) {
       nodePositionsAvailable[`${x},${y}`] = { x, y, taken: false };
     }
   }
 
-  const findUnusedPosition: () => { x: number; y: number } = () => {
+  const findUnusedPosition: (newNodeLocationType: LocationType) => {
+    x: number;
+    y: number;
+  } = (newNodeLocationType: LocationType) => {
+    const minDistancesForLocationNode: Record<LocationType, number> = {
+      cave: 0,
+      town: maxDistance * 0.5,
+      village: maxDistance * 0.75,
+      dungeon: maxDistance * 0.3,
+      castle: maxDistance * 0.7,
+    };
+
+    const minDistance = minDistancesForLocationNode[newNodeLocationType];
+
     const freeNodes = Object.values(nodePositionsAvailable).filter(
-      (n) => !n.taken,
+      (n) => !n.taken && distanceBetweenNodes(n, firstTown) >= minDistance,
     );
     if (freeNodes.length === 0) return { x: -1, y: -1 };
 
@@ -302,16 +335,6 @@ export function generateWorld(config: WorldConfigContent): GameStateWorld {
     nodePositionsAvailable[`${node.x},${node.y}`].taken = true;
   };
 
-  const firstTown: WorldLocation = {
-    ...defaultWorldNode(),
-    id: uuid(),
-    x: Math.floor(config.width / 2),
-    y: Math.floor(config.height / 2),
-    nodeType: 'town',
-    name: 'LaFlotte',
-    currentlyClaimed: true,
-  };
-
   addNode(firstTown);
 
   const counts: Record<LocationType, number> = defaultNodeCountBlock();
@@ -322,7 +345,9 @@ export function generateWorld(config: WorldConfigContent): GameStateWorld {
     const nodeCount = randomNumberRange(count.min, count.max, rng);
 
     for (let i = 0; i < nodeCount; i++) {
-      const { x, y } = findUnusedPosition();
+      const { x, y } = findUnusedPosition(key as LocationType);
+      if (x === -1 || y === -1) continue;
+
       const node: WorldLocation = {
         ...defaultWorldNode(),
         id: uuid(),
@@ -391,20 +416,15 @@ export function getLootForLocation(
 }
 
 export function numLootForLocation(location: WorldLocation): number {
-  switch (location.nodeType) {
-    case 'castle':
-      return 5;
-    case 'town':
-      return 4;
-    case 'dungeon':
-      return 3;
-    case 'village':
-      return 2;
-    case 'cave':
-      return 1;
-    default:
-      return 0;
-  }
+  const nodeTypes: Record<LocationType, number> = {
+    castle: 5,
+    town: 4,
+    dungeon: 3,
+    village: 2,
+    cave: 1,
+  };
+
+  return nodeTypes[location.nodeType ?? 'cave'] ?? 0;
 }
 
 export function populateLocationWithGuardians(location: WorldLocation): void {
@@ -433,18 +453,13 @@ export function getGuardiansForLocation(location: WorldLocation): Guardian[] {
 }
 
 export function numGuardiansForLocation(location: WorldLocation): number {
-  switch (location.nodeType) {
-    case 'castle':
-      return 10;
-    case 'town':
-      return 7;
-    case 'dungeon':
-      return 5;
-    case 'village':
-      return 3;
-    case 'cave':
-      return 1;
-    default:
-      return 0;
-  }
+  const nodeTypes: Record<LocationType, number> = {
+    castle: 10,
+    town: 7,
+    dungeon: 5,
+    village: 3,
+    cave: 1,
+  };
+
+  return nodeTypes[location.nodeType ?? 'cave'] ?? 0;
 }
