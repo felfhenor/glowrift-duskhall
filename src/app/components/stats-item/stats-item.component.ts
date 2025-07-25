@@ -6,15 +6,13 @@ import { MarkerTraitComponent } from '@components/marker-trait/marker-trait.comp
 import {
   getEntry,
   getItemElementMultiplier,
+  getItemSkills,
   getItemStat,
+  getItemTalents,
+  getItemTraits,
   rarityItemTextColor,
 } from '@helpers';
-import type {
-  ElementBlock,
-  GameElement,
-  TalentContent,
-  TraitEquipmentContent,
-} from '@interfaces';
+import type { ElementBlock, GameElement, TalentContent } from '@interfaces';
 import {
   type EquipmentItem,
   type EquipmentItemContent,
@@ -46,33 +44,26 @@ export class StatsItemComponent {
   public itemSpeed = computed(() => getItemStat(this.item(), 'Speed'));
 
   public itemTraits = computed(() =>
-    this.item().traitIds.map((t) => getEntry<TraitEquipmentContent>(t)!),
+    getItemTraits(this.item() as EquipmentItem),
   );
 
   public hasStats = computed(
     () =>
-      Object.values(this.item().baseStats).some(Boolean) ||
+      this.itemAura() ||
+      this.itemForce() ||
+      this.itemHealth() ||
+      this.itemSpeed() ||
       Object.values(this.statDeltas() ?? {}).some(Boolean),
   );
 
   public talents = computed(() =>
-    [
-      ...(this.item().talentBoosts ?? []),
-      ...((this.item() as EquipmentItem).mods?.talentBoosts ?? []),
-    ].map((t) => ({
+    getItemTalents(this.item() as EquipmentItem).map((t) => ({
       ...t,
       name: getEntry<TalentContent>(t.talentId)?.name ?? t.talentId,
     })),
   );
 
-  public skills = computed(() =>
-    [
-      ...(this.item().skillIds ?? []),
-      ...((this.item() as EquipmentItem).mods?.skillIds ?? []),
-    ].map((t) => ({
-      name: getEntry<TalentContent>(t)?.name ?? 'Unknown',
-    })),
-  );
+  public skills = computed(() => getItemSkills(this.item() as EquipmentItem));
 
   public elementBoosts = computed(() =>
     (['Fire', 'Water', 'Earth', 'Air'] as GameElement[])

@@ -1,5 +1,9 @@
 import { getEntry } from '@helpers/content';
-import type { TraitEquipmentContent } from '@interfaces';
+import type {
+  EquipmentSkillContent,
+  EquipmentTalent,
+  TraitEquipmentContent,
+} from '@interfaces';
 import {
   type DroppableEquippable,
   type DropRarity,
@@ -47,8 +51,8 @@ export function getItemStat(
     (item.baseStats[stat] ?? 0) +
     ((item as EquipmentItem)?.mods?.baseStats?.[stat] ?? 0) +
     sum(
-      item.traitIds.map(
-        (t) => getEntry<TraitEquipmentContent>(t)?.baseStats?.[stat] ?? 0,
+      getItemTraits(item as EquipmentItem).map(
+        (t) => t?.baseStats?.[stat] ?? 0,
       ),
     )
   );
@@ -91,6 +95,22 @@ export function addItemElement(
     element: locElement.element,
     multiplier: locElement.intensity / 100,
   });
+}
+
+export function getItemTraits(item: EquipmentItem): TraitEquipmentContent[] {
+  return [...item.traitIds, ...(item.mods?.traitIds ?? [])].map(
+    (t) => getEntry<TraitEquipmentContent>(t)!,
+  );
+}
+
+export function getItemTalents(item: EquipmentItem): EquipmentTalent[] {
+  return [...item.talentBoosts, ...(item.mods?.talentBoosts ?? [])];
+}
+
+export function getItemSkills(item: EquipmentItem): EquipmentSkillContent[] {
+  return [...item.skillIds, ...(item.mods?.skillIds ?? [])].map(
+    (t) => getEntry<EquipmentSkillContent>(t)!,
+  );
 }
 
 export function rarityItemTextColor(rarity: DropRarity): string {
