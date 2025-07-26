@@ -7,11 +7,7 @@ import { notify } from '@helpers/notify';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { addTimerAndAction, getRegisterTick } from '@helpers/timer';
 import { distanceBetweenNodes } from '@helpers/travel';
-import {
-  getGuardiansForLocation,
-  getLootForLocation,
-  getSpriteForPosition,
-} from '@helpers/worldgen';
+import { getGuardiansForLocation, getLootForLocation } from '@helpers/worldgen';
 import type {
   GameCurrency,
   GameStateWorld,
@@ -33,10 +29,6 @@ export function getWorldNode(
   state = gamestate(),
 ): WorldLocation {
   return state.world.nodes[`${x},${y}`] ?? defaultWorldNode(x, y);
-}
-
-export function getWorldNodeTileSprite(x: number, y: number): string {
-  return getSpriteForPosition(x, y);
 }
 
 export function getCurrentWorldNode(

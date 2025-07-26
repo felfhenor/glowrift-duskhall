@@ -15,12 +15,10 @@ import {
   gamerng,
   randomChoice,
   randomIdentifiableChoice,
-  randomNumber,
   randomNumberRange,
   seededrng,
   uuid,
 } from '@helpers/rng';
-import { indexToSprite } from '@helpers/sprite';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { distanceBetweenNodes } from '@helpers/travel';
 import type {
@@ -52,7 +50,7 @@ function fillEmptySpaceWithEmptyNodes(
   }
 }
 
-function getAngleBetweenPoints(
+export function getAngleBetweenPoints(
   center: WorldPosition,
   check: WorldPosition,
 ): number {
@@ -68,7 +66,7 @@ function getAngleBetweenPoints(
   return angle;
 }
 
-function getElementsForCardinalDirection(
+export function getElementsForCardinalDirection(
   dir: Compass.CardinalDirection,
 ): Array<{ element: GameElement; multiplier: number }> {
   const FULL = 1;
@@ -494,38 +492,4 @@ function numGuardiansForLocation(location: WorldLocation): number {
   };
 
   return nodeTypes[location.nodeType ?? 'cave'] ?? 0;
-}
-
-export function getSpriteForPosition(x: number, y: number): string {
-  const state = gamestate();
-
-  const elementStartSprites: Record<GameElement, number> = {
-    Air: 16,
-    Earth: 0,
-    Fire: 24,
-    Water: 12,
-  };
-
-  const centerPosition: WorldPosition = {
-    x: Math.floor(state.world.width / 2),
-    y: Math.floor(state.world.height / 2),
-  };
-
-  const cardinality = Compass.cardinalFromDegree(
-    getAngleBetweenPoints(centerPosition, { x, y }),
-    Compass.CardinalSubset.Intercardinal,
-  );
-
-  const elements = getElementsForCardinalDirection(
-    Compass.CardinalDirection[
-      cardinality as unknown as number
-    ] as unknown as Compass.CardinalDirection,
-  );
-
-  const dominantElement = elements[0]?.element ?? 'Air';
-
-  return indexToSprite(
-    elementStartSprites[dominantElement] +
-      randomNumber(4, seededrng(`${state.gameId}-${x},${y}`)),
-  );
 }
