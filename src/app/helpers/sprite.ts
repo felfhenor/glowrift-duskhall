@@ -25,8 +25,8 @@ export function getSpriteForPosition(x: number, y: number): string {
   };
 
   const centerPosition: WorldPosition = {
-    x: Math.floor(state.world.width / 2),
-    y: Math.floor(state.world.height / 2),
+    x: Math.floor(state.world.config.width / 2),
+    y: Math.floor(state.world.config.height / 2),
   };
 
   const cardinality = Compass.cardinalFromDegree(

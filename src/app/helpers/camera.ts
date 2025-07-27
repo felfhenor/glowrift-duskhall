@@ -4,8 +4,8 @@ import { windowHeightTiles, windowWidthTiles } from '@helpers/ui';
 import { clamp } from 'es-toolkit/compat';
 
 export function setCameraPosition(x: number, y: number) {
-  const worldWidth = gamestate().world.width;
-  const worldHeight = gamestate().world.height;
+  const worldWidth = gamestate().world.config.width;
+  const worldHeight = gamestate().world.config.height;
 
   const tileWidth = windowWidthTiles();
   const tileHeight = windowHeightTiles();

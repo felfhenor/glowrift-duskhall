@@ -5,6 +5,7 @@ import {
   defaultHero,
   defaultNodeCountBlock,
   defaultPosition,
+  defaultWorldConfig,
 } from '@helpers/defaults';
 import { uuid } from '@helpers/rng';
 import { localStorageSignal } from '@helpers/signal';
@@ -21,8 +22,7 @@ export function blankGameState(): GameState {
     },
     gameId: uuid() as GameId,
     world: {
-      width: 0,
-      height: 0,
+      config: defaultWorldConfig(),
       nodes: {},
       homeBase: defaultPosition(),
       nodeCounts: defaultNodeCountBlock(),

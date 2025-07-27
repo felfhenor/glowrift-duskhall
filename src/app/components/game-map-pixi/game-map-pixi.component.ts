@@ -48,10 +48,10 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
   private resizeObserver?: ResizeObserver;
 
   public nodeWidth = computed(() =>
-    Math.min(gamestate().world.width, windowWidthTiles() + 1),
+    Math.min(gamestate().world.config.width, windowWidthTiles() + 1),
   );
   public nodeHeight = computed(() =>
-    Math.min(gamestate().world.height, windowHeightTiles() + 1),
+    Math.min(gamestate().world.config.height, windowHeightTiles() + 1),
   );
   public camera = computed(() => gamestate().camera);
   public map = computed(() => {
@@ -65,8 +65,8 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       camera.y,
       width,
       height,
-      world.width,
-      world.height,
+      world.config.width,
+      world.config.height,
     );
   });
 

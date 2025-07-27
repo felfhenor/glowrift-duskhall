@@ -1,5 +1,7 @@
 import * as Compass from 'cardinal-direction';
 
+import type { Signal } from '@angular/core';
+import { signal } from '@angular/core';
 import { getEntriesByType, getEntry } from '@helpers/content';
 import {
   allItemDefinitions,
@@ -34,6 +36,31 @@ import type {
   WorldPosition,
 } from '@interfaces';
 import { clamp } from 'es-toolkit/compat';
+import { from, lastValueFrom, Subject, takeUntil, timer, zip } from 'rxjs';
+
+type WorldGenNode = {
+  node: WorldLocation;
+  nodeCount: number;
+  nodeNum: number;
+  worldGenDisplayType: string;
+  minDist: number;
+  maxDist: number;
+  isLast: boolean;
+};
+
+const _currentWorldGenStatus = signal<string>('');
+export const currentWorldGenStatus: Signal<string> =
+  _currentWorldGenStatus.asReadonly();
+
+const cancelWorldGen = new Subject<void>();
+
+export function cancelWorldGeneration(): void {
+  cancelWorldGen.next();
+}
+
+function setWorldGenStatus(status: string): void {
+  _currentWorldGenStatus.set(status);
+}
 
 function fillEmptySpaceWithEmptyNodes(
   config: WorldConfigContent,
@@ -257,7 +284,16 @@ export function setWorldSeed(seed: string | null): void {
   });
 }
 
-export function generateWorld(config: WorldConfigContent): GameStateWorld {
+export function setWorldConfig(config: WorldConfigContent): void {
+  updateGamestate((state) => {
+    state.world.config = config;
+    return state;
+  });
+}
+
+export async function generateWorld(
+  config: WorldConfigContent,
+): Promise<GameStateWorld & { didFinish?: boolean }> {
   const rng = gamerng();
 
   const nodes: Record<string, WorldLocation> = {};
@@ -320,6 +356,7 @@ export function generateWorld(config: WorldConfigContent): GameStateWorld {
     nodePositionsAvailable[`${node.x},${node.y}`].taken = true;
   };
 
+  setWorldGenStatus('Generating world...');
   const counts: Record<LocationType, number> = defaultNodeCountBlock();
   counts.town++;
 
@@ -336,73 +373,144 @@ export function generateWorld(config: WorldConfigContent): GameStateWorld {
     }
   }
 
+  setWorldGenStatus('Generating LaFlotte...');
   addNode(firstTown);
 
-  minCavesNearStart.forEach((caveConfig) => {
-    const nodeCount = randomNumberRange(
-      caveConfig.minNodes,
-      caveConfig.maxNodes,
-      rng,
-    );
+  let didWorldGenFinish = false;
 
-    for (let i = 0; i < nodeCount; i++) {
-      const { x, y } = findUnusedPosition(
-        caveConfig.minDist,
-        caveConfig.maxDist,
+  const nodesToAdd: WorldGenNode[] = [];
+
+  // set up starter caves
+  const starterCaves: WorldGenNode[] = minCavesNearStart.flatMap(
+    (caveConfig) => {
+      const nodeCount = randomNumberRange(
+        caveConfig.minNodes,
+        caveConfig.maxNodes,
+        rng,
       );
-      if (x === -1 || y === -1) continue;
 
-      const node: WorldLocation = {
-        ...defaultWorldNode(),
-        id: uuid(),
-        x,
-        y,
-        nodeType: 'cave',
-        name: `starter cave ${caveConfig.minDist}-${i + 1}`,
-      };
+      return Array(nodeCount)
+        .fill(undefined)
+        .map((_, i) => {
+          const node: WorldLocation = {
+            ...defaultWorldNode(),
+            id: uuid(),
+            x: -1,
+            y: -1,
+            nodeType: 'cave',
+            name: `starter cave ${caveConfig.minDist}-${i + 1}`,
+          };
 
-      counts.cave++;
+          return {
+            node,
+            nodeCount,
+            nodeNum: i,
+            worldGenDisplayType: `starter cave (range ${caveConfig.minDist})`,
+            minDist: caveConfig.minDist,
+            maxDist: caveConfig.maxDist,
+            isLast: false,
+          };
+        });
+    },
+  );
 
-      addNode(node);
-    }
-  });
+  counts.cave += starterCaves.length;
 
-  Object.keys(config.nodeCount).forEach((key) => {
+  // set up non-starter nodes
+  const chosenConfigs = Object.keys(config.nodeCount).map((key) => {
     const count = config.nodeCount[key as LocationType];
     const nodeCount = randomNumberRange(count.min, count.max, rng);
 
-    for (let i = 0; i < nodeCount; i++) {
-      const { x, y } = findUnusedPosition(
-        minDistancesForLocationNode[key as LocationType],
-        maxDistance,
-      );
-      if (x === -1 || y === -1) continue;
-
-      const node: WorldLocation = {
-        ...defaultWorldNode(),
-        id: uuid(),
-        x,
-        y,
-        nodeType: key as LocationType,
-        name: `${key} ${i + 1}`,
-      };
-
-      counts[key as LocationType]++;
-
-      addNode(node);
-    }
+    return { nodeType: key as LocationType, nodeCount };
   });
 
-  fillEmptySpaceWithEmptyNodes(config, nodes);
-  setEncounterLevels(config, nodes, firstTown);
-  addElementsToWorld(config, nodes);
-  fillSpacesWithGuardians(nodes);
-  fillSpacesWithLoot(nodes);
-  cleanUpEmptyNodes(nodes);
+  chosenConfigs.forEach(({ nodeType, nodeCount }) => {
+    counts[nodeType] += nodeCount;
+  });
+
+  const nonStarterNodes: WorldGenNode[] = chosenConfigs.flatMap(
+    ({ nodeType, nodeCount }) => {
+      return Array(nodeCount)
+        .fill(nodeType)
+        .map((nodeType, i) => {
+          const node: WorldLocation = {
+            ...defaultWorldNode(),
+            id: uuid(),
+            x: -1,
+            y: -1,
+            nodeType,
+            name: `${nodeType} ${i + 1}`,
+          };
+
+          return {
+            node,
+            nodeCount,
+            nodeNum: i,
+            worldGenDisplayType: nodeType,
+            minDist: minDistancesForLocationNode[node.nodeType!],
+            maxDist: maxDistance,
+            isLast: false,
+          };
+        });
+    },
+  );
+
+  nodesToAdd.push(...starterCaves);
+  nodesToAdd.push(...nonStarterNodes);
+  nodesToAdd.at(-1)!.isLast = true;
+
+  const worldGen$ = zip(
+    from(nodesToAdd),
+    timer(0, 10).pipe(takeUntil(cancelWorldGen)),
+  );
+
+  worldGen$.subscribe(([nodeData]) => {
+    const {
+      node,
+      nodeCount,
+      worldGenDisplayType: nodeType,
+      nodeNum,
+      minDist,
+      maxDist,
+    } = nodeData;
+    const { x, y } = findUnusedPosition(minDist, maxDist);
+
+    node.x = x;
+    node.y = y;
+
+    if (node.x === -1 || node.y === -1) return;
+
+    setWorldGenStatus(`Generating ${nodeType} ${nodeNum + 1}/${nodeCount}...`);
+
+    addNode(node);
+  });
+
+  const [node] = await lastValueFrom(worldGen$);
+  if (node.isLast) {
+    setWorldGenStatus(`Filling empty space...`);
+    fillEmptySpaceWithEmptyNodes(config, nodes);
+
+    setWorldGenStatus(`Setting encounter levels...`);
+    setEncounterLevels(config, nodes, firstTown);
+
+    setWorldGenStatus(`Giving elements to the world...`);
+    addElementsToWorld(config, nodes);
+
+    setWorldGenStatus(`Giving darkness to the world...`);
+    fillSpacesWithGuardians(nodes);
+
+    setWorldGenStatus(`Giving treasure to the world...`);
+    fillSpacesWithLoot(nodes);
+
+    setWorldGenStatus(`Finalizing the world...`);
+    cleanUpEmptyNodes(nodes);
+
+    didWorldGenFinish = true;
+  }
 
   return {
-    width: config.width,
-    height: config.height,
+    didFinish: didWorldGenFinish,
+    config,
     nodes,
     homeBase: {
       x: firstTown.x,

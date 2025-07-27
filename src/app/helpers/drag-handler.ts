@@ -1,5 +1,3 @@
-import type { Application, Container, FederatedPointerEvent } from 'pixi.js';
-import type { DragState } from '@interfaces/camera';
 import {
   calculateCameraBounds,
   processCameraDrag,
@@ -7,6 +5,8 @@ import {
 } from '@helpers/camera-controller';
 import { gamestate } from '@helpers/index';
 import { resetContainerPositions } from '@helpers/pixi-app-setup';
+import type { DragState } from '@interfaces/camera';
+import type { Application, Container, FederatedPointerEvent } from 'pixi.js';
 
 export interface DragHandlerConfig {
   app: Application;
@@ -59,8 +59,8 @@ export function setupMapDragging(config: DragHandlerConfig): DragState {
     const currentCamera = gamestate().camera;
     const world = gamestate().world;
     const bounds = calculateCameraBounds(
-      world.width,
-      world.height,
+      world.config.width,
+      world.config.height,
       viewportWidth,
       viewportHeight,
     );

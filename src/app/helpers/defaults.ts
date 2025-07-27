@@ -6,9 +6,43 @@ import type {
   HeroId,
   LocationType,
   StatBlock,
+  WorldConfigContent,
   WorldLocation,
   WorldPosition,
 } from '@interfaces';
+
+export function defaultWorldConfig(): WorldConfigContent {
+  return {
+    width: 50,
+    height: 50,
+    name: '',
+    id: 'Unknown',
+    maxLevel: 25,
+    __type: 'worldconfig',
+    nodeCount: {
+      castle: {
+        min: 1,
+        max: 1,
+      },
+      cave: {
+        min: 0,
+        max: 1,
+      },
+      dungeon: {
+        min: 0,
+        max: 1,
+      },
+      town: {
+        min: 1,
+        max: 2,
+      },
+      village: {
+        min: 1,
+        max: 3,
+      },
+    },
+  };
+}
 
 export function getDefaultStats(): StatBlock {
   return {
