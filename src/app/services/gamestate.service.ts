@@ -1,5 +1,4 @@
 import { effect, inject, Injectable, signal } from '@angular/core';
-import { interval } from 'rxjs';
 import {
   doGameloop,
   gamestate,
@@ -11,6 +10,7 @@ import {
 } from '@helpers';
 import { ContentService } from '@services/content.service';
 import { LoggerService } from '@services/logger.service';
+import { interval } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',

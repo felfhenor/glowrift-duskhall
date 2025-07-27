@@ -31,7 +31,7 @@ export function blankGameState(): GameState {
     camera: defaultPosition(),
     hero: {
       respawnTicks: 0,
-      riskTolerance: 'low',
+      riskTolerance: 'medium',
       heroes: [
         defaultHero({ name: 'Ignatius', sprite: '0004' }),
         defaultHero({ name: 'Aquara', sprite: '0000' }),
