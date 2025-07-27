@@ -16,7 +16,36 @@ const build = async () => {
 
     const files = await rec(`./gameassets/${sheet}`);
 
-    spritesmith.run({ src: files }, (e: any, res: any) => {
+    let copyFiles: string[] = files;
+
+    const unfilterableSpritesheets = ['hero', 'world-object', 'world-terrain'];
+
+    if (!unfilterableSpritesheets.includes(sheet)) {
+      const content = await fs.readJSON(`./public/json/${sheet}.json`, 'utf-8');
+
+      const usedSprites = [
+        ...new Set([
+          ...content.flatMap((c: any) =>
+            c.frames
+              ? Array(c.frames)
+                  .fill(undefined)
+                  .map((_, i) => {
+                    const baseSprite = parseInt(c.sprite, 10) + i;
+                    return baseSprite.toString().padStart(4, '0');
+                  })
+              : [c.sprite],
+          ),
+        ]),
+      ];
+
+      copyFiles = copyFiles.filter((f) =>
+        usedSprites.find((s) => f.includes(s)),
+      );
+    }
+
+    console.log(`Found ${copyFiles.length} files for ${sheet} spritesheet.`);
+
+    spritesmith.run({ src: copyFiles }, (e: any, res: any) => {
       const newCoords: Record<string, any> = {};
       Object.keys(res.coordinates).forEach((key: string) => {
         newCoords[key.replaceAll('\\', '/')] = res.coordinates[key];

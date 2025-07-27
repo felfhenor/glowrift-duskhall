@@ -57,7 +57,7 @@ export class ContentService {
     const spritesheetsToLoad = [
       'accessory',
       'armor',
-      'enemy',
+      'guardian',
       'hero',
       'skill',
       'trinket',
