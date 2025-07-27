@@ -8,6 +8,8 @@ const assetsToCopy: string[] = [];
 
 fs.ensureDirSync('public/art/spritesheets');
 
+const allSpritesheetAtlases: Record<string, any> = {};
+
 const build = async () => {
   const folders = fs.readdirSync('./gameassets');
 
@@ -29,10 +31,9 @@ const build = async () => {
             c.frames
               ? Array(c.frames)
                   .fill(undefined)
-                  .map((_, i) => {
-                    const baseSprite = parseInt(c.sprite, 10) + i;
-                    return baseSprite.toString().padStart(4, '0');
-                  })
+                  .map((_, i) =>
+                    (parseInt(c.sprite, 10) + i).toString().padStart(4, '0'),
+                  )
               : [c.sprite],
           ),
         ]),
@@ -45,16 +46,25 @@ const build = async () => {
 
     console.log(`Found ${copyFiles.length} files for ${sheet} spritesheet.`);
 
-    spritesmith.run({ src: copyFiles }, (e: any, res: any) => {
-      const newCoords: Record<string, any> = {};
-      Object.keys(res.coordinates).forEach((key: string) => {
-        newCoords[key.replaceAll('\\', '/')] = res.coordinates[key];
-      });
+    await new Promise<void>((resolve) => {
+      spritesmith.run({ src: copyFiles }, (e: any, res: any) => {
+        const newCoords: Record<string, any> = {};
+        Object.keys(res.coordinates).forEach((key: string) => {
+          newCoords[key.replaceAll('\\', '/')] = res.coordinates[key];
+        });
 
-      fs.writeJsonSync(`public/art/spritesheets/${sheet}.json`, newCoords);
-      fs.writeFileSync(`public/art/spritesheets/${sheet}.png`, res.image);
+        fs.writeJsonSync(`public/art/spritesheets/${sheet}.json`, newCoords);
+        fs.writeFileSync(`public/art/spritesheets/${sheet}.png`, res.image);
+
+        allSpritesheetAtlases[sheet] = newCoords;
+
+        resolve();
+      });
     });
   }
+
+  console.log(`Generating all.json spritesheet atlas.`);
+  fs.writeJsonSync('public/art/spritesheets/all.json', allSpritesheetAtlases);
 };
 
 const copy = async () => {
