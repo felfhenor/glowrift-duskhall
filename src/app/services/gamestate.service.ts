@@ -7,7 +7,6 @@ import {
   isGameStateReady,
   migrateGameState,
   migrateOptionsState,
-  spriteIterationCount,
 } from '@helpers';
 import { ContentService } from '@services/content.service';
 import { LoggerService } from '@services/logger.service';
@@ -47,14 +46,7 @@ export class GamestateService {
   }
 
   init() {
-    this.doSpriteloop();
     this.doGameloop();
-  }
-
-  private doSpriteloop() {
-    interval(100).subscribe(() => {
-      spriteIterationCount.set(spriteIterationCount() + 1);
-    });
   }
 
   private doGameloop() {

@@ -1,4 +1,3 @@
-import { signal } from '@angular/core';
 import { randomNumber, seededrng } from '@helpers/rng';
 import { gamestate } from '@helpers/state-game';
 import {
@@ -7,8 +6,6 @@ import {
 } from '@helpers/worldgen';
 import type { GameElement, LocationType, WorldPosition } from '@interfaces';
 import * as Compass from 'cardinal-direction';
-
-export const spriteIterationCount = signal<number>(0);
 
 export function indexToSprite(index: number): string {
   return index.toString().padStart(4, '0');

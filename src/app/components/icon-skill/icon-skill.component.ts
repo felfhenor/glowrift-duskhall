@@ -21,7 +21,6 @@ import { TippyDirective } from '@ngneat/helipopper';
 })
 export class IconSkillComponent {
   public skill = input.required<EquipmentSkillContent>();
-  public shouldAnimate = input<boolean>(false);
 
   public itemOutlineClass = computed(() =>
     rarityItemOutlineColor(this.skill().rarity),

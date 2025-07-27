@@ -19,10 +19,7 @@
             (contextmenu)="unchooseItem($index)"
           >
             @if (items[slot]; as item) {
-              <app-icon-skill
-                [skill]="item"
-                [shouldAnimate]="true"
-              ></app-icon-skill>
+              <app-icon-skill [skill]="item"></app-icon-skill>
             } @else {
               Choose
             }
