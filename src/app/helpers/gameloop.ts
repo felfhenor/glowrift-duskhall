@@ -15,6 +15,10 @@ import { getOption } from '@helpers/state-options';
 
 export const isGameloopPaused = computed(() => getOption('gameloopPaused'));
 
+export function canRunGameloop(): boolean {
+  return window.location.toString().includes('/game');
+}
+
 export function doGameloop(numTicks: number): void {
   if (!isSetup()) return;
   if (!isGameStateReady()) return;
