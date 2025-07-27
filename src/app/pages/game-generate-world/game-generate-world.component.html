@@ -4,9 +4,13 @@
       <div class="card-body items-center justify-between">
         <div class="card-title text-center flex flex-col">Generating World</div>
         <div class="card-actions pt-3 flex flex-row gap-2">
-          <div class="flex flex-row justify-center gap-2 flex-wrap">
-            {{ worldGenStatus() }}
-          </div>
+          @if (worldGenStatus(); as status) {
+            <div class="flex flex-row justify-center gap-2 flex-wrap">
+              {{ status }}
+            </div>
+          } @else {
+            <span class="loading loading-spinner loading-sm"></span>
+          }
         </div>
       </div>
     </div>

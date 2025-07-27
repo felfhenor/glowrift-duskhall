@@ -294,6 +294,8 @@ export function setWorldConfig(config: WorldConfigContent): void {
 export async function generateWorld(
   config: WorldConfigContent,
 ): Promise<GameStateWorld & { didFinish?: boolean }> {
+  setWorldGenStatus('Initializing world generation...');
+
   const rng = gamerng();
 
   const nodes: Record<string, WorldLocation> = {};
@@ -461,7 +463,7 @@ export async function generateWorld(
 
   const worldGen$ = zip(
     from(nodesToAdd),
-    timer(0, 10).pipe(takeUntil(cancelWorldGen)),
+    timer(0, 5).pipe(takeUntil(cancelWorldGen)),
   );
 
   worldGen$.subscribe(([nodeData]) => {
