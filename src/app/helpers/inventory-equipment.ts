@@ -1,7 +1,12 @@
-import type { EquipmentItem, EquipmentSlot, Hero } from '@interfaces';
 import { updateHeroData } from '@helpers/hero';
 import { recalculateStats } from '@helpers/hero-stats';
 import { updateGamestate } from '@helpers/state-game';
+import type { EquipmentItem, EquipmentSlot, Hero } from '@interfaces';
+import { groupBy } from 'es-toolkit/compat';
+
+export function maxItemInventorySize(): number {
+  return 100;
+}
 
 export function getItemSlot(item: EquipmentItem): EquipmentSlot {
   return item.__type;
@@ -9,7 +14,19 @@ export function getItemSlot(item: EquipmentItem): EquipmentSlot {
 
 export function addItemToInventory(item: EquipmentItem): void {
   updateGamestate((state) => {
-    state.inventory.items = [...state.inventory.items, item];
+    const itemGroups = groupBy(
+      [...state.inventory.items, item],
+      (i) => i.__type,
+    );
+    Object.keys(itemGroups).forEach((itemType) => {
+      const items = itemGroups[itemType];
+      while (items.length > maxItemInventorySize()) {
+        items.pop();
+      }
+    });
+
+    state.inventory.items = Object.values(itemGroups).flat();
+
     return state;
   });
 }
