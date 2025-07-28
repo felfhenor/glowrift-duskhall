@@ -19,10 +19,12 @@ export function canRunGameloop(): boolean {
   return window.location.toString().includes('/game');
 }
 
-export function doGameloop(numTicks: number): void {
+export function doGameloop(totalTicks: number): void {
   if (!isSetup()) return;
   if (!isGameStateReady()) return;
   if (isGameloopPaused()) return;
+
+  const numTicks = totalTicks * getOption('debugTickMultiplier');
 
   const timer = new LoggerTimer({
     dumpThreshold: 100,

@@ -8,15 +8,13 @@
           <label class="label cursor-pointer label-checkbox">
             <input
               type="checkbox"
-              [checked]="
-                currentValueForOption('debugConsoleLogStateUpdates') === true
-              "
+              [checked]="getOption('debugConsoleLogStateUpdates') === true"
               class="checkbox checkbox-secondary"
               appAnalyticsClick="Options:Debug:LogStateUpdates"
               (click)="
-                setValueForOption(
+                setOption(
                   'debugConsoleLogStateUpdates',
-                  !currentValueForOption('debugConsoleLogStateUpdates')
+                  !getOption('debugConsoleLogStateUpdates')
                 )
               "
             />
@@ -28,15 +26,13 @@
           <label class="label cursor-pointer label-checkbox">
             <input
               type="checkbox"
-              [checked]="
-                currentValueForOption('debugGameloopTimerUpdates') === true
-              "
+              [checked]="getOption('debugGameloopTimerUpdates') === true"
               class="checkbox checkbox-secondary"
               appAnalyticsClick="Options:Debug:LogTimerUpdates"
               (click)="
-                setValueForOption(
+                setOption(
                   'debugGameloopTimerUpdates',
-                  !currentValueForOption('debugGameloopTimerUpdates')
+                  !getOption('debugGameloopTimerUpdates')
                 )
               "
             />
@@ -54,15 +50,13 @@
           <label class="label cursor-pointer label-checkbox">
             <input
               type="checkbox"
-              [checked]="
-                currentValueForOption('debugMapNodePositions') === true
-              "
+              [checked]="getOption('debugMapNodePositions') === true"
               class="checkbox checkbox-secondary"
               appAnalyticsClick="Options:Debug:MapNodePositions"
               (click)="
-                setValueForOption(
+                setOption(
                   'debugMapNodePositions',
-                  !currentValueForOption('debugMapNodePositions')
+                  !getOption('debugMapNodePositions')
                 )
               "
             />
@@ -74,15 +68,13 @@
           <label class="label cursor-pointer label-checkbox">
             <input
               type="checkbox"
-              [checked]="
-                currentValueForOption('debugAllowBackgroundOperations') === true
-              "
+              [checked]="getOption('debugAllowBackgroundOperations') === true"
               class="checkbox checkbox-secondary"
               appAnalyticsClick="Options:Debug:AllowBackgroundOperations"
               (click)="
-                setValueForOption(
+                setOption(
                   'debugAllowBackgroundOperations',
-                  !currentValueForOption('debugAllowBackgroundOperations')
+                  !getOption('debugAllowBackgroundOperations')
                 )
               "
             />
@@ -93,7 +85,31 @@
     </div>
   </div>
 
-  <div class="flex-1 flex flex-col"></div>
+  <div class="flex-1">
+    <div class="card bg-base-100 foreground shadow-xl mt-3">
+      <div class="card-body">
+        <div class="card-title">Timers</div>
+
+        <div class="form-control">
+          <label class="label cursor-pointer label-checkbox">
+            <span class="label-text !ml-0 mr-2">Tick Multiplier</span>
+            <input
+              #tickMultiplier
+              type="range"
+              [min]="1"
+              [max]="100"
+              [value]="getOption('debugTickMultiplier')"
+              (change)="
+                setOption('debugTickMultiplier', tickMultiplier.valueAsNumber)
+              "
+              class="range range-secondary"
+            />
+            <span class="ml-2">{{ getOption('debugTickMultiplier') }}x</span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="flex-1"></div>
 </div>
