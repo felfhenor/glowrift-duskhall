@@ -1,8 +1,11 @@
+import { itemSalvageValue } from '@helpers/action-equipment';
+import { gainCurrency } from '@helpers/currency';
 import { updateHeroData } from '@helpers/hero';
 import { recalculateStats } from '@helpers/hero-stats';
+import { sortedRarityList } from '@helpers/item';
 import { updateGamestate } from '@helpers/state-game';
 import type { EquipmentItem, EquipmentSlot, Hero } from '@interfaces';
-import { groupBy } from 'es-toolkit/compat';
+import { groupBy, sumBy } from 'es-toolkit/compat';
 
 export function maxItemInventorySize(): number {
   return 100;
@@ -13,15 +16,20 @@ export function getItemSlot(item: EquipmentItem): EquipmentSlot {
 }
 
 export function addItemToInventory(item: EquipmentItem): void {
+  const lostItems: EquipmentItem[] = [];
+
   updateGamestate((state) => {
     const itemGroups = groupBy(
       [...state.inventory.items, item],
       (i) => i.__type,
     );
     Object.keys(itemGroups).forEach((itemType) => {
-      const items = itemGroups[itemType];
+      const items = sortedRarityList(itemGroups[itemType]);
       while (items.length > maxItemInventorySize()) {
-        items.pop();
+        const lostItem = items.pop();
+        if (lostItem) {
+          lostItems.push(lostItem);
+        }
       }
     });
 
@@ -29,6 +37,9 @@ export function addItemToInventory(item: EquipmentItem): void {
 
     return state;
   });
+
+  const value = sumBy(lostItems, (s) => itemSalvageValue(s));
+  gainCurrency('Mana', value);
 }
 
 export function removeItemFromInventory(item: EquipmentItem): void {
