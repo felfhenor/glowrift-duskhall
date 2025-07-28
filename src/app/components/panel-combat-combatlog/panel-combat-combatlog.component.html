@@ -1,13 +1,24 @@
 <div>
   @for (message of allCombatLogs(); track message.messageId) {
     <div class="flex flex-row gap-2 justify-between">
-      <div [innerHTML]="message.message"></div>
+      <div class="flex items-center">
+        <div
+          class="w-14 h-12 flex items-center justify-center transform scale-75"
+        >
+          @if (getActorFromMessage(message.rawMessage); as actor) {
+            <app-icon-hero
+              [hero]="actor"
+              [shouldAnimate]="false"
+            ></app-icon-hero>
+          }
+        </div>
+        <div [innerHTML]="message.message"></div>
+      </div>
 
       <div class="italic">
         {{ message.locationName }} - {{ message.timestamp | date: 'short' }}
       </div>
     </div>
-
   } @empty {
     <div class="text-center">
       <p>No combats have happened yet.</p>

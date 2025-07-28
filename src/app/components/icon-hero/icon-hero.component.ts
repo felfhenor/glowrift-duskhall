@@ -10,4 +10,5 @@ import { AtlasAnimationComponent } from '@components/atlas-animation/atlas-anima
 })
 export class IconHeroComponent {
   public hero = input.required<Hero>();
+  public shouldAnimate = input<boolean>(true);
 }
