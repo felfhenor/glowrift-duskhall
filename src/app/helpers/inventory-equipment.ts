@@ -31,6 +31,8 @@ export function addItemToInventory(item: EquipmentItem): void {
           lostItems.push(lostItem);
         }
       }
+
+      itemGroups[itemType] = items;
     });
 
     state.inventory.items = Object.values(itemGroups).flat();
