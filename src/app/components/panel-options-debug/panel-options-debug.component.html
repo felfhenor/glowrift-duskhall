@@ -40,7 +40,7 @@
                 )
               "
             />
-            <span class="label-text">Log gameloop timers</span>
+            <span class="label-text">Log long (>100ms) gameloop timers</span>
           </label>
         </div>
       </div>
@@ -67,6 +67,26 @@
               "
             />
             <span class="label-text">Map Node Positions</span>
+          </label>
+        </div>
+
+        <div class="form-control">
+          <label class="label cursor-pointer label-checkbox">
+            <input
+              type="checkbox"
+              [checked]="
+                currentValueForOption('debugAllowBackgroundOperations') === true
+              "
+              class="checkbox checkbox-secondary"
+              appAnalyticsClick="Options:Debug:AllowBackgroundOperations"
+              (click)="
+                setValueForOption(
+                  'debugAllowBackgroundOperations',
+                  !currentValueForOption('debugAllowBackgroundOperations')
+                )
+              "
+            />
+            <span class="label-text">Allow Background Operations</span>
           </label>
         </div>
       </div>

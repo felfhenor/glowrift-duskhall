@@ -44,3 +44,16 @@
     </div>
   }
 </div>
+
+@if (isCatchingUp()) {
+  <div
+    class="absolute top-[40px] left-0 z-100 w-full h-full flex justify-center items-center"
+  >
+    <div class="card bg-base-100 shadow-xl my-4 page-card mx-auto">
+      <div class="card-body flex flex-row">
+        <span class="loading loading-spinner loading-sm"></span>
+        Catching up...
+      </div>
+    </div>
+  </div>
+}

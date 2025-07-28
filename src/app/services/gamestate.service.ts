@@ -4,7 +4,9 @@ import {
   doGameloop,
   gamestate,
   getOption,
+  isCatchingUp,
   isGameStateReady,
+  isPageVisible,
   migrateGameState,
   migrateOptionsState,
 } from '@helpers';
@@ -68,8 +70,26 @@ export class GamestateService {
       )
         return;
 
+      if (!isPageVisible() && !getOption('debugAllowBackgroundOperations')) {
+        return;
+      }
+
       const secondsElapsed = Math.round((Date.now() - lastRunTime) / 1000);
+
+      // if we have a noticeable delay, drop the modal in to tell people a catchup is happening
+      if (secondsElapsed > 30) {
+        isCatchingUp.set(true);
+
+        setTimeout(() => {
+          runLoop(secondsElapsed);
+        }, 0);
+
+        return;
+      }
+
       runLoop(secondsElapsed);
+
+      isCatchingUp.set(false);
     });
   }
 }

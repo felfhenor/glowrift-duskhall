@@ -1,10 +1,7 @@
-import { Subject } from 'rxjs';
-import type { NotificationCategory, ToggleableCategory } from '@interfaces';
 import { options } from '@helpers/state-options';
-
-function isPageVisible(): boolean {
-  return !document.hidden;
-}
+import { isCatchingUp, isPageVisible } from '@helpers/ui';
+import type { NotificationCategory, ToggleableCategory } from '@interfaces';
+import { Subject } from 'rxjs';
 
 const notification = new Subject<{
   message: string;
@@ -16,6 +13,7 @@ export const notification$ = notification.asObservable();
 export function notify(message: string, category: NotificationCategory): void {
   if (
     !isPageVisible() ||
+    isCatchingUp() ||
     !options()['canSendNotifications'] ||
     !options()['enabledNotificationCategories'].includes(
       category as ToggleableCategory,
@@ -27,11 +25,11 @@ export function notify(message: string, category: NotificationCategory): void {
 }
 
 export function notifyError(message: string): void {
-  if (!isPageVisible()) return;
+  if (!isPageVisible() || isCatchingUp()) return;
   notification.next({ message, type: 'error', category: 'Error' });
 }
 
 export function notifySuccess(message: string): void {
-  if (!isPageVisible()) return;
+  if (!isPageVisible() || isCatchingUp()) return;
   notification.next({ message, type: 'success', category: 'Success' });
 }

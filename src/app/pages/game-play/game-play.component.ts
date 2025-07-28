@@ -10,6 +10,7 @@ import { PanelTownComponent } from '@components/panel-town/panel-town.component'
 import {
   closeAllMenus,
   getOption,
+  isCatchingUp,
   setOption,
   showCombatMenu,
   showHeroesMenu,
@@ -41,6 +42,7 @@ export class GamePlayComponent {
   public showInventory = computed(() => showInventoryMenu());
   public showTown = computed(() => showTownMenu());
   private isGameloopPaused = computed(() => getOption('gameloopPaused'));
+  public isCatchingUp = computed(() => isCatchingUp());
 
   @HostListener('document:keydown.escape', ['$event'])
   onEscapeKey(event: KeyboardEvent) {

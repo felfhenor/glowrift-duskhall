@@ -7,6 +7,7 @@ export type GameOption =
   | 'debugConsoleLogStateUpdates'
   | 'debugMapNodePositions'
   | 'debugGameloopTimerUpdates'
+  | 'debugAllowBackgroundOperations'
   | 'audioPlay';
 
 export type NotificationCategory =
