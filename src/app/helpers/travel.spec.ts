@@ -11,8 +11,12 @@ import type { WorldLocation, WorldPosition } from '@interfaces';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock dependencies
+vi.mock('@helpers/trait-location-exploration', () => ({
+  locationTraitExplorationMultiplier: vi.fn(),
+}));
+
 vi.mock('@helpers/festival-exploration', () => ({
-  getExplorationTickMultiplier: vi.fn(),
+  getFestivalExplorationTickMultiplier: vi.fn(),
 }));
 
 vi.mock('@helpers/notify', () => ({
@@ -29,6 +33,7 @@ vi.mock('@helpers/state-game', () => ({
 import { getFestivalExplorationTickMultiplier } from '@helpers/festival-exploration';
 import { notify } from '@helpers/notify';
 import { gamestate } from '@helpers/state-game';
+import { locationTraitExplorationMultiplier } from '@helpers/trait-location-exploration';
 
 describe('Travel Functions', () => {
   beforeEach(() => {
@@ -81,13 +86,19 @@ describe('Travel Functions', () => {
 
   describe('travelTimeFromCurrentLocationTo', () => {
     it('should calculate total travel time with multiplier', () => {
-      const currentPos: WorldPosition = { x: 0, y: 0, nodeId: 'node-1' };
+      const currentPos: WorldLocation = {
+        x: 0,
+        y: 0,
+        nodeId: 'node-1',
+        traitIds: [],
+      };
       const targetPos: WorldPosition = { x: 2, y: 0 };
 
       vi.mocked(gamestate).mockReturnValue({
         hero: { position: currentPos },
       } as ReturnType<typeof gamestate>);
 
+      vi.mocked(locationTraitExplorationMultiplier).mockReturnValue(0);
       vi.mocked(getFestivalExplorationTickMultiplier).mockReturnValue(0.5);
 
       // Base time is 10, modification is 5, total is 15
@@ -102,6 +113,7 @@ describe('Travel Functions', () => {
         name: 'Test Node',
         x: 3,
         y: 4,
+        traitIds: [],
       } as WorldLocation;
 
       vi.mocked(gamestate).mockReturnValue({

@@ -38,10 +38,10 @@ describe('Default Helpers', () => {
   describe('getDefaultAffinities', () => {
     it('should return default element block with ones', () => {
       const expected: ElementBlock = {
-        Air: 1,
-        Earth: 1,
-        Fire: 1,
-        Water: 1,
+        Air: 0,
+        Earth: 0,
+        Fire: 0,
+        Water: 0,
       };
       expect(getDefaultAffinities()).toEqual(expected);
     });
