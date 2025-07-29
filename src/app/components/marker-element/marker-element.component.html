@@ -1,0 +1,11 @@
+<div class="flex flex-row gap-2 items-center">
+  <app-icon-element [element]="element()"></app-icon-element>
+
+  <div class="min-w-[96px]">{{ element() | titlecase }}</div>
+
+  <div>{{ value() * 100 | number: '1.0-0' }}%</div>
+
+  @if (displayDelta()) {
+    <div [class]="deltaColor()">{{ displayDelta() }}</div>
+  }
+</div>

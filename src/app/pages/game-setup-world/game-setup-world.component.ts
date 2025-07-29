@@ -2,7 +2,6 @@ import type { OnInit } from '@angular/core';
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { AtlasAnimationComponent } from '@components/atlas-animation/atlas-animation.component';
 import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
 import { SFXDirective } from '@directives/sfx.directive';
@@ -13,11 +12,12 @@ import {
   pickSpriteForHeroName,
   resetGame,
   setDiscordStatus,
+  setWorldConfig,
   setWorldSeed,
-  startGame,
   updateHeroData,
 } from '@helpers';
 import type { WorldConfigContent } from '@interfaces';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 @Component({
   selector: 'app-game-setup-world',
@@ -61,12 +61,12 @@ export class GameSetupWorldComponent implements OnInit {
     });
   }
 
-  public createWorld(): void {
-    this.isGeneratingWorld.set(true);
+  public async createWorld() {
     closeAllMenus();
 
     resetGame();
     setWorldSeed(this.worldSeed());
+    setWorldConfig(this.selectedWorldSize());
 
     for (let h = 0; h < 4; h++) {
       const heroId = gamestate().hero.heroes[h].id;
@@ -76,11 +76,7 @@ export class GameSetupWorldComponent implements OnInit {
       });
     }
 
-    startGame(this.selectedWorldSize());
-
-    this.router.navigate(['/game']);
-
-    this.isGeneratingWorld.set(false);
+    await this.router.navigate(['/setup', 'generate']);
   }
 
   public renameHero(index: number, name: string): void {

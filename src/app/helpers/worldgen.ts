@@ -1,6 +1,7 @@
 import * as Compass from 'cardinal-direction';
-import type { PRNG } from 'seedrandom';
 
+import type { Signal } from '@angular/core';
+import { signal } from '@angular/core';
 import { getEntriesByType, getEntry } from '@helpers/content';
 import {
   allItemDefinitions,
@@ -16,12 +17,10 @@ import {
   gamerng,
   randomChoice,
   randomIdentifiableChoice,
-  randomNumber,
   randomNumberRange,
   seededrng,
   uuid,
 } from '@helpers/rng';
-import { getSpriteFromNodeType, indexToSprite } from '@helpers/sprite';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { distanceBetweenNodes } from '@helpers/travel';
 import type {
@@ -36,7 +35,32 @@ import type {
   WorldLocation,
   WorldPosition,
 } from '@interfaces';
-import { clamp } from 'lodash';
+import { clamp } from 'es-toolkit/compat';
+import { from, lastValueFrom, Subject, takeUntil, timer, zip } from 'rxjs';
+
+type WorldGenNode = {
+  node: WorldLocation;
+  nodeCount: number;
+  nodeNum: number;
+  worldGenDisplayType: string;
+  minDist: number;
+  maxDist: number;
+  isLast: boolean;
+};
+
+const _currentWorldGenStatus = signal<string>('');
+export const currentWorldGenStatus: Signal<string> =
+  _currentWorldGenStatus.asReadonly();
+
+const cancelWorldGen = new Subject<void>();
+
+export function cancelWorldGeneration(): void {
+  cancelWorldGen.next();
+}
+
+function setWorldGenStatus(status: string): void {
+  _currentWorldGenStatus.set(status);
+}
 
 function fillEmptySpaceWithEmptyNodes(
   config: WorldConfigContent,
@@ -53,7 +77,7 @@ function fillEmptySpaceWithEmptyNodes(
   }
 }
 
-function getAngleBetweenPoints(
+export function getAngleBetweenPoints(
   center: WorldPosition,
   check: WorldPosition,
 ): number {
@@ -69,7 +93,7 @@ function getAngleBetweenPoints(
   return angle;
 }
 
-function getElementsForCardinalDirection(
+export function getElementsForCardinalDirection(
   dir: Compass.CardinalDirection,
 ): Array<{ element: GameElement; multiplier: number }> {
   const FULL = 1;
@@ -220,43 +244,34 @@ function setEncounterLevels(
   );
 
   Object.values(nodes).forEach((node) => {
+    if (!node.nodeType) return;
+
     const dist = distanceBetweenNodes(node, middleNode);
     node.encounterLevel = Math.floor((dist / maxDistance) * maxLevel);
   });
 }
 
-function determineSpritesForWorld(
-  nodes: Record<string, WorldLocation>,
-  sprites: Record<string, string>,
-  rng: PRNG,
-): void {
-  const elementStartSprites: Record<GameElement, number> = {
-    Air: 16,
-    Earth: 0,
-    Fire: 24,
-    Water: 12,
-  };
-
-  Object.values(nodes).forEach((node) => {
-    const dominantElement = node.elements[0]?.element ?? 'Air';
-
-    node.sprite = indexToSprite(
-      elementStartSprites[dominantElement] + randomNumber(4, rng),
-    );
-
-    node.objectSprite = getSpriteFromNodeType(node.nodeType);
-  });
-}
-
 function fillSpacesWithGuardians(nodes: Record<string, WorldLocation>): void {
   Object.values(nodes).forEach((node) => {
+    if (!node.nodeType) return;
+
     populateLocationWithGuardians(node);
   });
 }
 
 function fillSpacesWithLoot(nodes: Record<string, WorldLocation>): void {
   Object.values(nodes).forEach((node) => {
+    if (!node.nodeType) return;
+
     populateLocationWithLoot(node);
+  });
+}
+
+function cleanUpEmptyNodes(nodes: Record<string, WorldLocation>): void {
+  Object.keys(nodes).forEach((nodePos) => {
+    if (!nodes[nodePos].nodeType) {
+      delete nodes[nodePos];
+    }
   });
 }
 
@@ -269,10 +284,20 @@ export function setWorldSeed(seed: string | null): void {
   });
 }
 
-export function generateWorld(config: WorldConfigContent): GameStateWorld {
+export function setWorldConfig(config: WorldConfigContent): void {
+  updateGamestate((state) => {
+    state.world.config = config;
+    return state;
+  });
+}
+
+export async function generateWorld(
+  config: WorldConfigContent,
+): Promise<GameStateWorld & { didFinish?: boolean }> {
+  setWorldGenStatus('Initializing world generation...');
+
   const rng = gamerng();
 
-  const nodeSprites: Record<string, string> = {};
   const nodes: Record<string, WorldLocation> = {};
   const nodeList: WorldLocation[] = [];
   const nodePositionsAvailable: Record<
@@ -280,26 +305,9 @@ export function generateWorld(config: WorldConfigContent): GameStateWorld {
     { x: number; y: number; taken: boolean }
   > = {};
 
-  for (let x = 0; x < config.width; x++) {
-    for (let y = 0; y < config.height; y++) {
-      nodePositionsAvailable[`${x},${y}`] = { x, y, taken: false };
-    }
-  }
-
-  const findUnusedPosition: () => { x: number; y: number } = () => {
-    const freeNodes = Object.values(nodePositionsAvailable).filter(
-      (n) => !n.taken,
-    );
-    if (freeNodes.length === 0) return { x: -1, y: -1 };
-
-    const chosenNode = randomChoice<{ x: number; y: number }>(freeNodes, rng);
-    return { x: chosenNode.x, y: chosenNode.y };
-  };
-
-  const addNode = (node: WorldLocation): void => {
-    nodeList.push(node);
-    nodes[`${node.x},${node.y}`] = node;
-    nodePositionsAvailable[`${node.x},${node.y}`].taken = true;
+  const centerPosition: WorldPosition = {
+    x: Math.floor(config.width / 2),
+    y: Math.floor(config.height / 2),
   };
 
   const firstTown: WorldLocation = {
@@ -312,42 +320,199 @@ export function generateWorld(config: WorldConfigContent): GameStateWorld {
     currentlyClaimed: true,
   };
 
-  addNode(firstTown);
+  const maxDistance = distanceBetweenNodes(
+    { x: centerPosition.x, y: 0 },
+    firstTown,
+  );
 
+  const minDistancesForLocationNode: Record<LocationType, number> = {
+    cave: 0,
+    town: maxDistance * 0.5,
+    village: maxDistance * 0.75,
+    dungeon: maxDistance * 0.3,
+    castle: maxDistance * 0.7,
+  };
+
+  const findUnusedPosition: (
+    distMin: number,
+    distMax: number,
+  ) => {
+    x: number;
+    y: number;
+  } = (distMin: number, distMax: number) => {
+    const freeNodes = Object.values(nodePositionsAvailable).filter((n) => {
+      const dist = distanceBetweenNodes(n, firstTown);
+      if (dist < distMin || dist > distMax) return false;
+      if (n.taken) return false;
+      return true;
+    });
+    if (freeNodes.length === 0) return { x: -1, y: -1 };
+
+    const chosenNode = randomChoice<{ x: number; y: number }>(freeNodes, rng);
+    return { x: chosenNode.x, y: chosenNode.y };
+  };
+
+  const addNode = (node: WorldLocation): void => {
+    nodeList.push(node);
+    nodes[`${node.x},${node.y}`] = node;
+    nodePositionsAvailable[`${node.x},${node.y}`].taken = true;
+  };
+
+  setWorldGenStatus('Generating world...');
   const counts: Record<LocationType, number> = defaultNodeCountBlock();
   counts.town++;
 
-  Object.keys(config.nodeCount).forEach((key) => {
+  const minCavesNearStart = [
+    { minDist: 0, maxDist: 1, minNodes: 2, maxNodes: 4 },
+    { minDist: 1, maxDist: 2, minNodes: 3, maxNodes: 4 },
+    { minDist: 2, maxDist: 3, minNodes: 4, maxNodes: 5 },
+    { minDist: 4, maxDist: 7, minNodes: 10, maxNodes: 20 },
+  ];
+
+  for (let x = 0; x < config.width; x++) {
+    for (let y = 0; y < config.height; y++) {
+      nodePositionsAvailable[`${x},${y}`] = { x, y, taken: false };
+    }
+  }
+
+  setWorldGenStatus('Generating LaFlotte...');
+  addNode(firstTown);
+
+  let didWorldGenFinish = false;
+
+  const nodesToAdd: WorldGenNode[] = [];
+
+  // set up starter caves
+  const starterCaves: WorldGenNode[] = minCavesNearStart.flatMap(
+    (caveConfig) => {
+      const nodeCount = randomNumberRange(
+        caveConfig.minNodes,
+        caveConfig.maxNodes,
+        rng,
+      );
+
+      return Array(nodeCount)
+        .fill(undefined)
+        .map((_, i) => {
+          const node: WorldLocation = {
+            ...defaultWorldNode(),
+            id: uuid(),
+            x: -1,
+            y: -1,
+            nodeType: 'cave',
+            name: `starter cave ${caveConfig.minDist}-${i + 1}`,
+          };
+
+          return {
+            node,
+            nodeCount,
+            nodeNum: i,
+            worldGenDisplayType: `starter cave (range ${caveConfig.minDist})`,
+            minDist: caveConfig.minDist,
+            maxDist: caveConfig.maxDist,
+            isLast: false,
+          };
+        });
+    },
+  );
+
+  counts.cave += starterCaves.length;
+
+  // set up non-starter nodes
+  const chosenConfigs = Object.keys(config.nodeCount).map((key) => {
     const count = config.nodeCount[key as LocationType];
     const nodeCount = randomNumberRange(count.min, count.max, rng);
 
-    for (let i = 0; i < nodeCount; i++) {
-      const { x, y } = findUnusedPosition();
-      const node: WorldLocation = {
-        ...defaultWorldNode(),
-        id: uuid(),
-        x,
-        y,
-        nodeType: key as LocationType,
-        name: `${key} ${i + 1}`,
-      };
-
-      counts[key as LocationType]++;
-
-      addNode(node);
-    }
+    return { nodeType: key as LocationType, nodeCount };
   });
 
-  fillEmptySpaceWithEmptyNodes(config, nodes);
-  setEncounterLevels(config, nodes, firstTown);
-  addElementsToWorld(config, nodes);
-  fillSpacesWithGuardians(nodes);
-  fillSpacesWithLoot(nodes);
-  determineSpritesForWorld(nodes, nodeSprites, rng);
+  chosenConfigs.forEach(({ nodeType, nodeCount }) => {
+    counts[nodeType] += nodeCount;
+  });
+
+  const nonStarterNodes: WorldGenNode[] = chosenConfigs.flatMap(
+    ({ nodeType, nodeCount }) => {
+      return Array(nodeCount)
+        .fill(nodeType)
+        .map((nodeType, i) => {
+          const node: WorldLocation = {
+            ...defaultWorldNode(),
+            id: uuid(),
+            x: -1,
+            y: -1,
+            nodeType,
+            name: `${nodeType} ${i + 1}`,
+          };
+
+          return {
+            node,
+            nodeCount,
+            nodeNum: i,
+            worldGenDisplayType: nodeType,
+            minDist: minDistancesForLocationNode[node.nodeType!],
+            maxDist: maxDistance,
+            isLast: false,
+          };
+        });
+    },
+  );
+
+  nodesToAdd.push(...starterCaves);
+  nodesToAdd.push(...nonStarterNodes);
+  nodesToAdd.at(-1)!.isLast = true;
+
+  const worldGen$ = zip(
+    from(nodesToAdd),
+    timer(0, 5).pipe(takeUntil(cancelWorldGen)),
+  );
+
+  worldGen$.subscribe(([nodeData]) => {
+    const {
+      node,
+      nodeCount,
+      worldGenDisplayType: nodeType,
+      nodeNum,
+      minDist,
+      maxDist,
+    } = nodeData;
+    const { x, y } = findUnusedPosition(minDist, maxDist);
+
+    node.x = x;
+    node.y = y;
+
+    if (node.x === -1 || node.y === -1) return;
+
+    setWorldGenStatus(`Generating ${nodeType} ${nodeNum + 1}/${nodeCount}...`);
+
+    addNode(node);
+  });
+
+  const [node] = await lastValueFrom(worldGen$);
+  if (node.isLast) {
+    setWorldGenStatus(`Filling empty space...`);
+    fillEmptySpaceWithEmptyNodes(config, nodes);
+
+    setWorldGenStatus(`Setting encounter levels...`);
+    setEncounterLevels(config, nodes, firstTown);
+
+    setWorldGenStatus(`Giving elements to the world...`);
+    addElementsToWorld(config, nodes);
+
+    setWorldGenStatus(`Giving darkness to the world...`);
+    fillSpacesWithGuardians(nodes);
+
+    setWorldGenStatus(`Giving treasure to the world...`);
+    fillSpacesWithLoot(nodes);
+
+    setWorldGenStatus(`Finalizing the world...`);
+    cleanUpEmptyNodes(nodes);
+
+    didWorldGenFinish = true;
+  }
 
   return {
-    width: config.width,
-    height: config.height,
+    didFinish: didWorldGenFinish,
+    config,
     nodes,
     homeBase: {
       x: firstTown.x,
@@ -358,7 +523,7 @@ export function generateWorld(config: WorldConfigContent): GameStateWorld {
   };
 }
 
-export function populateLocationWithLoot(location: WorldLocation): void {
+function populateLocationWithLoot(location: WorldLocation): void {
   if (location.currentlyClaimed) return;
 
   location.claimLootIds = getLootForLocation(location).map((i) => i.id);
@@ -390,24 +555,19 @@ export function getLootForLocation(
   }).filter(Boolean);
 }
 
-export function numLootForLocation(location: WorldLocation): number {
-  switch (location.nodeType) {
-    case 'castle':
-      return 5;
-    case 'town':
-      return 4;
-    case 'dungeon':
-      return 3;
-    case 'village':
-      return 2;
-    case 'cave':
-      return 1;
-    default:
-      return 0;
-  }
+function numLootForLocation(location: WorldLocation): number {
+  const nodeTypes: Record<LocationType, number> = {
+    castle: 5,
+    town: 4,
+    dungeon: 3,
+    village: 2,
+    cave: 1,
+  };
+
+  return nodeTypes[location.nodeType ?? 'cave'] ?? 0;
 }
 
-export function populateLocationWithGuardians(location: WorldLocation): void {
+function populateLocationWithGuardians(location: WorldLocation): void {
   if (location.currentlyClaimed) return;
 
   location.guardianIds = getGuardiansForLocation(location).map((i) => i.id);
@@ -432,19 +592,14 @@ export function getGuardiansForLocation(location: WorldLocation): Guardian[] {
   return guardians;
 }
 
-export function numGuardiansForLocation(location: WorldLocation): number {
-  switch (location.nodeType) {
-    case 'castle':
-      return 10;
-    case 'town':
-      return 7;
-    case 'dungeon':
-      return 5;
-    case 'village':
-      return 3;
-    case 'cave':
-      return 1;
-    default:
-      return 0;
-  }
+function numGuardiansForLocation(location: WorldLocation): number {
+  const nodeTypes: Record<LocationType, number> = {
+    castle: 10,
+    town: 7,
+    dungeon: 5,
+    village: 3,
+    cave: 1,
+  };
+
+  return nodeTypes[location.nodeType ?? 'cave'] ?? 0;
 }

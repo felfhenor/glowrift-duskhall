@@ -1,7 +1,7 @@
-import type { Container, Texture, Ticker } from 'pixi.js';
-import { Graphics, Sprite } from 'pixi.js';
 import type { WorldLocation } from '@interfaces';
 import type { NodeSpriteData } from '@interfaces/sprite';
+import type { Container, Texture, Ticker } from 'pixi.js';
+import { Graphics, Sprite } from 'pixi.js';
 
 /**
  * Creates terrain and object sprites for a single map node
@@ -20,6 +20,8 @@ export function createNodeSprites(
   x: number,
   y: number,
   nodeData: WorldLocation,
+  tileSprite: string,
+  objectSprite: string,
   terrainTextures: Record<string, Texture>,
   objectTextures: Record<string, Texture>,
   mapContainer: Container,
@@ -30,7 +32,7 @@ export function createNodeSprites(
   const pixelX = x * 64;
   const pixelY = y * 64;
 
-  const terrainTexture = terrainTextures[nodeData.sprite];
+  const terrainTexture = terrainTextures[tileSprite];
   if (!terrainTexture) return null;
 
   const terrainSprite = new Sprite(terrainTexture);
@@ -41,8 +43,8 @@ export function createNodeSprites(
 
   const spriteData: NodeSpriteData = { terrain: terrainSprite };
 
-  if (nodeData.objectSprite) {
-    const objectTexture = objectTextures[nodeData.objectSprite];
+  if (objectSprite) {
+    const objectTexture = objectTextures[objectSprite];
     if (objectTexture) {
       const objectSprite = new Sprite(objectTexture);
       objectSprite.x = pixelX;
@@ -62,7 +64,7 @@ export function createNodeSprites(
     }
   }
 
-  if (nodeData.objectSprite && checkTexture && xTexture) {
+  if (objectSprite && checkTexture && xTexture) {
     const claimIndicator = createClaimIndicator(
       nodeData.currentlyClaimed,
       x,

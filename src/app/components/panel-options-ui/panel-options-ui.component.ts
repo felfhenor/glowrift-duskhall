@@ -1,11 +1,6 @@
 import { TitleCasePipe } from '@angular/common';
 import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import {
-  getOption,
-  setOption,
-} from '@helpers';
-import type { GameOptions } from '@interfaces';
 import { OptionsBaseComponent } from '@components/panel-options/option-base-page.component';
 import type { ToggleableCategory } from '@interfaces';
 
@@ -16,13 +11,16 @@ import type { ToggleableCategory } from '@interfaces';
   styleUrl: './panel-options-ui.component.css',
 })
 export class PanelOptionsUIComponent extends OptionsBaseComponent {
-  public currentTheme = signal<string>(
-    this.currentValueForOption('uiTheme') as string,
+  public currentTheme = signal<string>(this.getOption('uiTheme') as string);
+
+  public notificationsEnabled = computed(() =>
+    this.getOption('canSendNotifications'),
   );
 
-  public notificationsEnabled = computed(() => this.currentValueForOption('canSendNotifications'));
-
-  public notificationCategoriesEnabled = computed(() => this.currentValueForOption('enabledNotificationCategories') as ToggleableCategory[]);
+  public notificationCategoriesEnabled = computed(
+    () =>
+      this.getOption('enabledNotificationCategories') as ToggleableCategory[],
+  );
 
   public readonly themes = [
     { name: 'acid', type: 'light' },
@@ -92,32 +90,29 @@ export class PanelOptionsUIComponent extends OptionsBaseComponent {
   ];
 
   public changeTheme(theme: string): void {
-    this.setValueForOption('uiTheme', theme);
+    this.setOption('uiTheme', theme);
   }
 
-  public getOption<T extends keyof GameOptions>(option: T) {
-    return getOption(option);
-  }
-
-  public setOption<T extends keyof GameOptions>(
-    option: T,
-    value: GameOptions[T],
-  ) {
-    setOption(option, value);
-  }
-  
   public toggleNotifications() {
-    this.setValueForOption('canSendNotifications', !this.currentValueForOption('canSendNotifications'));
+    this.setOption(
+      'canSendNotifications',
+      !this.getOption('canSendNotifications'),
+    );
   }
 
   public toggleNotificationCategories(category: ToggleableCategory) {
     if (this.notificationCategoriesEnabled().includes(category)) {
-      const newEnabledCategories = this.notificationCategoriesEnabled().filter((cat: ToggleableCategory) => cat !== category);
-      this.setValueForOption('enabledNotificationCategories', newEnabledCategories);
-      
+      const newEnabledCategories = this.notificationCategoriesEnabled().filter(
+        (cat: ToggleableCategory) => cat !== category,
+      );
+      this.setOption('enabledNotificationCategories', newEnabledCategories);
+
       return;
     }
 
-    this.setValueForOption('enabledNotificationCategories', [...this.notificationCategoriesEnabled(), category]);
+    this.setOption('enabledNotificationCategories', [
+      ...this.notificationCategoriesEnabled(),
+      category,
+    ]);
   }
 }

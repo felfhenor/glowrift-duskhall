@@ -11,7 +11,7 @@ import {
   versionInfoToSemver,
   warn,
 } from '@helpers';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'es-toolkit/compat';
 import Rollbar from 'rollbar';
 
 @Injectable({

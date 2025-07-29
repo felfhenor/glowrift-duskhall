@@ -7,7 +7,10 @@ export type GameOption =
   | 'debugConsoleLogStateUpdates'
   | 'debugMapNodePositions'
   | 'debugGameloopTimerUpdates'
-  | 'audioPlay';
+  | 'debugAllowBackgroundOperations'
+  | 'audioPlay'
+  | 'gameloopPaused'
+  | 'canSendNotifications';
 
 export type NotificationCategory =
   | 'Error'
@@ -39,8 +42,7 @@ export interface OptionsTabLink {
 export type GameOptions = Record<GameOption, boolean> & {
   uiTheme: string;
   volume: number;
-  gameloopPaused: boolean;
-  canSendNotifications: boolean;
+  debugTickMultiplier: number;
   enabledNotificationCategories: ToggleableCategory[];
   combatTab: CombatTab;
   optionsTab: OptionsTab;

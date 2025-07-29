@@ -6,7 +6,7 @@ import type {
   GameStat,
   StatusEffectContent,
 } from '@interfaces';
-import { uniq } from 'lodash';
+import { uniq } from 'es-toolkit/compat';
 
 @Component({
   selector: 'app-stats-skill',

@@ -1,9 +1,11 @@
-import type { Combat, Combatant, DroppableEquippable } from '@interfaces';
 import { currentCombat, resetCombat } from '@helpers/combat';
 import { logCombatMessage } from '@helpers/combat-log';
 import { getEntry } from '@helpers/content';
 import { gainCurrency, updateCurrencyClaims } from '@helpers/currency';
-import { gainDroppableItem, makeDroppableIntoRealItem } from '@helpers/droppable';
+import {
+  gainDroppableItem,
+  makeDroppableIntoRealItem,
+} from '@helpers/droppable';
 import {
   exploreProgressPercent,
   travelHome,
@@ -11,8 +13,10 @@ import {
 } from '@helpers/explore';
 import { allHeroes } from '@helpers/hero';
 import { heroGainXp } from '@helpers/hero-xp';
+import { addItemElement, isEquipment } from '@helpers/item';
 import { notify } from '@helpers/notify';
 import { claimNode, getWorldNode } from '@helpers/world';
+import type { Combat, Combatant, DroppableEquippable } from '@interfaces';
 
 export function currentCombatHasGuardiansAlive(): boolean {
   const combat = currentCombat();
@@ -70,6 +74,13 @@ export function handleCombatVictory(combat: Combat): void {
       if (!lootDef) return;
 
       const created = makeDroppableIntoRealItem(lootDef);
+
+      if (isEquipment(created)) {
+        currentNode.elements.forEach((el) => {
+          addItemElement(created, el);
+        });
+      }
+
       gainDroppableItem(created);
 
       logCombatMessage(

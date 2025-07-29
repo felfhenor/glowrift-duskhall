@@ -1,0 +1,17 @@
+.animated-sprite {
+  width: 64px;
+  height: 64px;
+
+  animation: bouncy-sprite calc(1ms * var(--frame-duration))
+    steps(var(--frames)) infinite;
+
+  @keyframes bouncy-sprite {
+    from {
+      background-position: 0px calc(-64px * var(--position));
+    }
+    to {
+      background-position: calc(-64px * var(--frames))
+        calc(-64px * var(--position));
+    }
+  }
+}

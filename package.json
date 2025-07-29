@@ -29,7 +29,7 @@
     "preversion": "npm run util:dirtycheck && npm run lint && npm run test && npm run build",
     "postversion": "npm run util:changelog:generate && npm run util:changelog:generate:current && npm run util:changelog:commit && npm run util:version:reversion && npm run push",
     "push": "git push && git push --tags",
-    "postinstall": "npm run gamedata:art:spritesheets && npm run gamedata:build"
+    "postinstall": "npm run gamedata:build && npm run gamedata:art:spritesheets"
   },
   "private": true,
   "dependencies": {
@@ -55,9 +55,10 @@
     "@tailwindcss/postcss": "^4.1.7",
     "cardinal-direction": "^1.1.1",
     "console-log-colors": "^0.5.0",
+    "es-toolkit": "^1.39.7",
     "fantastical": "^2.0.1",
     "gameanalytics": "^4.4.7",
-    "lodash": "^4.17.21",
+    "jimp": "^1.6.0",
     "logger-timer": "^1.0.7",
     "marked": "^15.0.0",
     "mustache": "^4.2.0",
@@ -83,7 +84,6 @@
     "@angular/cli": "^19.2.1",
     "@angular/compiler-cli": "^19.2.1",
     "@types/js-yaml": "^4.0.9",
-    "@types/lodash": "^4.17.13",
     "@types/mustache": "^4.2.6",
     "@types/node": "^22.15.30",
     "@types/seedrandom": "^3.0.8",

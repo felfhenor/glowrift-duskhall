@@ -1,13 +1,13 @@
-import type { EquipmentItem } from '@interfaces';
 import { getEntry } from '@helpers/content';
 import { getDroppableEquippableBaseId } from '@helpers/droppable';
 import { allHeroes, updateHeroData } from '@helpers/hero';
 import { gamestate, updateGamestate } from '@helpers/state-game';
+import type { EquipmentItem } from '@interfaces';
 
 export function getUpdatedItem(item: EquipmentItem): EquipmentItem {
   return Object.assign(item, getEntry(getDroppableEquippableBaseId(item)), {
     id: item.id,
-  });
+  } as Partial<EquipmentItem>);
 }
 
 export function migrateItems() {

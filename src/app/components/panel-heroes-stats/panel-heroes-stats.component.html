@@ -1,21 +1,21 @@
 @let heroData = hero();
 @let heroStatTotals = heroStats();
+@let heroElementTotals = heroElements();
 
-<div class="flex gap-4 flex-col">
+<div class="flex gap-1 flex-col">
   <div class="text-2xl">
-    {{ heroData.name }}
+    {{ heroData.name }} [{{ heroData.hp | number }} /
+    {{ heroStatTotals.Health | number }} HP]
   </div>
 
-  <div class="text-lg">
-    {{ heroData.hp | number }} / {{ heroStatTotals.Health | number }} HP
-  </div>
+  <div class="text-lg"></div>
 
   <div class="flex gap-2 text-lg">
     <span>Level {{ heroData.level }}</span>
     <span>[{{ heroData.xp | number }} / {{ maxXp() | number }} XP]</span>
   </div>
 
-  <div class="flex flex-col gap-4">
+  <div class="flex flex-col gap-1">
     <div>
       <app-marker-stat
         stat="Health"
@@ -46,6 +46,36 @@
         [value]="heroStatTotals.Speed"
         [delta]="heroStatTotals.Speed - hero().baseStats.Speed"
       ></app-marker-stat>
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-1">
+    <div>
+      <app-marker-element
+        element="Earth"
+        [value]="heroElementTotals.Earth"
+      ></app-marker-element>
+    </div>
+
+    <div>
+      <app-marker-element
+        element="Fire"
+        [value]="heroElementTotals.Fire"
+      ></app-marker-element>
+    </div>
+
+    <div>
+      <app-marker-element
+        element="Water"
+        [value]="heroElementTotals.Water"
+      ></app-marker-element>
+    </div>
+
+    <div>
+      <app-marker-element
+        element="Air"
+        [value]="heroElementTotals.Air"
+      ></app-marker-element>
     </div>
   </div>
 </div>

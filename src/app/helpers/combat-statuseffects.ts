@@ -13,7 +13,7 @@ import type {
   StatusEffectContent,
   StatusEffectTrigger,
 } from '@interfaces/statuseffect';
-import { sum } from 'lodash';
+import { sum } from 'es-toolkit/compat';
 
 export function canTakeTurn(combatant: Combatant): boolean {
   return !combatant.statusEffectData.isFrozen;

@@ -1,20 +1,20 @@
 import type { Signal } from '@angular/core';
 import { signal } from '@angular/core';
-import type { Content, ContentType } from '@interfaces';
+import type { ContentType, IsContentItem } from '@interfaces';
 
 const _allIdsByName = signal<Map<string, string>>(new Map());
 export const allIdsByName: Signal<Map<string, string>> =
   _allIdsByName.asReadonly();
 
-const _allContentById = signal<Map<string, Content>>(new Map());
-export const allContentById: Signal<Map<string, Readonly<Content>>> =
+const _allContentById = signal<Map<string, IsContentItem>>(new Map());
+export const allContentById: Signal<Map<string, Readonly<IsContentItem>>> =
   _allContentById.asReadonly();
 
 export function setAllIdsByName(state: Map<string, string>): void {
   _allIdsByName.set(new Map(state));
 }
 
-export function setAllContentById(state: Map<string, Content>): void {
+export function setAllContentById(state: Map<string, IsContentItem>): void {
   _allContentById.set(new Map(state));
 }
 
@@ -27,7 +27,7 @@ export function getEntriesByType<T>(type: ContentType): T[] {
   );
 }
 
-export function getEntry<T extends Content>(
+export function getEntry<T extends IsContentItem>(
   entryIdOrName: string,
 ): T | undefined {
   if (!entryIdOrName) return undefined;

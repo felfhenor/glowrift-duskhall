@@ -1,6 +1,6 @@
 import { myGameId } from '@helpers/state-game';
 import type { DropRarity, HasRarity, Identifiable } from '@interfaces';
-import { pull, sumBy } from 'lodash';
+import { pull, sumBy } from 'es-toolkit/compat';
 import seedrandom, { type PRNG } from 'seedrandom';
 import { v4 as uuid4 } from 'uuid';
 
@@ -66,10 +66,10 @@ export function randomChoiceByRarity<T extends HasRarity>(
   rng = seededrng(uuid()),
 ): T | undefined {
   const rarityWeights: Record<DropRarity, number> = {
-    Common: 100,
-    Uncommon: 25,
-    Rare: 10,
-    Mystical: 5,
+    Common: 25,
+    Uncommon: 15,
+    Rare: 5,
+    Mystical: 3,
     Legendary: 2,
     Unique: 1,
   };

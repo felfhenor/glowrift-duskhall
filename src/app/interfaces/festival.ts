@@ -1,6 +1,6 @@
 import type { GameCurrency } from '@interfaces/currency';
 import type { HasRarity } from '@interfaces/droppable';
-import type { Content } from '@interfaces/identifiable';
+import type { IsContentItem } from '@interfaces/identifiable';
 
 export type FestivalEffectCombatAttribute = 'damage';
 
@@ -22,7 +22,7 @@ export interface FestivalEffects {
 }
 
 export type FestivalContent = HasRarity &
-  Content & {
+  IsContentItem & {
     description: string;
     endDescription: string;
     effectsDescription: string;

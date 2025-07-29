@@ -1,8 +1,5 @@
 @if (isSkill()) {
-  <app-icon-skill
-    [skill]="lootAsSkill()"
-    [shouldAnimate]="true"
-  ></app-icon-skill>
+  <app-icon-skill [skill]="lootAsSkill()"></app-icon-skill>
 }
 
 @if (isItem()) {

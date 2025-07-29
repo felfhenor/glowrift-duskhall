@@ -1,8 +1,8 @@
-import type { Content } from '@interfaces/identifiable';
+import type { IsContentItem } from '@interfaces/identifiable';
 
 export type LocationType = 'town' | 'village' | 'cave' | 'dungeon' | 'castle';
 
-export interface WorldConfigContent extends Content {
+export interface WorldConfigContent extends IsContentItem {
   width: number;
   height: number;
 

@@ -5,11 +5,12 @@ import {
   defaultHero,
   defaultNodeCountBlock,
   defaultPosition,
+  defaultWorldConfig,
 } from '@helpers/defaults';
 import { uuid } from '@helpers/rng';
 import { localStorageSignal } from '@helpers/signal';
 import type { GameId, GameState } from '@interfaces';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'es-toolkit/compat';
 
 export function blankGameState(): GameState {
   return {
@@ -21,8 +22,7 @@ export function blankGameState(): GameState {
     },
     gameId: uuid() as GameId,
     world: {
-      width: 0,
-      height: 0,
+      config: defaultWorldConfig(),
       nodes: {},
       homeBase: defaultPosition(),
       nodeCounts: defaultNodeCountBlock(),
@@ -31,7 +31,7 @@ export function blankGameState(): GameState {
     camera: defaultPosition(),
     hero: {
       respawnTicks: 0,
-      riskTolerance: 'low',
+      riskTolerance: 'medium',
       heroes: [
         defaultHero({ name: 'Ignatius', sprite: '0004' }),
         defaultHero({ name: 'Aquara', sprite: '0000' }),

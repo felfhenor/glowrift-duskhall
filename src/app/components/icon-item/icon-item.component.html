@@ -12,7 +12,7 @@
   [assetName]="itemData.sprite"
   [spritesheet]="itemData.__type"
   [tp]="itemInfo"
-  [tpMaxWidth]="500"
+  [tpMaxWidth]="800"
 ></app-atlas-image>
 
 @if (showLevel()) {
@@ -38,6 +38,8 @@
       [compareWith]="compareWith"
     ></app-stats-item-compare>
   } @else {
-    <app-stats-item [item]="itemData"></app-stats-item>
+    <div class="min-w-[300px]">
+      <app-stats-item [item]="itemData"></app-stats-item>
+    </div>
   }
 </ng-template>

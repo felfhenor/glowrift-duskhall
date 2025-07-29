@@ -1,26 +1,34 @@
-import { Component, computed, input } from '@angular/core';
-import { AtlasImageComponent } from '@components/atlas-image/atlas-image.component';
-import { indexToSprite, spriteIterationCount } from '@helpers';
+import { Component, computed, inject, input } from '@angular/core';
 import type { AtlasedImage } from '@interfaces';
+import { ContentService } from '@services/content.service';
 
 @Component({
   selector: 'app-atlas-animation',
-  imports: [AtlasImageComponent],
+  imports: [],
   templateUrl: './atlas-animation.component.html',
   styleUrl: './atlas-animation.component.scss',
 })
 export class AtlasAnimationComponent {
+  private contentService = inject(ContentService);
+
   public spritesheet = input.required<AtlasedImage>();
   public assetName = input.required<string>();
   public frames = input<number>(4);
 
-  public shouldAnimate = input<boolean>(true);
-
-  public currentAssetName = computed(() =>
-    this.shouldAnimate()
-      ? indexToSprite(
-          +this.assetName() + (spriteIterationCount() % this.frames()),
-        )
-      : indexToSprite(+this.assetName()),
+  public assetPath = computed(
+    () => `gameassets/${this.spritesheet()}/${this.assetName()}.png`,
   );
+  public assetJSON = computed(
+    () => this.contentService.artAtlases()[this.spritesheet()],
+  );
+  public specificAsset = computed(
+    () => this.assetJSON()[this.assetPath()] ?? { width: 0, height: 0 },
+  );
+
+  public assetUrl = computed(
+    () => `art/spritesheets/${this.spritesheet()}.png`,
+  );
+  public assetFrames = computed(() => this.frames());
+  public assetOffsetY = computed(() => this.specificAsset().y / 64);
+  public totalAnimationDuration = computed(() => this.frames() * 100);
 }

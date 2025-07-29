@@ -1,8 +1,18 @@
 import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
+import { MarkerElementComponent } from '@components/marker-element/marker-element.component';
 import { MarkerStatComponent } from '@components/marker-stat/marker-stat.component';
-import { getEntry, getItemStat, rarityItemTextColor } from '@helpers';
-import type { TalentContent } from '@interfaces';
+import { MarkerTraitComponent } from '@components/marker-trait/marker-trait.component';
+import {
+  getEntry,
+  getItemElementMultiplier,
+  getItemSkills,
+  getItemStat,
+  getItemTalents,
+  getItemTraits,
+  rarityItemTextColor,
+} from '@helpers';
+import type { ElementBlock, GameElement, TalentContent } from '@interfaces';
 import {
   type EquipmentItem,
   type EquipmentItemContent,
@@ -11,13 +21,19 @@ import {
 
 @Component({
   selector: 'app-stats-item',
-  imports: [MarkerStatComponent, NgClass],
+  imports: [
+    MarkerStatComponent,
+    NgClass,
+    MarkerElementComponent,
+    MarkerTraitComponent,
+  ],
   templateUrl: './stats-item.component.html',
   styleUrl: './stats-item.component.css',
 })
 export class StatsItemComponent {
   public item = input.required<EquipmentItemContent | EquipmentItem>();
   public statDeltas = input<StatBlock>();
+  public elementDeltas = input<ElementBlock>();
 
   public itemRarityClass = computed(() =>
     rarityItemTextColor(this.item().rarity),
@@ -27,18 +43,34 @@ export class StatsItemComponent {
   public itemHealth = computed(() => getItemStat(this.item(), 'Health'));
   public itemSpeed = computed(() => getItemStat(this.item(), 'Speed'));
 
+  public itemTraits = computed(() =>
+    getItemTraits(this.item() as EquipmentItem),
+  );
+
   public hasStats = computed(
     () =>
-      Object.values(this.item().baseStats).some(Boolean) ||
+      this.itemAura() ||
+      this.itemForce() ||
+      this.itemHealth() ||
+      this.itemSpeed() ||
       Object.values(this.statDeltas() ?? {}).some(Boolean),
   );
 
   public talents = computed(() =>
-    (this.item().talentBoosts ?? [])
-      .concat((this.item() as EquipmentItem).mods?.talentBoosts ?? [])
-      .map((t) => ({
-        ...t,
-        name: getEntry<TalentContent>(t.talentId)?.name ?? t.talentId,
-      })),
+    getItemTalents(this.item() as EquipmentItem).map((t) => ({
+      ...t,
+      name: getEntry<TalentContent>(t.talentId)?.name ?? t.talentId,
+    })),
+  );
+
+  public skills = computed(() => getItemSkills(this.item() as EquipmentItem));
+
+  public elementBoosts = computed(() =>
+    (['Fire', 'Water', 'Earth', 'Air'] as GameElement[])
+      .map((el) => ({
+        element: el,
+        multiplier: getItemElementMultiplier(this.item(), el),
+      }))
+      .filter((e) => e.multiplier !== 0),
   );
 }

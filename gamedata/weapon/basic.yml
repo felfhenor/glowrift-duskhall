@@ -28,3 +28,16 @@
   baseStats:
     Force: 3
     Aura: 3
+
+- id: d548422e-1f8c-400c-b45d-85f65e6d08a2
+  name: Healing Scepter
+  sprite: '0143'
+
+  rarity: Mystical
+  dropLevel: 20
+
+  baseStats:
+    Force: 10
+
+  skillIds:
+    - Healsprite III

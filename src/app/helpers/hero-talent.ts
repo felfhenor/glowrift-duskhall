@@ -1,7 +1,7 @@
 import { getEntry } from '@helpers/content';
 import { updateHeroData } from '@helpers/hero';
 import type { Hero, TalentContent, TalentId } from '@interfaces';
-import { sum } from 'lodash';
+import { sum } from 'es-toolkit/compat';
 
 export function heroRemainingTalentPoints(hero: Hero): number {
   return hero.level - sum(Object.values(hero.talents));

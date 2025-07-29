@@ -1,12 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import type {
-  WritableSignal } from '@angular/core';
-import {
-  computed,
-  inject,
-  Injectable,
-  signal
-} from '@angular/core';
+import type { WritableSignal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import {
   allContentById,
   allIdsByName,
@@ -14,11 +8,15 @@ import {
   setAllContentById,
   setAllIdsByName,
 } from '@helpers';
-import type { Content, ContentType } from '@interfaces';
+import type { ContentType, IsContentItem } from '@interfaces';
 import { LoggerService } from '@services/logger.service';
 import { MetaService } from '@services/meta.service';
-import type { Observable } from 'rxjs';
-import { forkJoin } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
+
+type ArtAtlases = Record<
+  string,
+  Record<string, { x: number; y: number; width: number; height: number }>
+>;
 
 @Injectable({
   providedIn: 'root',
@@ -34,12 +32,7 @@ export class ContentService {
   private hasLoadedAtlases = signal<boolean>(false);
   private hasLoadedData = signal<boolean>(false);
 
-  public artAtlases = signal<
-    Record<
-      string,
-      Record<string, { x: number; y: number; width: number; height: number }>
-    >
-  >({});
+  public artAtlases = signal<ArtAtlases>({});
 
   public hasLoaded = computed(
     () =>
@@ -55,41 +48,17 @@ export class ContentService {
     return `${url}?v=${this.metaService.versionString()}`;
   }
 
-  private toJSONURL(key: string): string {
-    return this.toCacheBustURL(`./json/${key}.json`);
-  }
+  private async loadArt() {
+    const req = this.http.get<ArtAtlases>(
+      this.toCacheBustURL(`./art/spritesheets/all.json`),
+    );
 
-  private loadArt() {
-    const spritesheetsToLoad = [
-      'accessory',
-      'armor',
-      'enemy',
-      'hero',
-      'skill',
-      'trinket',
-      'talent',
-      'weapon',
-      'world-object',
-      'world-terrain',
-    ];
+    const allAtlases = await lastValueFrom(req);
 
-    forkJoin(
-      spritesheetsToLoad.map((s) =>
-        this.http.get(this.toCacheBustURL(`./art/spritesheets/${s}.json`)),
-      ),
-    ).subscribe((allAtlases) => {
-      const atlasesByName = spritesheetsToLoad.reduce(
-        (prev, cur, idx) => ({
-          ...prev,
-          [cur]: allAtlases[idx],
-        }),
-        {},
-      );
+    this.artAtlases.set(allAtlases);
+    this.logger.info('Content:LoadArt', 'Loaded atlases.');
 
-      this.artAtlases.set(atlasesByName);
-      this.hasLoadedAtlases.set(true);
-      this.logger.info('Content:LoadArt', 'Loaded atlases.');
-    });
+    const spritesheetsToLoad = Object.keys(allAtlases);
 
     this.artSignals = spritesheetsToLoad.map(() => signal<boolean>(false));
 
@@ -108,49 +77,29 @@ export class ContentService {
         this.logger.info('Content:LoadArt', `Loaded sheet: ${sheet}`);
       };
     });
+
+    this.hasLoadedAtlases.set(true);
   }
 
-  private loadJSON() {
-    const contentTypeObject: {
-      [key in ContentType]: undefined;
-    } = {
-      worldconfig: undefined,
-      currency: undefined,
-      guardian: undefined,
-      skill: undefined,
-      accessory: undefined,
-      armor: undefined,
-      trinket: undefined,
-      weapon: undefined,
-      festival: undefined,
-      statuseffect: undefined,
-      talent: undefined,
-      talenttree: undefined,
-    };
-    const allJsons = Object.keys(contentTypeObject);
-
-    const jsonMaps = allJsons.reduce(
-      (prev, cur) => {
-        prev[cur] = this.http.get<Content[]>(this.toJSONURL(cur));
-        return prev;
-      },
-      {} as Record<string, Observable<Content[]>>,
+  private async loadJSON() {
+    const req = this.http.get<Record<string, IsContentItem[]>>(
+      this.toCacheBustURL(`./json/all.json`),
     );
 
-    forkJoin(jsonMaps).subscribe((assets) => {
-      this.unfurlAssets(assets as unknown as Record<string, Content[]>);
+    const assets = await lastValueFrom(req);
 
-      this.logger.info(
-        'Content:LoadJSON',
-        `Content loaded: ${allJsons.join(', ')}`,
-      );
-      this.hasLoadedData.set(true);
-    });
+    this.unfurlAssets(assets);
+
+    this.logger.info(
+      'Content:LoadJSON',
+      `Content loaded: ${Object.keys(assets).join(', ')}`,
+    );
+    this.hasLoadedData.set(true);
   }
 
-  private unfurlAssets(assets: Record<string, Content[]>) {
+  private unfurlAssets(assets: Record<string, IsContentItem[]>) {
     const allIdsByNameAssets: Map<string, string> = allIdsByName();
-    const allEntriesByIdAssets: Map<string, Content> = allContentById();
+    const allEntriesByIdAssets: Map<string, IsContentItem> = allContentById();
 
     Object.keys(assets).forEach((subtype) => {
       Object.values(assets[subtype]).forEach((entry) => {

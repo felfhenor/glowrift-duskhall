@@ -28,7 +28,7 @@ export class PanelOptionsComponent extends OptionsBaseComponent {
   public activeTab = computed(() => options()['optionsTab']);
 
   public changeActiveTab(tab: OptionsTab): void {
-    this.setValueForOption('optionsTab', tab);
+    this.setOption('optionsTab', tab);
   }
 
   public readonly tabs: OptionsTabLink[] = [

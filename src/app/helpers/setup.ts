@@ -1,5 +1,8 @@
-import { getCurrencyClaimsForNode, mergeCurrencyClaims } from '@helpers/currency';
-import { gamestate, setGameState } from '@helpers/state-game';
+import {
+  getCurrencyClaimsForNode,
+  mergeCurrencyClaims,
+} from '@helpers/currency';
+import { gamestate, updateGamestate } from '@helpers/state-game';
 import { getWorldNode } from '@helpers/world';
 
 export function isSetup(): boolean {
@@ -8,11 +11,13 @@ export function isSetup(): boolean {
 }
 
 export function finishSetup(): void {
-  const state = gamestate();
-  state.meta.isSetup = true;
-  setGameState(state);
+  updateGamestate((state) => {
+    state.meta.isSetup = true;
+    return state;
+  });
 
-  const laflotte = getWorldNode(state.world.homeBase.x, state.world.homeBase.y);
+  const homeBase = gamestate().world.homeBase;
+  const laflotte = getWorldNode(homeBase.x, homeBase.y);
   if (!laflotte) return;
 
   const claims = getCurrencyClaimsForNode(laflotte);

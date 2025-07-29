@@ -15,6 +15,7 @@ import {
   gamestate,
   getCurrencyClaimsForNode,
   getEntry,
+  getSpriteFromNodeType,
   isAtNode,
   isTravelingToNode,
   showLocationMenu,
@@ -28,7 +29,7 @@ import type {
   Guardian,
   WorldLocation,
 } from '@interfaces';
-import { sortBy } from 'lodash';
+import { sortBy } from 'es-toolkit/compat';
 
 @Component({
   selector: 'app-panel-location',
@@ -51,6 +52,10 @@ import { sortBy } from 'lodash';
 })
 export class PanelLocationComponent {
   public location = input.required<WorldLocation>();
+
+  public objectSprite = computed(() =>
+    getSpriteFromNodeType(this.location().nodeType),
+  );
 
   public travelTimeSeconds = computed(() => {
     if (this.isTravelingToThisNode()) {

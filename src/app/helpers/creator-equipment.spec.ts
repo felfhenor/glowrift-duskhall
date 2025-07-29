@@ -23,6 +23,7 @@ vi.mock('@helpers/droppable', () => ({
 
 vi.mock('@helpers/rng', () => ({
   randomChoiceByRarity: vi.fn(),
+  succeedsChance: vi.fn(),
   seededrng: vi.fn(),
   uuid: () => 'mock-uuid',
 }));
@@ -40,6 +41,7 @@ describe('Equipment Creator Functions', () => {
     rarity: 'Common',
     dropLevel: 1,
     baseStats: {},
+    traitIds: [],
   };
 
   const mockRng: PRNG = () => 0.5;

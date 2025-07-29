@@ -1,18 +1,11 @@
 import { DecimalPipe, TitleCasePipe } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
-import type { GameStat, Icon } from '@interfaces';
-import { IconComponent } from '@components/icon/icon.component';
-
-const icons: Record<GameStat, Icon> = {
-  Aura: 'gameVibratingShield',
-  Force: 'gameGooeyImpact',
-  Health: 'gameGlassHeart',
-  Speed: 'gameClockwork',
-};
+import { IconStatComponent } from '@components/icon-stat/icon-stat.component';
+import type { GameStat } from '@interfaces';
 
 @Component({
   selector: 'app-marker-stat',
-  imports: [IconComponent, DecimalPipe, TitleCasePipe],
+  imports: [DecimalPipe, TitleCasePipe, IconStatComponent],
   templateUrl: './marker-stat.component.html',
   styleUrl: './marker-stat.component.css',
 })
@@ -20,8 +13,6 @@ export class MarkerStatComponent {
   public stat = input.required<GameStat>();
   public value = input.required<number>();
   public delta = input<number>(0);
-
-  public icon = computed(() => icons[this.stat()]);
 
   public displayDelta = computed(() => {
     const deltaValue = this.delta();

@@ -1,16 +1,18 @@
 import { effect, inject, Injectable, signal } from '@angular/core';
-import { interval } from 'rxjs';
 import {
+  canRunGameloop,
   doGameloop,
   gamestate,
   getOption,
+  isCatchingUp,
   isGameStateReady,
+  isPageVisible,
   migrateGameState,
   migrateOptionsState,
-  spriteIterationCount,
 } from '@helpers';
 import { ContentService } from '@services/content.service';
 import { LoggerService } from '@services/logger.service';
+import { interval } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -46,14 +48,7 @@ export class GamestateService {
   }
 
   init() {
-    this.doSpriteloop();
     this.doGameloop();
-  }
-
-  private doSpriteloop() {
-    interval(100).subscribe(() => {
-      spriteIterationCount.set(spriteIterationCount() + 1);
-    });
   }
 
   private doGameloop() {
@@ -67,10 +62,34 @@ export class GamestateService {
     runLoop(1);
 
     interval(1000).subscribe(() => {
-      if (lastRunTime <= 0 || !this.hasLoaded() || !isGameStateReady()) return;
+      if (
+        lastRunTime <= 0 ||
+        !this.hasLoaded() ||
+        !isGameStateReady() ||
+        !canRunGameloop()
+      )
+        return;
+
+      if (!isPageVisible() && !getOption('debugAllowBackgroundOperations')) {
+        return;
+      }
 
       const secondsElapsed = Math.round((Date.now() - lastRunTime) / 1000);
+
+      // if we have a noticeable delay, drop the modal in to tell people a catchup is happening
+      if (secondsElapsed > 30) {
+        isCatchingUp.set(true);
+
+        setTimeout(() => {
+          runLoop(secondsElapsed);
+        }, 0);
+
+        return;
+      }
+
       runLoop(secondsElapsed);
+
+      isCatchingUp.set(false);
     });
   }
 }

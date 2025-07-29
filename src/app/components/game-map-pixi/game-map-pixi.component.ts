@@ -1,14 +1,5 @@
-import type {
-  ElementRef,
-  OnDestroy,
-  OnInit } from '@angular/core';
-import {
-  Component,
-  computed,
-  effect,
-  inject,
-  viewChild,
-} from '@angular/core';
+import type { ElementRef, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, effect, inject, viewChild } from '@angular/core';
 import {
   createClaimIndicatorTextures,
   createGameMapContainers,
@@ -16,6 +7,7 @@ import {
   createPlayerIndicator,
   gamestate,
   generateMapGrid,
+  getSpriteFromNodeType,
   initializePixiApp,
   isAtNode,
   loadGameMapTextures,
@@ -56,10 +48,10 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
   private resizeObserver?: ResizeObserver;
 
   public nodeWidth = computed(() =>
-    Math.min(gamestate().world.width, windowWidthTiles() + 1),
+    Math.min(gamestate().world.config.width, windowWidthTiles() + 1),
   );
   public nodeHeight = computed(() =>
-    Math.min(gamestate().world.height, windowHeightTiles() + 1),
+    Math.min(gamestate().world.config.height, windowHeightTiles() + 1),
   );
   public camera = computed(() => gamestate().camera);
   public map = computed(() => {
@@ -73,8 +65,8 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       camera.y,
       width,
       height,
-      world.width,
-      world.height,
+      world.config.width,
+      world.config.height,
     );
   });
 
@@ -157,15 +149,20 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     this.nodeSprites = {};
 
     mapData.forEach((row) => {
-      row.forEach(({ x, y, nodeData }) => {
-        this.createNodeSprites(x, y, nodeData);
+      row.forEach(({ x, y, nodeData, tileSprite }) => {
+        this.createNodeSprites(x, y, nodeData, tileSprite);
       });
     });
 
     this.updatePlayerIndicators(mapData);
   }
 
-  private createNodeSprites(x: number, y: number, nodeData: WorldLocation) {
+  private createNodeSprites(
+    x: number,
+    y: number,
+    nodeData: WorldLocation,
+    tileSprite: string,
+  ) {
     if (!this.mapContainer) return;
 
     const nodeKey = `${x}-${y}`;
@@ -173,6 +170,8 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       x,
       y,
       nodeData,
+      tileSprite,
+      getSpriteFromNodeType(nodeData.nodeType),
       this.terrainTextures,
       this.objectTextures,
       this.mapContainer,

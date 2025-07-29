@@ -7,7 +7,7 @@ import type { EquipmentSkill } from '@interfaces/skill';
 import type { Timer } from '@interfaces/timer';
 import type { TownBuilding } from '@interfaces/town';
 import type { WorldLocation, WorldPosition } from '@interfaces/world';
-import type { LocationType } from '@interfaces/worldconfig';
+import type { LocationType, WorldConfigContent } from '@interfaces/worldconfig';
 
 export type GameId = Branded<string, 'GameId'>;
 
@@ -23,8 +23,7 @@ export type GameStateCamera = WorldPosition;
 export type GameStateHeroesPosition = WorldPosition & { nodeId: string };
 
 export interface GameStateWorld {
-  width: number;
-  height: number;
+  config: WorldConfigContent;
   nodes: Record<string, WorldLocation>;
   homeBase: WorldPosition;
 

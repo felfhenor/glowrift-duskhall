@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-var-requires */
 
-const { isArray, isString } = require('lodash');
+const { isArray, isString } = require('es-toolkit/compat');
 const yaml = require('js-yaml');
 const fs = require('fs-extra');
 const path = require('path');
@@ -12,24 +12,10 @@ const allData: Record<string, any[]> = {};
 const trackedIds: Record<string, boolean> = {};
 const idToName: Record<string, Record<string, string>> = {};
 
-const art: Record<string, any> = {};
-
 // preload
 const processFiles = () => {
   fs.readdirSync('gamedata').forEach((folder: string) => {
     fs.readdirSync(`gamedata/${folder}`).forEach((file: string) => {
-      if (folder === 'art') {
-        const filename = path.basename(file, '.yml');
-        const doc = yaml.load(
-          fs.readFileSync(`gamedata/${folder}/${filename}.yml`),
-        );
-
-        art[filename] = doc;
-
-        console.log(`Loaded ${folder}/${file}...`);
-        return;
-      }
-
       try {
         const filename = path.basename(file, '.yml');
         const doc = yaml.load(
@@ -145,7 +131,7 @@ const rewriteDataIds = () => {
     fs.writeJsonSync(`./public/json/${key}.json`, allData[key]);
   });
 
-  fs.writeJsonSync('./public/json/art.json', art);
+  fs.writeJsonSync('public/json/all.json', allData);
 };
 
 processFiles();

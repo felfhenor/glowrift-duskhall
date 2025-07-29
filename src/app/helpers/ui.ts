@@ -19,9 +19,15 @@ export const showHeroesMenu = signal<boolean>(false);
 export const showCombatMenu = signal<boolean>(false);
 export const showTownMenu = signal<boolean>(false);
 
+export const isCatchingUp = signal<boolean>(false);
+
 export const contextMenuCoordinates = signal<
   { x: number; y: number } | undefined
 >(undefined);
+
+export function isPageVisible(): boolean {
+  return !document.hidden;
+}
 
 export function closeAllMenus() {
   showCurrencyList.set(false);

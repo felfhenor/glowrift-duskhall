@@ -9,6 +9,8 @@ export function defaultOptions(): GameOptions {
     debugConsoleLogStateUpdates: false,
     debugGameloopTimerUpdates: false,
     debugMapNodePositions: false,
+    debugAllowBackgroundOperations: false,
+    debugTickMultiplier: 1,
 
     audioPlay: true,
 

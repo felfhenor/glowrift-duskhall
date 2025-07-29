@@ -1,5 +1,5 @@
 import type { Artable } from '@interfaces/artable';
-import type { Content } from '@interfaces/identifiable';
+import type { IsContentItem } from '@interfaces/identifiable';
 
 export type DropRarity =
   | 'Common'
@@ -19,4 +19,4 @@ export type Droppable = HasRarity & {
   dropLevel: number;
 };
 
-export type DroppableEquippable = Content & Artable & Droppable;
+export type DroppableEquippable = IsContentItem & Artable & Droppable;

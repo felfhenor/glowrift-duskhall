@@ -1,21 +1,28 @@
 import { getDefaultAffinities, getDefaultStats } from '@helpers/defaults';
 import type {
-  Content,
   ContentType,
   CurrencyContent,
+  ElementBlock,
+  EquipmentElement,
   EquipmentItemContent,
   EquipmentItemId,
   EquipmentSkillContent,
   EquipmentSkillContentTechnique,
   EquipmentSkillId,
+  EquipmentSkillTechniqueStatusEffectApplication,
+  EquipmentTalent,
   FestivalContent,
   GuardianContent,
   GuardianId,
+  IsContentItem,
+  StatBlock,
   StatusEffectContent,
   StatusEffectId,
   TalentContent,
   TalentId,
   TalentTreeContent,
+  TraitEquipmentContent,
+  TraitEquipmentId,
   WorldConfigContent,
 } from '@interfaces';
 
@@ -33,14 +40,68 @@ const initializers: Record<ContentType, (entry: any) => any> = {
   statuseffect: ensureStatusEffect,
   talent: ensureTalent,
   talenttree: ensureTalentTree,
+  traitequipment: ensureTraitEquipment,
   worldconfig: ensureWorldConfig,
 };
 
-export function ensureContent<T extends Content>(content: T): T {
+function ensureStats(statblock: Partial<StatBlock> = {}): Required<StatBlock> {
+  return Object.assign({}, getDefaultStats(), statblock);
+}
+
+function ensureAffinities(
+  elementblock: Partial<ElementBlock> = {},
+): Required<ElementBlock> {
+  return Object.assign({}, getDefaultAffinities(), elementblock);
+}
+
+function ensureEquipmentElement(
+  el: Partial<EquipmentElement>,
+): Required<EquipmentElement> {
+  return {
+    element: el.element ?? 'Fire',
+    multiplier: el.multiplier ?? 0,
+  };
+}
+
+function ensureTechnique(
+  tech: Partial<EquipmentSkillContentTechnique>,
+): Required<EquipmentSkillContentTechnique> {
+  return {
+    attributes: tech.attributes ?? [],
+    elements: tech.elements ?? [],
+    targets: tech.targets ?? 1,
+    targetType: tech.targetType ?? 'Enemies',
+    targetBehaviors: tech.targetBehaviors ?? [{ behavior: 'NotZeroHealth' }],
+    statusEffects: (tech.statusEffects ?? []).map(ensureTechniqueStatusEffect),
+    combatMessage: tech.combatMessage ?? 'UNKNOWN',
+    damageScaling: ensureStats(tech.damageScaling),
+  };
+}
+
+function ensureTechniqueStatusEffect(
+  tech: Partial<EquipmentSkillTechniqueStatusEffectApplication>,
+): Required<EquipmentSkillTechniqueStatusEffectApplication> {
+  return {
+    chance: tech.chance ?? 0,
+    duration: tech.duration ?? 0,
+    statusEffectId: tech.statusEffectId ?? ('UNKNOWN' as StatusEffectId),
+  };
+}
+
+function ensureEquipmentTalentBoost(
+  boost: Partial<EquipmentTalent>,
+): Required<EquipmentTalent> {
+  return {
+    talentId: boost.talentId ?? ('UNKNOWN' as TalentId),
+    value: boost.value ?? 0,
+  };
+}
+
+export function ensureContent<T extends IsContentItem>(content: T): T {
   return initializers[content.__type](content) satisfies T;
 }
 
-export function ensureWorldConfig(
+function ensureWorldConfig(
   worldConfig: WorldConfigContent,
 ): Required<WorldConfigContent> {
   return {
@@ -48,13 +109,13 @@ export function ensureWorldConfig(
   };
 }
 
-export function ensureCurrency(currency: CurrencyContent): CurrencyContent {
+function ensureCurrency(currency: CurrencyContent): CurrencyContent {
   return {
     ...currency,
   };
 }
 
-export function ensureGuardian(
+function ensureGuardian(
   guardian: Partial<GuardianContent>,
 ): Required<GuardianContent> {
   return {
@@ -66,23 +127,15 @@ export function ensureGuardian(
 
     targettingType: guardian.targettingType ?? 'Random',
 
-    statScaling: Object.assign({}, getDefaultStats(), guardian.statScaling),
+    statScaling: ensureStats(guardian.statScaling),
     skillIds: guardian.skillIds ?? [],
-    resistance: Object.assign(
-      {},
-      getDefaultAffinities(),
-      guardian.resistance ?? {},
-    ),
-    affinity: Object.assign(
-      {},
-      getDefaultAffinities(),
-      guardian.affinity ?? {},
-    ),
+    resistance: ensureAffinities(guardian.resistance),
+    affinity: ensureAffinities(guardian.affinity),
     talentIds: guardian.talentIds ?? {},
   };
 }
 
-export function ensureSkill(
+function ensureSkill(
   skill: EquipmentSkillContent,
 ): Required<EquipmentSkillContent> {
   return {
@@ -96,32 +149,11 @@ export function ensureSkill(
     preventDrop: skill.preventDrop ?? false,
     preventModification: skill.preventModification ?? false,
     usesPerCombat: skill.usesPerCombat ?? -1,
-    techniques: (skill.techniques ?? []).map(
-      (tech: Partial<EquipmentSkillContentTechnique>) => {
-        const techReq: Required<EquipmentSkillContentTechnique> = {
-          attributes: tech.attributes ?? [],
-          elements: tech.elements ?? [],
-          targets: tech.targets ?? 1,
-          targetType: tech.targetType ?? 'Enemies',
-          targetBehaviors: tech.targetBehaviors ?? [
-            { behavior: 'NotZeroHealth' },
-          ],
-          statusEffects: tech.statusEffects ?? [],
-          combatMessage: tech.combatMessage ?? 'UNKNOWN',
-          damageScaling: Object.assign(
-            {},
-            getDefaultStats(),
-            tech.damageScaling,
-          ),
-        };
-
-        return techReq;
-      },
-    ),
+    techniques: (skill.techniques ?? []).map(ensureTechnique),
   };
 }
 
-export function ensureItem(
+function ensureItem(
   item: Partial<EquipmentItemContent>,
 ): Required<EquipmentItemContent> {
   return {
@@ -134,22 +166,23 @@ export function ensureItem(
     preventDrop: item.preventDrop ?? false,
     preventModification: item.preventModification ?? false,
 
-    baseStats: Object.assign({}, getDefaultStats(), item.baseStats ?? {}),
-    talentBoosts: item.talentBoosts ?? [],
+    baseStats: ensureStats(item.baseStats),
+    talentBoosts: (item.talentBoosts ?? []).map(ensureEquipmentTalentBoost),
+    elementMultipliers: (item.elementMultipliers ?? []).map(
+      ensureEquipmentElement,
+    ),
+    traitIds: item.traitIds ?? [],
+    skillIds: item.skillIds ?? [],
   };
 }
 
-export function ensureFestival(
-  festival: FestivalContent,
-): Required<FestivalContent> {
+function ensureFestival(festival: FestivalContent): Required<FestivalContent> {
   return {
     ...festival,
   };
 }
 
-export function ensureTalent(
-  talent: Partial<TalentContent>,
-): Required<TalentContent> {
+function ensureTalent(talent: Partial<TalentContent>): Required<TalentContent> {
   return {
     id: talent.id ?? ('UNKNOWN' as TalentId),
     name: talent.name ?? 'UNKNOWN',
@@ -161,19 +194,15 @@ export function ensureTalent(
 
     boostedElements: talent.boostedElements ?? [],
     boostedSkillIds: talent.boostedSkillIds ?? [],
-    boostStats: Object.assign({}, getDefaultStats(), talent.boostStats ?? {}),
+    boostStats: ensureStats(talent.boostStats),
 
     boostedStatusEffectChance: talent.boostedStatusEffectChance ?? 0,
     boostedStatusEffectIds: talent.boostedStatusEffectIds ?? [],
-    boostStatusEffectStats: Object.assign(
-      {},
-      getDefaultStats(),
-      talent.boostStatusEffectStats ?? {},
-    ),
+    boostStatusEffectStats: ensureStats(talent.boostStatusEffectStats),
   };
 }
 
-export function ensureTalentTree(
+function ensureTalentTree(
   tree: TalentTreeContent,
 ): Required<TalentTreeContent> {
   return {
@@ -181,7 +210,7 @@ export function ensureTalentTree(
   };
 }
 
-export function ensureStatusEffect(
+function ensureStatusEffect(
   statusEffect: Partial<StatusEffectContent>,
 ): Required<StatusEffectContent> {
   return {
@@ -192,10 +221,26 @@ export function ensureStatusEffect(
     onApply: statusEffect.onApply ?? [],
     onTick: statusEffect.onTick ?? [],
     onUnapply: statusEffect.onUnapply ?? [],
-    statScaling: Object.assign(
-      {},
-      getDefaultStats(),
-      statusEffect.statScaling ?? {},
+    statScaling: ensureStats(statusEffect.statScaling),
+  };
+}
+
+function ensureTraitEquipment(
+  traitEquipment: Partial<TraitEquipmentContent>,
+): Required<TraitEquipmentContent> {
+  return {
+    id: traitEquipment.id ?? ('UNKNOWN' as TraitEquipmentId),
+    name: traitEquipment.name ?? 'UNKNOWN',
+    __type: 'traitequipment',
+    rarity: traitEquipment.rarity ?? 'Common',
+    baseStats: ensureStats(traitEquipment.baseStats),
+    elementMultipliers: (traitEquipment.elementMultipliers ?? []).map(
+      ensureEquipmentElement,
+    ),
+    skillIds: traitEquipment.skillIds ?? [],
+    traitIds: traitEquipment.traitIds ?? [],
+    talentBoosts: (traitEquipment.talentBoosts ?? []).map(
+      ensureEquipmentTalentBoost,
     ),
   };
 }
