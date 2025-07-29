@@ -1,9 +1,9 @@
+import type { EquipmentSkillId } from '@interfaces/content-skill';
+import type { TraitEquipmentId } from '@interfaces/content-trait-equipment';
 import type { DroppableEquippable } from '@interfaces/droppable';
 import type { GameElement } from '@interfaces/element';
 import type { Branded } from '@interfaces/identifiable';
-import type { EquipmentSkillId } from '@interfaces/skill';
 import type { StatBlock } from '@interfaces/stat';
-import type { TraitEquipmentId } from '@interfaces/trait-equipment';
 
 export type EquipmentSlot = 'accessory' | 'armor' | 'trinket' | 'weapon';
 

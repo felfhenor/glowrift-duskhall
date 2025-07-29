@@ -16,27 +16,35 @@ import { createGuardianForLocation } from '@helpers/guardian';
 import {
   gamerng,
   randomChoice,
+  randomChoiceByRarity,
   randomIdentifiableChoice,
   randomNumberRange,
   seededrng,
+  succeedsChance,
   uuid,
 } from '@helpers/rng';
-import { gamestate, updateGamestate } from '@helpers/state-game';
+import { gamestate } from '@helpers/state-game';
+import {
+  locationTraitEncounterLevelModifier,
+  locationTraitGuardianCountModifier,
+  locationTraitLootCountModifier,
+} from '@helpers/trait-location-worldgen';
 import { distanceBetweenNodes } from '@helpers/travel';
-import type {
-  DroppableEquippable,
-  GameElement,
-  GameId,
-  GameStateWorld,
-  Guardian,
-  GuardianContent,
-  LocationType,
-  WorldConfigContent,
-  WorldLocation,
-  WorldPosition,
+import type { TraitLocationContent } from '@interfaces';
+import {
+  type DroppableEquippable,
+  type GameElement,
+  type GameStateWorld,
+  type Guardian,
+  type GuardianContent,
+  type LocationType,
+  type WorldConfigContent,
+  type WorldLocation,
+  type WorldPosition,
 } from '@interfaces';
 import { clamp } from 'es-toolkit/compat';
 import { from, lastValueFrom, Subject, takeUntil, timer, zip } from 'rxjs';
+import type { PRNG } from 'seedrandom';
 
 type WorldGenNode = {
   node: WorldLocation;
@@ -188,6 +196,20 @@ export function getElementsForCardinalDirection(
   }
 }
 
+function addTraitsToLocations(nodes: Record<string, WorldLocation>, rng: PRNG) {
+  Object.values(nodes).forEach((node) => {
+    if (!node.nodeType) return;
+
+    if (!succeedsChance(30)) return;
+
+    const traits = getEntriesByType<TraitLocationContent>('traitlocation');
+    const chosenTrait = randomChoiceByRarity(traits, rng);
+    if (chosenTrait) {
+      node.traitIds = [chosenTrait.id];
+    }
+  });
+}
+
 function addElementsToWorld(
   config: WorldConfigContent,
   nodes: Record<string, WorldLocation>,
@@ -247,7 +269,11 @@ function setEncounterLevels(
     if (!node.nodeType) return;
 
     const dist = distanceBetweenNodes(node, middleNode);
-    node.encounterLevel = Math.floor((dist / maxDistance) * maxLevel);
+    node.encounterLevel = Math.max(
+      1,
+      Math.floor((dist / maxDistance) * maxLevel) +
+        locationTraitEncounterLevelModifier(node),
+    );
   });
 }
 
@@ -272,22 +298,6 @@ function cleanUpEmptyNodes(nodes: Record<string, WorldLocation>): void {
     if (!nodes[nodePos].nodeType) {
       delete nodes[nodePos];
     }
-  });
-}
-
-export function setWorldSeed(seed: string | null): void {
-  if (!seed) return;
-
-  updateGamestate((state) => {
-    state.gameId = seed as GameId;
-    return state;
-  });
-}
-
-export function setWorldConfig(config: WorldConfigContent): void {
-  updateGamestate((state) => {
-    state.world.config = config;
-    return state;
   });
 }
 
@@ -492,6 +502,9 @@ export async function generateWorld(
     setWorldGenStatus(`Filling empty space...`);
     fillEmptySpaceWithEmptyNodes(config, nodes);
 
+    setWorldGenStatus('Adding spice to the world...');
+    addTraitsToLocations(nodes, rng);
+
     setWorldGenStatus(`Setting encounter levels...`);
     setEncounterLevels(config, nodes, firstTown);
 
@@ -564,7 +577,8 @@ function numLootForLocation(location: WorldLocation): number {
     cave: 1,
   };
 
-  return nodeTypes[location.nodeType ?? 'cave'] ?? 0;
+  const modifier = locationTraitLootCountModifier(location);
+  return Math.max(0, modifier + (nodeTypes[location.nodeType ?? 'cave'] ?? 0));
 }
 
 function populateLocationWithGuardians(location: WorldLocation): void {
@@ -601,5 +615,7 @@ function numGuardiansForLocation(location: WorldLocation): number {
     cave: 1,
   };
 
-  return nodeTypes[location.nodeType ?? 'cave'] ?? 0;
+  const modifier = locationTraitGuardianCountModifier(location);
+
+  return Math.max(0, modifier + (nodeTypes[location.nodeType ?? 'cave'] ?? 0));
 }

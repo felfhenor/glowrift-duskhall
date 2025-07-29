@@ -1,5 +1,6 @@
 - id: 8dfc5824-9b95-4621-be11-ce82a55fe186
   name: Weak
+  description: Force -5.
 
   rarity: Common
 
@@ -8,6 +9,7 @@
 
 - id: 8588c53d-1c8e-4623-a14a-42f49fca6d2c
   name: Slow
+  description: Speed -2.
 
   rarity: Common
 
@@ -16,6 +18,7 @@
 
 - id: 9e648c0c-4b69-41f5-86bd-74f327c76784
   name: Splintered
+  description: Aura -5.
 
   rarity: Common
 
@@ -24,6 +27,7 @@
 
 - id: d7f436df-f64a-42e7-8643-d69778f69d88
   name: Unhealthy
+  description: Health -5.
 
   rarity: Common
 

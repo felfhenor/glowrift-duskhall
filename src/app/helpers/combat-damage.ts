@@ -24,7 +24,7 @@ import type {
   StatusEffectContent,
   TalentId,
 } from '@interfaces';
-import { intersection, sum } from 'es-toolkit/compat';
+import { intersection, meanBy, sum, sumBy } from 'es-toolkit/compat';
 
 export function techniqueHasAttribute(
   technique: EquipmentSkillContentTechnique,
@@ -72,7 +72,8 @@ export function combatantTalentSkillBoost(
   );
 }
 
-export function getCombatantStatForTechnique(
+export function getCombatantBaseStatDamageForTechnique(
+  combat: Combat,
   combatant: Combatant,
   skill: EquipmentSkill,
   technique: EquipmentSkillContentTechnique,
@@ -93,10 +94,21 @@ export function getCombatantStatForTechnique(
     stat,
   );
 
-  const totalMultiplier =
-    baseMultiplier + talentSkillMultiplierBoost + talentElementMultiplierBoost;
+  const affinityElementBoostMultiplier = sumBy(
+    technique.elements,
+    (el) => combatant.affinity[el] + combat.elementalModifiers[el],
+  );
 
-  return combatant.totalStats[stat] * totalMultiplier;
+  const baseStatWithoutMultiplier = combatant.totalStats[stat];
+
+  const totalMultiplier =
+    affinityElementBoostMultiplier +
+    talentSkillMultiplierBoost +
+    talentElementMultiplierBoost;
+
+  const multipliedStat = baseStatWithoutMultiplier * totalMultiplier;
+
+  return baseStatWithoutMultiplier + multipliedStat;
 }
 
 export function combatantTakeDamage(combatant: Combatant, damage: number) {
@@ -110,34 +122,36 @@ export function applySkillToTarget(
   skill: EquipmentSkill,
   technique: EquipmentSkillContentTechnique,
 ): void {
-  const baseDamage =
-    getCombatantStatForTechnique(combatant, skill, technique, 'Force') +
-    getCombatantStatForTechnique(combatant, skill, technique, 'Aura') +
-    getCombatantStatForTechnique(combatant, skill, technique, 'Health') +
-    getCombatantStatForTechnique(combatant, skill, technique, 'Speed');
+  const baseDamage = sum(
+    (['Force', 'Aura', 'Health', 'Speed'] as GameStat[]).map((stat) =>
+      getCombatantBaseStatDamageForTechnique(
+        combat,
+        combatant,
+        skill,
+        technique,
+        stat,
+      ),
+    ),
+  );
 
   if (baseDamage > 0) {
-    const damage =
-      technique.elements.length === 0
-        ? baseDamage
-        : sum(
-            technique.elements.map((el) => baseDamage * combatant.affinity[el]),
-          ) / technique.elements.length;
-
     const baseTargetDefense = target.totalStats.Aura;
     const targetDefense =
       technique.elements.length === 0
         ? baseTargetDefense
-        : sum(
-            technique.elements.map(
-              (el) => baseTargetDefense * target.resistance[el],
-            ),
-          ) / technique.elements.length;
+        : meanBy(
+            technique.elements,
+            (el) => baseTargetDefense * target.resistance[el],
+          );
 
-    let effectiveDamage = damage;
+    let effectiveDamage = baseDamage;
 
-    if (!techniqueHasAttribute(technique, 'AllowNegative')) {
-      effectiveDamage = Math.max(0, effectiveDamage);
+    if (techniqueHasAttribute(technique, 'HealsTarget')) {
+      effectiveDamage = Math.min(
+        effectiveDamage,
+        target.totalStats.Health - target.hp,
+      );
+      effectiveDamage = -Math.abs(effectiveDamage);
     }
 
     if (!techniqueHasAttribute(technique, 'BypassDefense')) {
@@ -145,7 +159,7 @@ export function applySkillToTarget(
     }
 
     if (techniqueHasAttribute(technique, 'AllowPlink')) {
-      effectiveDamage = Math.max(damage > 0 ? 1 : 0, effectiveDamage);
+      effectiveDamage = Math.max(baseDamage > 0 ? 1 : 0, effectiveDamage);
     }
 
     let damageMultiplierFromFestivals = 1;

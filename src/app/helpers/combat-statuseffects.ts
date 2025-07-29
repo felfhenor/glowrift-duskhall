@@ -3,8 +3,7 @@ import { combatantTakeDamage } from '@helpers/combat-damage';
 import { formatCombatMessage, logCombatMessage } from '@helpers/combat-log';
 import { getDroppableEquippableBaseId } from '@helpers/droppable';
 import type { Combat, Combatant } from '@interfaces/combat';
-import type { EquipmentSkill } from '@interfaces/skill';
-import type { GameStat } from '@interfaces/stat';
+import type { EquipmentSkill } from '@interfaces/content-skill';
 import type {
   StatusEffect,
   StatusEffectBehavior,
@@ -12,7 +11,8 @@ import type {
   StatusEffectBehaviorType,
   StatusEffectContent,
   StatusEffectTrigger,
-} from '@interfaces/statuseffect';
+} from '@interfaces/content-statuseffect';
+import type { GameStat } from '@interfaces/stat';
 import { sum } from 'es-toolkit/compat';
 
 export function canTakeTurn(combatant: Combatant): boolean {

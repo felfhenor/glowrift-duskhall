@@ -143,6 +143,7 @@ describe('defaultWorldNode', () => {
       guardianIds: [],
       claimLootIds: [],
       unclaimTime: 0,
+      traitIds: [],
     };
 
     expect(node).toEqual(expected);

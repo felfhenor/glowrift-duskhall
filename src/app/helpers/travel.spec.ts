@@ -26,7 +26,7 @@ vi.mock('@helpers/state-game', () => ({
   ),
 }));
 
-import { getExplorationTickMultiplier } from '@helpers/festival-exploration';
+import { getFestivalExplorationTickMultiplier } from '@helpers/festival-exploration';
 import { notify } from '@helpers/notify';
 import { gamestate } from '@helpers/state-game';
 
@@ -88,7 +88,7 @@ describe('Travel Functions', () => {
         hero: { position: currentPos },
       } as ReturnType<typeof gamestate>);
 
-      vi.mocked(getExplorationTickMultiplier).mockReturnValue(0.5);
+      vi.mocked(getFestivalExplorationTickMultiplier).mockReturnValue(0.5);
 
       // Base time is 10, modification is 5, total is 15
       expect(travelTimeFromCurrentLocationTo(targetPos)).toBe(15);
@@ -111,7 +111,7 @@ describe('Travel Functions', () => {
         },
       } as ReturnType<typeof gamestate>);
 
-      vi.mocked(getExplorationTickMultiplier).mockReturnValue(0.5);
+      vi.mocked(getFestivalExplorationTickMultiplier).mockReturnValue(0.5);
 
       travelToNode(targetNode);
 

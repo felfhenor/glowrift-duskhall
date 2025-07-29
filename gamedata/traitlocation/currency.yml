@@ -1,0 +1,21 @@
+- id: b279895b-8718-4f15-8356-02979f9e8914
+  name: Mana Spring
+  description: Generates an additional +1 Mana per tick.
+  rarity: Uncommon
+
+  effects:
+    currency:
+      generate:
+        - currencyId: Mana
+          value: 1
+
+- id: 777a7a02-55a1-4761-a662-c127a08238d0
+  name: Soul Spring
+  description: Generates an additional +5 Soul Essence per creature slain.
+  rarity: Uncommon
+
+  effects:
+    currency:
+      special:
+        - currencyId: Soul Essence
+          value: 5

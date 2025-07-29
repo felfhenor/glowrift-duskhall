@@ -1,8 +1,15 @@
+import { getEntry } from '@helpers/content';
 import { defaultCurrencyBlock } from '@helpers/defaults';
 import { getFestivalProductionMultiplier } from '@helpers/festival-production';
 import { gamestate, updateGamestate } from '@helpers/state-game';
+import { locationTraitCurrencyAllGenerateModifiers } from '@helpers/trait-location-currency';
 import { getClaimedNodes } from '@helpers/world';
-import type { CurrencyBlock, GameCurrency, WorldLocation } from '@interfaces';
+import type {
+  CurrencyBlock,
+  CurrencyContent,
+  GameCurrency,
+  WorldLocation,
+} from '@interfaces';
 
 export function getCurrency(currency: GameCurrency): number {
   return gamestate().currency.currencies[currency] ?? 0;
@@ -80,6 +87,14 @@ export function getCurrencyClaimsForNode(node: WorldLocation): CurrencyBlock {
       break;
     }
   }
+
+  const modifiers = locationTraitCurrencyAllGenerateModifiers(node);
+  modifiers.forEach((mod) => {
+    const currency = getEntry<CurrencyContent>(mod.currencyId);
+    if (!currency) return;
+
+    base[currency.name] += currency.value;
+  });
 
   return base;
 }

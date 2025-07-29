@@ -14,8 +14,16 @@
     </div>
 
     <div>
-      <div>
-        {{ locationData.name }}
+      <div class="flex flex-row gap-2">
+        <div>
+          {{ locationData.name }}
+        </div>
+
+        @for (trait of traits(); track $index) {
+          <app-marker-location-trait
+            [trait]="trait"
+          ></app-marker-location-trait>
+        }
       </div>
 
       <div class="italic text-sm font-normal">

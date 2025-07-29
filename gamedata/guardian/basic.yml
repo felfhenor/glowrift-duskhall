@@ -40,7 +40,7 @@
     Fire: 0.5
 
   affinity:
-    Fire: 1.5
+    Fire: 0.5
 
   skillIds:
     - Firewisp I

@@ -23,6 +23,7 @@ import type {
   TalentTreeContent,
   TraitEquipmentContent,
   TraitEquipmentId,
+  TraitLocationContent,
   WorldConfigContent,
 } from '@interfaces';
 
@@ -41,6 +42,7 @@ const initializers: Record<ContentType, (entry: any) => any> = {
   talent: ensureTalent,
   talenttree: ensureTalentTree,
   traitequipment: ensureTraitEquipment,
+  traitlocation: ensureTraitLocation,
   worldconfig: ensureWorldConfig,
 };
 
@@ -182,6 +184,14 @@ function ensureFestival(festival: FestivalContent): Required<FestivalContent> {
   };
 }
 
+function ensureTraitLocation(
+  trait: TraitLocationContent,
+): Required<TraitLocationContent> {
+  return {
+    ...trait,
+  };
+}
+
 function ensureTalent(talent: Partial<TalentContent>): Required<TalentContent> {
   return {
     id: talent.id ?? ('UNKNOWN' as TalentId),
@@ -231,6 +241,7 @@ function ensureTraitEquipment(
   return {
     id: traitEquipment.id ?? ('UNKNOWN' as TraitEquipmentId),
     name: traitEquipment.name ?? 'UNKNOWN',
+    description: traitEquipment.description ?? 'UNKNOWN',
     __type: 'traitequipment',
     rarity: traitEquipment.rarity ?? 'Common',
     baseStats: ensureStats(traitEquipment.baseStats),

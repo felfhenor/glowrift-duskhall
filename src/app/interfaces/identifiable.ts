@@ -11,7 +11,8 @@ export type ContentType =
   | 'statuseffect'
   | 'talent'
   | 'talenttree'
-  | 'traitequipment';
+  | 'traitequipment'
+  | 'traitlocation';
 
 export interface Identifiable {
   id: string;

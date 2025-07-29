@@ -1,20 +1,45 @@
+import { getEntry } from '@helpers/content';
 import {
   getCurrencyClaimsForNode,
   mergeCurrencyClaims,
 } from '@helpers/currency';
 import { defaultWorldNode } from '@helpers/defaults';
+import {
+  gainDroppableItem,
+  makeDroppableIntoRealItem,
+} from '@helpers/droppable';
+import { addItemElement, isEquipment } from '@helpers/item';
 import { notify } from '@helpers/notify';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { addTimerAndAction, getRegisterTick } from '@helpers/timer';
 import { distanceBetweenNodes } from '@helpers/travel';
 import { getGuardiansForLocation, getLootForLocation } from '@helpers/worldgen';
 import type {
+  DroppableEquippable,
   GameCurrency,
+  GameId,
   GameStateWorld,
   LocationType,
+  WorldConfigContent,
   WorldLocation,
 } from '@interfaces';
 import { sortBy } from 'es-toolkit/compat';
+
+export function setWorldSeed(seed: string | null): void {
+  if (!seed) return;
+
+  updateGamestate((state) => {
+    state.gameId = seed as GameId;
+    return state;
+  });
+}
+
+export function setWorldConfig(config: WorldConfigContent): void {
+  updateGamestate((state) => {
+    state.world.config = config;
+    return state;
+  });
+}
 
 export function setWorld(world: GameStateWorld): void {
   updateGamestate((state) => {
@@ -73,6 +98,27 @@ export function getNodesWithinRiskTolerance(
 
 export function getClaimedNodes(): WorldLocation[] {
   return getAllNodes().filter((n) => n.currentlyClaimed);
+}
+
+export function gainNodeRewards(node: WorldLocation): void {
+  notify(`You have claimed ${node.name}!`, 'LocationClaim');
+
+  node.claimLootIds.forEach((lootDefId) => {
+    const lootDef = getEntry<DroppableEquippable>(lootDefId);
+    if (!lootDef) return;
+
+    const created = makeDroppableIntoRealItem(lootDef);
+
+    if (isEquipment(created)) {
+      node.elements.forEach((el) => {
+        addItemElement(created, el);
+      });
+    }
+
+    gainDroppableItem(created);
+  });
+
+  claimNode(node);
 }
 
 export function claimNode(node: WorldLocation): void {

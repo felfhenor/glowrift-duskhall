@@ -55,10 +55,10 @@ export function getDefaultStats(): StatBlock {
 
 export function getDefaultAffinities(): ElementBlock {
   return {
-    Air: 1,
-    Earth: 1,
-    Fire: 1,
-    Water: 1,
+    Air: 0,
+    Earth: 0,
+    Fire: 0,
+    Water: 0,
   };
 }
 
@@ -157,5 +157,6 @@ export function defaultWorldNode(x = -1, y = -1): WorldLocation {
     guardianIds: [],
     claimLootIds: [],
     unclaimTime: 0,
+    traitIds: [],
   };
 }

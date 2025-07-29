@@ -1,10 +1,10 @@
 import type { Animatable } from '@interfaces/artable';
 import type { CombatantTargettingType } from '@interfaces/combat';
+import type { EquipmentSkillId } from '@interfaces/content-skill';
+import type { TalentId } from '@interfaces/content-talent';
 import type { ElementBlock } from '@interfaces/element';
 import type { Branded, IsContentItem } from '@interfaces/identifiable';
-import type { EquipmentSkillId } from '@interfaces/skill';
 import type { StatBlock } from '@interfaces/stat';
-import type { TalentId } from '@interfaces/talent';
 
 export type GuardianId = Branded<string, 'GuardianId'>;
 
