@@ -6,9 +6,9 @@ export interface Artable {
   sprite: string;
 }
 
-export interface Animatable extends Artable {
+export type Animatable = Artable & {
   frames: number;
-}
+};
 
 export type AtlasedImage =
   | 'hero'

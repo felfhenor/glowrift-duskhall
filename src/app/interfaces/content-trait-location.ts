@@ -2,14 +2,15 @@ import type { CurrencyId } from '@interfaces/content-currency';
 import type { HasRarity } from '@interfaces/droppable';
 import type { GameElement } from '@interfaces/element';
 import type { Branded, IsContentItem } from '@interfaces/identifiable';
+import type { HasDescription } from '@interfaces/traits';
 
 export type TraitLocationId = Branded<string, 'TraitLocationId'>;
 
 export type TraitLocationContent = IsContentItem &
-  HasRarity & {
+  HasRarity &
+  HasDescription & {
     __type: 'traitlocation';
     id: TraitLocationId;
-    description: string;
 
     effects: TraitLocationEffects;
   };

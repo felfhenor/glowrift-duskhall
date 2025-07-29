@@ -15,9 +15,9 @@ export type GameCurrency =
 
 export type CurrencyBlock = Record<GameCurrency, number>;
 
-export interface CurrencyContent extends IsContentItem {
+export type CurrencyContent = IsContentItem & {
   id: CurrencyId;
   name: GameCurrency;
   element?: GameElement;
   value: number;
-}
+};

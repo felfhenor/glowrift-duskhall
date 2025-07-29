@@ -11,7 +11,7 @@ export interface TalentTreeContentLevel {
   learnableTalents: TalentTreeContentNode[];
 }
 
-export interface TalentTreeContent extends IsContentItem {
+export type TalentTreeContent = IsContentItem & {
   id: TalentTreeId;
   talents: TalentTreeContentLevel[];
-}
+};
