@@ -1,7 +1,11 @@
 import { getEntry } from '@helpers/content';
+import { getDefaultStats } from '@helpers/defaults';
+import { gamestate } from '@helpers/state-game';
 import type {
+  EquipmentItemId,
   EquipmentSkillContent,
   EquipmentTalent,
+  TalentId,
   TraitEquipmentContent,
 } from '@interfaces';
 import {
@@ -13,7 +17,7 @@ import {
   type GameStat,
   type WorldLocationElement,
 } from '@interfaces';
-import { sortBy, sum } from 'es-toolkit/compat';
+import { groupBy, sortBy, sum, sumBy } from 'es-toolkit/compat';
 
 export function sortedRarityList<T extends DroppableEquippable>(
   items: T[],
@@ -41,6 +45,12 @@ export function isEquipment(item: DroppableEquippable): item is EquipmentItem {
     item.__type === 'accessory' ||
     item.__type === 'trinket'
   );
+}
+
+export function getItemById(
+  itemId: EquipmentItemId,
+): EquipmentItem | undefined {
+  return gamestate().inventory.items.find((i) => i.id === itemId);
 }
 
 export function getItemStat(
@@ -97,6 +107,19 @@ export function addItemElement(
   });
 }
 
+export function addItemStat(
+  item: EquipmentItem,
+  stat: GameStat,
+  value: number,
+): void {
+  item.mods.baseStats ??= getDefaultStats();
+  item.mods.baseStats[stat] += value;
+}
+
+export function getItemEnchantLevel(item: EquipmentItem): number {
+  return item.enchantLevel + (item.mods.enchantLevel ?? 0);
+}
+
 export function getItemTraits(item: EquipmentItem): TraitEquipmentContent[] {
   return [...item.traitIds, ...(item.mods?.traitIds ?? [])].map(
     (t) => getEntry<TraitEquipmentContent>(t)!,
@@ -104,7 +127,15 @@ export function getItemTraits(item: EquipmentItem): TraitEquipmentContent[] {
 }
 
 export function getItemTalents(item: EquipmentItem): EquipmentTalent[] {
-  return [...item.talentBoosts, ...(item.mods?.talentBoosts ?? [])];
+  const talentLevels = groupBy(
+    [...item.talentBoosts, ...(item.mods?.talentBoosts ?? [])],
+    (t) => t.talentId,
+  );
+
+  return Object.keys(talentLevels).map((tId) => ({
+    talentId: tId as TalentId,
+    value: sumBy(talentLevels[tId], (t) => t.value),
+  }));
 }
 
 export function getItemSkills(item: EquipmentItem): EquipmentSkillContent[] {

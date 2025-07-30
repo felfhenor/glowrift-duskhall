@@ -3,7 +3,7 @@ import {
   getCurrencyClaimsForNode,
   mergeCurrencyClaims,
 } from '@helpers/currency';
-import { defaultWorldNode } from '@helpers/defaults';
+import { getDefaultWorldNode } from '@helpers/defaults';
 import {
   gainDroppableItem,
   makeDroppableIntoRealItem,
@@ -53,7 +53,7 @@ export function getWorldNode(
   y: number,
   state = gamestate(),
 ): WorldLocation {
-  return state.world.nodes[`${x},${y}`] ?? defaultWorldNode(x, y);
+  return state.world.nodes[`${x},${y}`] ?? getDefaultWorldNode(x, y);
 }
 
 export function getCurrentWorldNode(

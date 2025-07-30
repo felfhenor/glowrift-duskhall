@@ -1,5 +1,5 @@
 import { getEntry } from '@helpers/content';
-import { defaultCurrencyBlock } from '@helpers/defaults';
+import { getDefaultCurrencyBlock } from '@helpers/defaults';
 import { getFestivalProductionMultiplier } from '@helpers/festival-production';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { locationTraitCurrencyAllGenerateModifiers } from '@helpers/trait-location-currency';
@@ -17,6 +17,12 @@ export function getCurrency(currency: GameCurrency): number {
 
 export function hasCurrency(type: GameCurrency, needed: number): boolean {
   return getCurrency(type) >= needed;
+}
+
+export function hasCurrencies(currencies: CurrencyBlock): boolean {
+  return Object.keys(currencies).every((curr) =>
+    hasCurrency(curr as GameCurrency, currencies[curr as GameCurrency]),
+  );
 }
 
 export function gainCurrencies(currencies: Partial<CurrencyBlock>): void {
@@ -41,6 +47,14 @@ export function gainCurrency(currency: GameCurrency, amount = 1): void {
   });
 }
 
+export function loseCurrencies(currencies: Partial<CurrencyBlock>): void {
+  Object.keys(currencies).forEach((curr) => {
+    currencies[curr as GameCurrency] = -currencies[curr as GameCurrency]!;
+  });
+
+  gainCurrencies(currencies);
+}
+
 export function loseCurrency(currency: GameCurrency, amount = 1): void {
   gainCurrency(currency, -amount);
 }
@@ -51,7 +65,7 @@ export function gainCurrentCurrencyClaims(): void {
 }
 
 export function getCurrencyClaimsForNode(node: WorldLocation): CurrencyBlock {
-  const base = defaultCurrencyBlock();
+  const base = getDefaultCurrencyBlock();
 
   switch (node.nodeType) {
     case 'cave': {
@@ -100,7 +114,7 @@ export function getCurrencyClaimsForNode(node: WorldLocation): CurrencyBlock {
 }
 
 export function getUpdatedCurrencyClaims(): CurrencyBlock {
-  const base = defaultCurrencyBlock();
+  const base = getDefaultCurrencyBlock();
   const allClaimed = getClaimedNodes();
 
   allClaimed.forEach((node) => {

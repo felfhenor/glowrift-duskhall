@@ -11,7 +11,10 @@ import {
   allSkillDefinitions,
   pickRandomSkillDefinitionBasedOnRarity,
 } from '@helpers/creator-skill';
-import { defaultNodeCountBlock, defaultWorldNode } from '@helpers/defaults';
+import {
+  getDefaultNodeCountBlock,
+  getDefaultWorldNode,
+} from '@helpers/defaults';
 import { createGuardianForLocation } from '@helpers/guardian';
 import {
   gamerng,
@@ -79,7 +82,7 @@ function fillEmptySpaceWithEmptyNodes(
       if (nodes[`${x},${y}`]) continue;
 
       nodes[`${x},${y}`] = {
-        ...defaultWorldNode(x, y),
+        ...getDefaultWorldNode(x, y),
       };
     }
   }
@@ -321,7 +324,7 @@ export async function generateWorld(
   };
 
   const firstTown: WorldLocation = {
-    ...defaultWorldNode(),
+    ...getDefaultWorldNode(),
     id: uuid(),
     x: Math.floor(config.width / 2),
     y: Math.floor(config.height / 2),
@@ -369,7 +372,7 @@ export async function generateWorld(
   };
 
   setWorldGenStatus('Generating world...');
-  const counts: Record<LocationType, number> = defaultNodeCountBlock();
+  const counts: Record<LocationType, number> = getDefaultNodeCountBlock();
   counts.town++;
 
   const minCavesNearStart = [
@@ -405,7 +408,7 @@ export async function generateWorld(
         .fill(undefined)
         .map((_, i) => {
           const node: WorldLocation = {
-            ...defaultWorldNode(),
+            ...getDefaultWorldNode(),
             id: uuid(),
             x: -1,
             y: -1,
@@ -446,7 +449,7 @@ export async function generateWorld(
         .fill(nodeType)
         .map((nodeType, i) => {
           const node: WorldLocation = {
-            ...defaultWorldNode(),
+            ...getDefaultWorldNode(),
             id: uuid(),
             x: -1,
             y: -1,
@@ -532,7 +535,7 @@ export async function generateWorld(
       y: firstTown.y,
     },
     nodeCounts: counts,
-    claimedCounts: defaultNodeCountBlock(),
+    claimedCounts: getDefaultNodeCountBlock(),
   };
 }
 

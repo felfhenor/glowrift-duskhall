@@ -11,7 +11,7 @@ import type {
   WorldPosition,
 } from '@interfaces';
 
-export function defaultWorldConfig(): WorldConfigContent {
+export function getDefaultWorldConfig(): WorldConfigContent {
   return {
     width: 50,
     height: 50,
@@ -62,7 +62,7 @@ export function getDefaultAffinities(): ElementBlock {
   };
 }
 
-export function defaultHero(props: Partial<Hero> = {}): Hero {
+export function getDefaultHero(props: Partial<Hero> = {}): Hero {
   return {
     id: uuid() as HeroId,
     name: '',
@@ -100,11 +100,11 @@ export function defaultHero(props: Partial<Hero> = {}): Hero {
   };
 }
 
-export function defaultPosition(): WorldPosition {
+export function getDefaultPosition(): WorldPosition {
   return { x: 0, y: 0 };
 }
 
-export function defaultCurrencyBlock(): CurrencyBlock {
+export function getDefaultCurrencyBlock(): CurrencyBlock {
   return {
     'Fire Sliver': 0,
     'Fire Shard': 0,
@@ -133,7 +133,7 @@ export function defaultCurrencyBlock(): CurrencyBlock {
   };
 }
 
-export function defaultNodeCountBlock(): Record<LocationType, number> {
+export function getDefaultNodeCountBlock(): Record<LocationType, number> {
   return {
     castle: 0,
     cave: 0,
@@ -143,7 +143,7 @@ export function defaultNodeCountBlock(): Record<LocationType, number> {
   };
 }
 
-export function defaultWorldNode(x = -1, y = -1): WorldLocation {
+export function getDefaultWorldNode(x = -1, y = -1): WorldLocation {
   return {
     id: uuid(),
     elements: [],

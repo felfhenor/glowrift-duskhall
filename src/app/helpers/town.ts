@@ -1,5 +1,8 @@
 import { hasCurrency, loseCurrency } from '@helpers/currency';
-import { defaultCurrencyBlock, defaultNodeCountBlock } from '@helpers/defaults';
+import {
+  getDefaultCurrencyBlock,
+  getDefaultNodeCountBlock,
+} from '@helpers/defaults';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { hasClaimedNodeCount } from '@helpers/world';
 import type { GameCurrency, LocationType, TownBuilding } from '@interfaces';
@@ -11,65 +14,74 @@ export function getBuildingLevel(building: TownBuilding): number {
 export function buildingUpgradeCost(building: TownBuilding) {
   const liberationCosts: Record<TownBuilding, Record<LocationType, number>> = {
     Academy: {
-      ...defaultNodeCountBlock(),
-      dungeon: 3,
+      ...getDefaultNodeCountBlock(),
+      dungeon: 1,
     },
 
     Alchemist: {
-      ...defaultNodeCountBlock(),
-      cave: 25,
+      ...getDefaultNodeCountBlock(),
+      dungeon: 1,
     },
 
     Blacksmith: {
-      ...defaultNodeCountBlock(),
-      cave: 25,
+      ...getDefaultNodeCountBlock(),
+      cave: 5,
     },
 
     Market: {
-      ...defaultNodeCountBlock(),
+      ...getDefaultNodeCountBlock(),
       town: 1,
     },
 
     Merchant: {
-      ...defaultNodeCountBlock(),
-      village: 3,
+      ...getDefaultNodeCountBlock(),
+      village: 1,
     },
 
     Salvager: {
-      ...defaultNodeCountBlock(),
-      cave: 25,
+      ...getDefaultNodeCountBlock(),
+      dungeon: 1,
     },
   };
 
   const currencyCosts: Record<TownBuilding, Record<GameCurrency, number>> = {
     Academy: {
-      ...defaultCurrencyBlock(),
-      Mana: 5000,
+      ...getDefaultCurrencyBlock(),
+      Mana: 2500,
+      'Fire Sliver': 100,
+      'Water Sliver': 100,
+      'Air Sliver': 100,
+      'Earth Sliver': 100,
     },
 
     Alchemist: {
-      ...defaultCurrencyBlock(),
+      ...getDefaultCurrencyBlock(),
       Mana: 1000,
+      'Water Shard': 3,
     },
 
     Blacksmith: {
-      ...defaultCurrencyBlock(),
+      ...getDefaultCurrencyBlock(),
       Mana: 1000,
+      'Soul Essence': 50,
     },
 
     Market: {
-      ...defaultCurrencyBlock(),
+      ...getDefaultCurrencyBlock(),
       Mana: 500,
+      'Air Shard': 3,
     },
 
     Merchant: {
-      ...defaultCurrencyBlock(),
+      ...getDefaultCurrencyBlock(),
       Mana: 5000,
+      'Fire Shard': 3,
     },
 
     Salvager: {
-      ...defaultCurrencyBlock(),
+      ...getDefaultCurrencyBlock(),
       Mana: 1000,
+      'Earth Shard': 3,
     },
   };
 

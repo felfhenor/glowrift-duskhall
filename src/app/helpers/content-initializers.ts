@@ -168,6 +168,7 @@ function ensureItem(
     preventDrop: item.preventDrop ?? false,
     preventModification: item.preventModification ?? false,
 
+    enchantLevel: item.enchantLevel ?? 0,
     baseStats: ensureStats(item.baseStats),
     talentBoosts: (item.talentBoosts ?? []).map(ensureEquipmentTalentBoost),
     elementMultipliers: (item.elementMultipliers ?? []).map(
@@ -244,6 +245,7 @@ function ensureTraitEquipment(
     description: traitEquipment.description ?? 'UNKNOWN',
     __type: 'traitequipment',
     rarity: traitEquipment.rarity ?? 'Common',
+    enchantLevel: traitEquipment.enchantLevel ?? 0,
     baseStats: ensureStats(traitEquipment.baseStats),
     elementMultipliers: (traitEquipment.elementMultipliers ?? []).map(
       ensureEquipmentElement,
