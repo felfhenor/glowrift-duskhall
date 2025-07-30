@@ -5,3 +5,7 @@ export type TownBuilding =
   | 'Academy'
   | 'Alchemist'
   | 'Salvager';
+
+export type ItemAction = 'Salvage';
+
+export type SkillAction = 'Salvage';

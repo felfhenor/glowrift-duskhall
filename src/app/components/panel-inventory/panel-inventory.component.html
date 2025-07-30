@@ -7,30 +7,10 @@
     </button>
   </div>
 
-  <div role="tablist" class="tabs tabs-boxed">
-    @for (type of allItemTypes; track type.type) {
-      <button
-        role="tab"
-        class="tab"
-        [class.tab-active]="currentItemType() === type.type"
-        (click)="changeItemType(type.type)"
-      >
-        {{ type.name }} ({{ itemCounts()[type.type] }})
-      </button>
-    }
-  </div>
-
-  <div class="flex flex-row inventory-scroller overflow-y-auto p-2">
-    @if (currentItemType() !== 'skill') {
-      <app-inventory-grid-item
-        [items]="items()"
-        [allowedActions]="['Salvage']"
-      ></app-inventory-grid-item>
-    } @else {
-      <app-inventory-grid-skill
-        [skills]="skills()"
-        [allowedActions]="['Salvage']"
-      ></app-inventory-grid-skill>
-    }
-  </div>
+  <app-inventory-grid-container
+    [(currentItemType)]="currentItemType"
+    (currentItemTypeChange)="changeItemType($event)"
+    [allowedItemActions]="['Salvage']"
+    [allowedSkillActions]="['Salvage']"
+  ></app-inventory-grid-container>
 </app-card-page>

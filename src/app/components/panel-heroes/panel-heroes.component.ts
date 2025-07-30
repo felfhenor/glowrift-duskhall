@@ -3,8 +3,7 @@ import { Component, computed, signal } from '@angular/core';
 import { CardPageComponent } from '@components/card-page/card-page.component';
 import { IconHeroComponent } from '@components/icon-hero/icon-hero.component';
 import { IconComponent } from '@components/icon/icon.component';
-import { InventoryGridItemComponent } from '@components/inventory-grid-item/inventory-grid-item.component';
-import { InventoryGridSkillComponent } from '@components/inventory-grid-skill/inventory-grid-skill.component';
+import { InventoryGridContainerComponent } from '@components/inventory-grid-container/inventory-grid-container.component';
 import { PanelHeroesEquipmentComponent } from '@components/panel-heroes-equipment/panel-heroes-equipment.component';
 import { PanelHeroesSkillsComponent } from '@components/panel-heroes-skills/panel-heroes-skills.component';
 import { PanelHeroesStatsComponent } from '@components/panel-heroes-stats/panel-heroes-stats.component';
@@ -15,7 +14,6 @@ import {
   equipSkill,
   gamestate,
   showHeroesMenu,
-  sortedRarityList,
   unequipItem,
   unequipSkill,
 } from '@helpers';
@@ -29,12 +27,11 @@ import type { EquipmentItem, EquipmentSkill, EquipmentSlot } from '@interfaces';
     PanelHeroesStatsComponent,
     IconHeroComponent,
     PanelHeroesEquipmentComponent,
-    InventoryGridItemComponent,
     TitleCasePipe,
     PanelHeroesSkillsComponent,
-    InventoryGridSkillComponent,
     PanelHeroesTalentsComponent,
     PanelHeroesTargettingComponent,
+    InventoryGridContainerComponent,
   ],
   templateUrl: './panel-heroes.component.html',
   styleUrl: './panel-heroes.component.css',
@@ -46,17 +43,6 @@ export class PanelHeroesComponent {
   public activeHero = computed(() => this.allHeroes()[this.activeHeroIndex()]);
 
   public equipItemType = signal<EquipmentSlot | undefined>(undefined);
-  public visibleItemsToEquip = computed(() =>
-    sortedRarityList(
-      gamestate().inventory.items.filter(
-        (i) => i.__type === this.equipItemType(),
-      ),
-    ),
-  );
-
-  public visibleSkillsToEquip = computed(() =>
-    sortedRarityList(gamestate().inventory.skills),
-  );
 
   public skillSlot = signal<number>(-1);
 

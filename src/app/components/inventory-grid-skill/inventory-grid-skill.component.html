@@ -1,16 +1,19 @@
 @let actions = allowedActions();
+@let disable = disabledSkillIds();
 
 <div class="flex flex-wrap flex-row gap-2">
   @for (skill of skills(); track skill.id) {
     <app-icon-skill
       [skill]="skill"
-      (click)="itemClicked.emit(skill)"
+      (click)="skillClicked.emit(skill)"
       [tp]="contextMenu"
       [tpData]="skill"
       tpVariation="contextMenu"
       [class.cursor-pointer]="clickableSkills()"
       (mouseenter)="animateItem.set(skill.id)"
       (mouseleave)="animateItem.set('')"
+      [class.opacity-50]="disable.includes(skill.id)"
+      [class.pointer-events-none]="disable.includes(skill.id)"
     ></app-icon-skill>
 
     <ng-template #contextMenu let-hide let-item="data">

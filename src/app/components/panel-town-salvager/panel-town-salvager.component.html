@@ -61,14 +61,14 @@
   </div>
 </div>
 
-<app-card-page height="270px" *teleportTo="'panel-town'">
+<app-card-page height="370px" *teleportTo="'panel-town'">
   <span header>Choose Items To Break Down</span>
 
-  <div class="flex flex-row max-h-[156px] overflow-y-auto p-2">
-    <app-inventory-grid-item
-      [items]="visibleItemsToBreakDown()"
-      (itemClicked)="chooseItem($event)"
-      [clickableItems]="true"
-    ></app-inventory-grid-item>
-  </div>
+  <app-inventory-grid-container
+    [allowedItemTypes]="['accessory', 'armor', 'trinket', 'weapon']"
+    (itemClicked)="chooseItem($event)"
+    [allowItemClicks]="true"
+    [containerHeight]="220"
+    [disabledItemIds]="disabledItemIds()"
+  ></app-inventory-grid-container>
 </app-card-page>

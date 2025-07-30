@@ -1,53 +1,35 @@
-import type { EquipmentItem, GameCurrency } from '@interfaces';
-import { gainCurrency } from '@helpers/currency';
-import { removeItemFromInventory } from '@helpers/inventory-equipment';
-import { getBuildingLevel } from '@helpers/town';
+import { getEntriesByType, getEntry } from '@helpers/content';
+import { hasCurrency, loseCurrency } from '@helpers/currency';
+import { randomChoiceByRarity } from '@helpers/rng';
+import type { EquipmentItem } from '@interfaces/content-equipment';
+import type { TraitEquipmentContent } from '@interfaces/content-trait-equipment';
+import type { DropRarity } from '@interfaces/droppable';
+import { sumBy } from 'es-toolkit/compat';
 
-export function maxBlacksmithItems() {
-  return Math.floor(Math.min(15, 3 + getBuildingLevel('Blacksmith') / 3));
+export function blacksmithRerollItemTraitCost(item: EquipmentItem): number {
+  if (item.traitIds.length === 0) return 1000;
+
+  const costs: Record<DropRarity, number> = {
+    Common: 500,
+    Uncommon: 1500,
+    Rare: 3500,
+    Mystical: 7500,
+    Legendary: 10000,
+    Unique: 250000,
+  };
+
+  return sumBy(
+    item.traitIds,
+    (t) => costs[getEntry<TraitEquipmentContent>(t)!.rarity] ?? 500,
+  );
 }
 
-export function salvageItems(items: EquipmentItem[]): void {
-  items.forEach((item) => {
-    salvageItem(item);
-  });
-}
+export function blacksmithRerollItemTrait(item: EquipmentItem): void {
+  const cost = blacksmithRerollItemTraitCost(item);
+  if (!hasCurrency('Mana', cost)) return;
 
-export function salvageItem(item: EquipmentItem): void {
-  removeItemFromInventory(item);
+  loseCurrency('Mana', cost);
 
-  const currencyGain = itemSalvageCurrencyGain(item);
-  Object.entries(currencyGain).forEach(([curr, amount]) => {
-    const currency = curr as GameCurrency;
-    gainCurrency(currency, amount);
-  });
-}
-
-export function multiItemSalvageCurrencyGain(
-  items: EquipmentItem[],
-): Partial<Record<GameCurrency, number>> {
-  const result: Partial<Record<GameCurrency, number>> = {};
-
-  items.forEach((item) => {
-    const currencies = itemSalvageCurrencyGain(item);
-    Object.entries(currencies).forEach(([curr, amount]) => {
-      const currency = curr as GameCurrency;
-
-      if (result[currency]) {
-        result[currency] += amount;
-      } else {
-        result[currency] = amount;
-      }
-    });
-  });
-
-  return result;
-}
-
-export function itemSalvageCurrencyGain(
-  item: EquipmentItem,
-): Partial<Record<GameCurrency, number>> {
-  const currency: GameCurrency = `${item.rarity} Dust`;
-
-  return { [currency]: Math.max(1, Math.floor(item.dropLevel * 0.05)) };
+  const allTraits = getEntriesByType<TraitEquipmentContent>('traitequipment');
+  item.traitIds = item.traitIds.map(() => randomChoiceByRarity(allTraits)!.id);
 }

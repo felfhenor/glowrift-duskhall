@@ -66,6 +66,7 @@ export * from './town-alchemist';
 export * from './town-blacksmith';
 export * from './town-market';
 export * from './town-merchant';
+export * from './town-salvager';
 export * from './trait-equipment';
 export * from './trait-location';
 export * from './trait-location-combat';

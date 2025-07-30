@@ -1,4 +1,5 @@
 @let actions = allowedActions();
+@let disable = disabledItemIds();
 
 <div class="flex flex-wrap flex-row gap-2">
   @for (item of items(); track $index) {
@@ -13,6 +14,8 @@
         [showLevel]="!isShopList()"
         [showPrice]="isShopList()"
         [class.cursor-pointer]="clickableItems()"
+        [class.opacity-50]="disable.includes(item.id)"
+        [class.pointer-events-none]="disable.includes(item.id)"
       ></app-icon-item>
     } @else {
       <app-icon-blank-slot>Bought</app-icon-blank-slot>

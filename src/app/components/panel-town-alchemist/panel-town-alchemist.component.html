@@ -1,4 +1,4 @@
-@let items = selectedItems();
+@let items = selectedSkills();
 
 <div class="flex flex-row gap-2">
   <div class="flex-1 flex flex-col">
@@ -61,14 +61,14 @@
   </div>
 </div>
 
-<app-card-page height="270px" *teleportTo="'panel-town'">
+<app-card-page height="370px" *teleportTo="'panel-town'">
   <span header>Choose Spells To Break Down</span>
 
-  <div class="flex flex-row max-h-[156px] overflow-y-auto p-2">
-    <app-inventory-grid-skill
-      [skills]="visibleSpellsToBreakDown()"
-      (itemClicked)="chooseItem($event)"
-      [clickableSkills]="true"
-    ></app-inventory-grid-skill>
-  </div>
+  <app-inventory-grid-container
+    [allowedItemTypes]="['skill']"
+    (skillClicked)="chooseItem($event)"
+    [allowSkillClicks]="true"
+    [disabledSkillIds]="disabledSkillIds()"
+    [containerHeight]="220"
+  ></app-inventory-grid-container>
 </app-card-page>
