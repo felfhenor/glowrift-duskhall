@@ -9,21 +9,49 @@
         - talentId: Blank Talent
         - talentId: Blank Talent
 
-    - level: 10
+    - level: 5
       learnableTalents:
         - talentId: Strength of Firewisp II
         - talentId: Heating Up
         - talentId: Fire Force
         - talentId: Blank Talent
 
-    - level: 20
+    - level: 10
       learnableTalents:
         - talentId: Strength of Firewisp III
         - talentId: Blank Talent
         - talentId: Blank Talent
         - talentId: Strength of Fire
 
+    - level: 15
+      learnableTalents:
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+
+    - level: 20
+      learnableTalents:
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+
+    - level: 25
+      learnableTalents:
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+
     - level: 30
+      learnableTalents:
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+        - talentId: Blank Talent
+
+    - level: 35
       learnableTalents:
         - talentId: Blank Talent
         - talentId: Blank Talent
@@ -37,35 +65,7 @@
         - talentId: Blank Talent
         - talentId: Blank Talent
 
-    - level: 50
-      learnableTalents:
-        - talentId: Blank Talent
-        - talentId: Blank Talent
-        - talentId: Blank Talent
-        - talentId: Blank Talent
-
-    - level: 60
-      learnableTalents:
-        - talentId: Blank Talent
-        - talentId: Blank Talent
-        - talentId: Blank Talent
-        - talentId: Blank Talent
-
-    - level: 70
-      learnableTalents:
-        - talentId: Blank Talent
-        - talentId: Blank Talent
-        - talentId: Blank Talent
-        - talentId: Blank Talent
-
-    - level: 80
-      learnableTalents:
-        - talentId: Blank Talent
-        - talentId: Blank Talent
-        - talentId: Blank Talent
-        - talentId: Blank Talent
-
-    - level: 90
+    - level: 45
       learnableTalents:
         - talentId: Blank Talent
         - talentId: Blank Talent
