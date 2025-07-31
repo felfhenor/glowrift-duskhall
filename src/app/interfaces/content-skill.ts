@@ -1,4 +1,5 @@
 import type { Animatable } from '@interfaces/artable';
+import type { StatusEffectId } from '@interfaces/content-statuseffect';
 import type { DroppableEquippable } from '@interfaces/droppable';
 import type { GameElement } from '@interfaces/element';
 import type { Branded } from '@interfaces/identifiable';
@@ -21,18 +22,23 @@ export type EquipmentSkillTargetType = 'Allies' | 'Enemies' | 'Self' | 'All';
 export type EquipmentSkillId = Branded<string, 'EquipmentSkillId'>;
 
 export type EquipmentSkillContentModifiable = {
+  enchantLevel: number;
   techniques: EquipmentSkillContentTechnique[];
   usesPerCombat: -1 | number;
+  numTargets: number;
+  damageScaling: StatBlock;
+  statusEffectDurationBoost: Record<StatusEffectId, number>;
+  statusEffectChanceBoost: Record<StatusEffectId, number>;
 };
 
 export type EquipmentSkillTargetBehaviorData = {
   behavior: EquipmentSkillTargetBehavior;
 
-  statusEffectId?: string;
+  statusEffectId?: StatusEffectId;
 };
 
 export type EquipmentSkillTechniqueStatusEffectApplication = {
-  statusEffectId: string;
+  statusEffectId: StatusEffectId;
   chance: number;
   duration: number;
 };

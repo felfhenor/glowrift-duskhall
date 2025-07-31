@@ -23,6 +23,7 @@ import { notify } from '@helpers/notify';
 
 import { sample, sortBy } from 'es-toolkit/compat';
 
+import { getSkillTechniqueNumTargets } from '@helpers/skill';
 import type {
   Combat,
   Combatant,
@@ -97,10 +98,12 @@ export function combatantTakeTurn(combat: Combat, combatant: Combatant): void {
       tech,
     );
 
+    const numTargets = getSkillTechniqueNumTargets(chosenSkill, tech);
+
     const targets = getTargetsFromListBasedOnType(
       baseTargetList,
       combatant.targettingType,
-      tech.targets,
+      numTargets,
     );
 
     targets.forEach((target) => {

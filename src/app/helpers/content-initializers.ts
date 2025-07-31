@@ -147,10 +147,15 @@ function ensureSkill(
     sprite: skill.sprite ?? '0000',
     frames: skill.frames ?? 1,
     rarity: skill.rarity ?? 'Common',
+    enchantLevel: skill.enchantLevel ?? 0,
     dropLevel: skill.dropLevel ?? 0,
     preventDrop: skill.preventDrop ?? false,
     preventModification: skill.preventModification ?? false,
     usesPerCombat: skill.usesPerCombat ?? -1,
+    numTargets: skill.numTargets ?? 0,
+    damageScaling: ensureStats(skill.damageScaling),
+    statusEffectChanceBoost: skill.statusEffectChanceBoost ?? {},
+    statusEffectDurationBoost: skill.statusEffectDurationBoost ?? {},
     techniques: (skill.techniques ?? []).map(ensureTechnique),
   };
 }

@@ -1,4 +1,5 @@
 import { getEntry } from '@helpers/content';
+import { getSkillUses } from '@helpers/skill';
 import type {
   Combat,
   Combatant,
@@ -21,7 +22,7 @@ export function availableSkillsForCombatant(
   ].filter(
     (skill) =>
       skill.usesPerCombat === -1 ||
-      (combatant.skillUses[skill.id] ?? 0) < skill.usesPerCombat,
+      (combatant.skillUses[skill.id] ?? 0) < getSkillUses(skill),
   );
 }
 

@@ -13,6 +13,11 @@ import {
   getCombatOutgoingAttributeMultiplier,
 } from '@helpers/festival-combat';
 import { succeedsChance } from '@helpers/rng';
+import {
+  getSkillTechniqueDamageScalingStat,
+  getSkillTechniqueStatusEffectChance,
+  getSkillTechniqueStatusEffectDuration,
+} from '@helpers/skill';
 import type {
   Combat,
   Combatant,
@@ -79,8 +84,14 @@ export function getCombatantBaseStatDamageForTechnique(
   technique: EquipmentSkillContentTechnique,
   stat: GameStat,
 ): number {
-  const baseMultiplier = technique.damageScaling[stat] ?? 0;
-  if (baseMultiplier === 0) return 0;
+  const baseCheckMultiplier = technique.damageScaling[stat] ?? 0;
+  if (baseCheckMultiplier === 0) return 0;
+
+  const baseMultiplier = getSkillTechniqueDamageScalingStat(
+    skill,
+    technique,
+    stat,
+  );
 
   const talentElementMultiplierBoost = combatantTalentElementBoost(
     combatant,
@@ -102,6 +113,7 @@ export function getCombatantBaseStatDamageForTechnique(
   const baseStatWithoutMultiplier = combatant.totalStats[stat];
 
   const totalMultiplier =
+    baseMultiplier +
     affinityElementBoostMultiplier +
     talentSkillMultiplierBoost +
     talentElementMultiplierBoost;
@@ -197,13 +209,13 @@ export function applySkillToTarget(
     if (!effectContent) return;
 
     const totalChance =
-      effData.chance +
+      getSkillTechniqueStatusEffectChance(skill, effData) +
       statusEffectChanceTalentBoost(combatant, skill, effectContent);
 
     if (!succeedsChance(totalChance)) return;
 
     const statusEffect = createStatusEffect(effectContent, combatant, {
-      duration: effData.duration,
+      duration: getSkillTechniqueStatusEffectDuration(skill, effData),
     });
 
     applyStatusEffectToTarget(combat, target, statusEffect);
