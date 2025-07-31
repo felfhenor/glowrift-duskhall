@@ -1,11 +1,11 @@
 import type { Signal } from '@angular/core';
 import { signal } from '@angular/core';
 import {
-  defaultCurrencyBlock,
-  defaultHero,
-  defaultNodeCountBlock,
-  defaultPosition,
-  defaultWorldConfig,
+  getDefaultCurrencyBlock,
+  getDefaultHero,
+  getDefaultNodeCountBlock,
+  getDefaultPosition,
+  getDefaultWorldConfig,
 } from '@helpers/defaults';
 import { uuid } from '@helpers/rng';
 import { localStorageSignal } from '@helpers/signal';
@@ -22,29 +22,29 @@ export function blankGameState(): GameState {
     },
     gameId: uuid() as GameId,
     world: {
-      config: defaultWorldConfig(),
+      config: getDefaultWorldConfig(),
       nodes: {},
-      homeBase: defaultPosition(),
-      nodeCounts: defaultNodeCountBlock(),
-      claimedCounts: defaultNodeCountBlock(),
+      homeBase: getDefaultPosition(),
+      nodeCounts: getDefaultNodeCountBlock(),
+      claimedCounts: getDefaultNodeCountBlock(),
     },
-    camera: defaultPosition(),
+    camera: getDefaultPosition(),
     hero: {
       respawnTicks: 0,
       riskTolerance: 'medium',
       heroes: [
-        defaultHero({ name: 'Ignatius', sprite: '0004' }),
-        defaultHero({ name: 'Aquara', sprite: '0000' }),
-        defaultHero({ name: 'Terrus', sprite: '0060' }),
-        defaultHero({ name: 'Zephyra', sprite: '0036' }),
+        getDefaultHero({ name: 'Ignatius', sprite: '0004' }),
+        getDefaultHero({ name: 'Aquara', sprite: '0000' }),
+        getDefaultHero({ name: 'Terrus', sprite: '0060' }),
+        getDefaultHero({ name: 'Zephyra', sprite: '0036' }),
       ],
       position: {
         nodeId: '',
-        ...defaultPosition(),
+        ...getDefaultPosition(),
       },
       travel: {
         nodeId: '',
-        ...defaultPosition(),
+        ...getDefaultPosition(),
         ticksLeft: 0,
       },
       location: {
@@ -57,8 +57,8 @@ export function blankGameState(): GameState {
       skills: [],
     },
     currency: {
-      currencyPerTickEarnings: defaultCurrencyBlock(),
-      currencies: defaultCurrencyBlock(),
+      currencyPerTickEarnings: getDefaultCurrencyBlock(),
+      currencies: getDefaultCurrencyBlock(),
     },
     actionClock: {
       numTicks: 0,

@@ -1,7 +1,7 @@
 import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 import { rarityItemOutlineColor, rarityItemTextColor } from '@helpers/item';
-import type { TraitEquipmentContent } from '@interfaces/trait-equipment';
+import type { TraitEquipmentContent } from '@interfaces/content-trait-equipment';
 
 @Component({
   selector: 'app-marker-trait',

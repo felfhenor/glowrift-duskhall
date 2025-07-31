@@ -1,5 +1,6 @@
 - id: 91ae04ca-dbb0-4406-9e74-e508943e28d5
   name: Strong
+  description: Force +5.
 
   rarity: Common
 
@@ -8,6 +9,7 @@
 
 - id: 7d659cd0-aeb2-4b65-b25a-5aa276f188c8
   name: Agile
+  description: Speed +2.
 
   rarity: Common
 
@@ -16,6 +18,7 @@
 
 - id: 72a90e7c-3683-4791-a3c9-3bb1c862fe42
   name: Fortified
+  description: Aura +5.
 
   rarity: Common
 
@@ -24,6 +27,7 @@
 
 - id: b4c20d56-6a0c-44d5-84bd-f57b109f40a5
   name: Healthy
+  description: Health +10.
 
   rarity: Common
 
@@ -32,6 +36,7 @@
 
 - id: fbd13eeb-a240-4bc8-b7ba-bc431faa409f
   name: Offensive
+  description: Force +3, Speed +1.
 
   rarity: Uncommon
 
@@ -41,6 +46,7 @@
 
 - id: 2cc1bf74-2f04-4363-8101-d9883a2140bb
   name: Defensive
+  description: Aura +3, Health +5.
 
   rarity: Uncommon
 
@@ -50,6 +56,7 @@
 
 - id: cb8c8dfc-9359-4e8d-87f4-45a76879e246
   name: Tricky
+  description: Speed +2, Health +5.
 
   rarity: Uncommon
 
@@ -59,6 +66,7 @@
 
 - id: 1bd2b86a-1bfd-4778-9321-7f1fcdab5a9f
   name: Combatative
+  description: Force +2, Aura +2.
 
   rarity: Uncommon
 

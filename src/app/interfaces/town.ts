@@ -1,3 +1,10 @@
+import type { CurrencyBlock } from '@interfaces/content-currency';
+import type { TalentId } from '@interfaces/content-talent';
+import type { HasRarity } from '@interfaces/droppable';
+import type { ElementBlock } from '@interfaces/element';
+import type { StatBlock } from '@interfaces/stat';
+import type { HasDescription } from '@interfaces/traits';
+
 export type TownBuilding =
   | 'Market'
   | 'Merchant'
@@ -5,3 +12,16 @@ export type TownBuilding =
   | 'Academy'
   | 'Alchemist'
   | 'Salvager';
+
+export type ItemAction = 'Salvage';
+
+export type SkillAction = 'Salvage';
+
+export type BlacksmithEnchant = HasRarity &
+  HasDescription & {
+    cost: CurrencyBlock;
+
+    statBoosts: StatBlock;
+    elementBoosts: ElementBlock;
+    talentBoosts: TalentId[];
+  };

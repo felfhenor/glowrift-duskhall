@@ -1,8 +1,15 @@
-import { defaultCurrencyBlock } from '@helpers/defaults';
+import { getEntry } from '@helpers/content';
+import { getDefaultCurrencyBlock } from '@helpers/defaults';
 import { getFestivalProductionMultiplier } from '@helpers/festival-production';
 import { gamestate, updateGamestate } from '@helpers/state-game';
+import { locationTraitCurrencyAllGenerateModifiers } from '@helpers/trait-location-currency';
 import { getClaimedNodes } from '@helpers/world';
-import type { CurrencyBlock, GameCurrency, WorldLocation } from '@interfaces';
+import type {
+  CurrencyBlock,
+  CurrencyContent,
+  GameCurrency,
+  WorldLocation,
+} from '@interfaces';
 
 export function getCurrency(currency: GameCurrency): number {
   return gamestate().currency.currencies[currency] ?? 0;
@@ -10,6 +17,12 @@ export function getCurrency(currency: GameCurrency): number {
 
 export function hasCurrency(type: GameCurrency, needed: number): boolean {
   return getCurrency(type) >= needed;
+}
+
+export function hasCurrencies(currencies: CurrencyBlock): boolean {
+  return Object.keys(currencies).every((curr) =>
+    hasCurrency(curr as GameCurrency, currencies[curr as GameCurrency]),
+  );
 }
 
 export function gainCurrencies(currencies: Partial<CurrencyBlock>): void {
@@ -34,6 +47,14 @@ export function gainCurrency(currency: GameCurrency, amount = 1): void {
   });
 }
 
+export function loseCurrencies(currencies: Partial<CurrencyBlock>): void {
+  Object.keys(currencies).forEach((curr) => {
+    currencies[curr as GameCurrency] = -currencies[curr as GameCurrency]!;
+  });
+
+  gainCurrencies(currencies);
+}
+
 export function loseCurrency(currency: GameCurrency, amount = 1): void {
   gainCurrency(currency, -amount);
 }
@@ -44,7 +65,7 @@ export function gainCurrentCurrencyClaims(): void {
 }
 
 export function getCurrencyClaimsForNode(node: WorldLocation): CurrencyBlock {
-  const base = defaultCurrencyBlock();
+  const base = getDefaultCurrencyBlock();
 
   switch (node.nodeType) {
     case 'cave': {
@@ -81,11 +102,19 @@ export function getCurrencyClaimsForNode(node: WorldLocation): CurrencyBlock {
     }
   }
 
+  const modifiers = locationTraitCurrencyAllGenerateModifiers(node);
+  modifiers.forEach((mod) => {
+    const currency = getEntry<CurrencyContent>(mod.currencyId);
+    if (!currency) return;
+
+    base[currency.name] += currency.value;
+  });
+
   return base;
 }
 
 export function getUpdatedCurrencyClaims(): CurrencyBlock {
-  const base = defaultCurrencyBlock();
+  const base = getDefaultCurrencyBlock();
   const allClaimed = getClaimedNodes();
 
   allClaimed.forEach((node) => {

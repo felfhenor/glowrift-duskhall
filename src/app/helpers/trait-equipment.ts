@@ -1,7 +1,7 @@
 import { getEntriesByType } from '@helpers/content';
 import { randomChoiceByRarity, succeedsChance } from '@helpers/rng';
-import type { EquipmentItem } from '@interfaces/equipment';
-import type { TraitEquipmentContent } from '@interfaces/trait-equipment';
+import type { EquipmentItem } from '@interfaces/content-equipment';
+import type { TraitEquipmentContent } from '@interfaces/content-trait-equipment';
 
 export function canAddTraitToEquipment() {
   return succeedsChance(25);

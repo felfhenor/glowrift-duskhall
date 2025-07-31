@@ -4,7 +4,7 @@ import type { Hero, TalentContent, TalentId } from '@interfaces';
 import { sum } from 'es-toolkit/compat';
 
 export function heroRemainingTalentPoints(hero: Hero): number {
-  return hero.level - sum(Object.values(hero.talents));
+  return Math.floor(hero.level / 2) - sum(Object.values(hero.talents));
 }
 
 export function heroSpendTalentPoint(hero: Hero, talentId: string): void {

@@ -1,8 +1,8 @@
 import type { Animatable } from '@interfaces/artable';
 import type { CombatantTargettingType } from '@interfaces/combat';
-import type { EquipmentBlock } from '@interfaces/equipment';
+import type { EquipmentBlock } from '@interfaces/content-equipment';
+import type { EquipmentSkill } from '@interfaces/content-skill';
 import type { Branded, Identifiable } from '@interfaces/identifiable';
-import type { EquipmentSkill } from '@interfaces/skill';
 import type { StatBlock } from '@interfaces/stat';
 
 export type HeroId = Branded<string, 'HeroId'>;

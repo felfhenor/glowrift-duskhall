@@ -58,3 +58,7 @@ app-game {
   display: block;
   height: 100vh;
 }
+
+.list-row::after {
+  --border: 0;
+}

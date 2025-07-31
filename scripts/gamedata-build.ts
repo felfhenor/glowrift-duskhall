@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-var-requires */
 
-const { isArray, isString } = require('es-toolkit/compat');
+const { isArray, isString, isObject } = require('es-toolkit/compat');
 const yaml = require('js-yaml');
 const fs = require('fs-extra');
 const path = require('path');
@@ -83,6 +83,10 @@ const rewriteDataIds = () => {
           entry[entryKey].forEach((subObj: any) => {
             iterateObject(subObj);
           });
+
+          // if it's not an array, but an object, we want to dig deeper
+        } else if (isObject(entry[entryKey])) {
+          iterateObject(entry[entryKey]);
         }
 
         return;
@@ -115,6 +119,10 @@ const rewriteDataIds = () => {
               iterateObject(subObj);
             });
           }
+
+          // and if it's an object instead of an array, we still want to dive in
+        } else if (isObject(entry[entryKey])) {
+          iterateObject(entry[entryKey]);
         }
       }
     });

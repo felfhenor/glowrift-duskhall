@@ -1,3 +1,4 @@
+import type { TraitLocationId } from '@interfaces/content-trait-location';
 import type { GameElement } from '@interfaces/element';
 import type { Identifiable } from '@interfaces/identifiable';
 import type { LocationType } from '@interfaces/worldconfig';
@@ -24,4 +25,6 @@ export type WorldLocation = WorldPosition &
 
     guardianIds: string[];
     claimLootIds: string[];
+
+    traitIds: TraitLocationId[];
   };

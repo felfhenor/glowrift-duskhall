@@ -10,6 +10,7 @@ import { LocationClaimProgressTextComponent } from '@components/location-claim-p
 import { LocationGuardianDisplayComponent } from '@components/location-guardian-display/location-guardian-display.component';
 import { LocationLootDisplayComponent } from '@components/location-loot-display/location-loot-display.component';
 import { MarkerLocationClaimComponent } from '@components/marker-location-claim/marker-location-claim.component';
+import { MarkerLocationTraitComponent } from '@components/marker-location-trait/marker-location-trait.component';
 import {
   createGuardianForLocation,
   gamestate,
@@ -23,11 +24,12 @@ import {
   travelTimeFromCurrentLocationTo,
   travelToNode,
 } from '@helpers';
-import type {
-  DroppableEquippable,
-  GameCurrency,
-  Guardian,
-  WorldLocation,
+import type { TraitLocationContent } from '@interfaces';
+import {
+  type DroppableEquippable,
+  type GameCurrency,
+  type Guardian,
+  type WorldLocation,
 } from '@interfaces';
 import { sortBy } from 'es-toolkit/compat';
 
@@ -46,6 +48,7 @@ import { sortBy } from 'es-toolkit/compat';
     LocationLootDisplayComponent,
     IconItemComponent,
     IconElementComponent,
+    MarkerLocationTraitComponent,
   ],
   templateUrl: './panel-location.component.html',
   styleUrl: './panel-location.component.css',
@@ -55,6 +58,12 @@ export class PanelLocationComponent {
 
   public objectSprite = computed(() =>
     getSpriteFromNodeType(this.location().nodeType),
+  );
+
+  public traits = computed(() =>
+    this.location()
+      .traitIds.map((t) => getEntry<TraitLocationContent>(t)!)
+      .filter(Boolean),
   );
 
   public travelTimeSeconds = computed(() => {

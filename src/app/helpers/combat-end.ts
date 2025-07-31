@@ -2,10 +2,7 @@ import { currentCombat, resetCombat } from '@helpers/combat';
 import { logCombatMessage } from '@helpers/combat-log';
 import { getEntry } from '@helpers/content';
 import { gainCurrency, updateCurrencyClaims } from '@helpers/currency';
-import {
-  gainDroppableItem,
-  makeDroppableIntoRealItem,
-} from '@helpers/droppable';
+import { makeDroppableIntoRealItem } from '@helpers/droppable';
 import {
   exploreProgressPercent,
   travelHome,
@@ -13,9 +10,8 @@ import {
 } from '@helpers/explore';
 import { allHeroes } from '@helpers/hero';
 import { heroGainXp } from '@helpers/hero-xp';
-import { addItemElement, isEquipment } from '@helpers/item';
-import { notify } from '@helpers/notify';
-import { claimNode, getWorldNode } from '@helpers/world';
+import { locationTraitCurrencySpecialModifier } from '@helpers/trait-location-currency';
+import { gainNodeRewards, getWorldNode } from '@helpers/world';
 import type { Combat, Combatant, DroppableEquippable } from '@interfaces';
 
 export function currentCombatHasGuardiansAlive(): boolean {
@@ -52,7 +48,6 @@ export function handleCombatVictory(combat: Combat): void {
   if (currentNode) {
     const xpGainedForClaim =
       currentNode.encounterLevel * currentNode.guardianIds.length;
-    notify(`You have claimed ${currentNode.name}!`, 'LocationClaim');
 
     logCombatMessage(combat, `Heroes claimed **${currentNode.name}**!`);
     updateExploringAndGlobalStatusText('');
@@ -66,30 +61,25 @@ export function handleCombatVictory(combat: Combat): void {
       heroGainXp(hero, xpGainedForClaim);
     });
 
-    gainCurrency('Soul Essence', xpGainedForClaim);
-    logCombatMessage(combat, `You gained ${xpGainedForClaim} Soul Essence!`);
+    const soulEssenceGained =
+      xpGainedForClaim +
+      currentNode.guardianIds.length *
+        locationTraitCurrencySpecialModifier(currentNode, 'Soul Essence');
+    gainCurrency('Soul Essence', soulEssenceGained);
+    logCombatMessage(combat, `You gained ${soulEssenceGained} Soul Essence!`);
+
+    gainNodeRewards(currentNode);
 
     currentNode.claimLootIds.forEach((lootDefId) => {
       const lootDef = getEntry<DroppableEquippable>(lootDefId);
       if (!lootDef) return;
 
       const created = makeDroppableIntoRealItem(lootDef);
-
-      if (isEquipment(created)) {
-        currentNode.elements.forEach((el) => {
-          addItemElement(created, el);
-        });
-      }
-
-      gainDroppableItem(created);
-
       logCombatMessage(
         combat,
         `Heroes found \`rarity:${created.rarity}:${created.name}\`!`,
       );
     });
-
-    claimNode(currentNode);
   }
 
   resetCombat();

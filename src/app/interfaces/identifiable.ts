@@ -11,16 +11,17 @@ export type ContentType =
   | 'statuseffect'
   | 'talent'
   | 'talenttree'
-  | 'traitequipment';
+  | 'traitequipment'
+  | 'traitlocation';
 
 export interface Identifiable {
   id: string;
   name: string;
 }
 
-export interface IsContentItem extends Identifiable {
+export type IsContentItem = Identifiable & {
   __type: ContentType;
-}
+};
 
 declare const __brand: unique symbol;
 

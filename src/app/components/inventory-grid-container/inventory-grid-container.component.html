@@ -1,0 +1,34 @@
+<div role="tablist" class="tabs tabs-boxed">
+  @for (type of visibleItemTypes(); track type.type) {
+    <button
+      role="tab"
+      class="tab"
+      [class.tab-active]="currentItemType() === type.type"
+      (click)="currentItemType.set(type.type)"
+    >
+      {{ type.name }} ({{ itemCounts()[type.type] }})
+    </button>
+  }
+</div>
+
+<div
+  class="flex flex-row overflow-y-auto p-2"
+  [style.max-height.px]="containerHeight()"
+>
+  @if (currentItemType() !== 'skill') {
+    <app-inventory-grid-item
+      [items]="items()"
+      [disabledItemIds]="disabledItemIds()"
+      [allowedActions]="allowedItemActions()"
+      (itemClicked)="itemClicked.emit($event)"
+      [compareWithEquippedHero]="compareItemToHero()"
+    ></app-inventory-grid-item>
+  } @else {
+    <app-inventory-grid-skill
+      [skills]="skills()"
+      [disabledSkillIds]="disabledSkillIds()"
+      [allowedActions]="allowedSkillActions()"
+      (skillClicked)="skillClicked.emit($event)"
+    ></app-inventory-grid-skill>
+  }
+</div>

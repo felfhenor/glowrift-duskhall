@@ -1,13 +1,16 @@
 import { Component, input, output } from '@angular/core';
 
 import { DecimalPipe } from '@angular/common';
-import { TippyDirective } from '@ngneat/helipopper';
-import { itemSalvage, itemSalvageValue } from '@helpers';
-import type { EquipmentItem, Hero } from '@interfaces';
 import { IconBlankSlotComponent } from '@components/icon-blank-slot/icon-blank-slot.component';
 import { IconItemComponent } from '@components/icon-item/icon-item.component';
-
-export type ItemAction = 'Salvage';
+import { itemSalvage, itemSalvageValue } from '@helpers';
+import type {
+  EquipmentItem,
+  EquipmentItemId,
+  Hero,
+  ItemAction,
+} from '@interfaces';
+import { TippyDirective } from '@ngneat/helipopper';
 
 @Component({
   selector: 'app-inventory-grid-item',
@@ -22,6 +25,7 @@ export type ItemAction = 'Salvage';
 })
 export class InventoryGridItemComponent {
   public items = input.required<(EquipmentItem | undefined)[]>();
+  public disabledItemIds = input<EquipmentItemId[]>([]);
   public clickableItems = input<boolean>();
   public allowedActions = input<ItemAction[]>([]);
   public compareWithEquippedHero = input<Hero>();

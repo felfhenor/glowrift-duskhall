@@ -6,9 +6,9 @@ export interface TimerData {
   type: TimerAction;
 }
 
-export interface TimerUnclaimVillage extends TimerData {
+export type TimerUnclaimVillage = TimerData & {
   type: 'UnclaimVillage';
   location: WorldPosition;
-}
+};
 
 export type Timer = TimerUnclaimVillage;

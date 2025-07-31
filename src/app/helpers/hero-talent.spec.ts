@@ -37,7 +37,7 @@ describe('Hero Talent Functions', () => {
     testHero = {
       id: 'test-hero-1' as HeroId,
       name: 'Test Hero',
-      level: 5,
+      level: 10,
       xp: 0,
       hp: 10,
       baseStats,
@@ -61,11 +61,11 @@ describe('Hero Talent Functions', () => {
 
   describe('heroRemainingTalentPoints', () => {
     it('should calculate remaining talent points correctly', () => {
-      // 5 (level) - 3 (spent points) = 2 remaining
+      // 10 (level) - 3 (spent points) = 2 remaining
       expect(heroRemainingTalentPoints(testHero)).toBe(2);
     });
 
-    it('should return full level when no talents are spent', () => {
+    it('should return full level/2 when no talents are spent', () => {
       testHero.talents = {};
       expect(heroRemainingTalentPoints(testHero)).toBe(5);
     });
@@ -129,7 +129,7 @@ describe('Hero Talent Functions', () => {
     });
 
     it('should return false when hero level is too low', () => {
-      expect(canHeroBuyTalent(testHero, testTalent, 6)).toBe(false);
+      expect(canHeroBuyTalent(testHero, testTalent, 11)).toBe(false);
     });
 
     it('should return false when hero has no remaining points', () => {

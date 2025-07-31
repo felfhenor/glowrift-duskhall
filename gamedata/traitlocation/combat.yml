@@ -1,0 +1,80 @@
+- id: c8f8f0dc-1221-42f5-b455-73af5d52a863
+  name: Fire Sanctum
+  description: Fire potency +50%, Water potency -25%.
+  rarity: Uncommon
+
+  effects:
+    combat:
+      damage:
+        all:
+          - element: Fire
+            multiplier: 0.50
+
+          - element: Water
+            multiplier: -0.25
+
+- id: 071add5c-07d5-4e5f-bb62-008cdc926986
+  name: Water Sanctum
+  description: Water potency +50%, Earth potency -25%.
+  rarity: Uncommon
+
+  effects:
+    combat:
+      damage:
+        all:
+          - element: Water
+            multiplier: 0.50
+
+          - element: Earth
+            multiplier: -0.25
+
+- id: 019b75a1-01f4-47a2-90a4-59ffd57907ee
+  name: Earth Sanctum
+  description: Earth potency +50%, Air potency -25%.
+  rarity: Uncommon
+
+  effects:
+    combat:
+      damage:
+        all:
+          - element: Earth
+            multiplier: 0.50
+
+          - element: Air
+            multiplier: -0.25
+
+- id: 20597308-fd6c-486e-9a22-372bbaeac5df
+  name: Air Sanctum
+  description: Air potency +50%, Fire potency -25%.
+  rarity: Uncommon
+
+  effects:
+    combat:
+      damage:
+        all:
+          - element: Air
+            multiplier: 0.50
+
+          - element: Fire
+            multiplier: -0.25
+
+- id: c6d629ca-7914-41a5-99d6-456609e86302
+  name: Elemental Nexus
+  description: Elemental potency +25%.
+  rarity: Rare
+
+  effects:
+    combat:
+      damage:
+        all:
+          - element: Air
+            multiplier: 0.25
+
+          - element: Fire
+            multiplier: 0.25
+
+          - element: Water
+            multiplier: 0.25
+
+          - element: Earth
+            multiplier: 0.25

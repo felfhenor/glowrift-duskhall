@@ -23,6 +23,7 @@ import type {
   TalentTreeContent,
   TraitEquipmentContent,
   TraitEquipmentId,
+  TraitLocationContent,
   WorldConfigContent,
 } from '@interfaces';
 
@@ -41,6 +42,7 @@ const initializers: Record<ContentType, (entry: any) => any> = {
   talent: ensureTalent,
   talenttree: ensureTalentTree,
   traitequipment: ensureTraitEquipment,
+  traitlocation: ensureTraitLocation,
   worldconfig: ensureWorldConfig,
 };
 
@@ -166,6 +168,7 @@ function ensureItem(
     preventDrop: item.preventDrop ?? false,
     preventModification: item.preventModification ?? false,
 
+    enchantLevel: item.enchantLevel ?? 0,
     baseStats: ensureStats(item.baseStats),
     talentBoosts: (item.talentBoosts ?? []).map(ensureEquipmentTalentBoost),
     elementMultipliers: (item.elementMultipliers ?? []).map(
@@ -179,6 +182,14 @@ function ensureItem(
 function ensureFestival(festival: FestivalContent): Required<FestivalContent> {
   return {
     ...festival,
+  };
+}
+
+function ensureTraitLocation(
+  trait: TraitLocationContent,
+): Required<TraitLocationContent> {
+  return {
+    ...trait,
   };
 }
 
@@ -231,8 +242,10 @@ function ensureTraitEquipment(
   return {
     id: traitEquipment.id ?? ('UNKNOWN' as TraitEquipmentId),
     name: traitEquipment.name ?? 'UNKNOWN',
+    description: traitEquipment.description ?? 'UNKNOWN',
     __type: 'traitequipment',
     rarity: traitEquipment.rarity ?? 'Common',
+    enchantLevel: traitEquipment.enchantLevel ?? 0,
     baseStats: ensureStats(traitEquipment.baseStats),
     elementMultipliers: (traitEquipment.elementMultipliers ?? []).map(
       ensureEquipmentElement,
