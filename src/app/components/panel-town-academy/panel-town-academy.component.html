@@ -23,15 +23,13 @@
 
   <div class="flex-1 card bg-base-100 foreground shadow-xl">
     <div class="card-body">
-      <div class="card-title">Actions</div>
+      <div class="card-title">Enchantments</div>
 
       @if (!chosen) {
         <app-blank-slate>Choose a skill</app-blank-slate>
       }
 
       @if (chosen) {
-        <div class="card-title">Enchantments</div>
-
         <ul class="list bg-base-100 rounded-box shadow-md">
           @for (path of enchantPaths(); track $index) {
             <li class="list-row">
