@@ -63,5 +63,5 @@ export type EquipmentSkillContent = DroppableEquippable &
   };
 
 export type EquipmentSkill = EquipmentSkillContent & {
-  mods: Partial<EquipmentSkillContentModifiable>;
+  mods?: Partial<EquipmentSkillContentModifiable>;
 };

@@ -54,6 +54,7 @@ export function blacksmithRerollItemTrait(item: EquipmentItem): void {
     const updateItem = state.inventory.items.find((i) => i.id === item.id);
     if (!updateItem) return state;
 
+    updateItem.mods ??= {};
     updateItem.mods.traitIds = [randomChoiceByRarity(allTraits)!.id];
 
     return state;
@@ -276,6 +277,7 @@ export function blacksmithEnchantItem(
 
   loseCurrencies(enchant.cost);
 
+  item.mods ??= {};
   item.mods.enchantLevel ??= 0;
   item.mods.baseStats ??= getDefaultStats();
   item.mods.elementMultipliers ??= [];
@@ -286,7 +288,7 @@ export function blacksmithEnchantItem(
   Object.keys(enchant.elementBoosts).forEach((el) => {
     const multBoost = enchant.elementBoosts[el as GameElement] ?? 0;
 
-    const elMod = item.mods.elementMultipliers!.find(
+    const elMod = item.mods!.elementMultipliers!.find(
       (eqEl) => eqEl.element === el,
     );
     if (elMod) {
@@ -294,7 +296,7 @@ export function blacksmithEnchantItem(
       return;
     }
 
-    item.mods.elementMultipliers!.push({
+    item.mods!.elementMultipliers!.push({
       element: el as GameElement,
       multiplier: multBoost,
     });
@@ -302,11 +304,11 @@ export function blacksmithEnchantItem(
 
   Object.keys(enchant.statBoosts).forEach((stat) => {
     const statBoost = enchant.statBoosts[stat as GameStat];
-    item.mods.baseStats![stat as GameStat] += statBoost;
+    item.mods!.baseStats![stat as GameStat] += statBoost;
   });
 
   enchant.talentBoosts.forEach((tal) => {
-    const talMod = item.mods.talentBoosts!.find(
+    const talMod = item.mods!.talentBoosts!.find(
       (eqEl) => eqEl.talentId === tal,
     );
     if (talMod) {
@@ -314,7 +316,7 @@ export function blacksmithEnchantItem(
       return;
     }
 
-    item.mods.talentBoosts!.push({ talentId: tal, value: 1 });
+    item.mods!.talentBoosts!.push({ talentId: tal, value: 1 });
   });
 
   updateGamestate((state) => {

@@ -246,6 +246,7 @@ export function academyEnchantSkill(
 
   loseCurrencies(enchant.cost);
 
+  skill.mods ??= {};
   skill.mods.enchantLevel ??= 0;
   skill.mods.numTargets ??= 0;
   skill.mods.usesPerCombat ??= 0;
@@ -259,21 +260,22 @@ export function academyEnchantSkill(
   skill.mods.usesPerCombat += enchant.usesPerCombat;
 
   Object.keys(enchant.damageScaling).forEach((scaleStat) => {
-    skill.mods.damageScaling![scaleStat as GameStat] ??= 0;
-    skill.mods.damageScaling![scaleStat as GameStat] +=
+    skill.mods!.damageScaling![scaleStat as GameStat] ??= 0;
+    skill.mods!.damageScaling![scaleStat as GameStat] +=
       enchant.damageScaling[scaleStat as GameStat];
   });
 
   Object.keys(enchant.statusEffectChanceBoost).forEach((statusEffectId) => {
-    skill.mods.statusEffectChanceBoost![statusEffectId as StatusEffectId] ??= 0;
-    skill.mods.statusEffectChanceBoost![statusEffectId as StatusEffectId] +=
+    skill.mods!.statusEffectChanceBoost![statusEffectId as StatusEffectId] ??=
+      0;
+    skill.mods!.statusEffectChanceBoost![statusEffectId as StatusEffectId] +=
       enchant.statusEffectChanceBoost[statusEffectId as StatusEffectId];
   });
 
   Object.keys(enchant.statusEffectDurationBoost).forEach((statusEffectId) => {
-    skill.mods.statusEffectDurationBoost![statusEffectId as StatusEffectId] ??=
+    skill.mods!.statusEffectDurationBoost![statusEffectId as StatusEffectId] ??=
       0;
-    skill.mods.statusEffectDurationBoost![statusEffectId as StatusEffectId] +=
+    skill.mods!.statusEffectDurationBoost![statusEffectId as StatusEffectId] +=
       enchant.statusEffectDurationBoost[statusEffectId as StatusEffectId];
   });
 

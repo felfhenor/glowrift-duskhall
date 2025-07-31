@@ -35,7 +35,7 @@ export type EquipmentItemContent = DroppableEquippable &
   };
 
 export type EquipmentItem = EquipmentItemContent & {
-  mods: Partial<EquipmentModifiable>;
+  mods?: Partial<EquipmentModifiable>;
 };
 
 export type InventorySlotType = EquipmentSlot | 'skill';
