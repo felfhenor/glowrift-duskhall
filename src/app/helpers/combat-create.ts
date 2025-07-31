@@ -5,10 +5,12 @@ import { allHeroes } from '@helpers/hero';
 import { heroEquipmentSkills } from '@helpers/hero-skills';
 import { getFullHeroTalentHash } from '@helpers/hero-talent';
 import { uuid } from '@helpers/rng';
+import { locationTraitCombatElementPercentageModifier } from '@helpers/trait-location-combat';
 import type {
   Combat,
   Combatant,
   CombatId,
+  ElementBlock,
   EquipmentSkill,
   EquipmentSkillId,
   Guardian,
@@ -83,6 +85,13 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
       statusEffectData: {},
     }));
 
+  const elementalModifiers: ElementBlock = {
+    Fire: locationTraitCombatElementPercentageModifier(location, 'Fire'),
+    Air: locationTraitCombatElementPercentageModifier(location, 'Air'),
+    Water: locationTraitCombatElementPercentageModifier(location, 'Water'),
+    Earth: locationTraitCombatElementPercentageModifier(location, 'Earth'),
+  };
+
   return {
     id: uuid() as CombatId,
     locationName: location.name,
@@ -93,5 +102,7 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
     rounds: 0,
     heroes,
     guardians,
+
+    elementalModifiers,
   };
 }

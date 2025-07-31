@@ -1,6 +1,8 @@
 import type { DropRarity } from '@interfaces/droppable';
 import type { GameElement } from '@interfaces/element';
-import type { IsContentItem } from '@interfaces/identifiable';
+import type { Branded, IsContentItem } from '@interfaces/identifiable';
+
+export type CurrencyId = Branded<string, 'CurrencyId'>;
 
 export type GameCurrency =
   | 'Mana'
@@ -13,8 +15,9 @@ export type GameCurrency =
 
 export type CurrencyBlock = Record<GameCurrency, number>;
 
-export interface CurrencyContent extends IsContentItem {
+export type CurrencyContent = IsContentItem & {
+  id: CurrencyId;
   name: GameCurrency;
   element?: GameElement;
   value: number;
-}
+};

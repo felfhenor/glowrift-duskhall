@@ -1,0 +1,80 @@
+- id: 6439b5e2-4da2-4786-9c20-61a4a7526eda
+  name: Dangerous
+  description: Encounter level increased by 7.
+  rarity: Uncommon
+
+  effects:
+    worldgen:
+      encounterLevelModifier: 7
+
+- id: ec2272ad-3c15-4ed3-ab3d-eda4d80dc09e
+  name: Safe
+  description: Encounter level lowered by 7.
+  rarity: Uncommon
+
+  effects:
+    worldgen:
+      encounterLevelModifier: -7
+
+- id: bcb379b1-226e-44ec-b9b8-de082a17a17e
+  name: Very Safe
+  description: Encounter level lowered by 15.
+  rarity: Rare
+
+  effects:
+    worldgen:
+      encounterLevelModifier: -15
+
+- id: 9042ec90-e11f-4417-91af-7c928da83859
+  name: Guard Duty
+  description: This node has +2 guardians.
+  rarity: Uncommon
+
+  effects:
+    worldgen:
+      guardianCountModifier: 2
+
+- id: 5de0975e-847a-4a56-8230-12335380a90a
+  name: Slacking Off
+  description: This node has -2 guardians.
+  rarity: Rare
+
+  effects:
+    worldgen:
+      guardianCountModifier: -2
+
+- id: 60951607-5997-440f-8151-5c18392f4bd0
+  name: Abandoned
+  description: This node does not have guardians.
+  rarity: Mystical
+
+  effects:
+    worldgen:
+      guardianCountModifier: -100
+
+- id: 304ea62c-9d3e-40d1-ae5c-30778747ba63
+  name: Bountiful
+  description: This node has +2 loot items.
+  rarity: Rare
+
+  effects:
+    worldgen:
+      lootCountModifier: 2
+
+- id: 35bcdbc7-7d2e-4490-82ea-0aaeba8b0c38
+  name: Picked Over
+  description: This node has -1 loot item.
+  rarity: Uncommon
+
+  effects:
+    worldgen:
+      lootCountModifier: -1
+
+- id: 079b3c5b-eb0f-4635-9fec-a5a879f7fd90
+  name: Ransacked
+  description: This node does not have loot.
+  rarity: Uncommon
+
+  effects:
+    worldgen:
+      lootCountModifier: -100

@@ -6,6 +6,18 @@ export interface Artable {
   sprite: string;
 }
 
-export interface Animatable extends Artable {
+export type Animatable = Artable & {
   frames: number;
-}
+};
+
+export type AtlasedImage =
+  | 'hero'
+  | 'guardian'
+  | 'world-object'
+  | 'world-terrain'
+  | 'accessory'
+  | 'weapon'
+  | 'trinket'
+  | 'talent'
+  | 'armor'
+  | 'skill';

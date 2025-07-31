@@ -1,9 +1,9 @@
 import type { Combat } from '@interfaces/combat';
-import type { CurrencyBlock } from '@interfaces/currency';
-import type { EquipmentItem } from '@interfaces/equipment';
+import type { CurrencyBlock } from '@interfaces/content-currency';
+import type { EquipmentItem } from '@interfaces/content-equipment';
+import type { EquipmentSkill } from '@interfaces/content-skill';
 import type { Hero, HeroRiskTolerance } from '@interfaces/hero';
 import type { Branded } from '@interfaces/identifiable';
-import type { EquipmentSkill } from '@interfaces/skill';
 import type { Timer } from '@interfaces/timer';
 import type { TownBuilding } from '@interfaces/town';
 import type { WorldLocation, WorldPosition } from '@interfaces/world';

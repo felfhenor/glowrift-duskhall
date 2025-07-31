@@ -7,6 +7,10 @@
 
 <h3 class="text-lg" [ngClass]="itemRarityClass()">
   {{ itemData.name }}
+
+  @if (enchantLevel() > 0) {
+    +{{ enchantLevel() }}
+  }
 </h3>
 
 <div class="mt-3">
@@ -27,48 +31,60 @@
     <div class="mt-3 font-bold mb-1">Stats</div>
   }
 
-  @if (itemHealth() || deltaStat?.Health) {
-    <app-marker-stat
-      stat="Health"
-      [value]="itemHealth() || 0"
-      [delta]="deltaStat?.Health ?? 0"
-    ></app-marker-stat>
-  }
+  <div class="grid" [class.grid-cols-2]="allowHorizontalCollapseOfStatBlocks()">
+    @if (itemHealth() || deltaStat?.Health) {
+      <app-marker-stat
+        class="col-span-1"
+        stat="Health"
+        [value]="itemHealth() || 0"
+        [delta]="deltaStat?.Health ?? 0"
+      ></app-marker-stat>
+    }
 
-  @if (itemForce() || deltaStat?.Force) {
-    <app-marker-stat
-      stat="Force"
-      [value]="itemForce() || 0"
-      [delta]="deltaStat?.Force ?? 0"
-    ></app-marker-stat>
-  }
+    @if (itemForce() || deltaStat?.Force) {
+      <app-marker-stat
+        class="col-span-1"
+        stat="Force"
+        [value]="itemForce() || 0"
+        [delta]="deltaStat?.Force ?? 0"
+      ></app-marker-stat>
+    }
 
-  @if (itemAura() || deltaStat?.Aura) {
-    <app-marker-stat
-      stat="Aura"
-      [value]="itemAura() || 0"
-      [delta]="deltaStat?.Aura ?? 0"
-    ></app-marker-stat>
-  }
+    @if (itemAura() || deltaStat?.Aura) {
+      <app-marker-stat
+        class="col-span-1"
+        stat="Aura"
+        [value]="itemAura() || 0"
+        [delta]="deltaStat?.Aura ?? 0"
+      ></app-marker-stat>
+    }
 
-  @if (itemSpeed() || deltaStat?.Speed) {
-    <app-marker-stat
-      stat="Speed"
-      [value]="itemSpeed() || 0"
-      [delta]="deltaStat?.Speed ?? 0"
-    ></app-marker-stat>
-  }
+    @if (itemSpeed() || deltaStat?.Speed) {
+      <app-marker-stat
+        class="col-span-1"
+        stat="Speed"
+        [value]="itemSpeed() || 0"
+        [delta]="deltaStat?.Speed ?? 0"
+      ></app-marker-stat>
+    }
+  </div>
 
   @if (allElements.length > 0) {
     <div class="mt-3 font-bold mb-1">Elements</div>
 
-    @for (element of allElements; track $index) {
-      <app-marker-element
-        [element]="element.element"
-        [value]="element.multiplier"
-        [delta]="deltaElement?.[element.element] ?? 0"
-      ></app-marker-element>
-    }
+    <div
+      class="grid"
+      [class.grid-cols-2]="allowHorizontalCollapseOfStatBlocks()"
+    >
+      @for (element of allElements; track $index) {
+        <app-marker-element
+          class="col-span-1"
+          [element]="element.element"
+          [value]="element.multiplier"
+          [delta]="deltaElement?.[element.element] ?? 0"
+        ></app-marker-element>
+      }
+    </div>
   }
 
   @if (allSkills.length > 0) {

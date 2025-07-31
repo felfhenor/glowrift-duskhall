@@ -6,6 +6,7 @@ import { MarkerTraitComponent } from '@components/marker-trait/marker-trait.comp
 import {
   getEntry,
   getItemElementMultiplier,
+  getItemEnchantLevel,
   getItemSkills,
   getItemStat,
   getItemTalents,
@@ -34,6 +35,11 @@ export class StatsItemComponent {
   public item = input.required<EquipmentItemContent | EquipmentItem>();
   public statDeltas = input<StatBlock>();
   public elementDeltas = input<ElementBlock>();
+  public allowHorizontalCollapseOfStatBlocks = input<boolean>(false);
+
+  public enchantLevel = computed(() =>
+    getItemEnchantLevel(this.item() as EquipmentItem),
+  );
 
   public itemRarityClass = computed(() =>
     rarityItemTextColor(this.item().rarity),
@@ -66,7 +72,7 @@ export class StatsItemComponent {
   public skills = computed(() => getItemSkills(this.item() as EquipmentItem));
 
   public elementBoosts = computed(() =>
-    (['Fire', 'Water', 'Earth', 'Air'] as GameElement[])
+    (['Earth', 'Fire', 'Water', 'Air'] as GameElement[])
       .map((el) => ({
         element: el,
         multiplier: getItemElementMultiplier(this.item(), el),

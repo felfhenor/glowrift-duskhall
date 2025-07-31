@@ -1,10 +1,13 @@
 import type { Animatable } from '@interfaces/artable';
+import type {
+  EquipmentSkill,
+  EquipmentSkillId,
+} from '@interfaces/content-skill';
+import type { StatusEffect } from '@interfaces/content-statuseffect';
+import type { TalentId } from '@interfaces/content-talent';
 import type { ElementBlock } from '@interfaces/element';
 import type { Branded } from '@interfaces/identifiable';
-import type { EquipmentSkill, EquipmentSkillId } from '@interfaces/skill';
 import type { StatBlock } from '@interfaces/stat';
-import type { StatusEffect } from '@interfaces/statuseffect';
-import type { TalentId } from '@interfaces/talent';
 import type { WorldPosition } from '@interfaces/world';
 
 export type CombatId = Branded<string, 'CombatId'>;
@@ -58,4 +61,6 @@ export interface Combat {
   rounds: number;
   heroes: Combatant[];
   guardians: Combatant[];
+
+  elementalModifiers: ElementBlock;
 }

@@ -7,8 +7,8 @@ import type {
   WorldLocation,
 } from '@interfaces';
 import type { CombatantTargettingType } from '@interfaces/combat';
+import type { GuardianId } from '@interfaces/content-guardian';
 import type { GameElement } from '@interfaces/element';
-import type { GuardianId } from '@interfaces/guardian';
 import { describe, expect, it } from 'vitest';
 
 describe('Guardian Helper Functions', () => {
@@ -22,13 +22,12 @@ describe('Guardian Helper Functions', () => {
         x: 0,
         y: 0,
         elements: [],
-        sprite: 'test-sprite',
-        objectSprite: 'test-object',
         currentlyClaimed: false,
         claimCount: 0,
         unclaimTime: 0,
         guardianIds: [],
         claimLootIds: [],
+        traitIds: [],
       };
 
       const guardianContent: GuardianContent = {
@@ -76,13 +75,12 @@ describe('Guardian Helper Functions', () => {
         x: 0,
         y: 0,
         elements: [],
-        sprite: 'test-sprite',
-        objectSprite: 'test-object',
         currentlyClaimed: false,
         claimCount: 0,
         unclaimTime: 0,
         guardianIds: [],
         claimLootIds: [],
+        traitIds: [],
       };
 
       const guardianContent: GuardianContent = {

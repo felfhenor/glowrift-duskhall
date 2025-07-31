@@ -71,7 +71,7 @@
 </app-card-page>
 
 @if (equipItemType(); as equipType) {
-  <app-card-page height="270px">
+  <app-card-page height="370px">
     <span header>Choose {{ equipType | titlecase }}</span>
 
     <div pageactions>
@@ -80,19 +80,18 @@
       </button>
     </div>
 
-    <div class="flex flex-row max-h-[156px] overflow-y-auto p-2">
-      <app-inventory-grid-item
-        [items]="visibleItemsToEquip()"
-        (itemClicked)="equipItem($event)"
-        [clickableItems]="true"
-        [compareWithEquippedHero]="activeHero()"
-      ></app-inventory-grid-item>
-    </div>
+    <app-inventory-grid-container
+      [allowedItemTypes]="[equipType]"
+      (itemClicked)="equipItem($event)"
+      [allowItemClicks]="true"
+      [containerHeight]="220"
+      [compareItemToHero]="activeHero()"
+    ></app-inventory-grid-container>
   </app-card-page>
 }
 
 @if (skillSlot() >= 0) {
-  <app-card-page height="270px">
+  <app-card-page height="370px">
     <span header>Choose Spell</span>
 
     <div pageactions>
@@ -101,12 +100,11 @@
       </button>
     </div>
 
-    <div class="flex flex-row max-h-[156px] overflow-y-auto p-2">
-      <app-inventory-grid-skill
-        [skills]="visibleSkillsToEquip()"
-        (itemClicked)="equipSkill($event)"
-        [clickableSkills]="true"
-      ></app-inventory-grid-skill>
-    </div>
+    <app-inventory-grid-container
+      [allowedItemTypes]="['skill']"
+      (skillClicked)="equipSkill($event)"
+      [allowSkillClicks]="true"
+      [containerHeight]="220"
+    ></app-inventory-grid-container>
   </app-card-page>
 }

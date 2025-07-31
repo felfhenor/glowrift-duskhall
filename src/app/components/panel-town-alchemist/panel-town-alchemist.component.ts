@@ -1,22 +1,20 @@
 import { Component, computed, signal } from '@angular/core';
-import { TeleportDirective } from '@ngneat/overview';
-import { RepeatPipe } from 'ngxtension/repeat-pipe';
-import {
-  gamestate,
-  maxAlchemistSkills,
-  multiSkillSalvageCurrencyGain,
-  notifySuccess,
-  salvageSkills,
-  sortedRarityList,
-} from '@helpers';
-import type { EquipmentSkill, GameCurrency } from '@interfaces';
 import { BlankSlateComponent } from '@components/blank-slate/blank-slate.component';
 import { CardPageComponent } from '@components/card-page/card-page.component';
 import { IconBlankSlotComponent } from '@components/icon-blank-slot/icon-blank-slot.component';
 import { IconSkillComponent } from '@components/icon-skill/icon-skill.component';
-import { InventoryGridSkillComponent } from '@components/inventory-grid-skill/inventory-grid-skill.component';
+import { InventoryGridContainerComponent } from '@components/inventory-grid-container/inventory-grid-container.component';
 import { MarkerCurrencyComponent } from '@components/marker-currency/marker-currency.component';
 import { PanelTownBuildingUpgradeComponent } from '@components/panel-town-building-upgrade/panel-town-building-upgrade.component';
+import {
+  maxAlchemistSkills,
+  multiSkillSalvageCurrencyGain,
+  notifySuccess,
+  salvageSkills,
+} from '@helpers';
+import type { EquipmentSkill, GameCurrency } from '@interfaces';
+import { TeleportDirective } from '@ngneat/overview';
+import { RepeatPipe } from 'ngxtension/repeat-pipe';
 
 @Component({
   selector: 'app-panel-town-alchemist',
@@ -28,45 +26,41 @@ import { PanelTownBuildingUpgradeComponent } from '@components/panel-town-buildi
     BlankSlateComponent,
     MarkerCurrencyComponent,
     TeleportDirective,
-    InventoryGridSkillComponent,
     IconSkillComponent,
+    InventoryGridContainerComponent,
   ],
   templateUrl: './panel-town-alchemist.component.html',
   styleUrl: './panel-town-alchemist.component.css',
 })
 export class PanelTownAlchemistComponent {
-  public selectedItems = signal<EquipmentSkill[]>([]);
+  public selectedSkills = signal<EquipmentSkill[]>([]);
 
-  public visibleSpellsToBreakDown = computed(() =>
-    sortedRarityList(
-      gamestate().inventory.skills.filter(
-        (i) => !this.selectedItems().includes(i),
-      ),
-    ),
+  public disabledSkillIds = computed(() =>
+    this.selectedSkills().map((i) => i.id),
   );
 
   public maxSlots = computed(() => maxAlchemistSkills());
 
   public hasAnyItems = computed(
-    () => this.selectedItems().filter(Boolean).length > 0,
+    () => this.selectedSkills().filter(Boolean).length > 0,
   );
 
   public earnings = computed(
     () =>
-      Object.entries(multiSkillSalvageCurrencyGain(this.selectedItems())) as [
+      Object.entries(multiSkillSalvageCurrencyGain(this.selectedSkills())) as [
         GameCurrency,
         number,
       ][],
   );
 
   chooseItem(item: EquipmentSkill) {
-    if (this.selectedItems().length >= this.maxSlots()) return;
+    if (this.selectedSkills().length >= this.maxSlots()) return;
 
-    this.selectedItems.update((items) => [...items, item]);
+    this.selectedSkills.update((items) => [...items, item]);
   }
 
   unchooseItem(index: number) {
-    this.selectedItems.update((items) => {
+    this.selectedSkills.update((items) => {
       const newItems = [...items];
       newItems.splice(index, 1);
       return newItems;
@@ -74,9 +68,9 @@ export class PanelTownAlchemistComponent {
   }
 
   breakItems() {
-    salvageSkills(this.selectedItems());
-    notifySuccess(`You salvaged ${this.selectedItems().length} spells!`);
+    salvageSkills(this.selectedSkills());
+    notifySuccess(`You salvaged ${this.selectedSkills().length} spells!`);
 
-    this.selectedItems.set([]);
+    this.selectedSkills.set([]);
   }
 }

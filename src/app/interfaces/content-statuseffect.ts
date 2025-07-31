@@ -33,7 +33,7 @@ export type StatusEffectBehavior =
   | StatusEffectBehaviorDataChange
   | StatusEffectBehaviorTakeDamage;
 
-export interface StatusEffectContent extends IsContentItem {
+export type StatusEffectContent = IsContentItem & {
   id: StatusEffectId;
   __type: 'statuseffect';
 
@@ -44,7 +44,7 @@ export interface StatusEffectContent extends IsContentItem {
   onUnapply: StatusEffectBehavior[];
 
   statScaling: StatBlock;
-}
+};
 
 export type StatusEffect = StatusEffectContent & {
   duration: number;

@@ -108,6 +108,7 @@ describe('Currency Helper Functions', () => {
     it('should calculate currency claims for cave nodes', () => {
       const node: WorldLocation = {
         nodeType: 'cave',
+        traitIds: [],
         elements: [{ element: 'Fire', intensity: 100 }],
       } as WorldLocation;
 
@@ -118,6 +119,7 @@ describe('Currency Helper Functions', () => {
     it('should calculate currency claims for village nodes', () => {
       const node: WorldLocation = {
         nodeType: 'village',
+        traitIds: [],
       } as WorldLocation;
 
       const claims = getCurrencyClaimsForNode(node);
@@ -127,6 +129,7 @@ describe('Currency Helper Functions', () => {
     it('should calculate currency claims for town nodes', () => {
       const node: WorldLocation = {
         nodeType: 'town',
+        traitIds: [],
       } as WorldLocation;
 
       const claims = getCurrencyClaimsForNode(node);

@@ -1,0 +1,17 @@
+- id: f6de3bab-b57d-4985-839a-2b041121f855
+  name: Forever Away
+  description: This node takes 25% longer to get to.
+  rarity: Common
+
+  effects:
+    exploration:
+      travelTimePercent: 0.25
+
+- id: 2c34ac2f-6f36-4d0c-b9bb-a119171ef852
+  name: Surprisingly Close
+  description: This node takes 25% less time to get to.
+  rarity: Common
+
+  effects:
+    exploration:
+      travelTimePercent: -0.25

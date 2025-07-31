@@ -4,7 +4,20 @@ import {
   rarityItemTextColor,
   sortedRarityList,
 } from '@helpers/item';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
+
+// Mock uuid
+vi.mock('@helpers/rng', () => ({
+  uuid: vi.fn(() => 'mock-uuid'),
+}));
+
+vi.mock('@helpers/signal', () => ({
+  localStorageSignal: vi.fn(),
+}));
+
+vi.mock('@helpers/state-game', () => ({
+  gamestate: vi.fn(),
+}));
 
 import type {
   DroppableEquippable,

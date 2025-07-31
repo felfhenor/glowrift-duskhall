@@ -11,15 +11,15 @@
 
   techniques:
     - elements: [Water]
-      attributes: [BypassDefense, AllowNegative]
+      attributes: [BypassDefense, HealsTarget]
       targets: 1
       targetType: Allies
       targetBehaviors:
         - behavior: NotZeroHealth
         - behavior: NotMaxHealth
       damageScaling:
-        Force: -0.5
-        Aura: -0.25
+        Force: 0.5
+        Aura: 0.25
 
       combatMessage: '**{{ combatant.name }}** cast **{{ skill.name }}** on **{{ target.name }}** for {{ absdamage }} healing ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
 
@@ -36,15 +36,15 @@
 
   techniques:
     - elements: [Water]
-      attributes: [BypassDefense, AllowNegative]
+      attributes: [BypassDefense, HealsTarget]
       targets: 1
       targetType: Allies
       targetBehaviors:
         - behavior: NotZeroHealth
         - behavior: NotMaxHealth
       damageScaling:
-        Force: -1
-        Aura: -0.25
+        Force: 1
+        Aura: 0.25
 
       combatMessage: '**{{ combatant.name }}** cast **{{ skill.name }}** on **{{ target.name }}** for {{ absdamage }} healing ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
 
@@ -61,15 +61,15 @@
 
   techniques:
     - elements: [Water]
-      attributes: [BypassDefense, AllowNegative]
+      attributes: [BypassDefense, HealsTarget]
       targets: 1
       targetType: Allies
       targetBehaviors:
         - behavior: NotZeroHealth
         - behavior: NotMaxHealth
       damageScaling:
-        Force: -1.5
-        Aura: -0.25
+        Force: 1.5
+        Aura: 0.25
 
       combatMessage: '**{{ combatant.name }}** cast **{{ skill.name }}** on **{{ target.name }}** for {{ absdamage }} healing ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
 
