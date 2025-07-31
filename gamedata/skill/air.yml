@@ -1,0 +1,68 @@
+- id: 9a9752ce-82f5-42f6-93c7-35c3fc51956e
+  name: Thunderwave I
+
+  sprite: '0330'
+  frames: 6
+
+  rarity: Common
+  dropLevel: 7
+
+  usesPerCombat: 7
+
+  techniques:
+    - elements: [Air]
+      attributes: [AllowPlink]
+      targets: 10
+      targetType: Enemies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+      damageScaling:
+        Force: 0.1
+
+      combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
+
+- id: c272f763-adf9-4689-b851-d2adace9083c
+  name: Thunderwave II
+
+  sprite: '0330'
+  frames: 6
+
+  rarity: Uncommon
+  dropLevel: 12
+
+  usesPerCombat: 5
+
+  techniques:
+    - elements: [Air]
+      attributes: [AllowPlink]
+      targets: 10
+      targetType: Enemies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+      damageScaling:
+        Force: 0.15
+
+      combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
+
+- id: 6033c3e3-0dc2-44fb-8e40-b83295572ee2
+  name: Thunderwave III
+
+  sprite: '0330'
+  frames: 6
+
+  rarity: Rare
+  dropLevel: 17
+
+  usesPerCombat: 3
+
+  techniques:
+    - elements: [Air]
+      attributes: [AllowPlink]
+      targets: 10
+      targetType: Enemies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+      damageScaling:
+        Force: 0.2
+
+      combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'

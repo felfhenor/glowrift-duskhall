@@ -1,0 +1,68 @@
+- id: d8c60f46-98a9-456c-be7b-c4af08d74b24
+  name: Earthspike I
+
+  sprite: '0099'
+  frames: 8
+
+  rarity: Common
+  dropLevel: 5
+
+  usesPerCombat: 1
+
+  techniques:
+    - elements: [Earth]
+      attributes: [AllowPlink]
+      targets: 1
+      targetType: Enemies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+      damageScaling:
+        Force: 3
+
+      combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
+
+- id: a8ce4943-b8f3-4355-8841-df92f572a5bd
+  name: Earthspike II
+
+  sprite: '0099'
+  frames: 8
+
+  rarity: Uncommon
+  dropLevel: 10
+
+  usesPerCombat: 1
+
+  techniques:
+    - elements: [Earth]
+      attributes: [AllowPlink]
+      targets: 1
+      targetType: Enemies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+      damageScaling:
+        Force: 6
+
+      combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
+
+- id: 22d947ce-281e-4376-9090-0660438a208f
+  name: Earthspike III
+
+  sprite: '0099'
+  frames: 8
+
+  rarity: Rare
+  dropLevel: 15
+
+  usesPerCombat: 1
+
+  techniques:
+    - elements: [Earth]
+      attributes: [AllowPlink]
+      targets: 1
+      targetType: Enemies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+      damageScaling:
+        Force: 9
+
+      combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'

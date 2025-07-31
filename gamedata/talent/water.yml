@@ -1,7 +1,7 @@
 - id: b268cfd1-5f0f-4985-a5b9-71afdf34c3a9
   name: Strength of Healsprite I
   description: Boost the power of Healsprite skills by 25%.
-  sprite: '0019'
+  sprite: '0007'
 
   boostedSkillIds:
     - Healsprite I
@@ -14,7 +14,7 @@
 - id: 2940b343-b2ce-4458-bae5-7d4d0adbee69
   name: Strength of Healsprite II
   description: Boost the power of Healsprite skills by 25%.
-  sprite: '0019'
+  sprite: '0007'
 
   requireTalentId: Strength of Healsprite I
 
@@ -29,7 +29,7 @@
 - id: 2cd4e91e-f25a-4091-a89b-fa353ffaa0ad
   name: Strength of Healsprite III
   description: Boost the power of Healsprite skills by 25%.
-  sprite: '0019'
+  sprite: '0007'
 
   requireTalentId: Strength of Healsprite II
 

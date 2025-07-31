@@ -42,7 +42,7 @@ export function academyNextSkillEnchants(
   const validPaths: AcademyEnchant[] = [
     {
       description: '+1 Combat Uses',
-      rarity: 'Common',
+      rarity: 'Rare',
       cost: {
         ...getDefaultCurrencyBlock(),
         'Soul Essence': adjustByLevel(100),
@@ -55,7 +55,7 @@ export function academyNextSkillEnchants(
     },
     {
       description: '+2 Combat Uses',
-      rarity: 'Uncommon',
+      rarity: 'Mystical',
       cost: {
         ...getDefaultCurrencyBlock(),
         'Soul Essence': adjustByLevel(300),
@@ -68,7 +68,7 @@ export function academyNextSkillEnchants(
     },
     {
       description: '+3 Combat Uses',
-      rarity: 'Rare',
+      rarity: 'Legendary',
       cost: {
         ...getDefaultCurrencyBlock(),
         'Soul Essence': adjustByLevel(500),

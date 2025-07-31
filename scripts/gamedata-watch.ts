@@ -18,6 +18,7 @@ const startWatch = async () => {
     console.info(`[helpers] ${name} changed. Rebuilding gamedata...`);
 
     runCommand('npm run gamedata:build');
+    runCommand('npm run gamedata:art:spritesheets');
     console.info('[helpers] Rebuilt.');
   });
 };
