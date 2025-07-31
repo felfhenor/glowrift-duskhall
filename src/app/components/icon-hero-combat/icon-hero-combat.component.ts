@@ -3,11 +3,11 @@ import type { Hero } from '@interfaces';
 import { AtlasAnimationComponent } from '@components/atlas-animation/atlas-animation.component';
 
 @Component({
-  selector: 'app-icon-hero',
+  selector: 'app-icon-hero-combat',
   imports: [AtlasAnimationComponent],
-  templateUrl: './icon-hero.component.html',
-  styleUrl: './icon-hero.component.scss',
+  templateUrl: './icon-hero-combat.component.html',
+  styleUrl: './icon-hero-combat.component.scss',
 })
-export class IconHeroComponent {
+export class IconHeroCombatComponent {
   public hero = input.required<Hero>();
 }

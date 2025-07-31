@@ -1,15 +1,22 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed } from '@angular/core';
 import { marked } from 'marked';
-import { combatLog, rarityItemTextColor, gamestate } from '@helpers';
+import {
+  combatLog,
+  rarityItemTextColor,
+  gamestate,
+  getEntry,
+  createGuardianForLocation,
+} from '@helpers';
 import { getHealthColor } from '@helpers/combat-log';
 import type { DropRarity } from '@interfaces/droppable';
-import { IconHeroComponent } from '@components/icon-hero/icon-hero.component';
-import type { Hero } from '@interfaces';
+import type { Guardian, Hero } from '@interfaces';
+import { IconHeroCombatComponent } from '@components/icon-hero-combat/icon-hero-combat.component';
+import { IconGuardianCombatComponent } from '@components/icon-guardian-combat/icon-guardian-combat.component';
 
 @Component({
   selector: 'app-panel-combat-combatlog',
-  imports: [CommonModule, IconHeroComponent],
+  imports: [CommonModule, IconHeroCombatComponent, IconGuardianCombatComponent],
   templateUrl: './panel-combat-combatlog.component.html',
   styleUrl: './panel-combat-combatlog.component.scss',
 })
@@ -56,9 +63,25 @@ export class PanelCombatCombatlogComponent {
     })),
   );
 
-  public getActorFromMessage(message: string): Hero | null {
-    const firstWord = message.split(' ')[0];
-    const cleanName = firstWord.replace(/\*+/g, '');
-    return this.allHeroes().find((h) => h.name === cleanName) || null;
+  public getHeroById(actorId: string): Hero | null {
+    return gamestate().hero.heroes.find((h) => h.id === actorId) || null;
+  }
+
+  public getGuardianById(actorId: string): Guardian | null {
+    const guardianContent = getEntry<Guardian>(actorId);
+    if (!guardianContent) return null;
+
+    const combat = gamestate().hero.combat;
+    if (!combat) return guardianContent;
+
+    const currentLocation = Object.values(gamestate().world.nodes).find(
+      (node) =>
+        node.x === combat.locationPosition.x &&
+        node.y === combat.locationPosition.y,
+    );
+
+    if (!currentLocation) return guardianContent;
+
+    return createGuardianForLocation(currentLocation, guardianContent);
   }
 }

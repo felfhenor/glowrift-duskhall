@@ -15,6 +15,8 @@ export interface CombatLog {
   timestamp: number;
   locationName: string;
   message: string;
+  actorId: string;
+  type: 'hero' | 'guardian' | 'system';
 }
 
 export type CombatantStatusEffectData = {

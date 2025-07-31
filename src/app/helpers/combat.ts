@@ -58,19 +58,27 @@ export function combatantMarkSkillUse(
 
 export function combatantTakeTurn(combat: Combat, combatant: Combatant): void {
   if (isDead(combatant)) {
-    logCombatMessage(combat, `**${combatant.name}** is dead, skipping turn.`);
+    logCombatMessage(
+      combat,
+      `**${combatant.name}** is dead, skipping turn.`,
+      combatant,
+    );
     return;
   }
 
   handleCombatantStatusEffects(combat, combatant, 'TurnStart');
 
   if (isDead(combatant)) {
-    logCombatMessage(combat, `**${combatant.name}** has died!`);
+    logCombatMessage(combat, `**${combatant.name}** has died!`, combatant);
     return;
   }
 
   if (!canTakeTurn(combatant)) {
-    logCombatMessage(combat, `**${combatant.name}** lost their turn!`);
+    logCombatMessage(
+      combat,
+      `**${combatant.name}** lost their turn!`,
+      combatant,
+    );
     return;
   }
 
@@ -83,6 +91,7 @@ export function combatantTakeTurn(combat: Combat, combatant: Combatant): void {
     logCombatMessage(
       combat,
       `**${combatant.name}** has no skills available, skipping turn.`,
+      combatant,
     );
     return;
   }
@@ -114,7 +123,7 @@ export function combatantTakeTurn(combat: Combat, combatant: Combatant): void {
   handleCombatantStatusEffects(combat, combatant, 'TurnEnd');
 
   if (isDead(combatant)) {
-    logCombatMessage(combat, `**${combatant.name}** has died!`);
+    logCombatMessage(combat, `**${combatant.name}** has died!`, combatant);
     return;
   }
 }
