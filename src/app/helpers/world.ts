@@ -198,3 +198,32 @@ export function hasClaimedNodeCount(
 ): boolean {
   return getClaimedNodeTypeCount(type) >= needed;
 }
+
+export function hasWonForFirstTime(): boolean {
+  const { hasDismissedWinNotification, hasWon } = gamestate().meta;
+  return hasWon && hasDismissedWinNotification;
+}
+
+export function areAllNodesClaimed(): boolean {
+  const { nodeCounts, claimedCounts } = gamestate().world;
+
+  return Object.keys(nodeCounts).every(
+    (type) =>
+      claimedCounts[type as LocationType] >= nodeCounts[type as LocationType],
+  );
+}
+
+export function dismissWinGameDialog(): void {
+  updateGamestate((state) => {
+    state.meta.hasDismissedWinNotification = true;
+    return state;
+  });
+}
+
+export function winGame(): void {
+  updateGamestate((state) => {
+    state.meta.hasWon = true;
+    state.meta.wonAtTick = state.actionClock.numTicks;
+    return state;
+  });
+}

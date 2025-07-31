@@ -8,7 +8,7 @@ import type {
 import type { GameStat } from '@interfaces/stat';
 
 export function getSkillEnchantLevel(skill: EquipmentSkill): number {
-  return skill.enchantLevel + (skill.mods.enchantLevel ?? 0);
+  return skill.enchantLevel + (skill.mods?.enchantLevel ?? 0);
 }
 
 export function getSkillById(
@@ -18,14 +18,14 @@ export function getSkillById(
 }
 
 export function getSkillUses(skill: EquipmentSkill): number {
-  return skill.usesPerCombat + (skill.mods.usesPerCombat ?? 0);
+  return skill.usesPerCombat + (skill.mods?.usesPerCombat ?? 0);
 }
 
 export function getSkillTechniqueNumTargets(
   skill: EquipmentSkill,
   technique: EquipmentSkillContentTechnique,
 ): number {
-  return technique.targets + (skill.mods.numTargets ?? 0);
+  return technique.targets + (skill.mods?.numTargets ?? 0);
 }
 
 export function getSkillTechniqueDamageScalingStat(
@@ -34,7 +34,7 @@ export function getSkillTechniqueDamageScalingStat(
   stat: GameStat,
 ): number {
   return (
-    technique.damageScaling[stat] + (skill.mods.damageScaling?.[stat] ?? 0)
+    technique.damageScaling[stat] + (skill.mods?.damageScaling?.[stat] ?? 0)
   );
 }
 
@@ -44,7 +44,7 @@ export function getSkillTechniqueStatusEffectChance(
 ): number {
   return (
     techniqueApplication.chance +
-    (skill.mods.statusEffectChanceBoost?.[
+    (skill.mods?.statusEffectChanceBoost?.[
       techniqueApplication.statusEffectId
     ] ?? 0)
   );
@@ -56,7 +56,7 @@ export function getSkillTechniqueStatusEffectDuration(
 ): number {
   return (
     techniqueApplication.duration +
-    (skill.mods.statusEffectDurationBoost?.[
+    (skill.mods?.statusEffectDurationBoost?.[
       techniqueApplication.statusEffectId
     ] ?? 0)
   );

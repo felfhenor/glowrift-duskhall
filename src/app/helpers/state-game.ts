@@ -19,6 +19,9 @@ export function blankGameState(): GameState {
       isSetup: false,
       isPaused: false,
       createdAt: Date.now(),
+      hasDismissedWinNotification: false,
+      hasWon: false,
+      wonAtTick: 0,
     },
     gameId: uuid() as GameId,
     world: {

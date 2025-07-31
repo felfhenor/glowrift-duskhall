@@ -11,7 +11,12 @@ import { travelGameloop } from '@helpers/gameloop-travel';
 import { debug } from '@helpers/logging';
 import { isSetup } from '@helpers/setup';
 import { isGameStateReady, updateGamestate } from '@helpers/state-game';
-import { getOption } from '@helpers/state-options';
+import { getOption, setOption } from '@helpers/state-options';
+import {
+  areAllNodesClaimed,
+  hasWonForFirstTime,
+  winGame,
+} from '@helpers/world';
 
 export const isGameloopPaused = computed(() => getOption('gameloopPaused'));
 
@@ -23,6 +28,12 @@ export function doGameloop(totalTicks: number): void {
   if (!isSetup()) return;
   if (!isGameStateReady()) return;
   if (isGameloopPaused()) return;
+
+  if (areAllNodesClaimed() && !hasWonForFirstTime()) {
+    winGame();
+    setOption('gameloopPaused', true);
+    return;
+  }
 
   const numTicks = totalTicks * getOption('debugTickMultiplier');
 
