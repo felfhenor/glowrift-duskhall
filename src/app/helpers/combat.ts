@@ -23,8 +23,12 @@ import { notify } from '@helpers/notify';
 
 import { sample, sortBy } from 'es-toolkit/compat';
 
+import { succeedsChance } from '@helpers/rng';
 import { getSkillTechniqueNumTargets } from '@helpers/skill';
-import { talentTargetCountBoost } from '@helpers/talent';
+import {
+  talentIgnoreConsumptionChance,
+  talentTargetCountBoost,
+} from '@helpers/talent';
 import type {
   Combat,
   Combatant,
@@ -56,6 +60,12 @@ export function combatantMarkSkillUse(
   combatant: Combatant,
   skill: EquipmentSkill,
 ): void {
+  const shouldIgnoreUseChance = talentIgnoreConsumptionChance(
+    allCombatantTalents(combatant),
+    skill,
+  );
+  if (succeedsChance(shouldIgnoreUseChance)) return;
+
   combatant.skillUses[skill.id] ??= 0;
   combatant.skillUses[skill.id]++;
 }

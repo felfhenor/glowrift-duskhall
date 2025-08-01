@@ -127,3 +127,12 @@
   applyToElements: [Fire]
 
   additionalTargets: 1
+
+- id: 9565be6a-f02b-4d73-a4ae-deb0c206f447
+  name: Eternal Flame
+  description: All Fire spells have a 25% chance to not consume a use.
+  sprite: '0008'
+
+  applyToElements: [Fire]
+
+  chanceToIgnoreConsume: 25

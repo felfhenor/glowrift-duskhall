@@ -112,3 +112,13 @@ export function talentTargetCountBoost(
 ): number {
   return talentPropTotal(talentsForSkill(talents, skill), 'additionalTargets');
 }
+
+export function talentIgnoreConsumptionChance(
+  talents: TalentContent[],
+  skill: EquipmentSkill,
+): number {
+  return talentPropTotal(
+    talentsForSkill(talents, skill),
+    'chanceToIgnoreConsume',
+  );
+}

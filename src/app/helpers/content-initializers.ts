@@ -221,6 +221,8 @@ function ensureTalent(talent: Partial<TalentContent>): Required<TalentContent> {
     boostStatusEffectStats: ensureStats(talent.boostStatusEffectStats),
 
     additionalTargets: talent.additionalTargets ?? 0,
+
+    chanceToIgnoreConsume: talent.chanceToIgnoreConsume ?? 0,
   };
 }
 

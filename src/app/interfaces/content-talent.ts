@@ -25,4 +25,6 @@ export type TalentContent = IsContentItem &
     boostStatusEffectStats: StatBlock;
 
     additionalTargets: number;
+
+    chanceToIgnoreConsume: number;
   };
