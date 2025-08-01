@@ -1,0 +1,21 @@
+<div class="flex gap-2">
+  <div class="flex-1 min-w-[300px] italic text-sm">This Skill</div>
+
+  <div class="flex-1 min-w-[300px] italic text-sm">Currently Equipped</div>
+</div>
+
+<div class="flex gap-2">
+  <div class="flex-1 w-[300px]">
+    <app-stats-skill
+      [skill]="skill()"
+      [equippingHero]="equippingHero()"
+    ></app-stats-skill>
+  </div>
+
+  <div class="flex-1 w-[300px]">
+    <app-stats-skill
+      [skill]="compareWith()"
+      [equippingHero]="equippingHero()"
+    ></app-stats-skill>
+  </div>
+</div>

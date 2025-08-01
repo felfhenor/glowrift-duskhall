@@ -105,6 +105,8 @@
       (skillClicked)="equipSkill($event)"
       [allowSkillClicks]="true"
       [containerHeight]="220"
+      [compareSkillToHero]="activeHero()"
+      [compareSkillToHeroSlot]="skillSlot()"
     ></app-inventory-grid-container>
   </app-card-page>
 }

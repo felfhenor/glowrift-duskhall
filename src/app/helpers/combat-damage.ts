@@ -19,6 +19,7 @@ import {
 import {
   talentStatBoost,
   talentStatusEffectChanceBoost,
+  talentStatusEffectDurationBoost,
 } from '@helpers/talent';
 import type {
   Combat,
@@ -169,7 +170,9 @@ export function applySkillToTarget(
     if (!succeedsChance(totalChance)) return;
 
     const statusEffect = createStatusEffect(effectContent, skill, combatant, {
-      duration: getSkillTechniqueStatusEffectDuration(skill, effData),
+      duration:
+        getSkillTechniqueStatusEffectDuration(skill, effData) +
+        talentStatusEffectDurationBoost(attackerTalents, skill, effectContent),
     });
 
     applyStatusEffectToTarget(combat, target, statusEffect);

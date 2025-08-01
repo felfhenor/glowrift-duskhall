@@ -13,6 +13,7 @@ export type TalentContent = IsContentItem &
 
     requireTalentId?: string;
 
+    applyToAllSkills: boolean;
     applyToElements: GameElement[];
     applyToSkillIds: string[];
     applyToStatusEffectIds: string[];
@@ -20,6 +21,7 @@ export type TalentContent = IsContentItem &
     boostStats: StatBlock;
 
     boostedStatusEffectChance: number;
+    boostedStatusEffectDuration: number;
     boostStatusEffectStats: StatBlock;
 
     additionalTargets: number;

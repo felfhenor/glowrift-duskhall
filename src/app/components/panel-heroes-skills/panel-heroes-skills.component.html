@@ -9,7 +9,10 @@
       (contextmenu)="slotRightClick.emit(spellSlot)"
     >
       @if (hero().skills[spellSlot]; as skill) {
-        <app-icon-skill [skill]="skill"></app-icon-skill>
+        <app-icon-skill
+          [skill]="skill"
+          [equippingHero]="hero()"
+        ></app-icon-skill>
       } @else {
         Spell #{{ spellSlot + 1 }}
       }

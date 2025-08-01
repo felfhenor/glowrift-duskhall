@@ -40,7 +40,7 @@
 
 - id: cb333d71-2d0b-4117-8ce4-16a0a55f7d3a
   name: Strength of Firewisp III
-  description: Boost the power of Firewisp skills by 25%.
+  description: Boost the power of Firewisp skills by 25% & it's Burning duration by 1.
   sprite: '0001'
 
   requireTalentId: Strength of Firewisp II
@@ -53,21 +53,52 @@
   boostStats:
     Force: 0.25
 
+  applyToStatusEffectIds:
+    - Burning
+
+  boostedStatusEffectDuration: 1
+
 - id: 4997998a-ea6b-421d-b3e7-3b3f5f133c66
   name: Heating Up
   description: Boost the chance of Burning by 5%.
   sprite: '0005'
 
+  applyToAllSkills: true
   applyToStatusEffectIds:
     - Burning
 
   boostedStatusEffectChance: 5
+
+- id: 2bc07a67-6ca8-4dd0-b65c-ae5cc3ce9a64
+  name: Lingering Flames I
+  description: Boost the duration of Burning by 1.
+  sprite: '0006'
+
+  applyToAllSkills: true
+  applyToStatusEffectIds:
+    - Burning
+
+  boostedStatusEffectDuration: 1
+
+- id: 4734835d-fc35-45b0-aa9c-6381513aa5e1
+  name: Lingering Flames II
+  description: Boost the duration of Burning by 1.
+  sprite: '0006'
+
+  requireTalentId: Lingering Flames I
+
+  applyToAllSkills: true
+  applyToStatusEffectIds:
+    - Burning
+
+  boostedStatusEffectDuration: 1
 
 - id: 918995df-f0ac-407b-98a8-7601573f4f94
   name: Fire Force
   description: Boost the damage of Burning by 20%.
   sprite: '0002'
 
+  applyToAllSkills: true
   applyToStatusEffectIds:
     - Burning
 

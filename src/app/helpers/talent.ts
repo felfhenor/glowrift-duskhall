@@ -22,6 +22,7 @@ export function talentsForSkill(
   const skillContentId = getDroppableEquippableBaseId(skill);
   const skillElements = uniq(skill.techniques.flatMap((t) => t.elements));
 
+  const appliesToAll = talents.filter((t) => t.applyToAllSkills);
   const appliesDirectlyToSkill = talents.filter((t) =>
     t.applyToSkillIds?.includes(skillContentId),
   );
@@ -29,7 +30,7 @@ export function talentsForSkill(
     (t) => intersection(t.applyToElements, skillElements).length > 0,
   );
 
-  return union(appliesDirectlyToSkill, appliesBasedOnElement);
+  return union(appliesToAll, appliesDirectlyToSkill, appliesBasedOnElement);
 }
 
 export function talentsForStatusEffect(
@@ -43,14 +44,14 @@ export function talentsForStatusEffect(
 }
 
 // getting specific data
-export function talentPropTotal(
+function talentPropTotal(
   talents: TalentContent[],
   prop: keyof TalentContent,
 ): number {
   return sum(talents.map((t) => t[prop] ?? 0));
 }
 
-export function talentPropDrillTotal(
+function talentPropDrillTotal(
   talents: TalentContent[],
   prop: 'boostStats' | 'boostStatusEffectStats',
   drill: keyof StatBlock,
@@ -91,6 +92,17 @@ export function talentStatusEffectChanceBoost(
   return talentPropTotal(
     talentsForStatusEffect(talents, skill, effect),
     'boostedStatusEffectChance',
+  );
+}
+
+export function talentStatusEffectDurationBoost(
+  talents: TalentContent[],
+  skill: EquipmentSkill,
+  effect: StatusEffectContent,
+): number {
+  return talentPropTotal(
+    talentsForStatusEffect(talents, skill, effect),
+    'boostedStatusEffectDuration',
   );
 }
 

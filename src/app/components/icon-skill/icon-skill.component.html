@@ -13,6 +13,7 @@
   [spritesheet]="'skill'"
   [frames]="skillData.frames"
   [tp]="itemInfo"
+  [tpMaxWidth]="800"
 ></app-atlas-animation>
 
 <div
@@ -30,5 +31,18 @@
 }
 
 <ng-template #itemInfo let-hide>
-  <app-stats-skill [skill]="skillData"></app-stats-skill>
+  @if (compareSkill(); as compareWith) {
+    <app-stats-skill-compare
+      [skill]="skillData"
+      [compareWith]="compareWith"
+      [equippingHero]="equippingHero()"
+    ></app-stats-skill-compare>
+  } @else {
+    <div class="min-w-[300px]">
+      <app-stats-skill
+        [skill]="skillData"
+        [equippingHero]="equippingHero()"
+      ></app-stats-skill>
+    </div>
+  }
 </ng-template>
