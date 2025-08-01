@@ -4,6 +4,8 @@
   sprite: '0473'
   frames: 11
 
+  unableToUpgrade: [numTargets]
+
   rarity: Common
   dropLevel: 3
 
@@ -29,6 +31,8 @@
   sprite: '0473'
   frames: 11
 
+  unableToUpgrade: [numTargets]
+
   rarity: Uncommon
   dropLevel: 8
 
@@ -53,6 +57,8 @@
 
   sprite: '0473'
   frames: 11
+
+  unableToUpgrade: [numTargets]
 
   rarity: Rare
   dropLevel: 13
