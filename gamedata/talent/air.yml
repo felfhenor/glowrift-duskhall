@@ -1,0 +1,42 @@
+- id: 3fd2f3cd-4b7c-44bc-8e4d-f267f1394716
+  name: Strength of Thunderwave I
+  description: Boost the power of Thunderwave skills by 25%.
+  sprite: '0015'
+
+  boostedSkillIds:
+    - Thunderwave I
+    - Thunderwave II
+    - Thunderwave III
+
+  boostStats:
+    Force: 0.25
+
+- id: 5c740066-851e-4101-9e37-c1baaff33eee
+  name: Strength of Thunderwave II
+  description: Boost the power of Thunderwave skills by 25%.
+  sprite: '0015'
+
+  requireTalentId: Strength of Thunderwave I
+
+  boostedSkillIds:
+    - Thunderwave I
+    - Thunderwave II
+    - Thunderwave III
+
+  boostStats:
+    Force: 0.25
+
+- id: d6ffb7f9-e960-4dcd-ab61-02ceeb0b0732
+  name: Strength of Thunderwave III
+  description: Boost the power of Thunderwave skills by 25%.
+  sprite: '0015'
+
+  requireTalentId: Strength of Thunderwave II
+
+  boostedSkillIds:
+    - Thunderwave I
+    - Thunderwave II
+    - Thunderwave III
+
+  boostStats:
+    Force: 0.25
