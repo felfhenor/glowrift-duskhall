@@ -208,13 +208,15 @@ function ensureTalent(talent: Partial<TalentContent>): Required<TalentContent> {
 
     requireTalentId: talent.requireTalentId ?? '',
 
-    boostedElements: talent.boostedElements ?? [],
-    boostedSkillIds: talent.boostedSkillIds ?? [],
+    applyToElements: talent.applyToElements ?? [],
+    applyToSkillIds: talent.applyToSkillIds ?? [],
     boostStats: ensureStats(talent.boostStats),
 
     boostedStatusEffectChance: talent.boostedStatusEffectChance ?? 0,
-    boostedStatusEffectIds: talent.boostedStatusEffectIds ?? [],
+    applyToStatusEffectIds: talent.applyToStatusEffectIds ?? [],
     boostStatusEffectStats: ensureStats(talent.boostStatusEffectStats),
+
+    additionalTargets: talent.additionalTargets ?? 0,
   };
 }
 

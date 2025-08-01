@@ -3,7 +3,7 @@
   description: Boost the power of Fire skills by 10%.
   sprite: '0003'
 
-  boostedElements: [Fire]
+  applyToElements: [Fire]
 
   boostStats:
     Force: 0.10
@@ -13,7 +13,7 @@
   description: Boost the power of Firewisp skills by 25%.
   sprite: '0001'
 
-  boostedSkillIds:
+  applyToSkillIds:
     - Firewisp I
     - Firewisp II
     - Firewisp III
@@ -28,12 +28,12 @@
 
   requireTalentId: Strength of Firewisp I
 
-  boostedSkillIds:
+  applyToSkillIds:
     - Firewisp I
     - Firewisp II
     - Firewisp III
 
-  boostedStatusEffectIds:
+  applyToStatusEffectIds:
     - Burning
 
   boostedStatusEffectChance: 10
@@ -45,7 +45,7 @@
 
   requireTalentId: Strength of Firewisp II
 
-  boostedSkillIds:
+  applyToSkillIds:
     - Firewisp I
     - Firewisp II
     - Firewisp III
@@ -58,7 +58,7 @@
   description: Boost the chance of Burning by 5%.
   sprite: '0005'
 
-  boostedStatusEffectIds:
+  applyToStatusEffectIds:
     - Burning
 
   boostedStatusEffectChance: 5
@@ -68,8 +68,28 @@
   description: Boost the damage of Burning by 20%.
   sprite: '0002'
 
-  boostedStatusEffectIds:
+  applyToStatusEffectIds:
     - Burning
 
   boostStatusEffectStats:
     Force: 0.20
+
+- id: 6f902296-763e-4c20-a4f2-fc49c6da2846
+  name: Pyroclastic Surge I
+  description: All Fire spells hit an additional target.
+  sprite: '0004'
+
+  applyToElements: [Fire]
+
+  additionalTargets: 1
+
+- id: b8a83f5b-dcf3-4f57-bd3e-614efafead3f
+  name: Pyroclastic Surge II
+  description: All Fire spells hit an additional target.
+  sprite: '0004'
+
+  requireTalentId: Pyroclastic Surge I
+
+  applyToElements: [Fire]
+
+  additionalTargets: 1

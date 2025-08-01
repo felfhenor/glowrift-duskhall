@@ -61,6 +61,7 @@ export * from './skill';
 export * from './sprite';
 export * from './state-game';
 export * from './state-options';
+export * from './talent';
 export * from './timer';
 export * from './town';
 export * from './town-academy';

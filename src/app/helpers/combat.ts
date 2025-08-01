@@ -24,6 +24,7 @@ import { notify } from '@helpers/notify';
 import { sample, sortBy } from 'es-toolkit/compat';
 
 import { getSkillTechniqueNumTargets } from '@helpers/skill';
+import { talentTargetCountBoost } from '@helpers/talent';
 import type {
   Combat,
   Combatant,
@@ -45,7 +46,9 @@ export function orderCombatantsBySpeed(combat: Combat): Combatant[] {
 export function allCombatantTalents(combatant: Combatant): TalentContent[] {
   return Object.entries(combatant.talents)
     .filter(([, level]) => level > 0)
-    .map(([talentId]) => getEntry<TalentContent>(talentId))
+    .flatMap(([talentId, level]) =>
+      Array(level).fill(getEntry<TalentContent>(talentId)),
+    )
     .filter((talent): talent is TalentContent => !!talent);
 }
 
@@ -75,6 +78,8 @@ export function combatantTakeTurn(combat: Combat, combatant: Combatant): void {
     return;
   }
 
+  const talents = allCombatantTalents(combatant);
+
   const skills = availableSkillsForCombatant(combatant).filter(
     (s) => getPossibleCombatantTargetsForSkill(combat, combatant, s).length > 0,
   );
@@ -98,7 +103,9 @@ export function combatantTakeTurn(combat: Combat, combatant: Combatant): void {
       tech,
     );
 
-    const numTargets = getSkillTechniqueNumTargets(chosenSkill, tech);
+    const numTargets =
+      getSkillTechniqueNumTargets(chosenSkill, tech) +
+      talentTargetCountBoost(talents, chosenSkill);
 
     const targets = getTargetsFromListBasedOnType(
       baseTargetList,

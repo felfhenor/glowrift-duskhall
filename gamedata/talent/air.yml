@@ -3,7 +3,7 @@
   description: Boost the power of Thunderwave skills by 25%.
   sprite: '0015'
 
-  boostedSkillIds:
+  applyToSkillIds:
     - Thunderwave I
     - Thunderwave II
     - Thunderwave III
@@ -18,7 +18,7 @@
 
   requireTalentId: Strength of Thunderwave I
 
-  boostedSkillIds:
+  applyToSkillIds:
     - Thunderwave I
     - Thunderwave II
     - Thunderwave III
@@ -33,7 +33,7 @@
 
   requireTalentId: Strength of Thunderwave II
 
-  boostedSkillIds:
+  applyToSkillIds:
     - Thunderwave I
     - Thunderwave II
     - Thunderwave III

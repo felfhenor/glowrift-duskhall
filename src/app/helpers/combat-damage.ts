@@ -4,10 +4,8 @@ import { formatCombatMessage, logCombatMessage } from '@helpers/combat-log';
 import {
   applyStatusEffectToTarget,
   createStatusEffect,
-  statusEffectChanceTalentBoost,
 } from '@helpers/combat-statuseffects';
 import { getEntry } from '@helpers/content';
-import { getDroppableEquippableBaseId } from '@helpers/droppable';
 import {
   getCombatIncomingAttributeMultiplier,
   getCombatOutgoingAttributeMultiplier,
@@ -18,63 +16,26 @@ import {
   getSkillTechniqueStatusEffectChance,
   getSkillTechniqueStatusEffectDuration,
 } from '@helpers/skill';
+import {
+  talentStatBoost,
+  talentStatusEffectChanceBoost,
+} from '@helpers/talent';
 import type {
   Combat,
   Combatant,
   EquipmentSkill,
   EquipmentSkillAttribute,
   EquipmentSkillContentTechnique,
-  GameElement,
   GameStat,
   StatusEffectContent,
-  TalentId,
 } from '@interfaces';
-import { intersection, meanBy, sum, sumBy } from 'es-toolkit/compat';
+import { meanBy, sum, sumBy } from 'es-toolkit/compat';
 
 export function techniqueHasAttribute(
   technique: EquipmentSkillContentTechnique,
   attribute: EquipmentSkillAttribute,
 ): boolean {
   return technique.attributes?.includes(attribute);
-}
-
-export function combatantTalentLevel(
-  combatant: Combatant,
-  talentId: TalentId,
-): number {
-  return combatant.talents[talentId] ?? 0;
-}
-
-export function combatantTalentElementBoost(
-  combatant: Combatant,
-  elements: GameElement[],
-  stat: GameStat,
-): number {
-  return sum(
-    allCombatantTalents(combatant)
-      .filter((t) => intersection(t.boostedElements ?? [], elements).length > 0)
-      .map(
-        (t) =>
-          combatantTalentLevel(combatant, t.id) * (t.boostStats[stat] ?? 0),
-      ),
-  );
-}
-
-export function combatantTalentSkillBoost(
-  combatant: Combatant,
-  skill: EquipmentSkill,
-  stat: GameStat,
-): number {
-  const skillContentId = getDroppableEquippableBaseId(skill);
-
-  return sum(
-    allCombatantTalents(combatant)
-      .filter((t) => t.boostedSkillIds?.includes(skillContentId))
-      .map(
-        (t) =>
-          combatantTalentLevel(combatant, t.id) * (t.boostStats[stat] ?? 0),
-      ),
-  );
 }
 
 export function getCombatantBaseStatDamageForTechnique(
@@ -87,23 +48,15 @@ export function getCombatantBaseStatDamageForTechnique(
   const baseCheckMultiplier = technique.damageScaling[stat] ?? 0;
   if (baseCheckMultiplier === 0) return 0;
 
+  const allTalents = allCombatantTalents(combatant);
+
   const baseMultiplier = getSkillTechniqueDamageScalingStat(
     skill,
     technique,
     stat,
   );
 
-  const talentElementMultiplierBoost = combatantTalentElementBoost(
-    combatant,
-    technique.elements,
-    stat,
-  );
-
-  const talentSkillMultiplierBoost = combatantTalentSkillBoost(
-    combatant,
-    skill,
-    stat,
-  );
+  const talentSkillMultiplierBoost = talentStatBoost(allTalents, skill, stat);
 
   const affinityElementBoostMultiplier = sumBy(
     technique.elements,
@@ -115,8 +68,7 @@ export function getCombatantBaseStatDamageForTechnique(
   const totalMultiplier =
     baseMultiplier +
     affinityElementBoostMultiplier +
-    talentSkillMultiplierBoost +
-    talentElementMultiplierBoost;
+    talentSkillMultiplierBoost;
 
   const multipliedStat = baseStatWithoutMultiplier * totalMultiplier;
 
@@ -134,6 +86,8 @@ export function applySkillToTarget(
   skill: EquipmentSkill,
   technique: EquipmentSkillContentTechnique,
 ): void {
+  const attackerTalents = allCombatantTalents(combatant);
+
   const baseDamage = sum(
     (['Force', 'Aura', 'Health', 'Speed'] as GameStat[]).map((stat) =>
       getCombatantBaseStatDamageForTechnique(
@@ -210,11 +164,11 @@ export function applySkillToTarget(
 
     const totalChance =
       getSkillTechniqueStatusEffectChance(skill, effData) +
-      statusEffectChanceTalentBoost(combatant, skill, effectContent);
+      talentStatusEffectChanceBoost(attackerTalents, skill, effectContent);
 
     if (!succeedsChance(totalChance)) return;
 
-    const statusEffect = createStatusEffect(effectContent, combatant, {
+    const statusEffect = createStatusEffect(effectContent, skill, combatant, {
       duration: getSkillTechniqueStatusEffectDuration(skill, effData),
     });
 

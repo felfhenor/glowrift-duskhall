@@ -13,11 +13,14 @@ export type TalentContent = IsContentItem &
 
     requireTalentId?: string;
 
-    boostedElements: GameElement[];
-    boostedSkillIds: string[];
+    applyToElements: GameElement[];
+    applyToSkillIds: string[];
+    applyToStatusEffectIds: string[];
+
     boostStats: StatBlock;
 
-    boostedStatusEffectIds: string[];
     boostedStatusEffectChance: number;
     boostStatusEffectStats: StatBlock;
+
+    additionalTargets: number;
   };

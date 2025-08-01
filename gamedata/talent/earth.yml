@@ -3,7 +3,7 @@
   description: Boost the power of Earthspike skills by 300%.
   sprite: '0022'
 
-  boostedSkillIds:
+  applyToSkillIds:
     - Earthspike I
     - Earthspike II
     - Earthspike III
@@ -18,7 +18,7 @@
 
   requireTalentId: Strength of Earthspike I
 
-  boostedSkillIds:
+  applyToSkillIds:
     - Earthspike I
     - Earthspike II
     - Earthspike III
@@ -33,7 +33,7 @@
 
   requireTalentId: Strength of Earthspike II
 
-  boostedSkillIds:
+  applyToSkillIds:
     - Earthspike I
     - Earthspike II
     - Earthspike III
