@@ -1,16 +1,16 @@
 - id: 62e841f4-0758-450b-9ade-848686dfe54f
   name: Strength of Fire
-  description: Boost the power of Fire skills by 10%.
+  description: Boost the Force of Fire skills by 50%.
   sprite: '0003'
 
   applyToElements: [Fire]
 
   boostStats:
-    Force: 0.10
+    Force: 0.50
 
 - id: cde7a7a3-8fbc-4709-b405-affba74837ef
   name: Strength of Firewisp I
-  description: Boost the power of Firewisp skills by 25%.
+  description: Boost the Force of Firewisp skills by 25%.
   sprite: '0001'
 
   applyToSkillIds:
@@ -23,7 +23,7 @@
 
 - id: d758324d-4333-496a-8c54-222769cfbc38
   name: Strength of Firewisp II
-  description: Boost the burning chance of Firewisp skills by 10%.
+  description: Boost the Force of Firewisp skills by 25% & it's Burning chance by 10%.
   sprite: '0001'
 
   requireTalentId: Strength of Firewisp I
@@ -33,6 +33,9 @@
     - Firewisp II
     - Firewisp III
 
+  boostStats:
+    Force: 0.25
+
   applyToStatusEffectIds:
     - Burning
 
@@ -40,7 +43,7 @@
 
 - id: cb333d71-2d0b-4117-8ce4-16a0a55f7d3a
   name: Strength of Firewisp III
-  description: Boost the power of Firewisp skills by 25% & it's Burning duration by 1.
+  description: Boost the Force of Firewisp skills by 25% & it's Burning duration by 1.
   sprite: '0001'
 
   requireTalentId: Strength of Firewisp II
@@ -95,7 +98,7 @@
 
 - id: 918995df-f0ac-407b-98a8-7601573f4f94
   name: Fire Force
-  description: Boost the damage of Burning by 20%.
+  description: Boost the Force of Burning by 20%.
   sprite: '0002'
 
   applyToAllSkills: true
@@ -107,7 +110,7 @@
 
 - id: 6f902296-763e-4c20-a4f2-fc49c6da2846
   name: Pyroclastic Surge I
-  description: All Fire spells hit an additional target.
+  description: All Fire spells hit +1 target.
   sprite: '0004'
 
   applyToElements: [Fire]
@@ -116,7 +119,7 @@
 
 - id: b8a83f5b-dcf3-4f57-bd3e-614efafead3f
   name: Pyroclastic Surge II
-  description: All Fire spells hit an additional target.
+  description: All Fire spells hit +1 target.
   sprite: '0004'
 
   requireTalentId: Pyroclastic Surge I
