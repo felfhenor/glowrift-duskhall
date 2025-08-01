@@ -85,8 +85,6 @@ export function blacksmithNextItemEnchants(
         ...getDefaultStats(),
         Health: 5,
       },
-      elementBoosts: getDefaultAffinities(),
-      talentBoosts: [],
     },
     {
       description: `+0.1 Force`,
@@ -100,8 +98,6 @@ export function blacksmithNextItemEnchants(
         ...getDefaultStats(),
         Force: 0.1,
       },
-      elementBoosts: getDefaultAffinities(),
-      talentBoosts: [],
     },
     {
       description: `+0.1 Aura`,
@@ -115,8 +111,6 @@ export function blacksmithNextItemEnchants(
         ...getDefaultStats(),
         Aura: 0.1,
       },
-      elementBoosts: getDefaultAffinities(),
-      talentBoosts: [],
     },
     {
       description: `+0.1 Speed`,
@@ -130,8 +124,6 @@ export function blacksmithNextItemEnchants(
         ...getDefaultStats(),
         Speed: 0.1,
       },
-      elementBoosts: getDefaultAffinities(),
-      talentBoosts: [],
     },
     {
       description: `+0.1 Speed/Force/Aura`,
@@ -149,8 +141,6 @@ export function blacksmithNextItemEnchants(
         Aura: 0.1,
         Speed: 0.1,
       },
-      elementBoosts: getDefaultAffinities(),
-      talentBoosts: [],
     },
     {
       description: `+1% Fire`,
@@ -160,12 +150,10 @@ export function blacksmithNextItemEnchants(
         Mana: adjustByLevel(100),
         'Fire Shard': adjustByLevel(50),
       },
-      statBoosts: getDefaultStats(),
       elementBoosts: {
         ...getDefaultAffinities(),
         Fire: 0.01,
       },
-      talentBoosts: [],
     },
     {
       description: `+1% Water`,
@@ -175,12 +163,10 @@ export function blacksmithNextItemEnchants(
         Mana: adjustByLevel(100),
         'Water Shard': adjustByLevel(50),
       },
-      statBoosts: getDefaultStats(),
       elementBoosts: {
         ...getDefaultAffinities(),
         Water: 0.01,
       },
-      talentBoosts: [],
     },
     {
       description: `+1% Air`,
@@ -190,12 +176,10 @@ export function blacksmithNextItemEnchants(
         Mana: adjustByLevel(100),
         'Air Shard': adjustByLevel(50),
       },
-      statBoosts: getDefaultStats(),
       elementBoosts: {
         ...getDefaultAffinities(),
         Air: 0.01,
       },
-      talentBoosts: [],
     },
     {
       description: `+1% Earth`,
@@ -205,12 +189,10 @@ export function blacksmithNextItemEnchants(
         Mana: adjustByLevel(100),
         'Earth Shard': adjustByLevel(50),
       },
-      statBoosts: getDefaultStats(),
       elementBoosts: {
         ...getDefaultAffinities(),
         Earth: 0.01,
       },
-      talentBoosts: [],
     },
     {
       description: `+1% All Elements`,
@@ -223,7 +205,6 @@ export function blacksmithNextItemEnchants(
         'Water Crystal': adjustByLevel(1),
         'Earth Crystal': adjustByLevel(1),
       },
-      statBoosts: getDefaultStats(),
       elementBoosts: {
         ...getDefaultAffinities(),
         Earth: 0.01,
@@ -231,7 +212,6 @@ export function blacksmithNextItemEnchants(
         Water: 0.01,
         Air: 0.01,
       },
-      talentBoosts: [],
     },
   ];
 
@@ -248,8 +228,6 @@ export function blacksmithNextItemEnchants(
           ...getDefaultCurrencyBlock(),
           'Soul Essence': adjustByLevel(300),
         },
-        statBoosts: getDefaultStats(),
-        elementBoosts: getDefaultAffinities(),
         talentBoosts: [talentData.id],
       });
     });
@@ -259,13 +237,17 @@ export function blacksmithNextItemEnchants(
     path.cost[`${item.rarity} Dust`] += 1;
   });
 
+  const filteredPaths = validPaths.filter((path) =>
+    item.unableToUpgrade.every((k) => !path[k]),
+  );
+
   const seed = `${getDroppableEquippableBaseId(item)}-${level}`;
   const rng = seededrng(seed);
 
   return [
-    randomChoiceByRarity(validPaths, rng)!,
-    randomChoiceByRarity(validPaths, rng)!,
-    randomChoiceByRarity(validPaths, rng)!,
+    randomChoiceByRarity(filteredPaths, rng)!,
+    randomChoiceByRarity(filteredPaths, rng)!,
+    randomChoiceByRarity(filteredPaths, rng)!,
   ];
 }
 
@@ -285,40 +267,48 @@ export function blacksmithEnchantItem(
 
   item.mods.enchantLevel += 1;
 
-  Object.keys(enchant.elementBoosts).forEach((el) => {
-    const multBoost = enchant.elementBoosts[el as GameElement] ?? 0;
+  const elementBoosts = enchant.elementBoosts;
+  if (elementBoosts) {
+    Object.keys(elementBoosts).forEach((el) => {
+      const multBoost = elementBoosts[el as GameElement] ?? 0;
 
-    const elMod = item.mods!.elementMultipliers!.find(
-      (eqEl) => eqEl.element === el,
-    );
-    if (elMod) {
-      elMod.multiplier += multBoost;
-      return;
-    }
+      const elMod = item.mods!.elementMultipliers!.find(
+        (eqEl) => eqEl.element === el,
+      );
+      if (elMod) {
+        elMod.multiplier += multBoost;
+        return;
+      }
 
-    item.mods!.elementMultipliers!.push({
-      element: el as GameElement,
-      multiplier: multBoost,
+      item.mods!.elementMultipliers!.push({
+        element: el as GameElement,
+        multiplier: multBoost,
+      });
     });
-  });
+  }
 
-  Object.keys(enchant.statBoosts).forEach((stat) => {
-    const statBoost = enchant.statBoosts[stat as GameStat];
-    item.mods!.baseStats![stat as GameStat] += statBoost;
-  });
+  const statBoosts = enchant.statBoosts;
+  if (statBoosts) {
+    Object.keys(statBoosts).forEach((stat) => {
+      const statBoost = statBoosts[stat as GameStat];
+      item.mods!.baseStats![stat as GameStat] += statBoost;
+    });
+  }
 
-  enchant.talentBoosts.forEach((tal) => {
-    const talMod = item.mods!.talentBoosts!.find(
-      (eqEl) => eqEl.talentId === tal,
-    );
-    if (talMod) {
-      talMod.value += 1;
-      return;
-    }
+  const talentBoosts = enchant.talentBoosts;
+  if (talentBoosts) {
+    talentBoosts.forEach((tal) => {
+      const talMod = item.mods!.talentBoosts!.find(
+        (eqEl) => eqEl.talentId === tal,
+      );
+      if (talMod) {
+        talMod.value += 1;
+        return;
+      }
 
-    item.mods!.talentBoosts!.push({ talentId: tal, value: 1 });
-  });
-
+      item.mods!.talentBoosts!.push({ talentId: tal, value: 1 });
+    });
+  }
   updateGamestate((state) => {
     const updateItem = state.inventory.items.find((i) => i.id === item.id);
     if (!updateItem) return state;

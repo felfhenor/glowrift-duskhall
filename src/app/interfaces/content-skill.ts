@@ -4,6 +4,7 @@ import type { DroppableEquippable } from '@interfaces/droppable';
 import type { GameElement } from '@interfaces/element';
 import type { Branded } from '@interfaces/identifiable';
 import type { StatBlock } from '@interfaces/stat';
+import type { AcademyEnchant } from '@interfaces/town';
 
 export type EquipmentSkillTargetBehavior =
   | 'Always'
@@ -60,6 +61,8 @@ export type EquipmentSkillContent = DroppableEquippable &
   EquipmentSkillContentModifiable & {
     __type: 'skill';
     id: EquipmentSkillId;
+
+    unableToUpgrade: Array<keyof AcademyEnchant>;
   };
 
 export type EquipmentSkill = EquipmentSkillContent & {

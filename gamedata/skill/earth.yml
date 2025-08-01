@@ -4,6 +4,8 @@
   sprite: '0099'
   frames: 8
 
+  unableToUpgrade: [numTargets]
+
   rarity: Common
   dropLevel: 5
 
@@ -27,6 +29,8 @@
   sprite: '0099'
   frames: 8
 
+  unableToUpgrade: [numTargets]
+
   rarity: Uncommon
   dropLevel: 10
 
@@ -49,6 +53,8 @@
 
   sprite: '0099'
   frames: 8
+
+  unableToUpgrade: [numTargets]
 
   rarity: Rare
   dropLevel: 15

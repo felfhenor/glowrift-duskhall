@@ -48,10 +48,7 @@ export function academyNextSkillEnchants(
         'Soul Essence': adjustByLevel(100),
       },
       damageScaling: getDefaultStats(),
-      numTargets: 0,
       usesPerCombat: 1,
-      statusEffectChanceBoost: {},
-      statusEffectDurationBoost: {},
     },
     {
       description: '+2 Combat Uses',
@@ -60,11 +57,7 @@ export function academyNextSkillEnchants(
         ...getDefaultCurrencyBlock(),
         'Soul Essence': adjustByLevel(300),
       },
-      damageScaling: getDefaultStats(),
-      numTargets: 0,
       usesPerCombat: 2,
-      statusEffectChanceBoost: {},
-      statusEffectDurationBoost: {},
     },
     {
       description: '+3 Combat Uses',
@@ -73,11 +66,7 @@ export function academyNextSkillEnchants(
         ...getDefaultCurrencyBlock(),
         'Soul Essence': adjustByLevel(500),
       },
-      damageScaling: getDefaultStats(),
-      numTargets: 0,
       usesPerCombat: 3,
-      statusEffectChanceBoost: {},
-      statusEffectDurationBoost: {},
     },
     {
       description: '+1 Target',
@@ -86,11 +75,7 @@ export function academyNextSkillEnchants(
         ...getDefaultCurrencyBlock(),
         'Soul Essence': adjustByLevel(500),
       },
-      damageScaling: getDefaultStats(),
       numTargets: 1,
-      usesPerCombat: 0,
-      statusEffectChanceBoost: {},
-      statusEffectDurationBoost: {},
     },
     {
       description: '+2 Targets',
@@ -99,11 +84,7 @@ export function academyNextSkillEnchants(
         ...getDefaultCurrencyBlock(),
         'Soul Essence': adjustByLevel(1500),
       },
-      damageScaling: getDefaultStats(),
       numTargets: 2,
-      usesPerCombat: 0,
-      statusEffectChanceBoost: {},
-      statusEffectDurationBoost: {},
     },
   ];
 
@@ -119,10 +100,6 @@ export function academyNextSkillEnchants(
         ...getDefaultStats(),
         [stat]: 0.05,
       },
-      numTargets: 0,
-      usesPerCombat: 0,
-      statusEffectChanceBoost: {},
-      statusEffectDurationBoost: {},
     });
 
     validPaths.push({
@@ -136,10 +113,6 @@ export function academyNextSkillEnchants(
         ...getDefaultStats(),
         [stat]: 0.1,
       },
-      numTargets: 0,
-      usesPerCombat: 0,
-      statusEffectChanceBoost: {},
-      statusEffectDurationBoost: {},
     });
   });
 
@@ -154,13 +127,9 @@ export function academyNextSkillEnchants(
         ...getDefaultCurrencyBlock(),
         'Soul Essence': adjustByLevel(300),
       },
-      damageScaling: getDefaultStats(),
-      numTargets: 0,
-      usesPerCombat: 0,
       statusEffectChanceBoost: {
         [statusEffectId]: 1,
       },
-      statusEffectDurationBoost: {},
     });
 
     validPaths.push({
@@ -170,13 +139,9 @@ export function academyNextSkillEnchants(
         ...getDefaultCurrencyBlock(),
         'Soul Essence': adjustByLevel(500),
       },
-      damageScaling: getDefaultStats(),
-      numTargets: 0,
-      usesPerCombat: 0,
       statusEffectChanceBoost: {
         [statusEffectId]: 2,
       },
-      statusEffectDurationBoost: {},
     });
 
     validPaths.push({
@@ -186,10 +151,6 @@ export function academyNextSkillEnchants(
         ...getDefaultCurrencyBlock(),
         'Soul Essence': adjustByLevel(500),
       },
-      damageScaling: getDefaultStats(),
-      numTargets: 0,
-      usesPerCombat: 0,
-      statusEffectChanceBoost: {},
       statusEffectDurationBoost: {
         [statusEffectId]: 1,
       },
@@ -202,9 +163,6 @@ export function academyNextSkillEnchants(
         ...getDefaultCurrencyBlock(),
         'Soul Essence': adjustByLevel(1500),
       },
-      damageScaling: getDefaultStats(),
-      numTargets: 0,
-      usesPerCombat: 0,
       statusEffectChanceBoost: {
         [statusEffectId]: 1,
       },
@@ -228,13 +186,17 @@ export function academyNextSkillEnchants(
     });
   });
 
+  const filteredPaths = validPaths.filter((path) =>
+    skill.unableToUpgrade.every((k) => !path[k]),
+  );
+
   const seed = `${getDroppableEquippableBaseId(skill)}-${level}`;
   const rng = seededrng(seed);
 
   return [
-    randomChoiceByRarity(validPaths, rng)!,
-    randomChoiceByRarity(validPaths, rng)!,
-    randomChoiceByRarity(validPaths, rng)!,
+    randomChoiceByRarity(filteredPaths, rng)!,
+    randomChoiceByRarity(filteredPaths, rng)!,
+    randomChoiceByRarity(filteredPaths, rng)!,
   ];
 }
 
@@ -256,28 +218,44 @@ export function academyEnchantSkill(
 
   skill.mods.enchantLevel += 1;
 
-  skill.mods.numTargets += enchant.numTargets;
-  skill.mods.usesPerCombat += enchant.usesPerCombat;
+  if (enchant.numTargets) {
+    skill.mods.numTargets += enchant.numTargets;
+  }
 
-  Object.keys(enchant.damageScaling).forEach((scaleStat) => {
-    skill.mods!.damageScaling![scaleStat as GameStat] ??= 0;
-    skill.mods!.damageScaling![scaleStat as GameStat] +=
-      enchant.damageScaling[scaleStat as GameStat];
-  });
+  if (enchant.usesPerCombat) {
+    skill.mods.usesPerCombat += enchant.usesPerCombat;
+  }
 
-  Object.keys(enchant.statusEffectChanceBoost).forEach((statusEffectId) => {
-    skill.mods!.statusEffectChanceBoost![statusEffectId as StatusEffectId] ??=
-      0;
-    skill.mods!.statusEffectChanceBoost![statusEffectId as StatusEffectId] +=
-      enchant.statusEffectChanceBoost[statusEffectId as StatusEffectId];
-  });
+  const damageScaling = enchant.damageScaling;
+  if (damageScaling) {
+    Object.keys(damageScaling).forEach((scaleStat) => {
+      skill.mods!.damageScaling![scaleStat as GameStat] ??= 0;
+      skill.mods!.damageScaling![scaleStat as GameStat] +=
+        damageScaling[scaleStat as GameStat];
+    });
+  }
 
-  Object.keys(enchant.statusEffectDurationBoost).forEach((statusEffectId) => {
-    skill.mods!.statusEffectDurationBoost![statusEffectId as StatusEffectId] ??=
-      0;
-    skill.mods!.statusEffectDurationBoost![statusEffectId as StatusEffectId] +=
-      enchant.statusEffectDurationBoost[statusEffectId as StatusEffectId];
-  });
+  const statusEffectChanceBoost = enchant.statusEffectChanceBoost;
+  if (statusEffectChanceBoost) {
+    Object.keys(statusEffectChanceBoost).forEach((statusEffectId) => {
+      skill.mods!.statusEffectChanceBoost![statusEffectId as StatusEffectId] ??=
+        0;
+      skill.mods!.statusEffectChanceBoost![statusEffectId as StatusEffectId] +=
+        statusEffectChanceBoost[statusEffectId as StatusEffectId];
+    });
+  }
+
+  const statusEffectDurationBoost = enchant.statusEffectDurationBoost;
+  if (statusEffectDurationBoost) {
+    Object.keys(statusEffectDurationBoost).forEach((statusEffectId) => {
+      skill.mods!.statusEffectDurationBoost![
+        statusEffectId as StatusEffectId
+      ] ??= 0;
+      skill.mods!.statusEffectDurationBoost![
+        statusEffectId as StatusEffectId
+      ] += statusEffectDurationBoost[statusEffectId as StatusEffectId];
+    });
+  }
 
   updateGamestate((state) => {
     const updateSkill = state.inventory.skills.find((i) => i.id === skill.id);

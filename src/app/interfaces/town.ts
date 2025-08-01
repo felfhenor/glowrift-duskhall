@@ -22,18 +22,18 @@ export type BlacksmithEnchant = HasRarity &
   HasDescription & {
     cost: CurrencyBlock;
 
-    statBoosts: StatBlock;
-    elementBoosts: ElementBlock;
-    talentBoosts: TalentId[];
+    statBoosts?: StatBlock;
+    elementBoosts?: ElementBlock;
+    talentBoosts?: TalentId[];
   };
 
 export type AcademyEnchant = HasRarity &
   HasDescription & {
     cost: CurrencyBlock;
 
-    usesPerCombat: number;
-    numTargets: number;
-    damageScaling: StatBlock;
-    statusEffectDurationBoost: Record<StatusEffectId, number>;
-    statusEffectChanceBoost: Record<StatusEffectId, number>;
+    usesPerCombat?: number;
+    numTargets?: number;
+    damageScaling?: StatBlock;
+    statusEffectDurationBoost?: Record<StatusEffectId, number>;
+    statusEffectChanceBoost?: Record<StatusEffectId, number>;
   };
