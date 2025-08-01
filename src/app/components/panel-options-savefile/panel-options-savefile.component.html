@@ -10,6 +10,10 @@
           A total of {{ numTicks() | number }} seconds have elapsed since you
           started playing.
         </p>
+
+        @if (wonAtTick(); as wonTick) {
+          <p>You won after {{ wonTick | number }} seconds.</p>
+        }
       </div>
     </div>
   </div>
