@@ -156,7 +156,7 @@ export function applySkillToTarget(
     };
 
     const message = formatCombatMessage(technique.combatMessage, templateData);
-    logCombatMessage(combat, message);
+    logCombatMessage(combat, message, combatant);
   }
 
   technique.statusEffects.forEach((effData) => {
@@ -179,6 +179,10 @@ export function applySkillToTarget(
   });
 
   if (isDead(target)) {
-    logCombatMessage(combat, `**${target.name}** has been defeated!`);
+    logCombatMessage(
+      combat,
+      `**${target.name}** has been defeated!`,
+      combatant,
+    );
   }
 }

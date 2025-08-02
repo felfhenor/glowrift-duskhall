@@ -1,13 +1,29 @@
 <div>
   @for (message of allCombatLogs(); track message.messageId) {
     <div class="flex flex-row gap-2 justify-between">
-      <div [innerHTML]="message.message"></div>
+      <div class="flex items-center">
+        <div
+          class="w-12 h-10 flex items-center justify-center transform scale-60"
+        >
+          @if (message.type === 'hero') {
+            @if (getHeroById(message.actorId); as hero) {
+              <app-icon-hero-combat [hero]="hero"></app-icon-hero-combat>
+            }
+          } @else if (message.type === 'guardian') {
+            @if (getGuardianById(message.actorId); as guardian) {
+              <app-icon-guardian-combat
+                [guardian]="guardian"
+              ></app-icon-guardian-combat>
+            }
+          }
+        </div>
+        <div [innerHTML]="message.message"></div>
+      </div>
 
       <div class="italic">
         {{ message.locationName }} - {{ message.timestamp | date: 'short' }}
       </div>
     </div>
-
   } @empty {
     <div class="text-center">
       <p>No combats have happened yet.</p>
