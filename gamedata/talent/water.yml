@@ -40,3 +40,12 @@
 
   boostStats:
     Force: 0.25
+
+- id: 35136beb-b472-4137-985e-8558342a413b
+  name: Permafrost
+  description: All Water spells have a 25% chance to not consume a use.
+  sprite: '0013'
+
+  applyToElements: [Water]
+
+  chanceToIgnoreConsume: 25

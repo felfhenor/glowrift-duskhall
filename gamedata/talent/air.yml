@@ -40,3 +40,12 @@
 
   boostStats:
     Force: 0.25
+
+- id: b3b68fc0-1f1a-44d5-a2ba-aa1150bb7e8d
+  name: Winds of Change
+  description: All Air spells have a 25% chance to not consume a use.
+  sprite: '0018'
+
+  applyToElements: [Air]
+
+  chanceToIgnoreConsume: 25

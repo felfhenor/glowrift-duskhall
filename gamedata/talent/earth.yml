@@ -40,3 +40,12 @@
 
   boostStats:
     Force: 3
+
+- id: f0da46a1-9a9f-4ddb-995b-e54f108df57c
+  name: Geological Persistence
+  description: All Earth spells have a 25% chance to not consume a use.
+  sprite: '0026'
+
+  applyToElements: [Earth]
+
+  chanceToIgnoreConsume: 25
