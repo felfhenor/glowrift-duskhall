@@ -3,18 +3,15 @@
     <div class="flex flex-row gap-2 justify-between">
       <div class="flex items-center">
         <div
-          class="w-12 h-10 flex items-center justify-center transform scale-60"
+          class="w-12 h-8 flex items-center justify-center transform scale-50"
         >
-          @if (message.type === 'hero') {
-            @if (getHeroById(message.actorId); as hero) {
-              <app-icon-hero-combat [hero]="hero"></app-icon-hero-combat>
-            }
-          } @else if (message.type === 'guardian') {
-            @if (getGuardianById(message.actorId); as guardian) {
-              <app-icon-guardian-combat
-                [guardian]="guardian"
-              ></app-icon-guardian-combat>
-            }
+          @if (message.spritesheet && message.sprite) {
+            <div class="mr-3 flex items-center justify-center">
+              <app-sprite-combat
+                [spritesheet]="message.spritesheet"
+                [sprite]="message.sprite"
+              ></app-sprite-combat>
+            </div>
           }
         </div>
         <div [innerHTML]="message.message"></div>

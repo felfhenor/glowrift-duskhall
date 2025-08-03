@@ -18,8 +18,8 @@ export interface CombatLog {
   timestamp: number;
   locationName: string;
   message: string;
-  actorId: string;
-  type: 'hero' | 'guardian' | 'system';
+  spritesheet?: 'hero' | 'guardian';
+  sprite?: string;
 }
 
 export type CombatantStatusEffectData = {
@@ -54,6 +54,8 @@ export type Combatant = Animatable & {
 
   statusEffects: StatusEffect[];
   statusEffectData: CombatantStatusEffectData;
+  spritesheet?: 'hero' | 'guardian';
+  sprite?: string;
 };
 
 export interface Combat {

@@ -14,20 +14,14 @@ export function logCombatMessage(
   message: string,
   actor?: Combatant,
 ): void {
-  const type = actor
-    ? combat.heroes.some((hero) => hero.id === actor.id)
-      ? 'hero'
-      : 'guardian'
-    : 'system';
-
   const newLog: CombatLog = {
     combatId: combat.id,
     messageId: uuid(),
     timestamp: Date.now(),
     locationName: combat.locationName,
     message,
-    actorId: actor?.id ?? 'system',
-    type: type as 'hero' | 'guardian' | 'system',
+    spritesheet: actor?.spritesheet,
+    sprite: actor?.sprite,
   };
 
   combatLog.update((logs) => [newLog, ...logs].slice(0, 500));
