@@ -1,0 +1,24 @@
+- id: 8ee3ae92-cda3-4f27-8b9f-9e8aa18e22ec
+  name: Smite
+
+  sprite: '0221'
+  frames: 8
+
+  rarity: Mystical
+  dropLevel: 50
+
+  usesPerCombat: 1
+
+  techniques:
+    - elements: [Water, Fire, Air, Earth]
+      targets: 1
+      targetType: Enemies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+      damageScaling:
+        Force: 1
+        Aura: 1
+        Speed: 1
+        Health: 1
+
+      combatMessage: '**{{ combatant.name }}** cast **{{ skill.name }}** on **{{ target.name }}**.'

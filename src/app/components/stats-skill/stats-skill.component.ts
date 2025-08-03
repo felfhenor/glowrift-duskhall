@@ -10,6 +10,7 @@ import {
   getSkillTechniqueStatusEffectDuration,
   getSkillUses,
   rarityItemTextColor,
+  skillDisplayElement,
   talentAddedStatusEffects,
   talentStatBoost,
   talentStatusEffectChanceBoost,
@@ -24,7 +25,6 @@ import type {
   Hero,
   StatusEffectContent,
 } from '@interfaces';
-import { uniq } from 'es-toolkit/compat';
 
 @Component({
   selector: 'app-stats-skill',
@@ -51,9 +51,7 @@ export class StatsSkillComponent {
     getSkillUses(this.skill() as EquipmentSkill),
   );
 
-  public elements = computed(() =>
-    uniq(this.skill().techniques.map((t) => t.elements)),
-  );
+  public element = computed(() => skillDisplayElement(this.skill()));
 
   public skillRarityClass = computed(() =>
     rarityItemTextColor(this.skill().rarity),

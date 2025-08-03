@@ -5,7 +5,9 @@ import type {
   EquipmentSkillId,
   EquipmentSkillTechniqueStatusEffectApplication,
 } from '@interfaces/content-skill';
+import type { GameElement } from '@interfaces/element';
 import type { GameStat } from '@interfaces/stat';
+import { intersection, uniq } from 'es-toolkit/compat';
 
 export function getSkillEnchantLevel(skill: EquipmentSkill): number {
   return skill.enchantLevel + (skill.mods?.enchantLevel ?? 0);
@@ -60,4 +62,27 @@ export function getSkillTechniqueStatusEffectDuration(
       techniqueApplication.statusEffectId
     ] ?? 0)
   );
+}
+
+export function skillDisplayElement(skill: EquipmentSkill): string {
+  const elements: GameElement[] = uniq(
+    skill.techniques.flatMap((t) => t.elements),
+  ).sort();
+
+  if (intersection(elements, ['Air', 'Fire', 'Water', 'Earth']).length === 4)
+    return 'Holy';
+
+  if (intersection(elements, ['Fire', 'Water']).length === 2) return 'Steam';
+  if (intersection(elements, ['Fire', 'Air']).length === 2) return 'Heat';
+  if (intersection(elements, ['Fire', 'Earth']).length === 2) return 'Molten';
+  if (intersection(elements, ['Water', 'Earth']).length === 2) return 'Mud';
+  if (intersection(elements, ['Water', 'Air']).length === 2) return 'Mist';
+  if (intersection(elements, ['Earth', 'Air']).length === 2) return 'Sand';
+
+  if (intersection(elements, ['Fire']).length === 1) return 'Fire';
+  if (intersection(elements, ['Water']).length === 1) return 'Water';
+  if (intersection(elements, ['Earth']).length === 1) return 'Earth';
+  if (intersection(elements, ['Air']).length === 1) return 'Air';
+
+  return elements.join(', ');
 }
