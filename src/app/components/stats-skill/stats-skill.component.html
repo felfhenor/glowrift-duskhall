@@ -24,7 +24,15 @@
 <ol class="list-decimal ps-4">
   @for (technique of techniqueTexts(); track $index) {
     <li>
-      {{ technique }}
+      <div>{{ technique.targetType }} ({{ technique.totalTargets }}x)</div>
+
+      <div>
+        {{ technique.statString }}
+      </div>
+
+      <div>
+        {{ technique.statusString }}
+      </div>
     </li>
   }
 </ol>

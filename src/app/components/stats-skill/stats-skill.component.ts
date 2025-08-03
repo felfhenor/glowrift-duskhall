@@ -77,7 +77,7 @@ export class StatsSkillComponent {
 
           return `${d} (${totalStatMult.toFixed(2)}x)`;
         })
-        .join(', ');
+        .join(' + ');
 
       const allStatusEffects: EquipmentSkillTechniqueStatusEffectApplication[] =
         [...t.statusEffects, ...talentAddedStatusEffects(talents, skillRef)];
@@ -111,15 +111,18 @@ export class StatsSkillComponent {
 
           return `${statusEffect.name} (${totalChance}% - ${totalDuration} turns)`;
         })
-        .join(', ');
-
-      const endString = [statString, statusString].filter(Boolean).join(' + ');
+        .join(' + ');
 
       const baseTargets = getSkillTechniqueNumTargets(skillRef, t);
       const talentTargets = talentTargetCountBoost(talents, skillRef);
       const totalTargets = baseTargets + talentTargets;
 
-      return `${t.targetType} (${totalTargets}x): ${endString}`;
+      return {
+        targetType: t.targetType,
+        totalTargets,
+        statString,
+        statusString,
+      };
     });
   });
 }
