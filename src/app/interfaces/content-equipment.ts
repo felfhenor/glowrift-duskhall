@@ -5,6 +5,7 @@ import type { DroppableEquippable } from '@interfaces/droppable';
 import type { GameElement } from '@interfaces/element';
 import type { Branded } from '@interfaces/identifiable';
 import type { StatBlock } from '@interfaces/stat';
+import type { BlacksmithEnchant } from '@interfaces/town';
 
 export type EquipmentSlot = 'accessory' | 'armor' | 'trinket' | 'weapon';
 
@@ -32,10 +33,12 @@ export type EquipmentItemContent = DroppableEquippable &
   EquipmentModifiable & {
     __type: EquipmentSlot;
     id: EquipmentItemId;
+
+    unableToUpgrade: Array<keyof BlacksmithEnchant>;
   };
 
 export type EquipmentItem = EquipmentItemContent & {
-  mods: Partial<EquipmentModifiable>;
+  mods?: Partial<EquipmentModifiable>;
 };
 
 export type InventorySlotType = EquipmentSlot | 'skill';

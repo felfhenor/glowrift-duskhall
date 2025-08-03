@@ -33,7 +33,7 @@
   frames: 4
 
   rarity: Uncommon
-  dropLevel: 5
+  dropLevel: 6
 
   usesPerCombat: 5
 
@@ -61,7 +61,7 @@
   frames: 4
 
   rarity: Rare
-  dropLevel: 15
+  dropLevel: 11
 
   usesPerCombat: 3
 
@@ -89,7 +89,7 @@
   frames: 6
 
   rarity: Uncommon
-  dropLevel: 10
+  dropLevel: 16
 
   usesPerCombat: 3
 
@@ -117,7 +117,7 @@
   frames: 6
 
   rarity: Rare
-  dropLevel: 15
+  dropLevel: 21
 
   usesPerCombat: 2
 
@@ -145,7 +145,7 @@
   frames: 6
 
   rarity: Mystical
-  dropLevel: 20
+  dropLevel: 26
 
   usesPerCombat: 1
 

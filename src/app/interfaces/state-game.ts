@@ -15,6 +15,9 @@ export interface GameStateMeta {
   version: number;
   isSetup: boolean;
   isPaused: boolean;
+  hasWon: boolean;
+  hasDismissedWinNotification: boolean;
+  wonAtTick: number;
   createdAt: number;
 }
 

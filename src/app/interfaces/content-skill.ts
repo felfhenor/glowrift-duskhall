@@ -1,8 +1,10 @@
 import type { Animatable } from '@interfaces/artable';
+import type { StatusEffectId } from '@interfaces/content-statuseffect';
 import type { DroppableEquippable } from '@interfaces/droppable';
 import type { GameElement } from '@interfaces/element';
 import type { Branded } from '@interfaces/identifiable';
 import type { StatBlock } from '@interfaces/stat';
+import type { AcademyEnchant } from '@interfaces/town';
 
 export type EquipmentSkillTargetBehavior =
   | 'Always'
@@ -21,18 +23,23 @@ export type EquipmentSkillTargetType = 'Allies' | 'Enemies' | 'Self' | 'All';
 export type EquipmentSkillId = Branded<string, 'EquipmentSkillId'>;
 
 export type EquipmentSkillContentModifiable = {
+  enchantLevel: number;
   techniques: EquipmentSkillContentTechnique[];
   usesPerCombat: -1 | number;
+  numTargets: number;
+  damageScaling: StatBlock;
+  statusEffectDurationBoost: Record<StatusEffectId, number>;
+  statusEffectChanceBoost: Record<StatusEffectId, number>;
 };
 
 export type EquipmentSkillTargetBehaviorData = {
   behavior: EquipmentSkillTargetBehavior;
 
-  statusEffectId?: string;
+  statusEffectId?: StatusEffectId;
 };
 
 export type EquipmentSkillTechniqueStatusEffectApplication = {
-  statusEffectId: string;
+  statusEffectId: StatusEffectId;
   chance: number;
   duration: number;
 };
@@ -54,8 +61,10 @@ export type EquipmentSkillContent = DroppableEquippable &
   EquipmentSkillContentModifiable & {
     __type: 'skill';
     id: EquipmentSkillId;
+
+    unableToUpgrade: Array<keyof AcademyEnchant>;
   };
 
 export type EquipmentSkill = EquipmentSkillContent & {
-  mods: Partial<EquipmentSkillContentModifiable>;
+  mods?: Partial<EquipmentSkillContentModifiable>;
 };

@@ -71,7 +71,7 @@ export class PanelTownComponent {
     {
       name: 'Academy',
       link: 'Academy',
-      showIf: computed(() => false),
+      showIf: computed(() => true),
       level: computed(() => getBuildingLevel('Academy')),
     },
     {

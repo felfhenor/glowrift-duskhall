@@ -23,13 +23,36 @@
 
   <div class="flex-1 card bg-base-100 foreground shadow-xl">
     <div class="card-body">
-      <div class="card-title">Actions</div>
+      <div class="card-title">Enchantments</div>
 
       @if (!chosen) {
         <app-blank-slate>Choose a skill</app-blank-slate>
       }
 
-      @if (chosen) {}
+      @if (chosen) {
+        <ul class="list bg-base-100 rounded-box shadow-md">
+          @for (path of enchantPaths(); track $index) {
+            <li class="list-row">
+              <button
+                class="btn btn-block h-[60px] btn-neutral list-col-grow flex flex-col"
+                [disabled]="!path.canEnchant"
+                (click)="enchantSkill(chosen, path.path)"
+              >
+                {{ path.path.description }}
+
+                <div class="flex flex-row gap-2">
+                  @for (currency of path.costs; track $index) {
+                    <app-marker-currency-inline
+                      [currency]="currency"
+                      [value]="path.path.cost[currency]"
+                    ></app-marker-currency-inline>
+                  }
+                </div>
+              </button>
+            </li>
+          }
+        </ul>
+      }
     </div>
   </div>
 </div>

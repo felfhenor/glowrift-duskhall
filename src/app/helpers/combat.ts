@@ -23,6 +23,12 @@ import { notify } from '@helpers/notify';
 
 import { sample, sortBy } from 'es-toolkit/compat';
 
+import { succeedsChance } from '@helpers/rng';
+import { getSkillTechniqueNumTargets } from '@helpers/skill';
+import {
+  talentIgnoreConsumptionChance,
+  talentTargetCountBoost,
+} from '@helpers/talent';
 import type {
   Combat,
   Combatant,
@@ -44,7 +50,9 @@ export function orderCombatantsBySpeed(combat: Combat): Combatant[] {
 export function allCombatantTalents(combatant: Combatant): TalentContent[] {
   return Object.entries(combatant.talents)
     .filter(([, level]) => level > 0)
-    .map(([talentId]) => getEntry<TalentContent>(talentId))
+    .flatMap(([talentId, level]) =>
+      Array(level).fill(getEntry<TalentContent>(talentId)),
+    )
     .filter((talent): talent is TalentContent => !!talent);
 }
 
@@ -52,6 +60,12 @@ export function combatantMarkSkillUse(
   combatant: Combatant,
   skill: EquipmentSkill,
 ): void {
+  const shouldIgnoreUseChance = talentIgnoreConsumptionChance(
+    allCombatantTalents(combatant),
+    skill,
+  );
+  if (succeedsChance(shouldIgnoreUseChance)) return;
+
   combatant.skillUses[skill.id] ??= 0;
   combatant.skillUses[skill.id]++;
 }
@@ -82,6 +96,8 @@ export function combatantTakeTurn(combat: Combat, combatant: Combatant): void {
     return;
   }
 
+  const talents = allCombatantTalents(combatant);
+
   const skills = availableSkillsForCombatant(combatant).filter(
     (s) => getPossibleCombatantTargetsForSkill(combat, combatant, s).length > 0,
   );
@@ -106,10 +122,14 @@ export function combatantTakeTurn(combat: Combat, combatant: Combatant): void {
       tech,
     );
 
+    const numTargets =
+      getSkillTechniqueNumTargets(chosenSkill, tech) +
+      talentTargetCountBoost(talents, chosenSkill);
+
     const targets = getTargetsFromListBasedOnType(
       baseTargetList,
       combatant.targettingType,
-      tech.targets,
+      numTargets,
     );
 
     targets.forEach((target) => {

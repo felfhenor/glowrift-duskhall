@@ -5,6 +5,8 @@
   @for (skill of skills(); track skill.id) {
     <app-icon-skill
       [skill]="skill"
+      [compareSkill]="compareSkill()"
+      [equippingHero]="compareWithEquippedHero()"
       (click)="skillClicked.emit(skill)"
       [tp]="contextMenu"
       [tpData]="skill"

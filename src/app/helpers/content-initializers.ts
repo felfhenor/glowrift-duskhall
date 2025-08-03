@@ -144,13 +144,19 @@ function ensureSkill(
     id: skill.id ?? ('UNKNOWN' as EquipmentSkillId),
     name: skill.name ?? 'UNKNOWN',
     __type: skill.__type ?? 'skill',
+    unableToUpgrade: skill.unableToUpgrade ?? [],
     sprite: skill.sprite ?? '0000',
     frames: skill.frames ?? 1,
     rarity: skill.rarity ?? 'Common',
+    enchantLevel: skill.enchantLevel ?? 0,
     dropLevel: skill.dropLevel ?? 0,
     preventDrop: skill.preventDrop ?? false,
     preventModification: skill.preventModification ?? false,
     usesPerCombat: skill.usesPerCombat ?? -1,
+    numTargets: skill.numTargets ?? 0,
+    damageScaling: ensureStats(skill.damageScaling),
+    statusEffectChanceBoost: skill.statusEffectChanceBoost ?? {},
+    statusEffectDurationBoost: skill.statusEffectDurationBoost ?? {},
     techniques: (skill.techniques ?? []).map(ensureTechnique),
   };
 }
@@ -162,6 +168,7 @@ function ensureItem(
     id: item.id ?? ('UNKNOWN' as EquipmentItemId),
     name: item.name ?? 'UNKNOWN',
     __type: item.__type ?? 'trinket',
+    unableToUpgrade: item.unableToUpgrade ?? [],
     sprite: item.sprite ?? '0000',
     rarity: item.rarity ?? 'Common',
     dropLevel: item.dropLevel ?? 0,
@@ -203,13 +210,19 @@ function ensureTalent(talent: Partial<TalentContent>): Required<TalentContent> {
 
     requireTalentId: talent.requireTalentId ?? '',
 
-    boostedElements: talent.boostedElements ?? [],
-    boostedSkillIds: talent.boostedSkillIds ?? [],
+    applyToAllSkills: talent.applyToAllSkills ?? false,
+    applyToElements: talent.applyToElements ?? [],
+    applyToSkillIds: talent.applyToSkillIds ?? [],
     boostStats: ensureStats(talent.boostStats),
 
     boostedStatusEffectChance: talent.boostedStatusEffectChance ?? 0,
-    boostedStatusEffectIds: talent.boostedStatusEffectIds ?? [],
+    boostedStatusEffectDuration: talent.boostedStatusEffectDuration ?? 0,
+    applyToStatusEffectIds: talent.applyToStatusEffectIds ?? [],
     boostStatusEffectStats: ensureStats(talent.boostStatusEffectStats),
+
+    additionalTargets: talent.additionalTargets ?? 0,
+
+    chanceToIgnoreConsume: talent.chanceToIgnoreConsume ?? 0,
   };
 }
 

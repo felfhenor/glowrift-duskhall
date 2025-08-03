@@ -1,0 +1,51 @@
+- id: 3fd2f3cd-4b7c-44bc-8e4d-f267f1394716
+  name: Strength of Thunderwave I
+  description: Boost the power of Thunderwave skills by 25%.
+  sprite: '0015'
+
+  applyToSkillIds:
+    - Thunderwave I
+    - Thunderwave II
+    - Thunderwave III
+
+  boostStats:
+    Force: 0.25
+
+- id: 5c740066-851e-4101-9e37-c1baaff33eee
+  name: Strength of Thunderwave II
+  description: Boost the power of Thunderwave skills by 25%.
+  sprite: '0015'
+
+  requireTalentId: Strength of Thunderwave I
+
+  applyToSkillIds:
+    - Thunderwave I
+    - Thunderwave II
+    - Thunderwave III
+
+  boostStats:
+    Force: 0.25
+
+- id: d6ffb7f9-e960-4dcd-ab61-02ceeb0b0732
+  name: Strength of Thunderwave III
+  description: Boost the power of Thunderwave skills by 25%.
+  sprite: '0015'
+
+  requireTalentId: Strength of Thunderwave II
+
+  applyToSkillIds:
+    - Thunderwave I
+    - Thunderwave II
+    - Thunderwave III
+
+  boostStats:
+    Force: 0.25
+
+- id: b3b68fc0-1f1a-44d5-a2ba-aa1150bb7e8d
+  name: Winds of Change
+  description: All Air spells have a 25% chance to not consume a use.
+  sprite: '0018'
+
+  applyToElements: [Air]
+
+  chanceToIgnoreConsume: 25

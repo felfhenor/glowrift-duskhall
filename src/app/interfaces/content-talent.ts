@@ -13,11 +13,18 @@ export type TalentContent = IsContentItem &
 
     requireTalentId?: string;
 
-    boostedElements: GameElement[];
-    boostedSkillIds: string[];
+    applyToAllSkills: boolean;
+    applyToElements: GameElement[];
+    applyToSkillIds: string[];
+    applyToStatusEffectIds: string[];
+
     boostStats: StatBlock;
 
-    boostedStatusEffectIds: string[];
     boostedStatusEffectChance: number;
+    boostedStatusEffectDuration: number;
     boostStatusEffectStats: StatBlock;
+
+    additionalTargets: number;
+
+    chanceToIgnoreConsume: number;
   };

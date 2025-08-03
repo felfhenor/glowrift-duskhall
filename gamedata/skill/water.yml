@@ -4,8 +4,10 @@
   sprite: '0473'
   frames: 11
 
+  unableToUpgrade: [numTargets]
+
   rarity: Common
-  dropLevel: 1
+  dropLevel: 3
 
   usesPerCombat: 5
 
@@ -29,8 +31,10 @@
   sprite: '0473'
   frames: 11
 
+  unableToUpgrade: [numTargets]
+
   rarity: Uncommon
-  dropLevel: 5
+  dropLevel: 8
 
   usesPerCombat: 3
 
@@ -54,8 +58,10 @@
   sprite: '0473'
   frames: 11
 
+  unableToUpgrade: [numTargets]
+
   rarity: Rare
-  dropLevel: 15
+  dropLevel: 13
 
   usesPerCombat: 1
 
@@ -80,7 +86,7 @@
   frames: 11
 
   rarity: Uncommon
-  dropLevel: 10
+  dropLevel: 18
 
   usesPerCombat: 3
 
@@ -107,7 +113,7 @@
   frames: 11
 
   rarity: Rare
-  dropLevel: 15
+  dropLevel: 23
 
   usesPerCombat: 3
 
@@ -134,7 +140,7 @@
   frames: 11
 
   rarity: Mystical
-  dropLevel: 20
+  dropLevel: 28
 
   usesPerCombat: 3
 

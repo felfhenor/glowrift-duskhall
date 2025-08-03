@@ -100,6 +100,7 @@ export function addItemElement(
   item: EquipmentItem,
   locElement: WorldLocationElement,
 ): void {
+  item.mods ??= {};
   item.mods.elementMultipliers ??= [];
   item.mods.elementMultipliers.push({
     element: locElement.element,
@@ -112,12 +113,13 @@ export function addItemStat(
   stat: GameStat,
   value: number,
 ): void {
+  item.mods ??= {};
   item.mods.baseStats ??= getDefaultStats();
   item.mods.baseStats[stat] += value;
 }
 
 export function getItemEnchantLevel(item: EquipmentItem): number {
-  return item.enchantLevel + (item.mods.enchantLevel ?? 0);
+  return item.enchantLevel + (item.mods?.enchantLevel ?? 0);
 }
 
 export function getItemTraits(item: EquipmentItem): TraitEquipmentContent[] {

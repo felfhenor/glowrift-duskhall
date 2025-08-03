@@ -1,4 +1,5 @@
 import type { CurrencyBlock } from '@interfaces/content-currency';
+import type { StatusEffectId } from '@interfaces/content-statuseffect';
 import type { TalentId } from '@interfaces/content-talent';
 import type { HasRarity } from '@interfaces/droppable';
 import type { ElementBlock } from '@interfaces/element';
@@ -21,7 +22,18 @@ export type BlacksmithEnchant = HasRarity &
   HasDescription & {
     cost: CurrencyBlock;
 
-    statBoosts: StatBlock;
-    elementBoosts: ElementBlock;
-    talentBoosts: TalentId[];
+    statBoosts?: StatBlock;
+    elementBoosts?: ElementBlock;
+    talentBoosts?: TalentId[];
+  };
+
+export type AcademyEnchant = HasRarity &
+  HasDescription & {
+    cost: CurrencyBlock;
+
+    usesPerCombat?: number;
+    numTargets?: number;
+    damageScaling?: StatBlock;
+    statusEffectDurationBoost?: Record<StatusEffectId, number>;
+    statusEffectChanceBoost?: Record<StatusEffectId, number>;
   };

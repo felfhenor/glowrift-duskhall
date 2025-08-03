@@ -111,10 +111,10 @@ describe('Hero Talent Functions', () => {
       __type: 'talent',
       sprite: 'new-talent',
       description: 'Test talent',
-      boostedElements: [],
-      boostedSkillIds: [],
+      applyToElements: [],
+      applyToSkillIds: [],
       boostStats: baseStats,
-      boostedStatusEffectIds: [],
+      applyToStatusEffectIds: [],
       boostedStatusEffectChance: 0,
       boostStatusEffectStats: baseStats,
     };

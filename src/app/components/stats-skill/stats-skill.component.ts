@@ -1,9 +1,25 @@
 import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
-import { getEntry, rarityItemTextColor } from '@helpers';
+import {
+  allHeroTalents,
+  getEntry,
+  getSkillEnchantLevel,
+  getSkillTechniqueDamageScalingStat,
+  getSkillTechniqueNumTargets,
+  getSkillTechniqueStatusEffectChance,
+  getSkillTechniqueStatusEffectDuration,
+  getSkillUses,
+  rarityItemTextColor,
+  talentStatBoost,
+  talentStatusEffectChanceBoost,
+  talentStatusEffectDurationBoost,
+  talentTargetCountBoost,
+} from '@helpers';
 import type {
+  EquipmentSkill,
   EquipmentSkillContent,
   GameStat,
+  Hero,
   StatusEffectContent,
 } from '@interfaces';
 import { uniq } from 'es-toolkit/compat';
@@ -16,6 +32,22 @@ import { uniq } from 'es-toolkit/compat';
 })
 export class StatsSkillComponent {
   public skill = input.required<EquipmentSkillContent>();
+  public equippingHero = input<Hero>();
+
+  public heroTalents = computed(() => {
+    const hero = this.equippingHero();
+    if (!hero) return [];
+
+    return allHeroTalents(hero);
+  });
+
+  public enchantLevel = computed(() =>
+    getSkillEnchantLevel(this.skill() as EquipmentSkill),
+  );
+
+  public skillUses = computed(() =>
+    getSkillUses(this.skill() as EquipmentSkill),
+  );
 
   public elements = computed(() =>
     uniq(this.skill().techniques.map((t) => t.elements)),
@@ -26,22 +58,65 @@ export class StatsSkillComponent {
   );
 
   public techniqueTexts = computed(() => {
+    const talents = this.heroTalents();
+    const skillRef = this.skill() as EquipmentSkill;
+
     return this.skill().techniques.map((t) => {
       const statString = Object.keys(t.damageScaling)
         .filter((d) => t.damageScaling[d as GameStat])
-        .map((d) => `${d} (${t.damageScaling[d as GameStat]}x)`)
+        .map((d) => {
+          const statMult = getSkillTechniqueDamageScalingStat(
+            skillRef,
+            t,
+            d as GameStat,
+          );
+
+          const talentBoost = talentStatBoost(talents, skillRef, d as GameStat);
+
+          const totalStatMult = statMult + talentBoost;
+
+          return `${d} (${totalStatMult.toFixed(2)}x)`;
+        })
         .join(', ');
 
       const statusString = t.statusEffects
-        .map(
-          (s) =>
-            `${getEntry<StatusEffectContent>(s.statusEffectId)!.name} (${s.chance}% - ${s.duration} turns)`,
-        )
+        .map((s) => {
+          const statusEffect = getEntry<StatusEffectContent>(s.statusEffectId);
+          if (!statusEffect) return '';
+
+          const defaultChance = getSkillTechniqueStatusEffectChance(
+            skillRef,
+            s,
+          );
+          const talentChance = talentStatusEffectChanceBoost(
+            talents,
+            skillRef,
+            statusEffect,
+          );
+          const totalChance = defaultChance + talentChance;
+
+          const defaultDuration = getSkillTechniqueStatusEffectDuration(
+            skillRef,
+            s,
+          );
+          const talentDuration = talentStatusEffectDurationBoost(
+            talents,
+            skillRef,
+            statusEffect,
+          );
+          const totalDuration = defaultDuration + talentDuration;
+
+          return `${statusEffect.name} (${totalChance}% - ${totalDuration} turns)`;
+        })
         .join(', ');
 
       const endString = [statString, statusString].filter(Boolean).join(' + ');
 
-      return `${t.targetType} (${t.targets}x): ${endString}`;
+      const baseTargets = getSkillTechniqueNumTargets(skillRef, t);
+      const talentTargets = talentTargetCountBoost(talents, skillRef);
+      const totalTargets = baseTargets + talentTargets;
+
+      return `${t.targetType} (${totalTargets}x): ${endString}`;
     });
   });
 }

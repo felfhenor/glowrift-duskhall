@@ -8,6 +8,7 @@ export function canAddTraitToEquipment() {
 }
 
 export function addTraitToEquipment(item: EquipmentItem) {
+  item.mods ??= {};
   item.mods.traitIds ??= [];
 
   const allValidTraits =

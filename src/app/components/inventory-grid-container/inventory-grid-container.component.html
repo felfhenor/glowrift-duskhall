@@ -29,6 +29,8 @@
       [disabledSkillIds]="disabledSkillIds()"
       [allowedActions]="allowedSkillActions()"
       (skillClicked)="skillClicked.emit($event)"
+      [compareWithEquippedHero]="compareSkillToHero()"
+      [compareWithEquippedHeroSlot]="compareSkillToHeroSlot()"
     ></app-inventory-grid-skill>
   }
 </div>
