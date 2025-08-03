@@ -1,13 +1,26 @@
 <div>
   @for (message of allCombatLogs(); track message.messageId) {
     <div class="flex flex-row gap-2 justify-between">
-      <div [innerHTML]="message.message"></div>
+      <div class="flex items-center">
+        <div
+          class="w-12 h-8 flex items-center justify-center transform scale-50"
+        >
+          @if (message.spritesheet && message.sprite) {
+            <div class="mr-3 flex items-center justify-center">
+              <app-sprite-combat
+                [spritesheet]="message.spritesheet"
+                [sprite]="message.sprite"
+              ></app-sprite-combat>
+            </div>
+          }
+        </div>
+        <div [innerHTML]="message.message"></div>
+      </div>
 
       <div class="italic">
         {{ message.locationName }} - {{ message.timestamp | date: 'short' }}
       </div>
     </div>
-
   } @empty {
     <div class="text-center">
       <p>No combats have happened yet.</p>

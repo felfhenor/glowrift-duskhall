@@ -31,6 +31,7 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
     level: h.level,
     sprite: h.sprite,
     frames: h.frames,
+    spritesheet: 'hero',
     skillIds: ['Attack' as EquipmentSkillId, ...heroEquipmentSkills(h)],
     skillRefs: h.skills.filter(Boolean) as EquipmentSkill[],
 
@@ -66,6 +67,7 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
       level: location.encounterLevel,
       sprite: g.sprite,
       frames: g.frames,
+      spritesheet: 'guardian',
       skillIds: ['Attack' as EquipmentSkillId, ...g.skillIds],
       skillRefs: [],
       talents: g.talentIds ?? {},

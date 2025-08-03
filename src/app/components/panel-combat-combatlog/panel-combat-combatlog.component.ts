@@ -4,10 +4,11 @@ import { marked } from 'marked';
 import { combatLog, rarityItemTextColor } from '@helpers';
 import { getHealthColor } from '@helpers/combat-log';
 import type { DropRarity } from '@interfaces/droppable';
+import { SpriteCombatComponent } from '@components/sprite-combat/sprite-combat.component';
 
 @Component({
   selector: 'app-panel-combat-combatlog',
-  imports: [CommonModule],
+  imports: [CommonModule, SpriteCombatComponent],
   templateUrl: './panel-combat-combatlog.component.html',
   styleUrl: './panel-combat-combatlog.component.scss',
 })
