@@ -20,7 +20,7 @@ export function logCombatMessage(
     timestamp: Date.now(),
     locationName: combat.locationName,
     message,
-    spritesheet: actor?.spritesheet,
+    spritesheet: actor?.isEnemy ? 'guardian' : 'hero',
     sprite: actor?.sprite,
   };
 

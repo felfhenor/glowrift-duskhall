@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed } from '@angular/core';
-import { marked } from 'marked';
+import { IconSpriteCombatComponent } from '@components/icon-combat-sprite/icon-combat-sprite.component';
 import { combatLog, rarityItemTextColor } from '@helpers';
 import { getHealthColor } from '@helpers/combat-log';
 import type { DropRarity } from '@interfaces/droppable';
-import { SpriteCombatComponent } from '@components/sprite-combat/sprite-combat.component';
+import { marked } from 'marked';
 
 @Component({
   selector: 'app-panel-combat-combatlog',
-  imports: [CommonModule, SpriteCombatComponent],
+  imports: [CommonModule, IconSpriteCombatComponent],
   templateUrl: './panel-combat-combatlog.component.html',
   styleUrl: './panel-combat-combatlog.component.scss',
 })

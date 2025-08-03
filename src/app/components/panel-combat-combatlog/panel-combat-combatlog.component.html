@@ -3,14 +3,14 @@
     <div class="flex flex-row gap-2 justify-between">
       <div class="flex items-center">
         <div
-          class="w-12 h-8 flex items-center justify-center transform scale-50"
+          class="w-12 h-6 flex items-center justify-center transform scale-50"
         >
           @if (message.spritesheet && message.sprite) {
             <div class="mr-3 flex items-center justify-center">
-              <app-sprite-combat
+              <app-icon-combat-sprite
                 [spritesheet]="message.spritesheet"
                 [sprite]="message.sprite"
-              ></app-sprite-combat>
+              ></app-icon-combat-sprite>
             </div>
           }
         </div>

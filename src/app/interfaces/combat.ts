@@ -18,7 +18,7 @@ export interface CombatLog {
   timestamp: number;
   locationName: string;
   message: string;
-  spritesheet?: 'hero' | 'guardian';
+  spritesheet?: 'guardian' | 'hero';
   sprite?: string;
 }
 
