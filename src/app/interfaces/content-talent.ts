@@ -1,5 +1,8 @@
 import type { Artable } from '@interfaces/artable';
-import type { EquipmentSkillAttribute } from '@interfaces/content-skill';
+import type {
+  EquipmentSkillAttribute,
+  EquipmentSkillTechniqueStatusEffectApplication,
+} from '@interfaces/content-skill';
 import type { GameElement } from '@interfaces/element';
 import type { Branded, IsContentItem } from '@interfaces/identifiable';
 import type { StatBlock } from '@interfaces/stat';
@@ -29,4 +32,6 @@ export type TalentContent = IsContentItem &
     additionalTargets: number;
 
     chanceToIgnoreConsume: number;
+
+    applyStatusEffects: EquipmentSkillTechniqueStatusEffectApplication[];
   };

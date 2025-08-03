@@ -1,6 +1,9 @@
 import { getEntry } from '@helpers/content';
 import { getDroppableEquippableBaseId } from '@helpers/droppable';
-import type { EquipmentSkill } from '@interfaces/content-skill';
+import type {
+  EquipmentSkill,
+  EquipmentSkillTechniqueStatusEffectApplication,
+} from '@interfaces/content-skill';
 import type { StatusEffectContent } from '@interfaces/content-statuseffect';
 import type { TalentContent } from '@interfaces/content-talent';
 import type { Hero } from '@interfaces/hero';
@@ -130,4 +133,11 @@ export function talentIgnoreConsumptionChance(
     talentsForSkill(talents, skill),
     'chanceToIgnoreConsume',
   );
+}
+
+export function talentAddedStatusEffects(
+  talents: TalentContent[],
+  skill: EquipmentSkill,
+): EquipmentSkillTechniqueStatusEffectApplication[] {
+  return talentsForSkill(talents, skill).flatMap((t) => t.applyStatusEffects);
 }

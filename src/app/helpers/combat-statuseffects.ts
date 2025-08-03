@@ -101,6 +101,7 @@ export function handleStatusEffectBehaviors(
 ): void {
   const templateData = {
     damage: 0,
+    healing: 0,
     absdamage: 0,
     combatant,
   };
@@ -111,6 +112,12 @@ export function handleStatusEffectBehaviors(
       const behaviorData = behavior as StatusEffectBehaviorDataChange;
       const { key, value } = behaviorData;
       combatant.statusEffectData[key] = value;
+    },
+    HealDamage: () => {
+      const healing = statusEffectDamage(effect);
+      templateData.healing = healing;
+
+      combatantTakeDamage(combatant, -healing);
     },
     TakeDamage: () => {
       const damage = statusEffectDamage(effect);

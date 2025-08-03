@@ -17,6 +17,7 @@ import {
   getSkillTechniqueStatusEffectDuration,
 } from '@helpers/skill';
 import {
+  talentAddedStatusEffects,
   talentStatBoost,
   talentStatusEffectChanceBoost,
   talentStatusEffectDurationBoost,
@@ -27,10 +28,11 @@ import type {
   EquipmentSkill,
   EquipmentSkillAttribute,
   EquipmentSkillContentTechnique,
+  EquipmentSkillTechniqueStatusEffectApplication,
   GameStat,
   StatusEffectContent,
 } from '@interfaces';
-import { meanBy, sum, sumBy } from 'es-toolkit/compat';
+import { clamp, meanBy, sum, sumBy } from 'es-toolkit/compat';
 
 export function techniqueHasAttribute(
   technique: EquipmentSkillContentTechnique,
@@ -77,7 +79,7 @@ export function getCombatantBaseStatDamageForTechnique(
 }
 
 export function combatantTakeDamage(combatant: Combatant, damage: number) {
-  combatant.hp = Math.max(0, combatant.hp - damage);
+  combatant.hp = clamp(combatant.hp - damage, 0, combatant.totalStats.Health);
 }
 
 export function applySkillToTarget(
@@ -159,7 +161,12 @@ export function applySkillToTarget(
     logCombatMessage(combat, message, combatant);
   }
 
-  technique.statusEffects.forEach((effData) => {
+  const allStatusEffects: EquipmentSkillTechniqueStatusEffectApplication[] = [
+    ...technique.statusEffects,
+    ...talentAddedStatusEffects(attackerTalents, skill),
+  ];
+
+  allStatusEffects.forEach((effData) => {
     const effectContent = getEntry<StatusEffectContent>(effData.statusEffectId);
     if (!effectContent) return;
 

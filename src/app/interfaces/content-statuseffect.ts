@@ -8,6 +8,7 @@ export type StatusEffectTrigger = 'TurnStart' | 'TurnEnd';
 
 export type StatusEffectBehaviorType =
   | 'ModifyStatusEffectData'
+  | 'HealDamage'
   | 'TakeDamage'
   | 'SendMessage';
 
@@ -25,6 +26,11 @@ export type StatusEffectBehaviorDataChange = {
 
 export type StatusEffectBehaviorTakeDamage = {
   type: 'TakeDamage';
+  combatMessage: string;
+};
+
+export type StatusEffectBehaviorHealDamage = {
+  type: 'HealDamage';
   combatMessage: string;
 };
 

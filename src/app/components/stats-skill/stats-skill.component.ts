@@ -10,6 +10,7 @@ import {
   getSkillTechniqueStatusEffectDuration,
   getSkillUses,
   rarityItemTextColor,
+  talentAddedStatusEffects,
   talentStatBoost,
   talentStatusEffectChanceBoost,
   talentStatusEffectDurationBoost,
@@ -18,6 +19,7 @@ import {
 import type {
   EquipmentSkill,
   EquipmentSkillContent,
+  EquipmentSkillTechniqueStatusEffectApplication,
   GameStat,
   Hero,
   StatusEffectContent,
@@ -79,7 +81,10 @@ export class StatsSkillComponent {
         })
         .join(', ');
 
-      const statusString = t.statusEffects
+      const allStatusEffects: EquipmentSkillTechniqueStatusEffectApplication[] =
+        [...t.statusEffects, ...talentAddedStatusEffects(talents, skillRef)];
+
+      const statusString = allStatusEffects
         .map((s) => {
           const statusEffect = getEntry<StatusEffectContent>(s.statusEffectId);
           if (!statusEffect) return '';

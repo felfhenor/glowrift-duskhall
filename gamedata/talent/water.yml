@@ -104,3 +104,15 @@
     - Frozen
 
   boostedStatusEffectChance: 5
+
+- id: fe62964f-0fbb-49ab-8908-4fdaed62fd8e
+  name: Regenerative Chill
+  description: Healing spells also apply Regeneration for 3 turns.
+  sprite: '0014'
+
+  applyToAttributes: [HealsTarget]
+
+  applyStatusEffects:
+    - statusEffectId: Regeneration
+      chance: 100
+      duration: 3

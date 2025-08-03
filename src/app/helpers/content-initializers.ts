@@ -224,6 +224,10 @@ function ensureTalent(talent: Partial<TalentContent>): Required<TalentContent> {
     additionalTargets: talent.additionalTargets ?? 0,
 
     chanceToIgnoreConsume: talent.chanceToIgnoreConsume ?? 0,
+
+    applyStatusEffects: (talent.applyStatusEffects ?? []).map(
+      ensureTechniqueStatusEffect,
+    ),
   };
 }
 
