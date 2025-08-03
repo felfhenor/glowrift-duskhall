@@ -85,6 +85,8 @@
   sprite: '0000'
   frames: 11
 
+  unableToUpgrade: [numTargets]
+
   rarity: Uncommon
   dropLevel: 18
 
@@ -111,6 +113,8 @@
 
   sprite: '0000'
   frames: 11
+
+  unableToUpgrade: [numTargets]
 
   rarity: Rare
   dropLevel: 23
@@ -139,6 +143,8 @@
   sprite: '0000'
   frames: 11
 
+  unableToUpgrade: [numTargets]
+
   rarity: Mystical
   dropLevel: 28
 
@@ -159,3 +165,87 @@
           duration: 3
 
       combatMessage: '**{{ combatant.name }}** cast **{{ skill.name }}** on **{{ target.name }}**.'
+
+- id: 1dc9fb58-8ccd-4200-81f3-4a5b1d15f37e
+  name: Chillstar I
+
+  sprite: '0270'
+  frames: 7
+
+  rarity: Uncommon
+  dropLevel: 15
+
+  usesPerCombat: 3
+
+  techniques:
+    - elements: [Water]
+      attributes: [AllowPlink]
+      targets: 1
+      targetType: Enemies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+      damageScaling:
+        Force: 0.75
+
+      statusEffects:
+        - statusEffectId: Frozen
+          chance: 3
+          duration: 1
+
+      combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
+
+- id: dce58e41-ae11-4e5d-81cf-c3b87c7991cb
+  name: Chillstar II
+
+  sprite: '0270'
+  frames: 7
+
+  rarity: Rare
+  dropLevel: 20
+
+  usesPerCombat: 2
+
+  techniques:
+    - elements: [Water]
+      attributes: [AllowPlink]
+      targets: 1
+      targetType: Enemies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+      damageScaling:
+        Force: 1.50
+
+      statusEffects:
+        - statusEffectId: Frozen
+          chance: 6
+          duration: 1
+
+      combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
+
+- id: 9109a65c-e325-4848-90cf-aa1089197f64
+  name: Chillstar III
+
+  sprite: '0270'
+  frames: 7
+
+  rarity: Mystical
+  dropLevel: 25
+
+  usesPerCombat: 1
+
+  techniques:
+    - elements: [Water]
+      attributes: [AllowPlink]
+      targets: 1
+      targetType: Enemies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+      damageScaling:
+        Force: 2.25
+
+      statusEffects:
+        - statusEffectId: Frozen
+          chance: 9
+          duration: 1
+
+      combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'

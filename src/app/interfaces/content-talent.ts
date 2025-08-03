@@ -1,4 +1,5 @@
 import type { Artable } from '@interfaces/artable';
+import type { EquipmentSkillAttribute } from '@interfaces/content-skill';
 import type { GameElement } from '@interfaces/element';
 import type { Branded, IsContentItem } from '@interfaces/identifiable';
 import type { StatBlock } from '@interfaces/stat';
@@ -17,6 +18,7 @@ export type TalentContent = IsContentItem &
     applyToElements: GameElement[];
     applyToSkillIds: string[];
     applyToStatusEffectIds: string[];
+    applyToAttributes: EquipmentSkillAttribute[];
 
     boostStats: StatBlock;
 

@@ -21,6 +21,7 @@ export function talentsForSkill(
 ): TalentContent[] {
   const skillContentId = getDroppableEquippableBaseId(skill);
   const skillElements = uniq(skill.techniques.flatMap((t) => t.elements));
+  const skillAttributes = uniq(skill.techniques.flatMap((t) => t.attributes));
 
   const appliesToAll = talents.filter((t) => t.applyToAllSkills);
   const appliesDirectlyToSkill = talents.filter((t) =>
@@ -29,8 +30,16 @@ export function talentsForSkill(
   const appliesBasedOnElement = talents.filter(
     (t) => intersection(t.applyToElements, skillElements).length > 0,
   );
+  const appliesBasedOnAttribute = talents.filter(
+    (t) => intersection(t.applyToAttributes, skillAttributes).length > 0,
+  );
 
-  return union(appliesToAll, appliesDirectlyToSkill, appliesBasedOnElement);
+  return union(
+    appliesToAll,
+    appliesDirectlyToSkill,
+    appliesBasedOnElement,
+    appliesBasedOnAttribute,
+  );
 }
 
 export function talentsForStatusEffect(

@@ -49,3 +49,23 @@
   applyToElements: [Water]
 
   chanceToIgnoreConsume: 25
+
+- id: 6a00806a-fac9-4d89-b98f-4e8eee099278
+  name: Healing Waters
+  description: All Healing spells give +50% Force healing and +25% Aura healing.
+  sprite: '0009'
+
+  applyToAttributes: [HealsTarget]
+
+  boostStats:
+    Force: 0.5
+    Aura: 0.25
+
+- id: 506c7ad3-0bda-4dff-9f3c-2b4f03500812
+  name: Tidal Resonance
+  description: All Healing spells hit +1 target.
+  sprite: '0010'
+
+  applyToAttributes: [HealsTarget]
+
+  additionalTargets: 1
