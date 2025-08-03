@@ -49,3 +49,13 @@
   applyToElements: [Earth]
 
   chanceToIgnoreConsume: 25
+
+- id: bcfde28b-4507-427b-b97c-2c4184402a24
+  name: Tectonic Force
+  description: All Earth spells do +100% Force damage.
+  sprite: '0027'
+
+  applyToElements: [Earth]
+
+  boostStats:
+    Force: 1.00
