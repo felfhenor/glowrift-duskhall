@@ -69,3 +69,38 @@
   applyToAttributes: [HealsTarget]
 
   additionalTargets: 1
+
+- id: 0e46c4fe-7bcc-40ae-be29-2deb4839d4c9
+  name: Deep Freeze I
+  description: Boost the duration of Frozen by 1.
+  sprite: '0011'
+
+  applyToAllSkills: true
+  applyToStatusEffectIds:
+    - Frozen
+
+  boostedStatusEffectDuration: 1
+
+- id: f7027fc5-3a79-464c-9d68-d5c65734437c
+  name: Deep Freeze II
+  description: Boost the duration of Frozen by 1.
+  sprite: '0011'
+
+  requireTalentId: Deep Freeze I
+
+  applyToAllSkills: true
+  applyToStatusEffectIds:
+    - Frozen
+
+  boostedStatusEffectDuration: 1
+
+- id: 31f85a98-075b-43d1-accd-246f5bad32aa
+  name: Permeating Chill
+  description: Boost the chance of Frozen by 5%.
+  sprite: '0012'
+
+  applyToAllSkills: true
+  applyToStatusEffectIds:
+    - Frozen
+
+  boostedStatusEffectChance: 5

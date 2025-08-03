@@ -21,14 +21,14 @@
         - talentId: Strength of Healsprite III
         - talentId: Blank Talent
         - talentId: Blank Talent
-        - talentId: Blank Talent
+        - talentId: Deep Freeze I
 
     - level: 15
       learnableTalents:
         - talentId: Blank Talent
         - talentId: Blank Talent
-        - talentId: Blank Talent
-        - talentId: Blank Talent
+        - talentId: Permeating Chill
+        - talentId: Deep Freeze II
 
     - level: 20
       learnableTalents:
