@@ -180,7 +180,7 @@ export function handleStatusEffectBehaviors(
 
   if (behavior.combatMessage) {
     const message = formatCombatMessage(behavior.combatMessage, templateData);
-    logCombatMessage(combat, message);
+    logCombatMessage(combat, message, combatant);
   }
 }
 
