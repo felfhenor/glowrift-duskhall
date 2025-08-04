@@ -49,3 +49,15 @@
   applyToElements: [Air]
 
   chanceToIgnoreConsume: 25
+
+- id: fcdebee0-b41e-4222-a8b4-52f3285b4881
+  name: Wind Walker
+  description: Boost Swiftness Speed given by this hero by +100%.
+  sprite: '0016'
+
+  applyToAllSkills: true
+  applyToStatusEffectIds:
+    - Swiftness
+
+  boostStatusEffectStats:
+    Force: 1.00
