@@ -18,3 +18,39 @@
     - type: ModifyStatusEffectData
       key: isFrozen
       value: false
+
+- id: 473b3b78-9531-49db-9c60-11b2924cf34f
+  name: Brittle
+
+  trigger: TurnEnd
+
+  statScaling:
+    Health: 0.4
+
+  onApply:
+    - type: TakeDamageFromStat
+      combatMessage: '**{{ combatant.name }}** has been made brittle (-{{ damage }} Health)!'
+      modifyStat: Health
+
+  onUnapply:
+    - type: AddDamageToStat
+      combatMessage: '**{{ combatant.name }}** has recovered from brittlness (+{{ damage }} Health)!'
+      modifyStat: Health
+
+- id: ccc13b2e-0504-4a1e-875b-749dc01e43e4
+  name: Hypothermia
+
+  trigger: TurnEnd
+
+  statScaling:
+    Speed: 0.3
+
+  onApply:
+    - type: TakeDamageFromStat
+      combatMessage: '**{{ combatant.name }}** is going hypothermic (-{{ damage }} Speed)!'
+      modifyStat: Speed
+
+  onUnapply:
+    - type: AddDamageToStat
+      combatMessage: '**{{ combatant.name }}** has recovered from hypothermia (+{{ damage }} Speed)!'
+      modifyStat: Speed

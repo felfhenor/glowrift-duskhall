@@ -1,0 +1,17 @@
+- id: 32f86770-70c2-468b-8083-5911e96b1e27
+  name: Empowered
+
+  trigger: TurnStart
+
+  statScaling:
+    Force: 0.2
+
+  onApply:
+    - type: AddDamageToStat
+      combatMessage: '**{{ combatant.name }}** has been empowered (+{{ damage }} Force)!'
+      modifyStat: Force
+
+  onUnapply:
+    - type: TakeDamageFromStat
+      combatMessage: '**{{ combatant.name }}** has been empowered (+{{ damage }} Force)!'
+      modifyStat: Force

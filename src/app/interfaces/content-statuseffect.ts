@@ -73,4 +73,5 @@ export type StatusEffect = StatusEffectContent & {
   duration: number;
 
   creatorStats: StatBlock;
+  targetStats: StatBlock;
 };

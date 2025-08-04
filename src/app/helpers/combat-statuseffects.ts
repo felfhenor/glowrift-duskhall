@@ -58,9 +58,11 @@ export function createStatusEffect(
   content: StatusEffectContent,
   skill: EquipmentSkill,
   creator: Combatant,
+  target: Combatant,
   opts: Partial<StatusEffect>,
 ): StatusEffect {
-  const allTalents = allCombatantTalents(creator);
+  const creatorTalents = allCombatantTalents(creator);
+  const targetTalents = allCombatantTalents(target);
 
   return {
     duration: 1,
@@ -70,19 +72,37 @@ export function createStatusEffect(
       Aura:
         creator.totalStats.Aura +
         creator.totalStats.Aura *
-          talentStatusEffectStatBoost(allTalents, skill, content, 'Aura'),
+          talentStatusEffectStatBoost(creatorTalents, skill, content, 'Aura'),
       Force:
         creator.totalStats.Force +
         creator.totalStats.Force *
-          talentStatusEffectStatBoost(allTalents, skill, content, 'Force'),
+          talentStatusEffectStatBoost(creatorTalents, skill, content, 'Force'),
       Health:
         creator.totalStats.Health +
         creator.totalStats.Health *
-          talentStatusEffectStatBoost(allTalents, skill, content, 'Health'),
+          talentStatusEffectStatBoost(creatorTalents, skill, content, 'Health'),
       Speed:
         creator.totalStats.Speed +
         creator.totalStats.Speed *
-          talentStatusEffectStatBoost(allTalents, skill, content, 'Speed'),
+          talentStatusEffectStatBoost(creatorTalents, skill, content, 'Speed'),
+    },
+    targetStats: {
+      Aura:
+        target.totalStats.Aura +
+        target.totalStats.Aura *
+          talentStatusEffectStatBoost(targetTalents, skill, content, 'Aura'),
+      Force:
+        target.totalStats.Force +
+        target.totalStats.Force *
+          talentStatusEffectStatBoost(targetTalents, skill, content, 'Force'),
+      Health:
+        target.totalStats.Health +
+        target.totalStats.Health *
+          talentStatusEffectStatBoost(targetTalents, skill, content, 'Health'),
+      Speed:
+        target.totalStats.Speed +
+        target.totalStats.Speed *
+          talentStatusEffectStatBoost(targetTalents, skill, content, 'Speed'),
     },
   };
 }

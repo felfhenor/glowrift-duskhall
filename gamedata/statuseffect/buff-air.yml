@@ -1,0 +1,17 @@
+- id: f7ea7703-b21d-4355-8bad-5690ddfaaf5c
+  name: Swiftness
+
+  trigger: TurnStart
+
+  statScaling:
+    Speed: 0.5
+
+  onApply:
+    - type: AddDamageToStat
+      combatMessage: '**{{ combatant.name }}** has been blessed with swiftness (+{{ damage }} Speed)!'
+      modifyStat: Speed
+
+  onUnapply:
+    - type: TakeDamageFromStat
+      combatMessage: '**{{ combatant.name }}** has been blessed with swiftness (+{{ damage }} Speed)!'
+      modifyStat: Speed

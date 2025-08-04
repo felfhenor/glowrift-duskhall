@@ -179,11 +179,21 @@ export function applySkillToTarget(
 
     if (!succeedsChance(totalChance)) return;
 
-    const statusEffect = createStatusEffect(effectContent, skill, combatant, {
-      duration:
-        getSkillTechniqueStatusEffectDuration(skill, effData) +
-        talentStatusEffectDurationBoost(attackerTalents, skill, effectContent),
-    });
+    const statusEffect = createStatusEffect(
+      effectContent,
+      skill,
+      combatant,
+      target,
+      {
+        duration:
+          getSkillTechniqueStatusEffectDuration(skill, effData) +
+          talentStatusEffectDurationBoost(
+            attackerTalents,
+            skill,
+            effectContent,
+          ),
+      },
+    );
 
     applyStatusEffectToTarget(combat, target, statusEffect);
   });

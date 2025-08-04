@@ -1,0 +1,17 @@
+- id: 2792e492-05b8-48b2-aa95-0de670384612
+  name: Crushed
+
+  trigger: TurnEnd
+
+  statScaling:
+    Aura: 0.3
+
+  onApply:
+    - type: TakeDamageFromStat
+      combatMessage: '**{{ combatant.name }}** is being crushed under the weight of the earth (-{{ damage }} Aura)!'
+      modifyStat: Aura
+
+  onUnapply:
+    - type: AddDamageToStat
+      combatMessage: '**{{ combatant.name }}** is no longer being crushed (+{{ damage }} Aura)!'
+      modifyStat: Aura
