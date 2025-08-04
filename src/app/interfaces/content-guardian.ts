@@ -1,5 +1,8 @@
 import type { Animatable } from '@interfaces/artable';
-import type { CombatantTargettingType } from '@interfaces/combat';
+import type {
+  CombatantCombatStats,
+  CombatantTargettingType,
+} from '@interfaces/combat';
 import type { EquipmentSkillId } from '@interfaces/content-skill';
 import type { TalentId } from '@interfaces/content-talent';
 import type { ElementBlock } from '@interfaces/element';
@@ -21,6 +24,8 @@ export type GuardianContent = Animatable &
     talentIds: Record<TalentId, number>;
 
     targettingType: CombatantTargettingType;
+
+    combatStats: CombatantCombatStats;
   };
 
 export type Guardian = GuardianContent & {

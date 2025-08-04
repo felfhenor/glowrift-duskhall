@@ -1,9 +1,5 @@
 import { getEntry } from '@helpers/content';
-import {
-  getDefaultAffinities,
-  getDefaultCombatStats,
-  getDefaultStats,
-} from '@helpers/defaults';
+import { getDefaultAffinities, getDefaultStats } from '@helpers/defaults';
 import { createGuardianForLocation } from '@helpers/guardian';
 import { allHeroes } from '@helpers/hero';
 import { heroEquipmentSkills } from '@helpers/hero-skills';
@@ -78,9 +74,7 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
       skillIds: ['Attack' as EquipmentSkillId, ...g.skillIds],
       skillRefs: [],
       talents: g.talentIds ?? {},
-      combatStats: {
-        ...getDefaultCombatStats(),
-      },
+      combatStats: cloneDeep(g.combatStats),
 
       affinity: {
         ...getDefaultAffinities(),

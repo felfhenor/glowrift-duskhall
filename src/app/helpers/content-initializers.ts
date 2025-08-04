@@ -144,6 +144,8 @@ function ensureGuardian(
     resistance: ensureAffinities(guardian.resistance),
     affinity: ensureAffinities(guardian.affinity),
     talentIds: guardian.talentIds ?? {},
+
+    combatStats: ensureCombatStats(guardian.combatStats),
   };
 }
 
