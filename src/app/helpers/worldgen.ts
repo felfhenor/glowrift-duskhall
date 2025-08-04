@@ -228,6 +228,8 @@ function addElementsToWorld(
   );
 
   Object.values(nodes).forEach((node) => {
+    if (node.elements.length > 0) return;
+
     const cardinality = Compass.cardinalFromDegree(
       getAngleBetweenPoints(centerPosition, node),
       Compass.CardinalSubset.Intercardinal,
@@ -246,7 +248,7 @@ function addElementsToWorld(
     node.elements = elements
       .map((e) => ({
         element: e.element,
-        intensity: clamp(Math.floor(e.multiplier * intensity), 0, 100),
+        intensity: clamp(Math.floor(e.multiplier * intensity), 1, 100),
       }))
       .filter((e) => e.intensity !== 0);
   });
@@ -331,6 +333,12 @@ export async function generateWorld(
     nodeType: 'town',
     name: 'LaFlotte',
     currentlyClaimed: true,
+    elements: [
+      { element: 'Air', intensity: 1 },
+      { element: 'Fire', intensity: 1 },
+      { element: 'Earth', intensity: 1 },
+      { element: 'Water', intensity: 1 },
+    ],
   };
 
   const maxDistance = distanceBetweenNodes(
