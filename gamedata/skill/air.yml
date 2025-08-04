@@ -11,7 +11,7 @@
 
   techniques:
     - elements: [Air]
-      attributes: [AllowPlink]
+      attributes: [DamagesTarget, AllowPlink]
       targets: 10
       targetType: Enemies
       targetBehaviors:
@@ -34,7 +34,7 @@
 
   techniques:
     - elements: [Air]
-      attributes: [AllowPlink]
+      attributes: [DamagesTarget, AllowPlink]
       targets: 10
       targetType: Enemies
       targetBehaviors:
@@ -57,7 +57,7 @@
 
   techniques:
     - elements: [Air]
-      attributes: [AllowPlink]
+      attributes: [DamagesTarget, AllowPlink]
       targets: 10
       targetType: Enemies
       targetBehaviors:

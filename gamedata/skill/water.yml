@@ -203,7 +203,7 @@
 
   techniques:
     - elements: [Water]
-      attributes: [AllowPlink]
+      attributes: [DamagesTarget, AllowPlink]
       targets: 1
       targetType: Enemies
       targetBehaviors:
@@ -231,7 +231,7 @@
 
   techniques:
     - elements: [Water]
-      attributes: [AllowPlink]
+      attributes: [DamagesTarget, AllowPlink]
       targets: 1
       targetType: Enemies
       targetBehaviors:
@@ -259,7 +259,7 @@
 
   techniques:
     - elements: [Water]
-      attributes: [AllowPlink]
+      attributes: [DamagesTarget, AllowPlink]
       targets: 1
       targetType: Enemies
       targetBehaviors:

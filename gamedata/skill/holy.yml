@@ -11,6 +11,7 @@
 
   techniques:
     - elements: [Water, Fire, Air, Earth]
+      attributes: [DamagesTarget, AllowPlink]
       targets: 1
       targetType: Enemies
       targetBehaviors:

@@ -10,7 +10,7 @@
   frames: 14
 
   techniques:
-    - attributes: [AllowPlink]
+    - attributes: [DamagesTarget, AllowPlink]
       targets: 1
       targetType: Enemies
       targetBehaviors:

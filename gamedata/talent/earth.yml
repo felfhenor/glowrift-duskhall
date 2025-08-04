@@ -59,3 +59,15 @@
 
   boostStats:
     Force: 1.00
+
+- id: ea7dec47-76c6-47bd-bfdd-a54e75f32725
+  name: Earthquake
+  description: Offensive Earth spells also have a chance to apply Crushed to enemies.
+  sprite: '0023'
+
+  applyToAttributes: [DamagesTarget]
+
+  applyStatusEffects:
+    - statusEffectId: Crushed
+      chance: 10
+      duration: 3

@@ -13,18 +13,13 @@
 
   techniques:
     - elements: [Earth]
-      attributes: [AllowPlink]
+      attributes: [DamagesTarget, AllowPlink]
       targets: 1
       targetType: Enemies
       targetBehaviors:
         - behavior: NotZeroHealth
       damageScaling:
         Force: 3
-
-      statusEffects:
-        - statusEffectId: Crushed
-          chance: 3
-          duration: 3
 
       combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
 
@@ -43,18 +38,13 @@
 
   techniques:
     - elements: [Earth]
-      attributes: [AllowPlink]
+      attributes: [DamagesTarget, AllowPlink]
       targets: 1
       targetType: Enemies
       targetBehaviors:
         - behavior: NotZeroHealth
       damageScaling:
         Force: 6
-
-      statusEffects:
-        - statusEffectId: Crushed
-          chance: 6
-          duration: 3
 
       combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
 
@@ -73,18 +63,13 @@
 
   techniques:
     - elements: [Earth]
-      attributes: [AllowPlink]
+      attributes: [DamagesTarget, AllowPlink]
       targets: 1
       targetType: Enemies
       targetBehaviors:
         - behavior: NotZeroHealth
       damageScaling:
         Force: 9
-
-      statusEffects:
-        - statusEffectId: Crushed
-          chance: 9
-          duration: 3
 
       combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
 

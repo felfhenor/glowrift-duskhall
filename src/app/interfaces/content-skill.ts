@@ -15,6 +15,7 @@ export type EquipmentSkillTargetBehavior =
 
 export type EquipmentSkillAttribute =
   | 'BypassDefense'
+  | 'DamagesTarget'
   | 'AllowPlink'
   | 'HealsTarget';
 

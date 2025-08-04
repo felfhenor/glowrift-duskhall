@@ -11,7 +11,7 @@
 
   techniques:
     - elements: [Fire]
-      attributes: [AllowPlink]
+      attributes: [DamagesTarget, AllowPlink]
       targets: 1
       targetType: Enemies
       targetBehaviors:
@@ -39,7 +39,7 @@
 
   techniques:
     - elements: [Fire]
-      attributes: [AllowPlink]
+      attributes: [DamagesTarget, AllowPlink]
       targets: 1
       targetType: Enemies
       targetBehaviors:
@@ -67,7 +67,7 @@
 
   techniques:
     - elements: [Fire]
-      attributes: [AllowPlink]
+      attributes: [DamagesTarget, AllowPlink]
       targets: 1
       targetType: Enemies
       targetBehaviors:
@@ -95,7 +95,7 @@
 
   techniques:
     - elements: [Fire]
-      attributes: [AllowPlink]
+      attributes: [DamagesTarget, AllowPlink]
       targets: 3
       targetType: Enemies
       targetBehaviors:
@@ -123,7 +123,7 @@
 
   techniques:
     - elements: [Fire]
-      attributes: [AllowPlink]
+      attributes: [DamagesTarget, AllowPlink]
       targets: 3
       targetType: Enemies
       targetBehaviors:
@@ -151,7 +151,7 @@
 
   techniques:
     - elements: [Fire]
-      attributes: [AllowPlink]
+      attributes: [DamagesTarget, AllowPlink]
       targets: 3
       targetType: Enemies
       targetBehaviors:
