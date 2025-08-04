@@ -1,6 +1,6 @@
 import type { CombatantStatusEffectData } from '@interfaces/combat';
 import type { Branded, IsContentItem } from '@interfaces/identifiable';
-import type { StatBlock } from '@interfaces/stat';
+import type { GameStat, StatBlock } from '@interfaces/stat';
 
 export type StatusEffectId = Branded<string, 'StatusEffectId'>;
 
@@ -8,6 +8,8 @@ export type StatusEffectTrigger = 'TurnStart' | 'TurnEnd';
 
 export type StatusEffectBehaviorType =
   | 'ModifyStatusEffectData'
+  | 'AddDamageToStat'
+  | 'TakeDamageFromStat'
   | 'HealDamage'
   | 'TakeDamage'
   | 'SendMessage';
@@ -24,6 +26,18 @@ export type StatusEffectBehaviorDataChange = {
   value: CombatantStatusEffectData[keyof CombatantStatusEffectData];
 };
 
+export type StatusEffectBehaviorAddStat = {
+  type: 'AddDamageToStat';
+  combatMessage: string;
+  modifyStat: GameStat;
+};
+
+export type StatusEffectBehaviorTakeStat = {
+  type: 'TakeDamageFromStat';
+  combatMessage: string;
+  modifyStat: GameStat;
+};
+
 export type StatusEffectBehaviorTakeDamage = {
   type: 'TakeDamage';
   combatMessage: string;
@@ -37,7 +51,10 @@ export type StatusEffectBehaviorHealDamage = {
 export type StatusEffectBehavior =
   | StatusEffectBehaviorSendMessage
   | StatusEffectBehaviorDataChange
-  | StatusEffectBehaviorTakeDamage;
+  | StatusEffectBehaviorTakeDamage
+  | StatusEffectBehaviorHealDamage
+  | StatusEffectBehaviorAddStat
+  | StatusEffectBehaviorTakeStat;
 
 export type StatusEffectContent = IsContentItem & {
   id: StatusEffectId;

@@ -103,6 +103,16 @@ export function applySkillToTarget(
     ),
   );
 
+  const templateData = {
+    combat,
+    combatant,
+    target,
+    skill,
+    technique,
+    damage: 0,
+    absdamage: 0,
+  };
+
   if (baseDamage > 0) {
     const baseTargetDefense = target.totalStats.Aura;
     const targetDefense =
@@ -147,19 +157,12 @@ export function applySkillToTarget(
 
     combatantTakeDamage(target, effectiveDamage);
 
-    const templateData = {
-      combat,
-      combatant,
-      target,
-      skill,
-      technique,
-      damage: effectiveDamage,
-      absdamage: Math.abs(effectiveDamage),
-    };
-
-    const message = formatCombatMessage(technique.combatMessage, templateData);
-    logCombatMessage(combat, message, combatant);
+    templateData.damage = effectiveDamage;
+    templateData.absdamage = Math.abs(effectiveDamage);
   }
+
+  const message = formatCombatMessage(technique.combatMessage, templateData);
+  logCombatMessage(combat, message, combatant);
 
   const allStatusEffects: EquipmentSkillTechniqueStatusEffectApplication[] = [
     ...technique.statusEffects,

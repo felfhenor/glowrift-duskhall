@@ -40,6 +40,7 @@ export type Combatant = Animatable & {
   targettingType: CombatantTargettingType;
 
   baseStats: StatBlock;
+  statBoosts: StatBlock;
   totalStats: StatBlock;
 
   resistance: ElementBlock;

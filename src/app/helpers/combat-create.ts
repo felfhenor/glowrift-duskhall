@@ -1,5 +1,5 @@
 import { getEntry } from '@helpers/content';
-import { getDefaultAffinities } from '@helpers/defaults';
+import { getDefaultAffinities, getDefaultStats } from '@helpers/defaults';
 import { createGuardianForLocation } from '@helpers/guardian';
 import { allHeroes } from '@helpers/hero';
 import { heroEquipmentSkills } from '@helpers/hero-skills';
@@ -26,6 +26,7 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
     targettingType: h.targettingType,
 
     baseStats: h.baseStats,
+    statBoosts: getDefaultStats(),
     totalStats: h.baseStats,
     hp: h.baseStats.Health,
     level: h.level,
@@ -61,6 +62,7 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
       targettingType: g.targettingType,
 
       baseStats: g.stats,
+      statBoosts: getDefaultStats(),
       totalStats: g.stats,
       hp: g.stats.Health,
       level: location.encounterLevel,

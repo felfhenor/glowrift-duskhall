@@ -72,3 +72,90 @@
         Force: 9
 
       combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
+
+- id: ca9d3c3f-41be-40c5-adbd-56834dec1ae6
+  name: Stonemist I
+
+  sprite: '0358'
+  frames: 6
+
+  unableToUpgrade: [numTargets]
+
+  rarity: Uncommon
+  dropLevel: 18
+
+  usesPerCombat: 3
+
+  techniques:
+    - elements: [Earth]
+      targets: 1
+      targetType: Allies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+        - behavior: IfNotStatusEffect
+          statusEffectId: Fortified
+
+      statusEffects:
+        - statusEffectId: Fortified
+          chance: 100
+          duration: 3
+
+      combatMessage: '**{{ combatant.name }}** cast **{{ skill.name }}** on **{{ target.name }}**.'
+
+- id: 81d6a4e0-6276-4dfc-8389-cf8602f42869
+  name: Stonemist II
+
+  sprite: '0358'
+  frames: 6
+
+  unableToUpgrade: [numTargets]
+
+  rarity: Rare
+  dropLevel: 23
+
+  usesPerCombat: 3
+
+  techniques:
+    - elements: [Earth]
+      targets: 2
+      targetType: Allies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+        - behavior: IfNotStatusEffect
+          statusEffectId: Fortified
+
+      statusEffects:
+        - statusEffectId: Fortified
+          chance: 100
+          duration: 3
+
+      combatMessage: '**{{ combatant.name }}** cast **{{ skill.name }}** on **{{ target.name }}**.'
+
+- id: 45ad27c9-c975-4cba-9d1b-ff71198aa57c
+  name: Stonemist III
+
+  sprite: '0358'
+  frames: 6
+
+  unableToUpgrade: [numTargets]
+
+  rarity: Mystical
+  dropLevel: 28
+
+  usesPerCombat: 3
+
+  techniques:
+    - elements: [Earth]
+      targets: 3
+      targetType: Allies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+        - behavior: IfNotStatusEffect
+          statusEffectId: Fortified
+
+      statusEffects:
+        - statusEffectId: Fortified
+          chance: 100
+          duration: 3
+
+      combatMessage: '**{{ combatant.name }}** cast **{{ skill.name }}** on **{{ target.name }}**.'

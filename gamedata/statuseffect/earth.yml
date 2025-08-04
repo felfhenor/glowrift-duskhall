@@ -1,0 +1,17 @@
+- id: dfbe0520-8e83-41ce-997b-369c051bd67b
+  name: Fortified
+
+  trigger: TurnStart
+
+  statScaling:
+    Aura: 0.5
+
+  onApply:
+    - type: AddDamageToStat
+      combatMessage: '**{{ combatant.name }}** has been fortified (+{{ damage }} Aura)!'
+      modifyStat: Aura
+
+  onUnapply:
+    - type: TakeDamageFromStat
+      combatMessage: '**{{ combatant.name }}** has been fortified (+{{ damage }} Aura)!'
+      modifyStat: Aura

@@ -7,11 +7,14 @@ import type { EquipmentSkill } from '@interfaces/content-skill';
 import type {
   StatusEffect,
   StatusEffectBehavior,
+  StatusEffectBehaviorAddStat,
   StatusEffectBehaviorDataChange,
+  StatusEffectBehaviorTakeStat,
   StatusEffectBehaviorType,
   StatusEffectContent,
   StatusEffectTrigger,
 } from '@interfaces/content-statuseffect';
+import type { GameStat } from '@interfaces/stat';
 
 export function canTakeTurn(combatant: Combatant): boolean {
   return !combatant.statusEffectData.isFrozen;
@@ -93,6 +96,15 @@ export function applyStatusEffectToTarget(
   triggerApplyStatusEffect(combat, combatant, statusEffect);
 }
 
+export function applyStatDeltaToCombatant(
+  combatant: Combatant,
+  stat: GameStat,
+  value: number,
+): void {
+  combatant.statBoosts[stat] += value;
+  combatant.totalStats[stat] += value;
+}
+
 export function handleStatusEffectBehaviors(
   combat: Combat,
   combatant: Combatant,
@@ -125,6 +137,22 @@ export function handleStatusEffectBehaviors(
       templateData.absdamage = Math.abs(damage);
 
       combatantTakeDamage(combatant, damage);
+    },
+    AddDamageToStat: () => {
+      const behaviorData = behavior as StatusEffectBehaviorAddStat;
+
+      const damage = statusEffectDamage(effect);
+      templateData.damage = damage;
+
+      applyStatDeltaToCombatant(combatant, behaviorData.modifyStat, damage);
+    },
+    TakeDamageFromStat: () => {
+      const behaviorData = behavior as StatusEffectBehaviorTakeStat;
+
+      const damage = statusEffectDamage(effect);
+      templateData.damage = damage;
+
+      applyStatDeltaToCombatant(combatant, behaviorData.modifyStat, -damage);
     },
   };
 
