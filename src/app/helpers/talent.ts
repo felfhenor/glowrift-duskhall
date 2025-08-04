@@ -5,7 +5,8 @@ import type {
   EquipmentSkillTechniqueStatusEffectApplication,
 } from '@interfaces/content-skill';
 import type { StatusEffectContent } from '@interfaces/content-statuseffect';
-import type { TalentContent } from '@interfaces/content-talent';
+import type { TalentContent, TalentId } from '@interfaces/content-talent';
+import type { TalentTreeContent } from '@interfaces/content-talenttree';
 import type { Hero } from '@interfaces/hero';
 import type { GameStat, StatBlock } from '@interfaces/stat';
 import { intersection, sum, union, uniq } from 'es-toolkit/compat';
@@ -15,6 +16,14 @@ export function allHeroTalents(hero: Hero): TalentContent[] {
     .filter(([, level]) => level > 0)
     .map(([talentId]) => getEntry<TalentContent>(talentId))
     .filter((talent): talent is TalentContent => !!talent);
+}
+
+export function allTalentIdsInTalentTree(
+  talentTree: TalentTreeContent,
+): TalentId[] {
+  return talentTree.talents.flatMap((m) =>
+    m.learnableTalents.flatMap((t) => t.talentId),
+  );
 }
 
 // filtering down to specific applications

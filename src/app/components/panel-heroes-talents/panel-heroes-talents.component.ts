@@ -2,8 +2,16 @@ import type { Signal } from '@angular/core';
 import { Component, computed, input } from '@angular/core';
 import { IconElementComponent } from '@components/icon-element/icon-element.component';
 import { PanelHeroesTalentsTreeComponent } from '@components/panel-heroes-talents-tree/panel-heroes-talents-tree.component';
-import { getOption, heroRemainingTalentPoints, setOption } from '@helpers';
-import type { GameElement, Hero } from '@interfaces';
+import {
+  allTalentIdsInTalentTree,
+  getEntry,
+  getOption,
+  heroRemainingTalentPoints,
+  setOption,
+} from '@helpers';
+import type { TalentTreeContent } from '@interfaces';
+import { type GameElement, type Hero } from '@interfaces';
+import { intersection } from 'es-toolkit/compat';
 
 @Component({
   selector: 'app-panel-heroes-talents',
@@ -22,20 +30,45 @@ export class PanelHeroesTalentsComponent {
     heroRemainingTalentPoints(this.hero()),
   );
 
-  public allTalents: Signal<Array<{ element: GameElement }>> = computed(() => [
-    {
-      element: 'Fire',
-    },
-    {
-      element: 'Water',
-    },
-    {
-      element: 'Air',
-    },
-    {
-      element: 'Earth',
-    },
-  ]);
+  public allTalents: Signal<Array<{ element: GameElement; amount: number }>> =
+    computed(() => [
+      {
+        element: 'Fire',
+        amount: intersection(
+          Object.keys(this.hero().talents),
+          allTalentIdsInTalentTree(
+            getEntry<TalentTreeContent>('Fire Talent Tree')!,
+          ),
+        ).length,
+      },
+      {
+        element: 'Water',
+        amount: intersection(
+          Object.keys(this.hero().talents),
+          allTalentIdsInTalentTree(
+            getEntry<TalentTreeContent>('Water Talent Tree')!,
+          ),
+        ).length,
+      },
+      {
+        element: 'Air',
+        amount: intersection(
+          Object.keys(this.hero().talents),
+          allTalentIdsInTalentTree(
+            getEntry<TalentTreeContent>('Air Talent Tree')!,
+          ),
+        ).length,
+      },
+      {
+        element: 'Earth',
+        amount: intersection(
+          Object.keys(this.hero().talents),
+          allTalentIdsInTalentTree(
+            getEntry<TalentTreeContent>('Earth Talent Tree')!,
+          ),
+        ).length,
+      },
+    ]);
 
   public changeElement(element: GameElement): void {
     setOption('selectedTalentTreeElement', element);

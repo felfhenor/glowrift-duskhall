@@ -1,9 +1,10 @@
+import type { TalentId } from '@interfaces/content-talent';
 import type { Branded, IsContentItem } from '@interfaces/identifiable';
 
 export type TalentTreeId = Branded<string, 'TalentTreeId'>;
 
 export interface TalentTreeContentNode {
-  talentId: string;
+  talentId: TalentId;
 }
 
 export interface TalentTreeContentLevel {
