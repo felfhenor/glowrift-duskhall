@@ -165,3 +165,32 @@
           duration: 3
 
       combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
+
+- id: 4a3502a8-c501-4af3-8f10-b77bb2ca6fae
+  name: Crystalline Power
+
+  sprite: '0060'
+  frames: 4
+
+  disableUpgrades: true
+
+  rarity: Rare
+  dropLevel: 23
+
+  usesPerCombat: 3
+
+  techniques:
+    - elements: [Fire]
+      targets: 4
+      targetType: Allies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+        - behavior: IfNotStatusEffect
+          statusEffectId: Empowered
+
+      statusEffects:
+        - statusEffectId: Empowered
+          chance: 100
+          duration: 3
+
+      combatMessage: '**{{ combatant.name }}** cast **{{ skill.name }}** on **{{ target.name }}**.'

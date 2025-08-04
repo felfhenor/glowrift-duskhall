@@ -21,6 +21,8 @@ export function academyCanEnchantSkill(item: EquipmentSkill): boolean {
 export function academyNextSkillEnchants(
   skill: EquipmentSkill,
 ): AcademyEnchant[] {
+  if (skill.disableUpgrades) return [];
+
   const level = getSkillEnchantLevel(skill);
 
   const usableElements = uniq(skill.techniques.flatMap((t) => t.elements));

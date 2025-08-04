@@ -21,6 +21,11 @@
       damageScaling:
         Force: 3
 
+      statusEffects:
+        - statusEffectId: Crushed
+          chance: 3
+          duration: 3
+
       combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
 
 - id: a8ce4943-b8f3-4355-8841-df92f572a5bd
@@ -46,6 +51,11 @@
       damageScaling:
         Force: 6
 
+      statusEffects:
+        - statusEffectId: Crushed
+          chance: 6
+          duration: 3
+
       combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
 
 - id: 22d947ce-281e-4376-9090-0660438a208f
@@ -70,6 +80,11 @@
         - behavior: NotZeroHealth
       damageScaling:
         Force: 9
+
+      statusEffects:
+        - statusEffectId: Crushed
+          chance: 9
+          duration: 3
 
       combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
 

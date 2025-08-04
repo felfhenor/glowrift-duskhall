@@ -106,6 +106,14 @@
           chance: 100
           duration: 1
 
+        - statusEffectId: Brittle
+          chance: 3
+          duration: 1
+
+        - statusEffectId: Hypothermia
+          chance: 3
+          duration: 1
+
       combatMessage: '**{{ combatant.name }}** cast **{{ skill.name }}** on **{{ target.name }}**.'
 
 - id: 403e7b59-6e73-4acc-866a-dda915927085
@@ -133,6 +141,14 @@
       statusEffects:
         - statusEffectId: Frozen
           chance: 100
+          duration: 2
+
+        - statusEffectId: Brittle
+          chance: 6
+          duration: 2
+
+        - statusEffectId: Hypothermia
+          chance: 6
           duration: 2
 
       combatMessage: '**{{ combatant.name }}** cast **{{ skill.name }}** on **{{ target.name }}**.'
@@ -164,6 +180,14 @@
           chance: 100
           duration: 3
 
+        - statusEffectId: Brittle
+          chance: 9
+          duration: 3
+
+        - statusEffectId: Hypothermia
+          chance: 9
+          duration: 3
+
       combatMessage: '**{{ combatant.name }}** cast **{{ skill.name }}** on **{{ target.name }}**.'
 
 - id: 1dc9fb58-8ccd-4200-81f3-4a5b1d15f37e
@@ -188,7 +212,7 @@
         Force: 0.75
 
       statusEffects:
-        - statusEffectId: Frozen
+        - statusEffectId: Hypothermia
           chance: 3
           duration: 1
 
@@ -216,7 +240,7 @@
         Force: 1.50
 
       statusEffects:
-        - statusEffectId: Frozen
+        - statusEffectId: Hypothermia
           chance: 6
           duration: 1
 
@@ -244,7 +268,7 @@
         Force: 2.25
 
       statusEffects:
-        - statusEffectId: Frozen
+        - statusEffectId: Hypothermia
           chance: 9
           duration: 1
 

@@ -66,3 +66,32 @@
         Force: 0.2
 
       combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
+
+- id: fad57504-0ea2-4384-b12b-5f470d8918e2
+  name: Zephyr Speed
+
+  sprite: '0244'
+  frames: 9
+
+  disableUpgrades: true
+
+  rarity: Rare
+  dropLevel: 23
+
+  usesPerCombat: 3
+
+  techniques:
+    - elements: [Air]
+      targets: 4
+      targetType: Allies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+        - behavior: IfNotStatusEffect
+          statusEffectId: Swiftness
+
+      statusEffects:
+        - statusEffectId: Swiftness
+          chance: 100
+          duration: 3
+
+      combatMessage: '**{{ combatant.name }}** cast **{{ skill.name }}** on **{{ target.name }}**.'

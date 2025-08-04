@@ -144,6 +144,7 @@ function ensureSkill(
     id: skill.id ?? ('UNKNOWN' as EquipmentSkillId),
     name: skill.name ?? 'UNKNOWN',
     __type: skill.__type ?? 'skill',
+    disableUpgrades: skill.disableUpgrades ?? false,
     unableToUpgrade: skill.unableToUpgrade ?? [],
     sprite: skill.sprite ?? '0000',
     frames: skill.frames ?? 1,

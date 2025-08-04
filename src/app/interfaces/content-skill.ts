@@ -62,6 +62,7 @@ export type EquipmentSkillContent = DroppableEquippable &
     __type: 'skill';
     id: EquipmentSkillId;
 
+    disableUpgrades: boolean;
     unableToUpgrade: Array<keyof AcademyEnchant>;
   };
 
