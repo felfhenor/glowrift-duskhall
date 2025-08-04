@@ -64,10 +64,12 @@ export function getSkillTechniqueStatusEffectDuration(
   );
 }
 
+export function skillElements(skill: EquipmentSkill): GameElement[] {
+  return uniq(skill.techniques.flatMap((t) => t.elements)).sort();
+}
+
 export function skillDisplayElement(skill: EquipmentSkill): string {
-  const elements: GameElement[] = uniq(
-    skill.techniques.flatMap((t) => t.elements),
-  ).sort();
+  const elements = skillElements(skill);
 
   if (intersection(elements, ['Air', 'Fire', 'Water', 'Earth']).length === 4)
     return 'Holy';

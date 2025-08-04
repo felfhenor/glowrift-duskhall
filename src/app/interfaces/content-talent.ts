@@ -1,4 +1,5 @@
 import type { Artable } from '@interfaces/artable';
+import type { CombatantCombatStats } from '@interfaces/combat';
 import type {
   EquipmentSkillAttribute,
   EquipmentSkillTechniqueStatusEffectApplication,
@@ -34,4 +35,6 @@ export type TalentContent = IsContentItem &
     chanceToIgnoreConsume: number;
 
     applyStatusEffects: EquipmentSkillTechniqueStatusEffectApplication[];
+
+    combatStats: CombatantCombatStats;
   };

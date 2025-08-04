@@ -1,5 +1,7 @@
 import { getEntry } from '@helpers/content';
+import { getDefaultCombatStats } from '@helpers/defaults';
 import { getDroppableEquippableBaseId } from '@helpers/droppable';
+import type { CombatantCombatStats } from '@interfaces/combat';
 import type {
   EquipmentSkill,
   EquipmentSkillTechniqueStatusEffectApplication,
@@ -7,9 +9,17 @@ import type {
 import type { StatusEffectContent } from '@interfaces/content-statuseffect';
 import type { TalentContent, TalentId } from '@interfaces/content-talent';
 import type { TalentTreeContent } from '@interfaces/content-talenttree';
+import type { ElementBlock } from '@interfaces/element';
 import type { Hero } from '@interfaces/hero';
 import type { GameStat, StatBlock } from '@interfaces/stat';
-import { intersection, sum, union, uniq } from 'es-toolkit/compat';
+import {
+  intersection,
+  isNumber,
+  isObject,
+  sum,
+  union,
+  uniq,
+} from 'es-toolkit/compat';
 
 export function allHeroTalents(hero: Hero): TalentContent[] {
   return Object.entries(hero.talents)
@@ -24,6 +34,34 @@ export function allTalentIdsInTalentTree(
   return talentTree.talents.flatMap((m) =>
     m.learnableTalents.flatMap((t) => t.talentId),
   );
+}
+
+export function combineTalentsIntoCombatStats(
+  talents: TalentContent[],
+): CombatantCombatStats {
+  const defaults = getDefaultCombatStats();
+
+  talents.forEach((tal) => {
+    Object.keys(tal.combatStats).forEach((keyRef) => {
+      const statKey = keyRef as keyof CombatantCombatStats;
+      const val = tal.combatStats[statKey];
+
+      if (isNumber(val)) {
+        (defaults[statKey] as number) += val;
+      }
+
+      if (isObject(val)) {
+        Object.keys(val).forEach((valKeyRef) => {
+          const valKey = valKeyRef as keyof ElementBlock;
+          (defaults[statKey] as ElementBlock)[valKey] += (val as ElementBlock)[
+            valKey
+          ];
+        });
+      }
+    });
+  });
+
+  return defaults;
 }
 
 // filtering down to specific applications

@@ -1,10 +1,15 @@
 import { getEntry } from '@helpers/content';
-import { getDefaultAffinities, getDefaultStats } from '@helpers/defaults';
+import {
+  getDefaultAffinities,
+  getDefaultCombatStats,
+  getDefaultStats,
+} from '@helpers/defaults';
 import { createGuardianForLocation } from '@helpers/guardian';
 import { allHeroes } from '@helpers/hero';
 import { heroEquipmentSkills } from '@helpers/hero-skills';
 import { getFullHeroTalentHash } from '@helpers/hero-talent';
 import { uuid } from '@helpers/rng';
+import { allHeroTalents, combineTalentsIntoCombatStats } from '@helpers/talent';
 import { locationTraitCombatElementPercentageModifier } from '@helpers/trait-location-combat';
 import type {
   Combat,
@@ -16,6 +21,7 @@ import type {
   Guardian,
   WorldLocation,
 } from '@interfaces';
+import { cloneDeep } from 'es-toolkit/compat';
 
 export function generateCombatForLocation(location: WorldLocation): Combat {
   const heroes: Combatant[] = allHeroes().map((h) => ({
@@ -25,9 +31,9 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
 
     targettingType: h.targettingType,
 
-    baseStats: h.baseStats,
+    baseStats: cloneDeep(h.baseStats),
     statBoosts: getDefaultStats(),
-    totalStats: h.baseStats,
+    totalStats: cloneDeep(h.baseStats),
     hp: h.baseStats.Health,
     level: h.level,
     sprite: h.sprite,
@@ -36,6 +42,7 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
     skillRefs: h.skills.filter(Boolean) as EquipmentSkill[],
 
     talents: getFullHeroTalentHash(h),
+    combatStats: combineTalentsIntoCombatStats(allHeroTalents(h)),
 
     affinity: {
       ...getDefaultAffinities(),
@@ -61,9 +68,9 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
 
       targettingType: g.targettingType,
 
-      baseStats: g.stats,
+      baseStats: cloneDeep(g.stats),
       statBoosts: getDefaultStats(),
-      totalStats: g.stats,
+      totalStats: cloneDeep(g.stats),
       hp: g.stats.Health,
       level: location.encounterLevel,
       sprite: g.sprite,
@@ -71,6 +78,9 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
       skillIds: ['Attack' as EquipmentSkillId, ...g.skillIds],
       skillRefs: [],
       talents: g.talentIds ?? {},
+      combatStats: {
+        ...getDefaultCombatStats(),
+      },
 
       affinity: {
         ...getDefaultAffinities(),

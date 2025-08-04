@@ -1,5 +1,6 @@
 import { getDefaultAffinities, getDefaultStats } from '@helpers/defaults';
 import type {
+  CombatantCombatStats,
   ContentType,
   CurrencyContent,
   ElementBlock,
@@ -96,6 +97,15 @@ function ensureEquipmentTalentBoost(
   return {
     talentId: boost.talentId ?? ('UNKNOWN' as TalentId),
     value: boost.value ?? 0,
+  };
+}
+
+function ensureCombatStats(
+  combatStats: Partial<CombatantCombatStats> = {},
+): Required<CombatantCombatStats> {
+  return {
+    repeatActionChance: ensureAffinities(combatStats.repeatActionChance),
+    reviveChance: combatStats.reviveChance ?? 0,
   };
 }
 
@@ -229,6 +239,8 @@ function ensureTalent(talent: Partial<TalentContent>): Required<TalentContent> {
     applyStatusEffects: (talent.applyStatusEffects ?? []).map(
       ensureTechniqueStatusEffect,
     ),
+
+    combatStats: ensureCombatStats(talent.combatStats),
   };
 }
 

@@ -24,7 +24,7 @@ import { notify } from '@helpers/notify';
 import { sample, sortBy } from 'es-toolkit/compat';
 
 import { succeedsChance } from '@helpers/rng';
-import { getSkillTechniqueNumTargets } from '@helpers/skill';
+import { getSkillTechniqueNumTargets, skillElements } from '@helpers/skill';
 import {
   talentIgnoreConsumptionChance,
   talentTargetCountBoost,
@@ -36,11 +36,15 @@ import type {
   TalentContent,
 } from '@interfaces';
 
+type CombatTurnResult = {
+  takeAnotherTurn?: boolean;
+};
+
 export function currentCombat(): Combat | undefined {
   return gamestate().hero.combat;
 }
 
-export function orderCombatantsBySpeed(combat: Combat): Combatant[] {
+function orderCombatantsBySpeed(combat: Combat): Combatant[] {
   return sortBy(
     [...combat.guardians, ...combat.heroes],
     (c) => -c.totalStats.Speed,
@@ -56,7 +60,7 @@ export function allCombatantTalents(combatant: Combatant): TalentContent[] {
     .filter((talent): talent is TalentContent => !!talent);
 }
 
-export function combatantMarkSkillUse(
+function combatantMarkSkillUse(
   combatant: Combatant,
   skill: EquipmentSkill,
 ): void {
@@ -70,21 +74,24 @@ export function combatantMarkSkillUse(
   combatant.skillUses[skill.id]++;
 }
 
-export function combatantTakeTurn(combat: Combat, combatant: Combatant): void {
+function combatantTakeTurn(
+  combat: Combat,
+  combatant: Combatant,
+): CombatTurnResult {
   if (isDead(combatant)) {
     logCombatMessage(
       combat,
       `**${combatant.name}** is dead, skipping turn.`,
       combatant,
     );
-    return;
+    return {};
   }
 
   handleCombatantStatusEffects(combat, combatant, 'TurnStart');
 
   if (isDead(combatant)) {
     logCombatMessage(combat, `**${combatant.name}** has died!`, combatant);
-    return;
+    return {};
   }
 
   if (!canTakeTurn(combatant)) {
@@ -93,7 +100,7 @@ export function combatantTakeTurn(combat: Combat, combatant: Combatant): void {
       `**${combatant.name}** lost their turn!`,
       combatant,
     );
-    return;
+    return {};
   }
 
   const talents = allCombatantTalents(combatant);
@@ -109,7 +116,7 @@ export function combatantTakeTurn(combat: Combat, combatant: Combatant): void {
       `**${combatant.name}** has no skills available, skipping turn.`,
       combatant,
     );
-    return;
+    return {};
   }
 
   combatantMarkSkillUse(combatant, chosenSkill);
@@ -144,8 +151,20 @@ export function combatantTakeTurn(combat: Combat, combatant: Combatant): void {
 
   if (isDead(combatant)) {
     logCombatMessage(combat, `**${combatant.name}** has died!`, combatant);
-    return;
+    return {};
   }
+
+  const shouldGoAgain = skillElements(chosenSkill).some((el) =>
+    succeedsChance(combatant.combatStats.repeatActionChance[el]),
+  );
+
+  if (shouldGoAgain) {
+    return {
+      takeAnotherTurn: true,
+    };
+  }
+
+  return {};
 }
 
 export function doCombatIteration(): void {
@@ -158,7 +177,16 @@ export function doCombatIteration(): void {
 
   const turnOrder = orderCombatantsBySpeed(combat);
   turnOrder.forEach((char) => {
-    combatantTakeTurn(combat, char);
+    const res = combatantTakeTurn(combat, char);
+
+    if (res?.takeAnotherTurn) {
+      logCombatMessage(
+        combat,
+        `**${char.name}** was blessed by the elements, and gets to go again!`,
+        char,
+      );
+      combatantTakeTurn(combat, char);
+    }
   });
 
   updateGamestate((state) => {

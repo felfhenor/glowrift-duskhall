@@ -1,4 +1,4 @@
-import { getEntry } from '@helpers/content';
+import { getEntriesByType, getEntry } from '@helpers/content';
 import { createItem } from '@helpers/creator-equipment';
 import { createSkill } from '@helpers/creator-skill';
 import { addItemToInventory } from '@helpers/inventory-equipment';
@@ -76,4 +76,25 @@ export function gainDroppableItem(droppable: DroppableEquippable): void {
 export function gainDroppableItemById(id: string): void {
   const item = makeDroppableIntoRealItem(getEntry<DroppableEquippable>(id)!);
   gainDroppableItem(item);
+}
+
+export function gainEverySkill(): void {
+  getEntriesByType<EquipmentSkillContent>('skill').forEach((skill) =>
+    gainDroppableItemById(skill.id),
+  );
+}
+
+export function gainEveryItem(): void {
+  getEntriesByType<EquipmentItem>('accessory').forEach((skill) =>
+    gainDroppableItemById(skill.id),
+  );
+  getEntriesByType<EquipmentItem>('armor').forEach((skill) =>
+    gainDroppableItemById(skill.id),
+  );
+  getEntriesByType<EquipmentItem>('trinket').forEach((skill) =>
+    gainDroppableItemById(skill.id),
+  );
+  getEntriesByType<EquipmentItem>('weapon').forEach((skill) =>
+    gainDroppableItemById(skill.id),
+  );
 }

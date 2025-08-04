@@ -26,6 +26,11 @@ export type CombatantStatusEffectData = {
   isFrozen?: boolean;
 };
 
+export type CombatantCombatStats = {
+  repeatActionChance: ElementBlock;
+  reviveChance: number;
+};
+
 export type CombatantTargettingType = 'Random' | 'Strongest' | 'Weakest';
 
 export type Combatant = Animatable & {
@@ -43,6 +48,8 @@ export type Combatant = Animatable & {
   statBoosts: StatBlock;
   totalStats: StatBlock;
 
+  combatStats: CombatantCombatStats;
+
   resistance: ElementBlock;
   affinity: ElementBlock;
 
@@ -55,7 +62,7 @@ export type Combatant = Animatable & {
 
   statusEffects: StatusEffect[];
   statusEffectData: CombatantStatusEffectData;
-  spritesheet?: 'hero' | 'guardian';
+
   sprite?: string;
 };
 

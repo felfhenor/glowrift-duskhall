@@ -1,5 +1,6 @@
 import { uuid } from '@helpers/rng';
 import type {
+  CombatantCombatStats,
   CurrencyBlock,
   ElementBlock,
   Hero,
@@ -158,5 +159,12 @@ export function getDefaultWorldNode(x = -1, y = -1): WorldLocation {
     claimLootIds: [],
     unclaimTime: 0,
     traitIds: [],
+  };
+}
+
+export function getDefaultCombatStats(): CombatantCombatStats {
+  return {
+    repeatActionChance: getDefaultAffinities(),
+    reviveChance: 0,
   };
 }
