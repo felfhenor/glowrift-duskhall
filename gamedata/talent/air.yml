@@ -63,9 +63,9 @@
     Force: 1.00
 
 - id: da6aa07a-b2bb-4564-9bbb-4c87047a2194
-  name: Thunderstruck
-  description: All Air skills have a 30% chance of striking twice.
-  sprite: '0017'
+  name: Storm Caller
+  description: All Air skills have a 30% chance of allowing the caster to go again.
+  sprite: '0020'
 
   combatStats:
     repeatActionChance:
