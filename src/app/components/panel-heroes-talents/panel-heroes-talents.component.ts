@@ -1,8 +1,8 @@
 import type { Signal } from '@angular/core';
-import { Component, computed, input, signal } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import { IconElementComponent } from '@components/icon-element/icon-element.component';
 import { PanelHeroesTalentsTreeComponent } from '@components/panel-heroes-talents-tree/panel-heroes-talents-tree.component';
-import { heroRemainingTalentPoints } from '@helpers';
+import { getOption, heroRemainingTalentPoints, setOption } from '@helpers';
 import type { GameElement, Hero } from '@interfaces';
 
 @Component({
@@ -14,7 +14,9 @@ import type { GameElement, Hero } from '@interfaces';
 export class PanelHeroesTalentsComponent {
   public hero = input.required<Hero>();
 
-  public currentElement = signal<GameElement>('Fire');
+  public currentElement = computed(() =>
+    getOption('selectedTalentTreeElement'),
+  );
 
   public pointsAvailable = computed(() =>
     heroRemainingTalentPoints(this.hero()),
@@ -36,6 +38,6 @@ export class PanelHeroesTalentsComponent {
   ]);
 
   public changeElement(element: GameElement): void {
-    this.currentElement.set(element);
+    setOption('selectedTalentTreeElement', element);
   }
 }

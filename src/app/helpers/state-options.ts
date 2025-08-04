@@ -24,6 +24,8 @@ export function defaultOptions(): GameOptions {
     optionsTab: 'UI',
     townTab: 'Market',
     inventoryFilter: 'accessory',
+    selectedHeroIndex: 0,
+    selectedTalentTreeElement: 'Fire',
   };
 }
 

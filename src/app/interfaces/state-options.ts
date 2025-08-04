@@ -1,5 +1,6 @@
 import type { Signal } from '@angular/core';
 import type { InventorySlotType } from '@interfaces/content-equipment';
+import type { GameElement } from '@interfaces/element';
 import type { TownBuilding } from '@interfaces/town';
 
 export type GameOption =
@@ -48,4 +49,6 @@ export type GameOptions = Record<GameOption, boolean> & {
   optionsTab: OptionsTab;
   townTab: TownTab;
   inventoryFilter: InventorySlotType;
+  selectedHeroIndex: number;
+  selectedTalentTreeElement: GameElement;
 };

@@ -13,6 +13,8 @@ import {
   equipItem,
   equipSkill,
   gamestate,
+  getOption,
+  setOption,
   showHeroesMenu,
   unequipItem,
   unequipSkill,
@@ -39,7 +41,7 @@ import type { EquipmentItem, EquipmentSkill, EquipmentSlot } from '@interfaces';
 export class PanelHeroesComponent {
   public allHeroes = computed(() => gamestate().hero.heroes);
 
-  public activeHeroIndex = signal<number>(0);
+  public activeHeroIndex = computed(() => getOption('selectedHeroIndex'));
   public activeHero = computed(() => this.allHeroes()[this.activeHeroIndex()]);
 
   public equipItemType = signal<EquipmentSlot | undefined>(undefined);
@@ -59,7 +61,7 @@ export class PanelHeroesComponent {
   }
 
   setHeroIndex(index: number) {
-    this.activeHeroIndex.set(index);
+    setOption('selectedHeroIndex', index);
     this.equipItemType.set(undefined);
     this.skillSlot.set(-1);
   }
