@@ -13,7 +13,7 @@
 
   onUnapply:
     - type: TakeDamageFromStat
-      combatMessage: '**{{ combatant.name }}** has been fortified (+{{ damage }} Aura)!'
+      combatMessage: '**{{ combatant.name }}** has lost their fortification (-{{ damage }} Aura)!'
       modifyStat: Aura
 
 - id: d2ae00d7-1879-4bb8-bbbb-4304900f8e3a
@@ -31,5 +31,5 @@
 
   onUnapply:
     - type: TakeDamageFromStat
-      combatMessage: '**{{ combatant.name }}** has been blessed with endurance (+{{ damage }} Health)!'
+      combatMessage: '**{{ combatant.name }}** has lost their endurance (-{{ damage }} Health)!'
       modifyStat: Health

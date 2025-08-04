@@ -13,5 +13,5 @@
 
   onUnapply:
     - type: TakeDamageFromStat
-      combatMessage: '**{{ combatant.name }}** has been empowered (+{{ damage }} Force)!'
+      combatMessage: '**{{ combatant.name }}** has lost their empowerment (-{{ damage }} Force)!'
       modifyStat: Force

@@ -13,5 +13,5 @@
 
   onUnapply:
     - type: TakeDamageFromStat
-      combatMessage: '**{{ combatant.name }}** has been blessed with swiftness (+{{ damage }} Speed)!'
+      combatMessage: '**{{ combatant.name }}** has lost swiftness (-{{ damage }} Speed)!'
       modifyStat: Speed
