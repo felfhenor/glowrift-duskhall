@@ -18,19 +18,3 @@
     - type: ModifyStatusEffectData
       key: isFrozen
       value: false
-
-- id: d5afc2de-8e11-45c3-b903-a75e6c73b74b
-  name: Regeneration
-
-  trigger: TurnStart
-
-  statScaling:
-    Force: 0.2
-
-  onApply:
-    - type: SendMessage
-      combatMessage: '**{{ combatant.name }}** begins to regenerate their wounds!'
-
-  onTick:
-    - type: HealDamage
-      combatMessage: '**{{ combatant.name }}** regenerates {{ healing }} health ({{ combatant.hp }}/{{ combatant.totalStats.Health }} HP remaining).'
