@@ -71,3 +71,17 @@
     - statusEffectId: Crushed
       chance: 10
       duration: 3
+
+- id: 7b87b510-ce14-4444-8b33-ccd0f55e7a52
+  name: Earthly Endurance
+  description: Fortify applied by this hero also has a chance to apply Endurance.
+  sprite: '0025'
+
+  applyToAllSkills: true
+  applyToStatusEffectIds:
+    - Fortified
+
+  applyStatusEffects:
+    - statusEffectId: Endurance
+      chance: 50
+      duration: 3

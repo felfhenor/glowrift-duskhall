@@ -85,6 +85,8 @@
   description: All Air skills have a +15% chance of striking a second time.
   sprite: '0017'
 
+  requireTalentId: Thunderstruck I
+
   combatStats:
     skillStrikeAgainChance:
       Air: 15
