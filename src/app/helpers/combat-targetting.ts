@@ -1,3 +1,4 @@
+import { skillSucceedsElementCombatStatChance } from '@helpers/combat-stats';
 import { getEntry } from '@helpers/content';
 import { getSkillUses } from '@helpers/skill';
 import type {
@@ -68,11 +69,22 @@ export function filterCombatantTargetListForSkillTechnique(
 export function getBaseCombatantTargetListForSkillTechnique(
   combat: Combat,
   combatant: Combatant,
+  skill: EquipmentSkill,
   technique: EquipmentSkillContentTechnique,
 ): Combatant[] {
   const myType = combatant.isEnemy ? 'guardian' : 'hero';
-  const allies = myType === 'guardian' ? combat.guardians : combat.heroes;
-  const enemies = myType === 'guardian' ? combat.heroes : combat.guardians;
+  let allies = myType === 'guardian' ? combat.guardians : combat.heroes;
+  let enemies = myType === 'guardian' ? combat.heroes : combat.guardians;
+
+  const shouldReverse = skillSucceedsElementCombatStatChance(
+    skill,
+    combatant,
+    'redirectionChance',
+  );
+
+  if (shouldReverse) {
+    [allies, enemies] = [enemies, allies];
+  }
 
   const targetTypes: Record<EquipmentSkillTargetType, Combatant[]> = {
     All: [...allies, ...enemies],
@@ -96,6 +108,7 @@ export function getPossibleCombatantTargetsForSkillTechnique(
   const baseList = getBaseCombatantTargetListForSkillTechnique(
     combat,
     combatant,
+    skill,
     tech,
   );
   return filterCombatantTargetListForSkillTechnique(baseList, tech);

@@ -90,3 +90,56 @@
       element: Air
       combatStat: skillAdditionalUseCount
       value: 1
+
+- id: b86261ec-7c8e-400f-8876-3b472a26d46c
+  name: Redirect
+
+  trigger: TurnEnd
+
+  onApply:
+    - type: SendMessage
+      combatMessage: '**{{ combatant.name }}** is being redirected by the air!'
+
+    - type: AddCombatStatElement
+      element: Fire
+      combatStat: redirectionChance
+      value: 20
+
+    - type: AddCombatStatElement
+      element: Earth
+      combatStat: redirectionChance
+      value: 20
+
+    - type: AddCombatStatElement
+      element: Water
+      combatStat: redirectionChance
+      value: 20
+
+    - type: AddCombatStatElement
+      element: Air
+      combatStat: redirectionChance
+      value: 20
+
+  onUnapply:
+    - type: SendMessage
+      combatMessage: '**{{ combatant.name }}** is no longer being redirected!'
+
+    - type: TakeCombatStatElement
+      element: Fire
+      combatStat: redirectionChance
+      value: 20
+
+    - type: TakeCombatStatElement
+      element: Earth
+      combatStat: redirectionChance
+      value: 20
+
+    - type: TakeCombatStatElement
+      element: Water
+      combatStat: redirectionChance
+      value: 20
+
+    - type: TakeCombatStatElement
+      element: Air
+      combatStat: redirectionChance
+      value: 20

@@ -91,12 +91,24 @@
 
 - id: b6ef1344-b887-4bb8-b9eb-92efff3b4dc4
   name: Gravitational Force
-  description: Offensive Air spells also have a chance to apply Gravity to enemies.
+  description: Offensive Air spells also have a +10% chance to apply Gravity to enemies.
   sprite: '0019'
 
   applyToAttributes: [DamagesTarget]
 
   applyStatusEffects:
     - statusEffectId: Gravity
-      chance: 100
+      chance: 10
+      duration: 3
+
+- id: 03585374-384b-4cda-940a-d22c9c798c43
+  name: Disorienting Winds
+  description: Offensive Air spells also have a +10% chance to apply Redirect to enemies.
+  sprite: '0021'
+
+  applyToAttributes: [DamagesTarget]
+
+  applyStatusEffects:
+    - statusEffectId: Redirect
+      chance: 10
       duration: 3

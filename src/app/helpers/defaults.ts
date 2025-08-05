@@ -168,6 +168,7 @@ export function getDefaultCombatStats(): CombatantCombatStats {
     skillStrikeAgainChance: getDefaultAffinities(),
     skillAdditionalUseChance: getDefaultAffinities(),
     skillAdditionalUseCount: getDefaultAffinities(),
+    redirectionChance: getDefaultAffinities(),
     reviveChance: 0,
   };
 }

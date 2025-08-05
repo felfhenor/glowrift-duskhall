@@ -41,8 +41,9 @@
       learnableTalents:
         - talentId: Blank Talent
         - talentId: Thunderstruck II
-        - talentId: Blank Talent
+        - talentId: Disorienting Winds
         - talentId: Winds of Change
+
     - level: 30
       learnableTalents:
         - talentId: Blank Talent

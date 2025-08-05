@@ -49,7 +49,8 @@ const startWatch = async () => {
 
     if (
       intersection(allUsedSprites, allUsedSpritesheetKeys).length !==
-      allUsedSpritesheetKeys.length
+        allUsedSpritesheetKeys.length ||
+      allUsedSprites.length !== allUsedSpritesheetKeys.length
     ) {
       console.info('[helpers] Rebuilding art due to new assets...');
       runCommand('npm run gamedata:art:spritesheets');

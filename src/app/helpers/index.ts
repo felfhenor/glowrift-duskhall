@@ -9,6 +9,7 @@ export * from './combat-create';
 export * from './combat-damage';
 export * from './combat-end';
 export * from './combat-log';
+export * from './combat-stats';
 export * from './combat-statuseffects';
 export * from './combat-targetting';
 export * from './content';

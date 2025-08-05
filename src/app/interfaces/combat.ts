@@ -31,6 +31,7 @@ export type CombatantCombatStats = {
   skillStrikeAgainChance: ElementBlock;
   skillAdditionalUseChance: ElementBlock;
   skillAdditionalUseCount: ElementBlock;
+  redirectionChance: ElementBlock;
   reviveChance: number;
 };
 

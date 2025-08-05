@@ -114,6 +114,7 @@ function ensureCombatStats(
     skillAdditionalUseCount: ensureAffinities(
       combatStats.skillAdditionalUseCount,
     ),
+    redirectionChance: ensureAffinities(combatStats.redirectionChance),
     reviveChance: combatStats.reviveChance ?? 0,
   };
 }
