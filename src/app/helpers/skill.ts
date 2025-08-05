@@ -19,7 +19,7 @@ import type { StatusEffectContent } from '@interfaces/content-statuseffect';
 import type { GameElement } from '@interfaces/element';
 import type { Hero } from '@interfaces/hero';
 import type { GameStat } from '@interfaces/stat';
-import { cloneDeep, intersection, uniq } from 'es-toolkit/compat';
+import { cloneDeep, intersection, sortBy, uniq } from 'es-toolkit/compat';
 
 export function getSkillEnchantLevel(skill: EquipmentSkill): number {
   return skill.enchantLevel + (skill.mods?.enchantLevel ?? 0);
@@ -125,7 +125,10 @@ export function makeSkillForHero(
       talentTechniqueAddedStatusEffects(talents, skill, t),
     );
 
-    t.statusEffects = [...t.statusEffects, ...addedStatusEffects]
+    t.statusEffects = sortBy(
+      [...t.statusEffects, ...addedStatusEffects],
+      (s) => getEntry<StatusEffectContent>(s.statusEffectId)?.name,
+    )
       .map((s) => {
         const statusEffect = getEntry<StatusEffectContent>(s.statusEffectId);
         if (!statusEffect) return undefined;
