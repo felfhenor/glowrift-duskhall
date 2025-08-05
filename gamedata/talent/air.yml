@@ -116,3 +116,17 @@
     - statusEffectId: Redirect
       chance: 10
       duration: 3
+
+- id: b253cf8d-d932-42fa-a110-ba5cfaac78af
+  name: Acuity
+  description: Applying Swiftness has a chance to apply Focus.
+  sprite: '0029'
+
+  applyToAllSkills: true
+  applyToStatusEffectIds:
+    - Swiftness
+
+  applyStatusEffects:
+    - statusEffectId: Focus
+      chance: 50
+      duration: 3

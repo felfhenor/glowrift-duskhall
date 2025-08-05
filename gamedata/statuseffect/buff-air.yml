@@ -15,3 +15,56 @@
     - type: TakeDamageFromStat
       combatMessage: '**{{ combatant.name }}** has lost swiftness (-{{ damage }} Speed)!'
       modifyStat: Speed
+
+- id: 9d7116f2-a518-48d0-843f-f0f6414cdaae
+  name: Focus
+
+  trigger: TurnEnd
+
+  onApply:
+    - type: SendMessage
+      combatMessage: '**{{ combatant.name }}** has gained immense focus!'
+
+    - type: AddCombatStatElement
+      element: Fire
+      combatStat: skillStrikeAgainChance
+      value: 20
+
+    - type: AddCombatStatElement
+      element: Earth
+      combatStat: skillStrikeAgainChance
+      value: 20
+
+    - type: AddCombatStatElement
+      element: Water
+      combatStat: skillStrikeAgainChance
+      value: 20
+
+    - type: AddCombatStatElement
+      element: Air
+      combatStat: skillStrikeAgainChance
+      value: 20
+
+  onUnapply:
+    - type: SendMessage
+      combatMessage: '**{{ combatant.name }}** has lost their focus!'
+
+    - type: TakeCombatStatElement
+      element: Fire
+      combatStat: skillStrikeAgainChance
+      value: 20
+
+    - type: TakeCombatStatElement
+      element: Earth
+      combatStat: skillStrikeAgainChance
+      value: 20
+
+    - type: TakeCombatStatElement
+      element: Water
+      combatStat: skillStrikeAgainChance
+      value: 20
+
+    - type: TakeCombatStatElement
+      element: Air
+      combatStat: skillStrikeAgainChance
+      value: 20
