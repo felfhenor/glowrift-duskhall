@@ -21,7 +21,7 @@ import { gamestate, updateGamestate } from '@helpers/state-game';
 
 import { notify } from '@helpers/notify';
 
-import { sample, sortBy } from 'es-toolkit/compat';
+import { sample, sortBy, sum } from 'es-toolkit/compat';
 
 import { succeedsChance } from '@helpers/rng';
 import { getSkillTechniqueNumTargets, skillElements } from '@helpers/skill';
@@ -70,8 +70,20 @@ function combatantMarkSkillUse(
   );
   if (succeedsChance(shouldIgnoreUseChance)) return;
 
+  const shouldApplyExtraUses = skillElements(skill).some((el) =>
+    succeedsChance(combatant.combatStats.skillAdditionalUseChance[el]),
+  );
+
+  const extraUses = shouldApplyExtraUses
+    ? sum(
+        skillElements(skill).map(
+          (el) => combatant.combatStats.skillAdditionalUseCount[el],
+        ),
+      )
+    : 0;
+
   combatant.skillUses[skill.id] ??= 0;
-  combatant.skillUses[skill.id]++;
+  combatant.skillUses[skill.id] += 1 + extraUses;
 }
 
 function combatantTakeTurn(

@@ -88,3 +88,15 @@
   combatStats:
     skillStrikeAgainChance:
       Air: 15
+
+- id: b6ef1344-b887-4bb8-b9eb-92efff3b4dc4
+  name: Gravitational Force
+  description: Offensive Air spells also have a chance to apply Gravity to enemies.
+  sprite: '0019'
+
+  applyToAttributes: [DamagesTarget]
+
+  applyStatusEffects:
+    - statusEffectId: Gravity
+      chance: 100
+      duration: 3

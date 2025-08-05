@@ -1,0 +1,92 @@
+- id: 14f78399-1b13-4605-8681-df0589d3316f
+  name: Gravity
+
+  trigger: TurnEnd
+
+  onApply:
+    - type: SendMessage
+      combatMessage: '**{{ combatant.name }}** is being pancaked by gravity!'
+
+    - type: AddCombatStatElement
+      element: Fire
+      combatStat: skillAdditionalUseChance
+      value: 50
+
+    - type: AddCombatStatElement
+      element: Earth
+      combatStat: skillAdditionalUseChance
+      value: 50
+
+    - type: AddCombatStatElement
+      element: Water
+      combatStat: skillAdditionalUseChance
+      value: 50
+
+    - type: AddCombatStatElement
+      element: Air
+      combatStat: skillAdditionalUseChance
+      value: 50
+
+    - type: AddCombatStatElement
+      element: Fire
+      combatStat: skillAdditionalUseCount
+      value: 1
+
+    - type: AddCombatStatElement
+      element: Earth
+      combatStat: skillAdditionalUseCount
+      value: 1
+
+    - type: AddCombatStatElement
+      element: Water
+      combatStat: skillAdditionalUseCount
+      value: 1
+
+    - type: AddCombatStatElement
+      element: Air
+      combatStat: skillAdditionalUseCount
+      value: 1
+
+  onUnapply:
+    - type: SendMessage
+      combatMessage: '**{{ combatant.name }}** is no longer being crushed by gravity!'
+
+    - type: TakeCombatStatElement
+      element: Fire
+      combatStat: skillAdditionalUseChance
+      value: 50
+
+    - type: TakeCombatStatElement
+      element: Earth
+      combatStat: skillAdditionalUseChance
+      value: 50
+
+    - type: TakeCombatStatElement
+      element: Water
+      combatStat: skillAdditionalUseChance
+      value: 50
+
+    - type: TakeCombatStatElement
+      element: Air
+      combatStat: skillAdditionalUseChance
+      value: 50
+
+    - type: TakeCombatStatElement
+      element: Fire
+      combatStat: skillAdditionalUseCount
+      value: 1
+
+    - type: TakeCombatStatElement
+      element: Earth
+      combatStat: skillAdditionalUseCount
+      value: 1
+
+    - type: TakeCombatStatElement
+      element: Water
+      combatStat: skillAdditionalUseCount
+      value: 1
+
+    - type: TakeCombatStatElement
+      element: Air
+      combatStat: skillAdditionalUseCount
+      value: 1

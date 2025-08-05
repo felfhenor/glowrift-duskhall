@@ -2,10 +2,15 @@ import { allCombatantTalents } from '@helpers/combat';
 import { combatantTakeDamage } from '@helpers/combat-damage';
 import { formatCombatMessage, logCombatMessage } from '@helpers/combat-log';
 import { talentStatusEffectStatBoost } from '@helpers/talent';
-import type { Combat, Combatant } from '@interfaces/combat';
+import type {
+  Combat,
+  Combatant,
+  CombatantCombatStats,
+} from '@interfaces/combat';
 import type { EquipmentSkill } from '@interfaces/content-skill';
 import type {
   StatusEffect,
+  StatusEffectAddCombatStatElement,
   StatusEffectBehavior,
   StatusEffectBehaviorAddStat,
   StatusEffectBehaviorDataChange,
@@ -14,7 +19,9 @@ import type {
   StatusEffectContent,
   StatusEffectTrigger,
 } from '@interfaces/content-statuseffect';
+import type { ElementBlock, GameElement } from '@interfaces/element';
 import type { GameStat } from '@interfaces/stat';
+import { isObject } from 'es-toolkit/compat';
 
 export function canTakeTurn(combatant: Combatant): boolean {
   return !combatant.statusEffectData.isFrozen;
@@ -129,6 +136,18 @@ export function applyStatDeltaToCombatant(
   combatant.totalStats[stat] += value;
 }
 
+export function applyCombatStatElementDeltaToCombatant(
+  combatant: Combatant,
+  stat: keyof CombatantCombatStats,
+  element: GameElement,
+  value: number,
+): void {
+  const ref = combatant.combatStats[stat];
+  if (!ref || !isObject(ref)) return;
+
+  (combatant.combatStats[stat] as ElementBlock)[element] += value;
+}
+
 export function handleStatusEffectBehaviors(
   combat: Combat,
   combatant: Combatant,
@@ -177,6 +196,26 @@ export function handleStatusEffectBehaviors(
       templateData.damage = damage;
 
       applyStatDeltaToCombatant(combatant, behaviorData.modifyStat, -damage);
+    },
+    AddCombatStatElement: () => {
+      const behaviorData = behavior as StatusEffectAddCombatStatElement;
+
+      applyCombatStatElementDeltaToCombatant(
+        combatant,
+        behaviorData.combatStat,
+        behaviorData.element,
+        behaviorData.value,
+      );
+    },
+    TakeCombatStatElement: () => {
+      const behaviorData = behavior as StatusEffectAddCombatStatElement;
+
+      applyCombatStatElementDeltaToCombatant(
+        combatant,
+        behaviorData.combatStat,
+        behaviorData.element,
+        -behaviorData.value,
+      );
     },
   };
 

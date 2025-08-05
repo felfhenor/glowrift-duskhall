@@ -108,6 +108,12 @@ function ensureCombatStats(
     skillStrikeAgainChance: ensureAffinities(
       combatStats.skillStrikeAgainChance,
     ),
+    skillAdditionalUseChance: ensureAffinities(
+      combatStats.skillAdditionalUseChance,
+    ),
+    skillAdditionalUseCount: ensureAffinities(
+      combatStats.skillAdditionalUseCount,
+    ),
     reviveChance: combatStats.reviveChance ?? 0,
   };
 }

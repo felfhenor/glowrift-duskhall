@@ -1,4 +1,8 @@
-import type { CombatantStatusEffectData } from '@interfaces/combat';
+import type {
+  CombatantCombatStats,
+  CombatantStatusEffectData,
+} from '@interfaces/combat';
+import type { GameElement } from '@interfaces/element';
 import type { Branded, IsContentItem } from '@interfaces/identifiable';
 import type { GameStat, StatBlock } from '@interfaces/stat';
 
@@ -10,6 +14,8 @@ export type StatusEffectBehaviorType =
   | 'ModifyStatusEffectData'
   | 'AddDamageToStat'
   | 'TakeDamageFromStat'
+  | 'AddCombatStatElement'
+  | 'TakeCombatStatElement'
   | 'HealDamage'
   | 'TakeDamage'
   | 'SendMessage';
@@ -21,31 +27,47 @@ export type StatusEffectBehaviorSendMessage = {
 
 export type StatusEffectBehaviorDataChange = {
   type: 'ModifyStatusEffectData';
-  combatMessage: string;
+  combatMessage?: string;
   key: keyof CombatantStatusEffectData;
   value: CombatantStatusEffectData[keyof CombatantStatusEffectData];
 };
 
+export type StatusEffectAddCombatStatElement = {
+  type: 'AddCombatStatElement';
+  combatMessage?: string;
+  combatStat: keyof CombatantCombatStats;
+  element: GameElement;
+  value: number;
+};
+
+export type StatusEffectTakeCombatStatElement = {
+  type: 'TakeCombatStatElement';
+  combatMessage?: string;
+  combatStat: keyof CombatantCombatStats;
+  element: GameElement;
+  value: number;
+};
+
 export type StatusEffectBehaviorAddStat = {
   type: 'AddDamageToStat';
-  combatMessage: string;
+  combatMessage?: string;
   modifyStat: GameStat;
 };
 
 export type StatusEffectBehaviorTakeStat = {
   type: 'TakeDamageFromStat';
-  combatMessage: string;
+  combatMessage?: string;
   modifyStat: GameStat;
 };
 
 export type StatusEffectBehaviorTakeDamage = {
   type: 'TakeDamage';
-  combatMessage: string;
+  combatMessage?: string;
 };
 
 export type StatusEffectBehaviorHealDamage = {
   type: 'HealDamage';
-  combatMessage: string;
+  combatMessage?: string;
 };
 
 export type StatusEffectBehavior =
@@ -54,7 +76,9 @@ export type StatusEffectBehavior =
   | StatusEffectBehaviorTakeDamage
   | StatusEffectBehaviorHealDamage
   | StatusEffectBehaviorAddStat
-  | StatusEffectBehaviorTakeStat;
+  | StatusEffectBehaviorTakeStat
+  | StatusEffectAddCombatStatElement
+  | StatusEffectTakeCombatStatElement;
 
 export type StatusEffectContent = IsContentItem & {
   id: StatusEffectId;
