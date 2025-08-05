@@ -253,6 +253,8 @@ function ensureTalent(talent: Partial<TalentContent>): Required<TalentContent> {
     ),
 
     combatStats: ensureCombatStats(talent.combatStats),
+
+    addTechniques: (talent.addTechniques ?? []).map(ensureTechnique),
   };
 }
 

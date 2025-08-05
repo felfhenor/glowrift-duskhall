@@ -108,11 +108,11 @@
 
         - statusEffectId: Brittle
           chance: 3
-          duration: 1
+          duration: 3
 
         - statusEffectId: Hypothermia
           chance: 3
-          duration: 1
+          duration: 3
 
       combatMessage: '**{{ combatant.name }}** cast **{{ skill.name }}** on **{{ target.name }}**.'
 
@@ -145,11 +145,11 @@
 
         - statusEffectId: Brittle
           chance: 6
-          duration: 2
+          duration: 4
 
         - statusEffectId: Hypothermia
           chance: 6
-          duration: 2
+          duration: 4
 
       combatMessage: '**{{ combatant.name }}** cast **{{ skill.name }}** on **{{ target.name }}**.'
 
@@ -182,11 +182,11 @@
 
         - statusEffectId: Brittle
           chance: 9
-          duration: 3
+          duration: 5
 
         - statusEffectId: Hypothermia
           chance: 9
-          duration: 3
+          duration: 5
 
       combatMessage: '**{{ combatant.name }}** cast **{{ skill.name }}** on **{{ target.name }}**.'
 
@@ -214,7 +214,7 @@
       statusEffects:
         - statusEffectId: Hypothermia
           chance: 3
-          duration: 1
+          duration: 3
 
       combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
 
@@ -242,7 +242,7 @@
       statusEffects:
         - statusEffectId: Hypothermia
           chance: 6
-          duration: 1
+          duration: 3
 
       combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
 
@@ -270,6 +270,6 @@
       statusEffects:
         - statusEffectId: Hypothermia
           chance: 9
-          duration: 1
+          duration: 3
 
       combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'

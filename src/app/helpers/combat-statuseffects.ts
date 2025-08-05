@@ -33,10 +33,10 @@ export function statusEffectDamage(effect: StatusEffect): number {
     : effect.creatorStats;
 
   return Math.floor(
-    statBlock.Aura * statBlock.Aura +
-      statBlock.Force * statBlock.Force +
-      statBlock.Health * statBlock.Health +
-      statBlock.Speed * statBlock.Speed,
+    statBlock.Aura * effect.statScaling.Aura +
+      statBlock.Force * effect.statScaling.Force +
+      statBlock.Health * effect.statScaling.Health +
+      statBlock.Speed * effect.statScaling.Speed,
   );
 }
 

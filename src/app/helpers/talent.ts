@@ -4,6 +4,7 @@ import { getDroppableEquippableBaseId } from '@helpers/droppable';
 import type { CombatantCombatStats } from '@interfaces/combat';
 import type {
   EquipmentSkill,
+  EquipmentSkillContentTechnique,
   EquipmentSkillTechniqueStatusEffectApplication,
 } from '@interfaces/content-skill';
 import type { StatusEffectContent } from '@interfaces/content-statuseffect';
@@ -12,14 +13,7 @@ import type { TalentTreeContent } from '@interfaces/content-talenttree';
 import type { ElementBlock } from '@interfaces/element';
 import type { Hero } from '@interfaces/hero';
 import type { GameStat, StatBlock } from '@interfaces/stat';
-import {
-  intersection,
-  isNumber,
-  isObject,
-  sum,
-  union,
-  uniq,
-} from 'es-toolkit/compat';
+import { intersection, isNumber, isObject, sum, uniq } from 'es-toolkit/compat';
 
 export function allHeroTalents(hero: Hero): TalentContent[] {
   return Object.entries(hero.talents)
@@ -72,24 +66,72 @@ export function talentsForSkill(
   const skillContentId = getDroppableEquippableBaseId(skill);
   const skillElements = uniq(skill.techniques.flatMap((t) => t.elements));
   const skillAttributes = uniq(skill.techniques.flatMap((t) => t.attributes));
-
-  const appliesToAll = talents.filter((t) => t.applyToAllSkills);
-  const appliesDirectlyToSkill = talents.filter((t) =>
-    t.applyToSkillIds?.includes(skillContentId),
-  );
-  const appliesBasedOnElement = talents.filter(
-    (t) => intersection(t.applyToElements, skillElements).length > 0,
-  );
-  const appliesBasedOnAttribute = talents.filter(
-    (t) => intersection(t.applyToAttributes, skillAttributes).length > 0,
+  const skillStatusEffects = uniq(
+    skill.techniques.flatMap((t) =>
+      t.statusEffects.flatMap((s) => s.statusEffectId),
+    ),
   );
 
-  return union(
-    appliesToAll,
-    appliesDirectlyToSkill,
-    appliesBasedOnElement,
-    appliesBasedOnAttribute,
-  );
+  return talents.filter((t) => {
+    if (t.applyToAllSkills) return true;
+
+    if (
+      t.applyToSkillIds.length > 0 &&
+      !t.applyToSkillIds.includes(skillContentId)
+    )
+      return false;
+
+    if (
+      t.applyToElements.length > 0 &&
+      intersection(t.applyToElements, skillElements).length === 0
+    )
+      return false;
+
+    if (
+      t.applyToAttributes.length > 0 &&
+      intersection(t.applyToAttributes, skillAttributes).length === 0
+    )
+      return false;
+
+    if (
+      t.applyToStatusEffectIds.length > 0 &&
+      intersection(t.applyToStatusEffectIds, skillStatusEffects).length === 0
+    )
+      return false;
+
+    return true;
+  });
+}
+
+export function talentsForSkillTechnique(
+  talents: TalentContent[],
+  skill: EquipmentSkill,
+  technique: EquipmentSkillContentTechnique,
+): TalentContent[] {
+  return talentsForSkill(talents, skill).filter((t) => {
+    if (
+      t.applyToElements.length > 0 &&
+      intersection(t.applyToElements, technique.elements).length === 0
+    )
+      return false;
+
+    if (
+      t.applyToAttributes.length > 0 &&
+      intersection(t.applyToAttributes, technique.attributes).length === 0
+    )
+      return false;
+
+    if (
+      t.applyToStatusEffectIds.length > 0 &&
+      intersection(
+        t.applyToStatusEffectIds,
+        technique.statusEffects.map((s) => s.statusEffectId),
+      ).length === 0
+    )
+      return false;
+
+    return true;
+  });
 }
 
 export function talentsForStatusEffect(
@@ -182,9 +224,19 @@ export function talentIgnoreConsumptionChance(
   );
 }
 
-export function talentAddedStatusEffects(
+export function talentTechniqueAddedStatusEffects(
   talents: TalentContent[],
   skill: EquipmentSkill,
+  technique: EquipmentSkillContentTechnique,
 ): EquipmentSkillTechniqueStatusEffectApplication[] {
-  return talentsForSkill(talents, skill).flatMap((t) => t.applyStatusEffects);
+  return talentsForSkillTechnique(talents, skill, technique).flatMap(
+    (t) => t.applyStatusEffects,
+  );
+}
+
+export function talentAddedTechniques(
+  talents: TalentContent[],
+  skill: EquipmentSkill,
+): EquipmentSkillContentTechnique[] {
+  return talentsForSkill(talents, skill).flatMap((t) => t.addTechniques);
 }

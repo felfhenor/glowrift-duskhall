@@ -6,6 +6,7 @@ import { heroEquipmentSkills } from '@helpers/hero-skills';
 import { heroElements } from '@helpers/hero-stats';
 import { getFullHeroTalentHash } from '@helpers/hero-talent';
 import { uuid } from '@helpers/rng';
+import { makeSkillForHero } from '@helpers/skill';
 import { allHeroTalents, combineTalentsIntoCombatStats } from '@helpers/talent';
 import { locationTraitCombatElementPercentageModifier } from '@helpers/trait-location-combat';
 import type {
@@ -36,7 +37,9 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
     sprite: h.sprite,
     frames: h.frames,
     skillIds: ['Attack' as EquipmentSkillId, ...heroEquipmentSkills(h)],
-    skillRefs: h.skills.filter(Boolean) as EquipmentSkill[],
+    skillRefs: cloneDeep(
+      h.skills.filter(Boolean).map((s) => makeSkillForHero(h, s!)),
+    ) as EquipmentSkill[],
 
     talents: getFullHeroTalentHash(h),
     combatStats: combineTalentsIntoCombatStats(allHeroTalents(h)),

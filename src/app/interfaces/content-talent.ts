@@ -2,6 +2,7 @@ import type { Artable } from '@interfaces/artable';
 import type { CombatantCombatStats } from '@interfaces/combat';
 import type {
   EquipmentSkillAttribute,
+  EquipmentSkillContentTechnique,
   EquipmentSkillTechniqueStatusEffectApplication,
 } from '@interfaces/content-skill';
 import type { GameElement } from '@interfaces/element';
@@ -37,4 +38,6 @@ export type TalentContent = IsContentItem &
     applyStatusEffects: EquipmentSkillTechniqueStatusEffectApplication[];
 
     combatStats: CombatantCombatStats;
+
+    addTechniques: EquipmentSkillContentTechnique[];
   };

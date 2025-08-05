@@ -1,4 +1,3 @@
-import { allCombatantTalents } from '@helpers/combat';
 import { isDead } from '@helpers/combat-end';
 import { formatCombatMessage, logCombatMessage } from '@helpers/combat-log';
 import {
@@ -16,19 +15,12 @@ import {
   getSkillTechniqueStatusEffectChance,
   getSkillTechniqueStatusEffectDuration,
 } from '@helpers/skill';
-import {
-  talentAddedStatusEffects,
-  talentStatBoost,
-  talentStatusEffectChanceBoost,
-  talentStatusEffectDurationBoost,
-} from '@helpers/talent';
 import type {
   Combat,
   Combatant,
   EquipmentSkill,
   EquipmentSkillAttribute,
   EquipmentSkillContentTechnique,
-  EquipmentSkillTechniqueStatusEffectApplication,
   GameStat,
   StatusEffectContent,
 } from '@interfaces';
@@ -51,15 +43,11 @@ export function getCombatantBaseStatDamageForTechnique(
   const baseCheckMultiplier = technique.damageScaling[stat] ?? 0;
   if (baseCheckMultiplier === 0) return 0;
 
-  const allTalents = allCombatantTalents(combatant);
-
   const baseMultiplier = getSkillTechniqueDamageScalingStat(
     skill,
     technique,
     stat,
   );
-
-  const talentSkillMultiplierBoost = talentStatBoost(allTalents, skill, stat);
 
   const affinityElementBoostMultiplier = sumBy(
     technique.elements,
@@ -68,10 +56,7 @@ export function getCombatantBaseStatDamageForTechnique(
 
   const baseStatWithoutMultiplier = combatant.totalStats[stat];
 
-  const totalMultiplier =
-    baseMultiplier +
-    affinityElementBoostMultiplier +
-    talentSkillMultiplierBoost;
+  const totalMultiplier = baseMultiplier + affinityElementBoostMultiplier;
 
   const multipliedStat = baseStatWithoutMultiplier * totalMultiplier;
 
@@ -89,8 +74,6 @@ export function applySkillToTarget(
   skill: EquipmentSkill,
   technique: EquipmentSkillContentTechnique,
 ): void {
-  const attackerTalents = allCombatantTalents(combatant);
-
   const baseDamage = sum(
     (['Force', 'Aura', 'Health', 'Speed'] as GameStat[]).map((stat) =>
       getCombatantBaseStatDamageForTechnique(
@@ -164,18 +147,11 @@ export function applySkillToTarget(
   const message = formatCombatMessage(technique.combatMessage, templateData);
   logCombatMessage(combat, message, combatant);
 
-  const allStatusEffects: EquipmentSkillTechniqueStatusEffectApplication[] = [
-    ...technique.statusEffects,
-    ...talentAddedStatusEffects(attackerTalents, skill),
-  ];
-
-  allStatusEffects.forEach((effData) => {
+  technique.statusEffects.forEach((effData) => {
     const effectContent = getEntry<StatusEffectContent>(effData.statusEffectId);
     if (!effectContent) return;
 
-    const totalChance =
-      getSkillTechniqueStatusEffectChance(skill, effData) +
-      talentStatusEffectChanceBoost(attackerTalents, skill, effectContent);
+    const totalChance = getSkillTechniqueStatusEffectChance(skill, effData);
 
     if (!succeedsChance(totalChance)) return;
 
@@ -185,13 +161,7 @@ export function applySkillToTarget(
       combatant,
       target,
       {
-        duration:
-          getSkillTechniqueStatusEffectDuration(skill, effData) +
-          talentStatusEffectDurationBoost(
-            attackerTalents,
-            skill,
-            effectContent,
-          ),
+        duration: getSkillTechniqueStatusEffectDuration(skill, effData),
       },
     );
 

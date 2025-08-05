@@ -1,13 +1,25 @@
+import { getEntry } from '@helpers/content';
 import { gamestate } from '@helpers/state-game';
+import {
+  allHeroTalents,
+  talentAddedTechniques,
+  talentStatBoost,
+  talentStatusEffectChanceBoost,
+  talentStatusEffectDurationBoost,
+  talentTargetCountBoost,
+  talentTechniqueAddedStatusEffects,
+} from '@helpers/talent';
 import type {
   EquipmentSkill,
   EquipmentSkillContentTechnique,
   EquipmentSkillId,
   EquipmentSkillTechniqueStatusEffectApplication,
 } from '@interfaces/content-skill';
+import type { StatusEffectContent } from '@interfaces/content-statuseffect';
 import type { GameElement } from '@interfaces/element';
+import type { Hero } from '@interfaces/hero';
 import type { GameStat } from '@interfaces/stat';
-import { intersection, uniq } from 'es-toolkit/compat';
+import { cloneDeep, intersection, uniq } from 'es-toolkit/compat';
 
 export function getSkillEnchantLevel(skill: EquipmentSkill): number {
   return skill.enchantLevel + (skill.mods?.enchantLevel ?? 0);
@@ -87,4 +99,51 @@ export function skillDisplayElement(skill: EquipmentSkill): string {
   if (intersection(elements, ['Air']).length === 1) return 'Air';
 
   return elements.join(', ');
+}
+
+export function makeSkillForHero(
+  hero: Hero,
+  skillData: EquipmentSkill,
+): EquipmentSkill {
+  const talents = allHeroTalents(hero);
+  const skill = cloneDeep(skillData);
+
+  const addedTechniques = cloneDeep(talentAddedTechniques(talents, skill));
+
+  skill.techniques = [...skill.techniques, ...addedTechniques].map((t) => {
+    t.targets += talentTargetCountBoost(talents, skill);
+
+    Object.keys(t.damageScaling).forEach((stat) => {
+      t.damageScaling[stat as GameStat] += talentStatBoost(
+        talents,
+        skill,
+        stat as GameStat,
+      );
+    });
+
+    const addedStatusEffects = cloneDeep(
+      talentTechniqueAddedStatusEffects(talents, skill, t),
+    );
+
+    t.statusEffects = [...t.statusEffects, ...addedStatusEffects]
+      .map((s) => {
+        const statusEffect = getEntry<StatusEffectContent>(s.statusEffectId);
+        if (!statusEffect) return undefined;
+
+        s.chance += talentStatusEffectChanceBoost(talents, skill, statusEffect);
+
+        s.duration += talentStatusEffectDurationBoost(
+          talents,
+          skill,
+          statusEffect,
+        );
+
+        return s;
+      })
+      .filter(Boolean) as EquipmentSkillTechniqueStatusEffectApplication[];
+
+    return t;
+  });
+
+  return skill;
 }

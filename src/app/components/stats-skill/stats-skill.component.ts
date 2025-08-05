@@ -9,18 +9,13 @@ import {
   getSkillTechniqueStatusEffectChance,
   getSkillTechniqueStatusEffectDuration,
   getSkillUses,
+  makeSkillForHero,
   rarityItemTextColor,
   skillDisplayElement,
-  talentAddedStatusEffects,
-  talentStatBoost,
-  talentStatusEffectChanceBoost,
-  talentStatusEffectDurationBoost,
-  talentTargetCountBoost,
 } from '@helpers';
 import type {
   EquipmentSkill,
   EquipmentSkillContent,
-  EquipmentSkillTechniqueStatusEffectApplication,
   GameStat,
   Hero,
   StatusEffectContent,
@@ -43,6 +38,13 @@ export class StatsSkillComponent {
     return allHeroTalents(hero);
   });
 
+  public skillRef = computed(() => {
+    const hero = this.equippingHero();
+    if (!hero) return undefined;
+
+    return makeSkillForHero(hero, this.skill() as EquipmentSkill);
+  });
+
   public enchantLevel = computed(() =>
     getSkillEnchantLevel(this.skill() as EquipmentSkill),
   );
@@ -58,10 +60,10 @@ export class StatsSkillComponent {
   );
 
   public techniqueTexts = computed(() => {
-    const talents = this.heroTalents();
-    const skillRef = this.skill() as EquipmentSkill;
+    const skillRef = this.skillRef();
+    if (!skillRef) return [];
 
-    return this.skill().techniques.map((t) => {
+    return skillRef.techniques.map((t) => {
       const statString = Object.keys(t.damageScaling)
         .filter((d) => t.damageScaling[d as GameStat])
         .map((d) => {
@@ -71,18 +73,11 @@ export class StatsSkillComponent {
             d as GameStat,
           );
 
-          const talentBoost = talentStatBoost(talents, skillRef, d as GameStat);
-
-          const totalStatMult = statMult + talentBoost;
-
-          return `${d} (${totalStatMult.toFixed(2)}x)`;
+          return `${d} (${statMult.toFixed(2)}x)`;
         })
         .join(' + ');
 
-      const allStatusEffects: EquipmentSkillTechniqueStatusEffectApplication[] =
-        [...t.statusEffects, ...talentAddedStatusEffects(talents, skillRef)];
-
-      const statusString = allStatusEffects
+      const statusString = t.statusEffects
         .map((s) => {
           const statusEffect = getEntry<StatusEffectContent>(s.statusEffectId);
           if (!statusEffect) return '';
@@ -91,35 +86,21 @@ export class StatsSkillComponent {
             skillRef,
             s,
           );
-          const talentChance = talentStatusEffectChanceBoost(
-            talents,
-            skillRef,
-            statusEffect,
-          );
-          const totalChance = defaultChance + talentChance;
 
           const defaultDuration = getSkillTechniqueStatusEffectDuration(
             skillRef,
             s,
           );
-          const talentDuration = talentStatusEffectDurationBoost(
-            talents,
-            skillRef,
-            statusEffect,
-          );
-          const totalDuration = defaultDuration + talentDuration;
 
-          return `${statusEffect.name} (${totalChance}% - ${totalDuration} turns)`;
+          return `${statusEffect.name} (${defaultChance}% - ${defaultDuration} turns)`;
         })
         .join(' + ');
 
       const baseTargets = getSkillTechniqueNumTargets(skillRef, t);
-      const talentTargets = talentTargetCountBoost(talents, skillRef);
-      const totalTargets = baseTargets + talentTargets;
 
       return {
         targetType: t.targetType,
-        totalTargets,
+        totalTargets: baseTargets,
         statString,
         statusString,
       };

@@ -26,10 +26,7 @@ import { sample, sortBy, sumBy } from 'es-toolkit/compat';
 import { skillSucceedsElementCombatStatChance } from '@helpers/combat-stats';
 import { succeedsChance } from '@helpers/rng';
 import { getSkillTechniqueNumTargets, skillElements } from '@helpers/skill';
-import {
-  talentIgnoreConsumptionChance,
-  talentTargetCountBoost,
-} from '@helpers/talent';
+import { talentIgnoreConsumptionChance } from '@helpers/talent';
 import type {
   Combat,
   Combatant,
@@ -117,8 +114,6 @@ function combatantTakeTurn(
     return {};
   }
 
-  const talents = allCombatantTalents(combatant);
-
   const skills = availableSkillsForCombatant(combatant).filter(
     (s) => getPossibleCombatantTargetsForSkill(combat, combatant, s).length > 0,
   );
@@ -143,9 +138,7 @@ function combatantTakeTurn(
       tech,
     );
 
-    const numTargets =
-      getSkillTechniqueNumTargets(chosenSkill, tech) +
-      talentTargetCountBoost(talents, chosenSkill);
+    const numTargets = getSkillTechniqueNumTargets(chosenSkill, tech);
 
     const targets = getTargetsFromListBasedOnType(
       baseTargetList,

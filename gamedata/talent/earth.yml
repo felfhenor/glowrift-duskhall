@@ -65,6 +65,7 @@
   description: Offensive Earth spells also have a chance to apply Crushed to enemies.
   sprite: '0023'
 
+  applyToElements: [Earth]
   applyToAttributes: [DamagesTarget]
 
   applyStatusEffects:
@@ -74,7 +75,7 @@
 
 - id: 7b87b510-ce14-4444-8b33-ccd0f55e7a52
   name: Earthly Endurance
-  description: Fortify applied by this hero also has a chance to apply Endurance.
+  description: Fortified applied by this hero also has a chance to apply Endurance.
   sprite: '0025'
 
   applyToAllSkills: true
@@ -96,3 +97,27 @@
     - Endurance
 
   boostedStatusEffectChance: 20
+
+- id: a09be067-6833-4c1c-8d7a-9f1c2c4157c7
+  name: Fortifying Spears
+  description: Offensive Earth spells have a chance to apply Fortify to this hero.
+  sprite: '0028'
+
+  applyToElements: [Earth]
+  applyToAttributes: [DamagesTarget]
+
+  addTechniques:
+    - elements: [Earth]
+      targets: 1
+      targetType: Self
+      targetBehaviors:
+        - behavior: NotZeroHealth
+        - behavior: IfNotStatusEffect
+          statusEffectId: Fortified
+
+      statusEffects:
+        - statusEffectId: Fortified
+          chance: 20
+          duration: 3
+
+      combatMessage: '**{{ combatant.name }}** cast **{{ skill.name }}** on **{{ target.name }}**.'
