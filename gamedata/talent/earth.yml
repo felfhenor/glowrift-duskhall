@@ -85,3 +85,14 @@
     - statusEffectId: Endurance
       chance: 50
       duration: 3
+
+- id: f9817be5-4904-4ba8-98bf-6c4da51fb23a
+  name: Resounding Endurance
+  description: This hero has a +20% chance to apply Endurance.
+  sprite: '0024'
+
+  applyToAllSkills: true
+  applyToStatusEffectIds:
+    - Endurance
+
+  boostedStatusEffectChance: 20
