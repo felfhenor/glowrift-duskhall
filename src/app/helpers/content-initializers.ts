@@ -105,6 +105,9 @@ function ensureCombatStats(
 ): Required<CombatantCombatStats> {
   return {
     repeatActionChance: ensureAffinities(combatStats.repeatActionChance),
+    skillStrikeAgainChance: ensureAffinities(
+      combatStats.skillStrikeAgainChance,
+    ),
     reviveChance: combatStats.reviveChance ?? 0,
   };
 }

@@ -70,3 +70,21 @@
   combatStats:
     repeatActionChance:
       Air: 30
+
+- id: 1a37bdd9-9689-4a2c-9725-cecaec22f76f
+  name: Thunderstruck I
+  description: All Air skills have a +15% chance of striking a second time.
+  sprite: '0017'
+
+  combatStats:
+    skillStrikeAgainChance:
+      Air: 15
+
+- id: 6c39d754-0067-4d2d-b07d-ac24d0e3f848
+  name: Thunderstruck II
+  description: All Air skills have a +15% chance of striking a second time.
+  sprite: '0017'
+
+  combatStats:
+    skillStrikeAgainChance:
+      Air: 15

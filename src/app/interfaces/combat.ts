@@ -28,6 +28,7 @@ export type CombatantStatusEffectData = {
 
 export type CombatantCombatStats = {
   repeatActionChance: ElementBlock;
+  skillStrikeAgainChance: ElementBlock;
   reviveChance: number;
 };
 

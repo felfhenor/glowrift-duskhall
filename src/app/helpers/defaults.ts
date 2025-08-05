@@ -165,6 +165,7 @@ export function getDefaultWorldNode(x = -1, y = -1): WorldLocation {
 export function getDefaultCombatStats(): CombatantCombatStats {
   return {
     repeatActionChance: getDefaultAffinities(),
+    skillStrikeAgainChance: getDefaultAffinities(),
     reviveChance: 0,
   };
 }

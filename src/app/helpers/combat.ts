@@ -144,6 +144,20 @@ function combatantTakeTurn(
       if (isCombatOver(combat)) return;
 
       applySkillToTarget(combat, combatant, target, chosenSkill, tech);
+
+      const shouldApplyAgain = skillElements(chosenSkill).some((el) =>
+        succeedsChance(combatant.combatStats.skillStrikeAgainChance[el]),
+      );
+
+      if (shouldApplyAgain && !isDead(target)) {
+        logCombatMessage(
+          combat,
+          `**${chosenSkill.name}** strikes again!`,
+          combatant,
+        );
+
+        applySkillToTarget(combat, combatant, target, chosenSkill, tech);
+      }
     });
   });
 
