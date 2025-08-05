@@ -15,3 +15,56 @@
     - type: TakeDamageFromStat
       combatMessage: '**{{ combatant.name }}** has lost their empowerment (-{{ damage }} Force)!'
       modifyStat: Force
+
+- id: 5ea606aa-b36a-4f38-a2bb-13c795061109
+  name: Fervor
+
+  trigger: TurnEnd
+
+  onApply:
+    - type: SendMessage
+      combatMessage: '**{{ combatant.name }}** has been filled with fervor!'
+
+    - type: AddCombatStatElement
+      element: Fire
+      combatStat: repeatActionChance
+      value: 20
+
+    - type: AddCombatStatElement
+      element: Earth
+      combatStat: repeatActionChance
+      value: 20
+
+    - type: AddCombatStatElement
+      element: Water
+      combatStat: repeatActionChance
+      value: 20
+
+    - type: AddCombatStatElement
+      element: Air
+      combatStat: repeatActionChance
+      value: 20
+
+  onUnapply:
+    - type: SendMessage
+      combatMessage: '**{{ combatant.name }}** has lost their fervor!'
+
+    - type: TakeCombatStatElement
+      element: Fire
+      combatStat: repeatActionChance
+      value: 20
+
+    - type: TakeCombatStatElement
+      element: Earth
+      combatStat: repeatActionChance
+      value: 20
+
+    - type: TakeCombatStatElement
+      element: Water
+      combatStat: repeatActionChance
+      value: 20
+
+    - type: TakeCombatStatElement
+      element: Air
+      combatStat: repeatActionChance
+      value: 20

@@ -136,3 +136,25 @@
   applyToElements: [Fire]
 
   chanceToIgnoreConsume: 25
+
+- id: f7617d5c-1baa-42e4-a6b3-b0c770505b4a
+  name: Fiery Fervor
+  description: Offensive Fire spells have a chance to apply Fervor to this hero.
+  sprite: '0030'
+
+  applyToElements: [Fire]
+  applyToAttributes: [DamagesTarget]
+
+  addTechniques:
+    - elements: [Fire]
+      targets: 1
+      targetType: Self
+      targetBehaviors:
+        - behavior: NotZeroHealth
+        - behavior: IfNotStatusEffect
+          statusEffectId: Fervor
+
+      statusEffects:
+        - statusEffectId: Fervor
+          chance: 20
+          duration: 3
