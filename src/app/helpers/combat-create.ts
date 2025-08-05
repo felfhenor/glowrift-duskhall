@@ -3,6 +3,7 @@ import { getDefaultAffinities, getDefaultStats } from '@helpers/defaults';
 import { createGuardianForLocation } from '@helpers/guardian';
 import { allHeroes } from '@helpers/hero';
 import { heroEquipmentSkills } from '@helpers/hero-skills';
+import { heroElements } from '@helpers/hero-stats';
 import { getFullHeroTalentHash } from '@helpers/hero-talent';
 import { uuid } from '@helpers/rng';
 import { allHeroTalents, combineTalentsIntoCombatStats } from '@helpers/talent';
@@ -41,7 +42,7 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
     combatStats: combineTalentsIntoCombatStats(allHeroTalents(h)),
 
     affinity: {
-      ...getDefaultAffinities(),
+      ...heroElements(h),
     },
 
     resistance: {
