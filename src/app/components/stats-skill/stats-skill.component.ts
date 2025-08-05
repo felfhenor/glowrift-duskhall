@@ -60,8 +60,7 @@ export class StatsSkillComponent {
   );
 
   public techniqueTexts = computed(() => {
-    const skillRef = this.skillRef();
-    if (!skillRef) return [];
+    const skillRef = this.skillRef() ?? this.skill();
 
     return skillRef.techniques.map((t) => {
       const statString = Object.keys(t.damageScaling)
