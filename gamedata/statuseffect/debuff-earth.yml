@@ -3,6 +3,8 @@
 
   trigger: TurnEnd
 
+  useTargetStats: true
+
   statScaling:
     Aura: 0.3
 

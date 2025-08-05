@@ -24,6 +24,8 @@
 
   trigger: TurnEnd
 
+  useTargetStats: true
+
   statScaling:
     Health: 0.4
 
@@ -41,6 +43,8 @@
   name: Hypothermia
 
   trigger: TurnEnd
+
+  useTargetStats: true
 
   statScaling:
     Speed: 0.3

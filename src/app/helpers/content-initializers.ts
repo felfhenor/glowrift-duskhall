@@ -266,6 +266,7 @@ function ensureStatusEffect(
     onTick: statusEffect.onTick ?? [],
     onUnapply: statusEffect.onUnapply ?? [],
     statScaling: ensureStats(statusEffect.statScaling),
+    useTargetStats: statusEffect.useTargetStats ?? false,
   };
 }
 

@@ -67,6 +67,7 @@ export type StatusEffectContent = IsContentItem & {
   onUnapply: StatusEffectBehavior[];
 
   statScaling: StatBlock;
+  useTargetStats: boolean;
 };
 
 export type StatusEffect = StatusEffectContent & {

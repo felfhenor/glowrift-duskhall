@@ -21,11 +21,15 @@ export function canTakeTurn(combatant: Combatant): boolean {
 }
 
 export function statusEffectDamage(effect: StatusEffect): number {
+  const statBlock = effect.useTargetStats
+    ? effect.targetStats
+    : effect.creatorStats;
+
   return Math.floor(
-    effect.creatorStats.Aura * effect.statScaling.Aura +
-      effect.creatorStats.Force * effect.statScaling.Force +
-      effect.creatorStats.Health * effect.statScaling.Health +
-      effect.creatorStats.Speed * effect.statScaling.Speed,
+    statBlock.Aura * statBlock.Aura +
+      statBlock.Force * statBlock.Force +
+      statBlock.Health * statBlock.Health +
+      statBlock.Speed * statBlock.Speed,
   );
 }
 
