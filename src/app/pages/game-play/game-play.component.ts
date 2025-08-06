@@ -3,6 +3,7 @@ import { Component, computed, HostListener } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { GameMapPixiComponent } from '@components/game-map-pixi/game-map-pixi.component';
 import { PanelCombatComponent } from '@components/panel-combat/panel-combat.component';
+import { PanelContainerComponent } from '@components/panel-container/panel-container.component';
 import { PanelHeroesComponent } from '@components/panel-heroes/panel-heroes.component';
 import { PanelInventoryComponent } from '@components/panel-inventory/panel-inventory.component';
 import { PanelLocationComponent } from '@components/panel-location/panel-location.component';
@@ -28,6 +29,7 @@ import {
   selector: 'app-game-play',
   imports: [
     GameMapPixiComponent,
+    PanelContainerComponent,
     PanelOptionsComponent,
     PanelHeroesComponent,
     PanelLocationComponent,
