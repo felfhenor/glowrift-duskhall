@@ -191,3 +191,26 @@
           duration: 3
 
       combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
+
+- id: 851938b1-ec80-44f7-b1fa-a7ebe3cf7718
+  name: Eye of the Storm
+
+  sprite: '0541'
+  frames: 6
+
+  rarity: Legendary
+  dropLevel: 45
+
+  usesPerCombat: 2
+
+  techniques:
+    - elements: [Air]
+      attributes: [DamagesTarget, AllowPlink]
+      targets: 25
+      targetType: All
+      targetBehaviors:
+        - behavior: NotZeroHealth
+      damageScaling:
+        Force: 5
+
+      combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
