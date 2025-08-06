@@ -17,7 +17,7 @@ export function getDefaultWorldConfig(): WorldConfigContent {
     width: 50,
     height: 50,
     name: '',
-    id: 'Unknown',
+    id: 'UNKNOWN',
     maxLevel: 25,
     __type: 'worldconfig',
     nodeCount: {
@@ -169,6 +169,7 @@ export function getDefaultCombatStats(): CombatantCombatStats {
     skillAdditionalUseChance: getDefaultAffinities(),
     skillAdditionalUseCount: getDefaultAffinities(),
     redirectionChance: getDefaultAffinities(),
+    missChance: getDefaultAffinities(),
     reviveChance: 0,
   };
 }

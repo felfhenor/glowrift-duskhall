@@ -166,6 +166,21 @@ function combatantTakeTurn(
       // check for early termination of combat
       if (isCombatOver(combat)) return;
 
+      const shouldMiss = skillSucceedsElementCombatStatChance(
+        chosenSkill,
+        combatant,
+        'missChance',
+      );
+
+      if (shouldMiss) {
+        logCombatMessage(
+          combat,
+          `**${chosenSkill.name}** misses **${target.name}**!`,
+          combatant,
+        );
+        return;
+      }
+
       applySkillToTarget(combat, combatant, target, chosenSkill, tech);
 
       const shouldApplyAgain = skillSucceedsElementCombatStatChance(

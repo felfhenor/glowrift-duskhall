@@ -127,7 +127,7 @@
       statusEffects:
         - statusEffectId: Fortified
           chance: 100
-          duration: 3
+          duration: 4
 
       combatMessage: '**{{ combatant.name }}** cast **{{ skill.name }}** on **{{ target.name }}**.'
 
@@ -156,6 +156,93 @@
       statusEffects:
         - statusEffectId: Fortified
           chance: 100
-          duration: 3
+          duration: 5
 
       combatMessage: '**{{ combatant.name }}** cast **{{ skill.name }}** on **{{ target.name }}**.'
+
+- id: b227f1b9-b99d-4fbd-9f29-ee299b88bbeb
+  name: Dustwisp I
+
+  sprite: '0092'
+  frames: 7
+
+  rarity: Common
+  dropLevel: 25
+
+  usesPerCombat: 5
+
+  techniques:
+    - elements: [Earth]
+      attributes: [DamagesTarget, AllowPlink]
+      targets: 1
+      targetType: Enemies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+      damageScaling:
+        Force: 0.5
+        Aura: 0.5
+
+      statusEffects:
+        - statusEffectId: Trembling
+          chance: 20
+          duration: 3
+
+      combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
+
+- id: 00f28cd7-3e0b-4bea-83fe-2aaa7af8ce73
+  name: Dustwisp II
+
+  sprite: '0092'
+  frames: 7
+
+  rarity: Uncommon
+  dropLevel: 30
+
+  usesPerCombat: 5
+
+  techniques:
+    - elements: [Earth]
+      attributes: [DamagesTarget, AllowPlink]
+      targets: 1
+      targetType: Enemies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+      damageScaling:
+        Force: 0.75
+        Aura: 0.75
+
+      statusEffects:
+        - statusEffectId: Trembling
+          chance: 30
+          duration: 3
+
+      combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
+
+- id: baa033d4-2abc-43fc-ac58-c36d621f43f2
+  name: Dustwisp III
+
+  sprite: '0092'
+  frames: 7
+
+  rarity: Rare
+  dropLevel: 35
+
+  usesPerCombat: 5
+
+  techniques:
+    - elements: [Earth]
+      attributes: [DamagesTarget, AllowPlink]
+      targets: 1
+      targetType: Enemies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+      damageScaling:
+        Force: 1.00
+        Aura: 1.00
+
+      statusEffects:
+        - statusEffectId: Trembling
+          chance: 40
+          duration: 3
+
+      combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'

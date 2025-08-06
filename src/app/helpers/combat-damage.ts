@@ -144,8 +144,10 @@ export function applySkillToTarget(
     templateData.absdamage = Math.abs(effectiveDamage);
   }
 
-  const message = formatCombatMessage(technique.combatMessage, templateData);
-  logCombatMessage(combat, message, combatant);
+  if (technique.combatMessage) {
+    const message = formatCombatMessage(technique.combatMessage, templateData);
+    logCombatMessage(combat, message, combatant);
+  }
 
   technique.statusEffects.forEach((effData) => {
     const effectContent = getEntry<StatusEffectContent>(effData.statusEffectId);

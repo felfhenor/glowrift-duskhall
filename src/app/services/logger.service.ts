@@ -42,7 +42,7 @@ export class LoggerService {
       const realVersion = localVersion();
       if (realVersion) {
         rollbarConfig.payload.client.javascript.code_version =
-          versionInfoToSemver(realVersion) ?? 'unknown';
+          versionInfoToSemver(realVersion) ?? 'UNKNOWN';
       }
 
       this.rollbar = new Rollbar({

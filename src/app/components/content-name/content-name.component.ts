@@ -10,5 +10,5 @@ import { getEntry } from '@helpers';
 export class ContentNameComponent {
   public id = input.required<string>();
 
-  public display = computed(() => getEntry(this.id())?.name ?? 'Unknown!');
+  public display = computed(() => getEntry(this.id())?.name ?? 'UNKNOWN!');
 }

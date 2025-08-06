@@ -76,7 +76,7 @@ function ensureTechnique(
     targetType: tech.targetType ?? 'Enemies',
     targetBehaviors: tech.targetBehaviors ?? [{ behavior: 'NotZeroHealth' }],
     statusEffects: (tech.statusEffects ?? []).map(ensureTechniqueStatusEffect),
-    combatMessage: tech.combatMessage ?? 'UNKNOWN',
+    combatMessage: tech.combatMessage ?? '',
     damageScaling: ensureStats(tech.damageScaling),
   };
 }
@@ -115,6 +115,7 @@ function ensureCombatStats(
       combatStats.skillAdditionalUseCount,
     ),
     redirectionChance: ensureAffinities(combatStats.redirectionChance),
+    missChance: ensureAffinities(combatStats.missChance),
     reviveChance: combatStats.reviveChance ?? 0,
   };
 }

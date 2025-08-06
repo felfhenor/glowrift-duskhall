@@ -17,3 +17,56 @@
     - type: AddDamageToStat
       combatMessage: '**{{ combatant.name }}** is no longer being crushed (+{{ damage }} Aura)!'
       modifyStat: Aura
+
+- id: 1948e429-5078-4525-a09c-d0cf6aa92009
+  name: Trembling
+
+  trigger: TurnEnd
+
+  onApply:
+    - type: SendMessage
+      combatMessage: '**{{ combatant.name }}** is trembling!'
+
+    - type: AddCombatStatElement
+      element: Fire
+      combatStat: missChance
+      value: 20
+
+    - type: AddCombatStatElement
+      element: Earth
+      combatStat: missChance
+      value: 20
+
+    - type: AddCombatStatElement
+      element: Water
+      combatStat: missChance
+      value: 20
+
+    - type: AddCombatStatElement
+      element: Air
+      combatStat: missChance
+      value: 20
+
+  onUnapply:
+    - type: SendMessage
+      combatMessage: '**{{ combatant.name }}** is no longer trembling!'
+
+    - type: TakeCombatStatElement
+      element: Fire
+      combatStat: missChance
+      value: 20
+
+    - type: TakeCombatStatElement
+      element: Earth
+      combatStat: missChance
+      value: 20
+
+    - type: TakeCombatStatElement
+      element: Water
+      combatStat: missChance
+      value: 20
+
+    - type: TakeCombatStatElement
+      element: Air
+      combatStat: missChance
+      value: 20
