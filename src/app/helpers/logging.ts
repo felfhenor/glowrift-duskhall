@@ -3,24 +3,59 @@ import { formatDate } from '@angular/common';
 import { color } from 'console-log-colors';
 
 /**
- * Logging utilities with colored output and timestamps.
+ * Logging utilities with colored output, timestamps, and caller location information.
  * 
- * Note: Due to JavaScript wrapper function limitations, these logging functions
- * will appear in the browser console call stack. To find the actual calling location,
- * look one level up in the call stack. This is a known limitation of all JavaScript
- * logging wrapper functions.
- * 
- * For critical debugging where precise call stack location is essential,
- * consider using console.trace() or direct console methods.
+ * This logging system captures the actual caller location using Error.stack and
+ * includes it in the log output, making debugging easier without relying on
+ * browser console stack traces.
  */
 
-// Create helper function that applies formatting and calls console directly
-function callConsole(level: 'log' | 'info' | 'warn' | 'debug' | 'error', colorName: keyof typeof color, category: string, ...data: any) {
+/**
+ * Extracts caller information from Error.stack
+ * @param stackFramesToSkip Number of stack frames to skip (default: 3 to skip this function and two wrapper levels)
+ * @returns Caller location string or 'unknown' if not found
+ */
+function getCallerInfo(stackFramesToSkip: number = 3): string {
+  try {
+    const error = new Error();
+    const stack = error.stack;
+    if (!stack) return 'unknown';
+    
+    const stackLines = stack.split('\n');
+    // Skip the first line (Error message) and the specified number of frames
+    const callerLine = stackLines[stackFramesToSkip + 1];
+    
+    if (!callerLine) return 'unknown';
+    
+    // Extract file and line info from stack trace
+    // Format varies by browser, but typically: "at function (file:line:column)"
+    const match = callerLine.match(/\s+at\s+(?:.*\s+)?\(?([^)]+)\)?/);
+    if (match && match[1]) {
+      // Clean up the path to show just filename and line
+      const fullPath = match[1];
+      const pathParts = fullPath.split('/');
+      const filename = pathParts[pathParts.length - 1];
+      return filename;
+    }
+    
+    return 'unknown';
+  } catch {
+    return 'unknown';
+  }
+}
+
+/**
+ * Core logging function that includes caller information
+ */
+function logWithCaller(level: 'log' | 'info' | 'warn' | 'debug' | 'error', colorName: keyof typeof color, category: string, ...data: any) {
   const colorFunc = color[colorName] as unknown as (str: string) => string;
   const timestamp = formatDate(new Date(), 'medium', 'en-US');
-  const formattedPrefix = colorFunc(`[${timestamp}] {${category}}`);
+  const caller = getCallerInfo();
   
-  // Use the console method directly to minimize call stack interference
+  // Include caller information in the log prefix
+  const formattedPrefix = colorFunc(`[${timestamp}] {${category}} (${caller})`);
+  
+  // Use the console method directly
   switch (level) {
     case 'log':
       console.log(formattedPrefix, ...data);
@@ -52,25 +87,39 @@ export function _logMessage(
     warn: 'yellow',
     info: 'blue',
   };
-  callConsole(level, colors[level], category, ...data);
+  logWithCaller(level, colors[level], category, ...data);
 }
 
 export function log(category: string, ...data: any) {
-  callConsole('log', 'magenta', category, ...data);
+  logWithCaller('log', 'magenta', category, ...data);
 }
 
 export function info(category: string, ...data: any) {
-  callConsole('info', 'blue', category, ...data);
+  logWithCaller('info', 'blue', category, ...data);
 }
 
 export function warn(category: string, ...data: any) {
-  callConsole('warn', 'yellow', category, ...data);
+  logWithCaller('warn', 'yellow', category, ...data);
 }
 
 export function debug(category: string, ...data: any) {
-  callConsole('debug', 'gray', category, ...data);
+  logWithCaller('debug', 'gray', category, ...data);
 }
 
 export function error(category: string, ...data: any) {
-  callConsole('error', 'red', category, ...data);
+  logWithCaller('error', 'red', category, ...data);
+}
+
+/**
+ * Enhanced logging function that includes a stack trace for detailed debugging.
+ * Use this when you need to see the complete call stack.
+ */
+export function trace(category: string, ...data: any) {
+  const timestamp = formatDate(new Date(), 'medium', 'en-US');
+  const caller = getCallerInfo(2); // Skip fewer frames for trace
+  const colorFunc = color.cyan as unknown as (str: string) => string;
+  const formattedPrefix = colorFunc(`[${timestamp}] {${category}} (${caller}) [TRACE]`);
+  
+  console.log(formattedPrefix, ...data);
+  console.trace('Call stack:');
 }
