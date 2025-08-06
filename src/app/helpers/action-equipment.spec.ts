@@ -3,7 +3,14 @@ import {
   itemSalvage,
   itemSalvageValue,
 } from '@helpers/action-equipment';
-import type { EquipmentItem, EquipmentItemId, StatBlock } from '@interfaces';
+import type {
+  EquipmentItem,
+  EquipmentItemId,
+  EquipmentSkillId,
+  GameStat,
+  StatBlock,
+  TraitEquipmentId,
+} from '@interfaces';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock dependencies
@@ -44,7 +51,20 @@ describe('Action Equipment Functions', () => {
     rarity: 'Common',
     dropLevel: 1,
     sprite: 'test-sprite',
-    mods: {},
+    enchantLevel: 0,
+    talentBoosts: [],
+    elementMultipliers: [],
+    traitIds: [] as TraitEquipmentId[],
+    skillIds: [] as EquipmentSkillId[],
+    unableToUpgrade: [],
+    mods: {
+      enchantLevel: 0,
+      baseStats: {} as Record<GameStat, number>,
+      talentBoosts: [],
+      elementMultipliers: [],
+      traitIds: [] as TraitEquipmentId[],
+      skillIds: [] as EquipmentSkillId[],
+    },
   };
 
   beforeEach(() => {
