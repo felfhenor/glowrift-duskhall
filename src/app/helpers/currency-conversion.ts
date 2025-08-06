@@ -4,7 +4,7 @@ import type { CurrencyContent } from '@interfaces';
  * Calculate lossy currency conversion output amount given input amount
  * Output is halved compared to normal conversion
  */
-export function calculateLossyOutputAmount(
+export function calculateCurrencyConversionOutputAmount(
   inputCurrency: CurrencyContent,
   outputCurrency: CurrencyContent,
   inputAmount: number
@@ -16,7 +16,7 @@ export function calculateLossyOutputAmount(
  * Calculate required input amount for desired lossy currency conversion output
  * Input required is doubled compared to normal conversion
  */
-export function calculateLossyInputAmount(
+export function calculateCurrencyConversionInputAmount(
   inputCurrency: CurrencyContent,
   outputCurrency: CurrencyContent,
   outputAmount: number
