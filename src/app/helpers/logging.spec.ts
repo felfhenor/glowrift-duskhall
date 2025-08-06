@@ -1,5 +1,4 @@
 import { _logMessage, debug, error, info, log, warn } from '@helpers/logging';
-import { color } from 'console-log-colors';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock Angular's formatDate
