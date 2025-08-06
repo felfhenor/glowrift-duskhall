@@ -6,5 +6,6 @@ export default defineConfig({
 
   test: {
     include: ['src/app/helpers/**/*.spec.ts'],
+    environment: 'jsdom',
   },
 });

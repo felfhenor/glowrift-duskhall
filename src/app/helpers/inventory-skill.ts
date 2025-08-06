@@ -15,15 +15,21 @@ export function addSkillToInventory(item: EquipmentSkill): void {
   const lostSkills: EquipmentSkill[] = [];
 
   updateGamestate((state) => {
-    const items = sortedRarityList([...state.inventory.skills, item]);
-    while (items.length > maxSkillInventorySize()) {
-      const lostSkill = items.pop();
-      if (lostSkill) {
-        lostSkills.push(lostSkill);
+    const currentSkills = [...state.inventory.skills];
+    
+    // If we're at capacity, remove the worst existing skill first
+    if (currentSkills.length >= maxSkillInventorySize()) {
+      const sortedSkills = sortedRarityList(currentSkills);
+      const worstSkill = sortedSkills.pop();
+      if (worstSkill) {
+        lostSkills.push(worstSkill);
       }
+      state.inventory.skills = sortedSkills;
     }
-
-    state.inventory.skills = items;
+    
+    // Now add the new skill and sort
+    state.inventory.skills.push(item);
+    state.inventory.skills = sortedRarityList(state.inventory.skills);
 
     return state;
   });
