@@ -1,6 +1,6 @@
 - id: 3fd2f3cd-4b7c-44bc-8e4d-f267f1394716
   name: Strength of Thunderwave I
-  description: Boost the Force of Thunderwave skills by 10%.
+  description: Boost the Force of Thunderwave skills by +10%.
   sprite: '0015'
 
   applyToAttributes: [DamagesTarget]
@@ -15,7 +15,7 @@
 
 - id: 5c740066-851e-4101-9e37-c1baaff33eee
   name: Strength of Thunderwave II
-  description: Boost the Force of Thunderwave skills by 10% & a 20% chance to self-cast Swiftness.
+  description: Boost the Force of Thunderwave skills by +10% & a +20% chance to self-cast Swiftness.
   sprite: '0015'
 
   requireTalentId: Strength of Thunderwave I
@@ -45,7 +45,7 @@
 
 - id: d6ffb7f9-e960-4dcd-ab61-02ceeb0b0732
   name: Strength of Thunderwave III
-  description: Boost the Force & Aura of Thunderwave skills by 10%.
+  description: Boost the Force & Aura of Thunderwave skills by +10%.
   sprite: '0015'
 
   requireTalentId: Strength of Thunderwave II
@@ -59,6 +59,67 @@
   boostStats:
     Force: 0.10
     Aura: 0.10
+
+- id: 2fd65524-21d2-4dc0-826e-c3923db44a6d
+  name: Strength of Windshear I
+  description: Boost the Force of Windshear skills by +50%.
+  sprite: '0033'
+
+  applyToAttributes: [DamagesTarget]
+
+  applyToSkillIds:
+    - Windshear I
+    - Windshear II
+    - Windshear III
+
+  boostStats:
+    Force: 0.50
+
+- id: 704aa4c0-bd23-4854-8dd7-67316e02f0b8
+  name: Strength of Windshear II
+  description: Boost the Force of Windshear skills by +50% & a +20% chance to self-cast Focus.
+  sprite: '0033'
+
+  requireTalentId: Strength of Windshear I
+  applyToAttributes: [DamagesTarget]
+
+  applyToSkillIds:
+    - Windshear I
+    - Windshear II
+    - Windshear III
+
+  boostStats:
+    Force: 0.50
+
+  addTechniques:
+    - elements: [Air]
+      targets: 1
+      targetType: Self
+      targetBehaviors:
+        - behavior: NotZeroHealth
+        - behavior: IfNotStatusEffect
+          statusEffectId: Swiftness
+
+      statusEffects:
+        - statusEffectId: Focus
+          chance: 20
+          duration: 3
+
+- id: b5ba1468-46f5-46c9-b8ff-d4e17a6457b0
+  name: Strength of Windshear III
+  description: Boost chance of all status effects from Windshear by +30%.
+  sprite: '0033'
+
+  requireTalentId: Strength of Windshear II
+  applyToAttributes: [DamagesTarget]
+
+  applyToSkillIds:
+    - Windshear I
+    - Windshear II
+    - Windshear III
+
+  applyToAllStatusEffects: true
+  boostedStatusEffectChance: 30
 
 - id: b3b68fc0-1f1a-44d5-a2ba-aa1150bb7e8d
   name: Winds of Change I

@@ -41,6 +41,79 @@
   boostStats:
     Force: 0.25
 
+- id: a22cba99-3304-4c5f-bd39-16f2d833a94d
+  name: Strength of Chillstar I
+  description: Boost the Force of Chillstar skills by 25% & add a +20% chance of Brittle.
+  sprite: '0035'
+
+  applyToAttributes: [DamagesTarget]
+
+  applyToSkillIds:
+    - Chillstar I
+    - Chillstar II
+    - Chillstar III
+
+  boostStats:
+    Force: 0.25
+
+  applyStatusEffects:
+    - statusEffectId: Brittle
+      chance: 20
+      duration: 3
+
+- id: c7b0c478-2465-426e-b899-aeba8fa0ef23
+  name: Strength of Chillstar II
+  description: Boost the Force of Chillstar skills by 25% & add a +20% chance to self-cast Crystalline.
+  sprite: '0035'
+
+  requireTalentId: Strength of Chillstar I
+
+  applyToAttributes: [DamagesTarget]
+
+  applyToSkillIds:
+    - Chillstar I
+    - Chillstar II
+    - Chillstar III
+
+  boostStats:
+    Force: 0.25
+
+  addTechniques:
+    - elements: [Water]
+      targets: 1
+      targetType: Self
+      targetBehaviors:
+        - behavior: NotZeroHealth
+        - behavior: IfNotStatusEffect
+          statusEffectId: Crystalline
+
+      statusEffects:
+        - statusEffectId: Crystalline
+          chance: 20
+          duration: 3
+
+- id: 87728038-10d4-4f18-92cc-f4596dddb9c1
+  name: Strength of Chillstar III
+  description: Boost the Force of Chillstar skills by 25% & add a +25% chance of Frozen.
+  sprite: '0035'
+
+  requireTalentId: Strength of Chillstar II
+
+  applyToAttributes: [DamagesTarget]
+
+  applyToSkillIds:
+    - Chillstar I
+    - Chillstar II
+    - Chillstar III
+
+  boostStats:
+    Force: 0.25
+
+  applyStatusEffects:
+    - statusEffectId: Frozen
+      chance: 25
+      duration: 1
+
 - id: 35136beb-b472-4137-985e-8558342a413b
   name: Permafrost I
   description: All Water spells have a 25% chance to not consume a use.

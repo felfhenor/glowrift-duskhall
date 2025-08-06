@@ -237,6 +237,7 @@ function ensureTalent(talent: Partial<TalentContent>): Required<TalentContent> {
     requireTalentId: talent.requireTalentId ?? '',
 
     applyToAllSkills: talent.applyToAllSkills ?? false,
+    applyToAllStatusEffects: talent.applyToAllStatusEffects ?? false,
     applyToElements: talent.applyToElements ?? [],
     applyToSkillIds: talent.applyToSkillIds ?? [],
     applyToAttributes: talent.applyToAttributes ?? [],

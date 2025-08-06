@@ -139,8 +139,10 @@ export function talentsForStatusEffect(
   skill: EquipmentSkill,
   statusEffect: StatusEffectContent,
 ): TalentContent[] {
-  return talentsForSkill(talents, skill).filter((t) =>
-    t.applyToStatusEffectIds.includes(statusEffect.id),
+  return talentsForSkill(talents, skill).filter(
+    (t) =>
+      t.applyToAllStatusEffects ||
+      t.applyToStatusEffectIds.includes(statusEffect.id),
   );
 }
 

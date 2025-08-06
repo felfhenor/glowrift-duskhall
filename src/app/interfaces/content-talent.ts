@@ -20,6 +20,7 @@ export type TalentContent = IsContentItem &
     requireTalentId?: string;
 
     applyToAllSkills: boolean;
+    applyToAllStatusEffects: boolean;
     applyToElements: GameElement[];
     applyToSkillIds: string[];
     applyToStatusEffectIds: string[];

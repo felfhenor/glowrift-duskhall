@@ -1,6 +1,6 @@
 - id: 217fd3a1-e819-4c6f-8940-0dfb9b8c7919
   name: Strength of Earthspike I
-  description: Boost the Force of Earthspike skills by 300%.
+  description: Boost the Force of Earthspike skills by +300%.
   sprite: '0022'
 
   applyToSkillIds:
@@ -13,7 +13,7 @@
 
 - id: 5e3ed3fe-5566-438f-84d9-cac6a2ee6868
   name: Strength of Earthspike II
-  description: Boost the Force of Earthspike skills by 300%.
+  description: Boost the Force of Earthspike skills by +300%.
   sprite: '0022'
 
   requireTalentId: Strength of Earthspike I
@@ -28,7 +28,7 @@
 
 - id: b60ded78-3693-425f-890f-84dc5962c7ef
   name: Strength of Earthspike III
-  description: Boost the Force of Earthspike skills by 300%.
+  description: Boost the Force of Earthspike skills by +300%.
   sprite: '0022'
 
   requireTalentId: Strength of Earthspike II
@@ -40,6 +40,60 @@
 
   boostStats:
     Force: 3
+
+- id: ee083795-a2c8-4d1a-aefa-bce4f807a501
+  name: Strength of Dustwisp I
+  description: Boost the Force of Dustwisp skills by +100% & increase Trembling chance by +20%.
+  sprite: '0032'
+
+  applyToSkillIds:
+    - Dustwisp I
+    - Dustwisp II
+    - Dustwisp III
+
+  boostStats:
+    Force: 1
+
+  applyToStatusEffectIds:
+    - Trembling
+
+  boostedStatusEffectChance: 20
+
+- id: caa8b25f-ee6e-4cd0-a128-e95e2a722eb9
+  name: Strength of Dustwisp II
+  description: Boost the Aura of Dustwisp skills by +100% & reduce chance of consuming a use by +25%.
+  sprite: '0032'
+
+  requireTalentId: Strength of Dustwisp I
+
+  applyToSkillIds:
+    - Dustwisp I
+    - Dustwisp II
+    - Dustwisp III
+
+  boostStats:
+    Aura: 1
+
+  chanceToIgnoreConsume: 25
+
+- id: 50349868-a2cb-47cd-a2f6-0a76caf9b905
+  name: Strength of Dustwisp III
+  description: Boost the Force of Dustwisp skills by 100% & the duration of all status effects applied by +2.
+  sprite: '0032'
+
+  requireTalentId: Strength of Dustwisp II
+
+  applyToSkillIds:
+    - Dustwisp I
+    - Dustwisp II
+    - Dustwisp III
+
+  boostStats:
+    Force: 1
+
+  applyToAllStatusEffects: true
+
+  boostedStatusEffectDuration: 2
 
 - id: f0da46a1-9a9f-4ddb-995b-e54f108df57c
   name: Geological Persistence I

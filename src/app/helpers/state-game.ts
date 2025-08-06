@@ -38,8 +38,8 @@ export function blankGameState(): GameState {
       heroes: [
         getDefaultHero({ name: 'Ignatius', sprite: '0004' }),
         getDefaultHero({ name: 'Aquara', sprite: '0000' }),
-        getDefaultHero({ name: 'Terrus', sprite: '0060' }),
         getDefaultHero({ name: 'Zephyra', sprite: '0036' }),
+        getDefaultHero({ name: 'Terrus', sprite: '0060' }),
       ],
       position: {
         nodeId: '',

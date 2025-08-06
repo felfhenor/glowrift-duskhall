@@ -38,7 +38,7 @@
 
     - level: 25
       learnableTalents:
-        - talentId: Blank Talent
+        - talentId: Strength of Chillstar I
         - talentId: Blank Talent
         - talentId: Blank Talent
         - talentId: Permafrost I
@@ -52,7 +52,7 @@
 
     - level: 35
       learnableTalents:
-        - talentId: Blank Talent
+        - talentId: Strength of Chillstar II
         - talentId: Blank Talent
         - talentId: Blank Talent
         - talentId: Blank Talent
@@ -66,7 +66,7 @@
 
     - level: 45
       learnableTalents:
-        - talentId: Blank Talent
+        - talentId: Strength of Chillstar III
         - talentId: Blank Talent
         - talentId: Blank Talent
         - talentId: Permafrost II

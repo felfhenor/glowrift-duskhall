@@ -1,41 +1,46 @@
 - id: 62e841f4-0758-450b-9ade-848686dfe54f
   name: Strength of Fire I
-  description: Boost the Force of Fire skills by +25%.
+  description: Boost the Force of Offensive Fire skills by +25%.
   sprite: '0003'
 
   applyToElements: [Fire]
+  applyToAttributes: [DamagesTarget]
 
   boostStats:
     Force: 0.25
 
 - id: 7b0be87e-1478-4138-977b-aba233e48c8e
   name: Strength of Fire II
-  description: Boost the Force of Fire skills by +25%.
+  description: Boost the Force of Offensive Fire skills by +25%.
   sprite: '0003'
 
   requireTalentId: Strength of Fire I
 
   applyToElements: [Fire]
+  applyToAttributes: [DamagesTarget]
 
   boostStats:
     Force: 0.25
 
 - id: 2b3251af-f5ef-4e7f-bb2e-19b1f1997161
   name: Strength of Fire III
-  description: Boost the Force of Fire skills by +25%.
+  description: Boost the Force of Offensive Fire skills by +25%.
   sprite: '0003'
 
   requireTalentId: Strength of Fire II
 
   applyToElements: [Fire]
+  applyToAttributes: [DamagesTarget]
 
   boostStats:
     Force: 0.25
 
 - id: cde7a7a3-8fbc-4709-b405-affba74837ef
   name: Strength of Firewisp I
-  description: Boost the Force of Firewisp skills by +25%.
+  description: Boost the Force of Firewisp skills by +75%.
   sprite: '0001'
+
+  applyToAttributes: [DamagesTarget]
 
   applyToSkillIds:
     - Firewisp I
@@ -43,12 +48,14 @@
     - Firewisp III
 
   boostStats:
-    Force: 0.25
+    Force: 0.75
 
 - id: d758324d-4333-496a-8c54-222769cfbc38
   name: Strength of Firewisp II
-  description: Boost the Force of Firewisp skills by +25% & it's Burning chance by +10%.
+  description: Boost the Force of Firewisp skills by +75% & it's Burning chance by +40%.
   sprite: '0001'
+
+  applyToAttributes: [DamagesTarget]
 
   requireTalentId: Strength of Firewisp I
 
@@ -58,17 +65,19 @@
     - Firewisp III
 
   boostStats:
-    Force: 0.25
+    Force: 0.75
 
   applyToStatusEffectIds:
     - Burning
 
-  boostedStatusEffectChance: 10
+  boostedStatusEffectChance: 40
 
 - id: cb333d71-2d0b-4117-8ce4-16a0a55f7d3a
   name: Strength of Firewisp III
-  description: Boost the Force of Firewisp skills by +25% & it's Burning duration by +1.
+  description: Boost the Force of Firewisp skills by +75% & it's Burning duration by +2.
   sprite: '0001'
+
+  applyToAttributes: [DamagesTarget]
 
   requireTalentId: Strength of Firewisp II
 
@@ -76,6 +85,67 @@
     - Firewisp I
     - Firewisp II
     - Firewisp III
+
+  boostStats:
+    Force: 0.75
+
+  applyToStatusEffectIds:
+    - Burning
+
+  boostedStatusEffectDuration: 2
+
+- id: f8392570-4b46-4140-91d7-9ec9e816e677
+  name: Strength of Fireball I
+  description: Boost the Force of Fireball skills by +25% & it's target count by +2.
+  sprite: '0034'
+
+  applyToAttributes: [DamagesTarget]
+
+  applyToSkillIds:
+    - Fireball I
+    - Fireball II
+    - Fireball III
+
+  boostStats:
+    Force: 0.25
+
+  additionalTargets: 2
+
+- id: 7efa18f7-ee4f-421e-a30e-f41a8f52bc0e
+  name: Strength of Fireball II
+  description: Boost the Force of Fireball skills by +25% & it's Burning chance by +15%.
+  sprite: '0034'
+
+  applyToAttributes: [DamagesTarget]
+
+  requireTalentId: Strength of Fireball I
+
+  applyToSkillIds:
+    - Fireball I
+    - Fireball II
+    - Fireball III
+
+  boostStats:
+    Force: 0.25
+
+  applyToStatusEffectIds:
+    - Burning
+
+  boostedStatusEffectChance: 15
+
+- id: 4096c2da-f38a-4e34-a55d-25bf818b29c6
+  name: Strength of Fireball III
+  description: Boost the Force of Fireball skills by +25% & it's Burning duration by +1.
+  sprite: '0034'
+
+  applyToAttributes: [DamagesTarget]
+
+  requireTalentId: Strength of Fireball II
+
+  applyToSkillIds:
+    - Fireball I
+    - Fireball II
+    - Fireball III
 
   boostStats:
     Force: 0.25

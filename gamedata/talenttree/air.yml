@@ -39,7 +39,7 @@
 
     - level: 25
       learnableTalents:
-        - talentId: Blank Talent
+        - talentId: Strength of Windshear I
         - talentId: Thunderstruck II
         - talentId: Blank Talent
         - talentId: Winds of Change I
@@ -53,7 +53,7 @@
 
     - level: 35
       learnableTalents:
-        - talentId: Blank Talent
+        - talentId: Strength of Windshear II
         - talentId: Thunderstruck III
         - talentId: Blank Talent
         - talentId: Blank Talent
@@ -67,7 +67,7 @@
 
     - level: 45
       learnableTalents:
-        - talentId: Blank Talent
+        - talentId: Strength of Windshear III
         - talentId: Blank Talent
         - talentId: Blank Talent
         - talentId: Winds of Change II
