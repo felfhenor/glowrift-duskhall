@@ -1,0 +1,192 @@
+- id: ca29e3b7-c769-4cc6-ada6-5c52d0cf593f
+  name: Vaporize
+
+  sprite: '0129'
+  frames: 8
+
+  rarity: Mystical
+  dropLevel: 55
+
+  usesPerCombat: 1
+
+  techniques:
+    - elements: [Fire, Air]
+      attributes: [DamagesTarget, AllowPlink]
+      targets: 10
+      targetType: Enemies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+      damageScaling:
+        Health: 1
+
+      statusEffects:
+        - statusEffectId: Burning
+          chance: 10
+          duration: 3
+
+      combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
+
+- id: 0de63e2f-b5a6-491a-8082-e7b386e8ff02
+  name: Meltdown
+
+  sprite: '0137'
+  frames: 8
+
+  rarity: Mystical
+  dropLevel: 60
+
+  usesPerCombat: 1
+
+  techniques:
+    - elements: [Fire, Earth]
+      attributes: [DamagesTarget, AllowPlink]
+      targets: 10
+      targetType: Enemies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+      damageScaling:
+        Force: 5
+
+      statusEffects:
+        - statusEffectId: Burning
+          chance: 65
+          duration: 3
+
+      combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
+
+- id: fca285a0-640e-48f5-ac67-86b27d7c7630
+  name: Growth
+
+  sprite: '0121'
+  frames: 6
+
+  rarity: Mystical
+  dropLevel: 50
+
+  usesPerCombat: 1
+
+  techniques:
+    - elements: [Earth]
+      attributes: [DamagesTarget, AllowPlink]
+      targets: 1
+      targetType: Enemies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+      damageScaling:
+        Aura: 3
+        Speed: 1
+
+      combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
+
+    - elements: [Water]
+      attributes: [BypassDefense, HealsTarget]
+      targets: 1
+      targetType: Allies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+        - behavior: NotMaxHealth
+      damageScaling:
+        Aura: 1
+        Speed: 1
+
+      combatMessage: '**{{ combatant.name }}** cast **{{ skill.name }}** on **{{ target.name }}** for {{ absdamage }} healing ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
+
+- id: f702573f-cce5-48f6-a682-2de4cefce964
+  name: Soothing Bubbles
+
+  sprite: '0515'
+  frames: 7
+
+  rarity: Mystical
+  dropLevel: 25
+
+  usesPerCombat: 1
+
+  techniques:
+    - elements: [Fire, Water]
+      attributes: [BypassDefense, HealsTarget]
+      targets: 1
+      targetType: Allies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+        - behavior: NotMaxHealth
+      damageScaling:
+        Health: 0.1
+
+      statusEffects:
+        - statusEffectId: Empowered
+          chance: 35
+          duration: 3
+
+        - statusEffectId: Fervor
+          chance: 35
+          duration: 3
+
+- id: bba0eecf-c41e-42e7-ba7f-c7ecb8a2de4b
+  name: Rejuvenating Gust
+
+  sprite: '0526'
+  frames: 6
+
+  rarity: Mystical
+  dropLevel: 35
+
+  usesPerCombat: 1
+
+  techniques:
+    - elements: [Air, Water]
+      attributes: [BypassDefense, HealsTarget]
+      targets: 1
+      targetType: Allies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+        - behavior: NotMaxHealth
+      damageScaling:
+        Force: 0.1
+        Aura: 0.1
+        Health: 0.05
+
+      statusEffects:
+        - statusEffectId: Swiftness
+          chance: 35
+          duration: 3
+
+        - statusEffectId: Focus
+          chance: 35
+          duration: 3
+
+- id: 40133d25-4fe3-4c2c-b8ca-b8ae7500ab19
+  name: Static Gust
+
+  sprite: '0342'
+  frames: 8
+
+  rarity: Mystical
+  dropLevel: 40
+
+  usesPerCombat: 1
+
+  techniques:
+    - elements: [Earth, Air]
+      attributes: [DamagesTarget, AllowPlink]
+      targets: 1
+      targetType: Enemies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+      damageScaling:
+        Force: 4
+
+      statusEffects:
+        - statusEffectId: Trembling
+          chance: 40
+          duration: 3
+
+        - statusEffectId: Gravity
+          chance: 40
+          duration: 3
+
+        - statusEffectId: Redirect
+          chance: 40
+          duration: 3
+
+      combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
