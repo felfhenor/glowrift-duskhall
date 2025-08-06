@@ -22,6 +22,7 @@ import type {
   EquipmentSkillAttribute,
   EquipmentSkillContentTechnique,
   GameStat,
+  StatBlock,
   StatusEffectContent,
 } from '@interfaces';
 import { clamp, meanBy, sum, sumBy } from 'es-toolkit/compat';
@@ -73,6 +74,7 @@ export function applySkillToTarget(
   target: Combatant,
   skill: EquipmentSkill,
   technique: EquipmentSkillContentTechnique,
+  capturedCreatorStats?: StatBlock,
 ): void {
   const baseDamage = sum(
     (['Force', 'Aura', 'Health', 'Speed'] as GameStat[]).map((stat) =>
@@ -187,6 +189,7 @@ export function applySkillToTarget(
       {
         duration: getSkillTechniqueStatusEffectDuration(skill, effData),
       },
+      capturedCreatorStats,
     );
 
     applyStatusEffectToTarget(combat, target, statusEffect);

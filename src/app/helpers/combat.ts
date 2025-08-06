@@ -146,6 +146,9 @@ function combatantTakeTurn(
 
   combatantMarkSkillUse(combatant, chosenSkill);
 
+  // Capture the creator's stats before any modifications from this skill
+  const capturedCreatorStats = { ...combatant.totalStats };
+
   chosenSkill.techniques.forEach((tech) => {
     const baseTargetList = getPossibleCombatantTargetsForSkillTechnique(
       combat,
@@ -181,7 +184,7 @@ function combatantTakeTurn(
         return;
       }
 
-      applySkillToTarget(combat, combatant, target, chosenSkill, tech);
+      applySkillToTarget(combat, combatant, target, chosenSkill, tech, capturedCreatorStats);
 
       const shouldApplyAgain = skillSucceedsElementCombatStatChance(
         chosenSkill,
@@ -196,7 +199,7 @@ function combatantTakeTurn(
           combatant,
         );
 
-        applySkillToTarget(combat, combatant, target, chosenSkill, tech);
+        applySkillToTarget(combat, combatant, target, chosenSkill, tech, capturedCreatorStats);
       }
     });
   });

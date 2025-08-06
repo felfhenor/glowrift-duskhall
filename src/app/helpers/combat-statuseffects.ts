@@ -24,7 +24,7 @@ import type {
   StatusEffectTrigger,
 } from '@interfaces/content-statuseffect';
 import type { ElementBlock, GameElement } from '@interfaces/element';
-import type { GameStat } from '@interfaces/stat';
+import type { GameStat, StatBlock } from '@interfaces/stat';
 import { isNumber, isObject } from 'es-toolkit/compat';
 
 export function canTakeTurn(combatant: Combatant): boolean {
@@ -75,9 +75,13 @@ export function createStatusEffect(
   creator: Combatant,
   target: Combatant,
   opts: Partial<StatusEffect>,
+  capturedCreatorStats?: StatBlock,
 ): StatusEffect {
   const creatorTalents = allCombatantTalents(creator);
   const targetTalents = allCombatantTalents(target);
+
+  // Use captured stats if provided, otherwise use current stats
+  const baseCreatorStats = capturedCreatorStats || creator.totalStats;
 
   return {
     duration: 1,
@@ -85,20 +89,20 @@ export function createStatusEffect(
     ...opts,
     creatorStats: {
       Aura:
-        creator.totalStats.Aura +
-        creator.totalStats.Aura *
+        baseCreatorStats.Aura +
+        baseCreatorStats.Aura *
           talentStatusEffectStatBoost(creatorTalents, skill, content, 'Aura'),
       Force:
-        creator.totalStats.Force +
-        creator.totalStats.Force *
+        baseCreatorStats.Force +
+        baseCreatorStats.Force *
           talentStatusEffectStatBoost(creatorTalents, skill, content, 'Force'),
       Health:
-        creator.totalStats.Health +
-        creator.totalStats.Health *
+        baseCreatorStats.Health +
+        baseCreatorStats.Health *
           talentStatusEffectStatBoost(creatorTalents, skill, content, 'Health'),
       Speed:
-        creator.totalStats.Speed +
-        creator.totalStats.Speed *
+        baseCreatorStats.Speed +
+        baseCreatorStats.Speed *
           talentStatusEffectStatBoost(creatorTalents, skill, content, 'Speed'),
     },
     targetStats: {
