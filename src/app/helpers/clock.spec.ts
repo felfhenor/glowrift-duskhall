@@ -17,8 +17,8 @@ describe('Clock Functions', () => {
     it('should add expiresInTicks to current numTicks', () => {
       const mockNumTicks = 100;
       vi.mocked(gamestate).mockReturnValue({
-        actionClock: { numTicks: mockNumTicks },
-      });
+        actionClock: { numTicks: mockNumTicks, timers: {} },
+      } as ReturnType<typeof gamestate>);
 
       expect(getTickTimer(5)).toBe(105);
       expect(getTickTimer(0)).toBe(100);
@@ -29,24 +29,24 @@ describe('Clock Functions', () => {
   describe('isExpired', () => {
     it('should return true when current numTicks is greater than timer', () => {
       vi.mocked(gamestate).mockReturnValue({
-        actionClock: { numTicks: 50 },
-      });
+        actionClock: { numTicks: 50, timers: {} },
+      } as ReturnType<typeof gamestate>);
 
       expect(isExpired(49)).toBe(true);
     });
 
     it('should return true when current numTicks equals timer', () => {
       vi.mocked(gamestate).mockReturnValue({
-        actionClock: { numTicks: 50 },
-      });
+        actionClock: { numTicks: 50, timers: {} },
+      } as ReturnType<typeof gamestate>);
 
       expect(isExpired(50)).toBe(true);
     });
 
     it('should return false when current numTicks is less than timer', () => {
       vi.mocked(gamestate).mockReturnValue({
-        actionClock: { numTicks: 50 },
-      });
+        actionClock: { numTicks: 50, timers: {} },
+      } as ReturnType<typeof gamestate>);
 
       expect(isExpired(51)).toBe(false);
     });
