@@ -1,5 +1,10 @@
 import { skillSalvage, skillSalvageValue } from '@helpers/action-skill';
-import type { EquipmentSkill, EquipmentSkillId } from '@interfaces';
+import type {
+  EquipmentSkill,
+  EquipmentSkillId,
+  StatBlock,
+  StatusEffectId,
+} from '@interfaces';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock dependencies
@@ -33,9 +38,24 @@ describe('Action Skill Functions', () => {
       frames: 1,
       rarity: 'Common',
       dropLevel: 5,
+      enchantLevel: 0,
       techniques: [],
       usesPerCombat: -1,
-      mods: {},
+      numTargets: 1,
+      damageScaling: {} as StatBlock,
+      statusEffectDurationBoost: {} as Record<StatusEffectId, number>,
+      statusEffectChanceBoost: {} as Record<StatusEffectId, number>,
+      disableUpgrades: false,
+      unableToUpgrade: [],
+      mods: {
+        enchantLevel: 0,
+        techniques: [],
+        usesPerCombat: -1,
+        numTargets: 1,
+        damageScaling: {} as StatBlock,
+        statusEffectDurationBoost: {} as Record<StatusEffectId, number>,
+        statusEffectChanceBoost: {} as Record<StatusEffectId, number>,
+      },
     };
   });
 
