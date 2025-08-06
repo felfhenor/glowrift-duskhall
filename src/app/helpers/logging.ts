@@ -2,14 +2,31 @@
 import { formatDate } from '@angular/common';
 import { color } from 'console-log-colors';
 
-// Store original console functions with proper binding
-const nativeConsole = {
-  log: Function.prototype.bind.call(console.log, console),
-  info: Function.prototype.bind.call(console.info, console),
-  warn: Function.prototype.bind.call(console.warn, console),
-  debug: Function.prototype.bind.call(console.debug, console),
-  error: Function.prototype.bind.call(console.error, console),
-};
+// Create helper function that applies formatting and calls console directly
+function callConsole(level: 'log' | 'info' | 'warn' | 'debug' | 'error', colorName: keyof typeof color, category: string, ...data: any) {
+  const colorFunc = color[colorName] as unknown as (str: string) => string;
+  const timestamp = formatDate(new Date(), 'medium', 'en-US');
+  const formattedPrefix = colorFunc(`[${timestamp}] {${category}}`);
+  
+  // Use the console method directly to minimize call stack interference
+  switch (level) {
+    case 'log':
+      console.log(formattedPrefix, ...data);
+      break;
+    case 'info':
+      console.info(formattedPrefix, ...data);
+      break;
+    case 'warn':
+      console.warn(formattedPrefix, ...data);
+      break;
+    case 'debug':
+      console.debug(formattedPrefix, ...data);
+      break;
+    case 'error':
+      console.error(formattedPrefix, ...data);
+      break;
+  }
+}
 
 export function _logMessage(
   level: 'debug' | 'error' | 'log' | 'info' | 'warn',
@@ -23,44 +40,25 @@ export function _logMessage(
     warn: 'yellow',
     info: 'blue',
   };
-  const colorFunc = color[colors[level]] as unknown as (str: string) => string;
-
-  const timestamp = formatDate(new Date(), 'medium', 'en-US');
-  // Use native console method to bypass the call stack issue
-  nativeConsole[level](colorFunc(`[${timestamp}] {${category}}`), ...data);
+  callConsole(level, colors[level], category, ...data);
 }
 
 export function log(category: string, ...data: any) {
-  const colors = { log: 'magenta' as keyof typeof color };
-  const colorFunc = color[colors.log] as unknown as (str: string) => string;
-  const timestamp = formatDate(new Date(), 'medium', 'en-US');
-  nativeConsole.log(colorFunc(`[${timestamp}] {${category}}`), ...data);
+  callConsole('log', 'magenta', category, ...data);
 }
 
 export function info(category: string, ...data: any) {
-  const colors = { info: 'blue' as keyof typeof color };
-  const colorFunc = color[colors.info] as unknown as (str: string) => string;
-  const timestamp = formatDate(new Date(), 'medium', 'en-US');
-  nativeConsole.info(colorFunc(`[${timestamp}] {${category}}`), ...data);
+  callConsole('info', 'blue', category, ...data);
 }
 
 export function warn(category: string, ...data: any) {
-  const colors = { warn: 'yellow' as keyof typeof color };
-  const colorFunc = color[colors.warn] as unknown as (str: string) => string;
-  const timestamp = formatDate(new Date(), 'medium', 'en-US');
-  nativeConsole.warn(colorFunc(`[${timestamp}] {${category}}`), ...data);
+  callConsole('warn', 'yellow', category, ...data);
 }
 
 export function debug(category: string, ...data: any) {
-  const colors = { debug: 'gray' as keyof typeof color };
-  const colorFunc = color[colors.debug] as unknown as (str: string) => string;
-  const timestamp = formatDate(new Date(), 'medium', 'en-US');
-  nativeConsole.debug(colorFunc(`[${timestamp}] {${category}}`), ...data);
+  callConsole('debug', 'gray', category, ...data);
 }
 
 export function error(category: string, ...data: any) {
-  const colors = { error: 'red' as keyof typeof color };
-  const colorFunc = color[colors.error] as unknown as (str: string) => string;
-  const timestamp = formatDate(new Date(), 'medium', 'en-US');
-  nativeConsole.error(colorFunc(`[${timestamp}] {${category}}`), ...data);
+  callConsole('error', 'red', category, ...data);
 }
