@@ -73,3 +73,70 @@
   baseStats:
     Force: 2
     Aura: 2
+
+- id: b0b40931-ed12-4d18-8401-5348ad0a842e
+  name: Balanced
+  description: Aura/Force/Speed +2, Health +8.
+
+  rarity: Common
+
+  baseStats:
+    Health: 8
+    Speed: 2
+    Force: 2
+    Aura: 2
+
+- id: d9a6a438-9473-4b58-a13e-ff007701fd01
+  name: Resilient
+  description: Health +20, Aura +2.
+
+  rarity: Common
+
+  baseStats:
+    Health: 20
+    Aura: 2
+
+- id: c933ef7b-72cd-4a72-b449-781631844c85
+  name: Berserker
+  description: Force +5, Speed +3, Health -5.
+
+  rarity: Uncommon
+
+  baseStats:
+    Force: 5
+    Speed: 3
+    Health: -5
+
+- id: 15b770ae-3e38-4936-ae79-34e775757bd8
+  name: Versatile
+  description: Force +3, Speed +2, Aura +3.
+
+  rarity: Uncommon
+
+  baseStats:
+    Force: 3
+    Speed: 2
+    Aura: 3
+
+- id: 06a127bb-5ecf-4199-8649-8239912b780d
+  name: Guardian
+  description: Health +25, Aura +5, Speed -2.
+
+  rarity: Uncommon
+
+  baseStats:
+    Health: 25
+    Aura: 5
+    Speed: -2
+
+- id: 8c4e5af4-7589-486a-bd09-e2b5173e3a49
+  name: Warrior Monk
+  description: Health +30, Force +6, Aura +6, Speed +4.
+
+  rarity: Rare
+
+  baseStats:
+    Health: 30
+    Force: 6
+    Aura: 6
+    Speed: 4

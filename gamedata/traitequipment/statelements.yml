@@ -1,0 +1,142 @@
+- id: ee549406-edcf-4283-bb22-4f8ffedffa3d
+  name: Blazing
+  description: Force +4, Fire Damage +8%.
+
+  rarity: Uncommon
+
+  baseStats:
+    Force: 4
+
+  elementMultipliers:
+    - element: Fire
+      multiplier: 0.08
+
+- id: 2915148d-12d1-43df-918b-4ccc120fab1b
+  name: Frostbitten
+  description: Aura +4, Water Damage +8%.
+
+  rarity: Uncommon
+
+  baseStats:
+    Aura: 4
+
+  elementMultipliers:
+    - element: Water
+      multiplier: 0.08
+
+- id: 50ca9301-8789-4d42-ab15-9015e5c15f8b
+  name: Tempestuous
+  description: Speed +4, Air Damage +8%.
+
+  rarity: Uncommon
+
+  baseStats:
+    Speed: 4
+
+  elementMultipliers:
+    - element: Air
+      multiplier: 0.08
+
+- id: 38ead4ee-231f-4ae5-a355-5e88b1d75e9a
+  name: Earthen
+  description: Health +15, Earth Damage +8%.
+
+  rarity: Uncommon
+
+  baseStats:
+    Health: 15
+
+  elementMultipliers:
+    - element: Earth
+      multiplier: 0.08
+
+- id: 43015cfd-5854-4cd6-a5ea-607439ce0586
+  name: Elemental Affinity
+  description: Aura +3, All elemental damage +5%.
+
+  rarity: Uncommon
+
+  baseStats:
+    Aura: 3
+
+  elementMultipliers:
+    - element: Fire
+      multiplier: 0.05
+    - element: Water
+      multiplier: 0.05
+    - element: Air
+      multiplier: 0.05
+    - element: Earth
+      multiplier: 0.05
+
+- id: 8f486ad6-f5fb-4cb3-971d-0b114bc81600
+  name: Dualist
+  description: Force +6, Speed +6, Fire and Air Damage +12%.
+
+  rarity: Rare
+
+  baseStats:
+    Force: 6
+    Speed: 6
+
+  elementMultipliers:
+    - element: Fire
+      multiplier: 0.12
+    - element: Air
+      multiplier: 0.12
+
+- id: 5cfbd361-dc4c-4eda-9311-78893729a95b
+  name: Arcane Scholar
+  description: Aura +10, Force +5, All elemental damage +8%.
+
+  rarity: Rare
+
+  baseStats:
+    Aura: 10
+    Force: 5
+
+  elementMultipliers:
+    - element: Fire
+      multiplier: 0.08
+    - element: Water
+      multiplier: 0.08
+    - element: Air
+      multiplier: 0.08
+    - element: Earth
+      multiplier: 0.08
+
+- id: 1a0ce307-cf5d-42ce-ae50-391681cb7fdc
+  name: Battle Mage
+  description: Force +7, Aura +7, Fire and Water Damage +10%.
+
+  rarity: Rare
+
+  baseStats:
+    Force: 7
+    Aura: 7
+
+  elementMultipliers:
+    - element: Fire
+      multiplier: 0.10
+    - element: Water
+      multiplier: 0.10
+
+- id: ffe6b71e-2670-4779-8c07-3933b8684821
+  name: Void Walker
+  description: Speed +12, Aura +8, All elemental damage +12%.
+
+  rarity: Mystical
+
+  baseStats:
+    Speed: 12
+    Aura: 8
+
+  elementMultipliers:
+    - element: Fire
+      multiplier: 0.12
+    - element: Water
+      multiplier: 0.12
+    - element: Air
+      multiplier: 0.12
+    - element: Earth
+      multiplier: 0.12
