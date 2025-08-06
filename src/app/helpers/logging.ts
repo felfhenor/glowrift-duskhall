@@ -2,6 +2,18 @@
 import { formatDate } from '@angular/common';
 import { color } from 'console-log-colors';
 
+/**
+ * Logging utilities with colored output and timestamps.
+ * 
+ * Note: Due to JavaScript wrapper function limitations, these logging functions
+ * will appear in the browser console call stack. To find the actual calling location,
+ * look one level up in the call stack. This is a known limitation of all JavaScript
+ * logging wrapper functions.
+ * 
+ * For critical debugging where precise call stack location is essential,
+ * consider using console.trace() or direct console methods.
+ */
+
 // Create helper function that applies formatting and calls console directly
 function callConsole(level: 'log' | 'info' | 'warn' | 'debug' | 'error', colorName: keyof typeof color, category: string, ...data: any) {
   const colorFunc = color[colorName] as unknown as (str: string) => string;
