@@ -20,19 +20,31 @@ export function addItemToInventory(item: EquipmentItem): void {
 
   updateGamestate((state) => {
     const itemGroups = groupBy(
-      [...state.inventory.items, item],
+      state.inventory.items,
       (i) => i.__type,
     );
-    Object.keys(itemGroups).forEach((itemType) => {
-      const items = sortedRarityList(itemGroups[itemType]);
-      while (items.length > maxItemInventorySize()) {
-        const lostItem = items.pop();
-        if (lostItem) {
-          lostItems.push(lostItem);
-        }
+    
+    // Get the group for the new item's type
+    const itemType = item.__type;
+    const items = itemGroups[itemType] || [];
+    
+    // If we're at capacity for this item type, remove the worst existing item first
+    if (items.length >= maxItemInventorySize()) {
+      const sortedItems = sortedRarityList(items);
+      const worstItem = sortedItems.pop();
+      if (worstItem) {
+        lostItems.push(worstItem);
       }
-
-      itemGroups[itemType] = items;
+      itemGroups[itemType] = sortedItems;
+    }
+    
+    // Now add the new item
+    itemGroups[itemType] = itemGroups[itemType] || [];
+    itemGroups[itemType].push(item);
+    
+    // Sort all groups
+    Object.keys(itemGroups).forEach((type) => {
+      itemGroups[type] = sortedRarityList(itemGroups[type]);
     });
 
     state.inventory.items = Object.values(itemGroups).flat();
