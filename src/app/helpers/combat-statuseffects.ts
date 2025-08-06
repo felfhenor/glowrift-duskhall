@@ -123,6 +123,11 @@ export function applyStatusEffectToTarget(
   combatant: Combatant,
   statusEffect: StatusEffect,
 ): void {
+  const existingEffect = combatant.statusEffects.find(
+    (s) => s.id === statusEffect.id,
+  );
+  if (existingEffect) return;
+
   combatant.statusEffects.push(statusEffect);
   triggerApplyStatusEffect(combat, combatant, statusEffect);
 }
