@@ -76,6 +76,14 @@ export function getAllNodesInOrderOfCloseness(
   );
 }
 
+export function getNearestTown(position: { x: number; y: number }): WorldLocation | undefined {
+  const allNodes = getAllNodes();
+  const towns = allNodes.filter((node) => node.nodeType === 'town');
+  if (towns.length === 0) return undefined;
+  
+  return sortBy(towns, (town) => distanceBetweenNodes(position, town))[0];
+}
+
 export function getClosestUnclaimedClaimableNode(
   node: WorldLocation,
   nodes = getAllNodesInOrderOfCloseness(node),

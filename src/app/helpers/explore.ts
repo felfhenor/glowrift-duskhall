@@ -3,7 +3,7 @@ import { currentCombatHasGuardiansAlive } from '@helpers/combat-end';
 import { gamestate } from '@helpers/state-game';
 import { travelToNode } from '@helpers/travel';
 import { globalStatusText } from '@helpers/ui';
-import { getCurrentWorldNode, getWorldNode } from '@helpers/world';
+import { getCurrentWorldNode, getNearestTown } from '@helpers/world';
 
 export const exploreProgressText = signal<string>('');
 export const exploreProgressPercent = signal<number>(0);
@@ -20,14 +20,14 @@ export function updateExploringAndGlobalStatusText(status: string): void {
 }
 
 export function travelHome(): void {
-  const homePosition = gamestate().world.homeBase;
-  const homeNode = getWorldNode(homePosition.x, homePosition.y);
+  const currentPosition = gamestate().hero.position;
+  const nearestTown = getNearestTown(currentPosition);
 
-  if (!homeNode) {
-    console.error('Home node not found in the world.');
+  if (!nearestTown) {
+    console.error('No towns found in the world.');
     return;
   }
 
-  updateExploringAndGlobalStatusText('Returning home...');
-  travelToNode(homeNode);
+  updateExploringAndGlobalStatusText('Returning to nearest town...');
+  travelToNode(nearestTown);
 }
