@@ -7,6 +7,7 @@ import {
   notifySuccess,
   townMarketBonus,
 } from '@helpers';
+import { calculateCurrencyConversionInputAmount, calculateCurrencyConversionOutputAmount } from '@helpers/currency-conversion';
 import type { CurrencyContent } from '@interfaces';
 import { PanelTownBuildingUpgradeComponent } from '@components/panel-town-building-upgrade/panel-town-building-upgrade.component';
 import { SelectorCurrencyComponent } from '@components/selector-currency/selector-currency.component';
@@ -55,7 +56,7 @@ export class PanelTownMarketComponent {
 
     this.inputAmount.set(Math.floor(this.inputAmount()));
     this.outputAmount.set(
-      Math.floor((input.value / output.value) * this.inputAmount()),
+      calculateCurrencyConversionOutputAmount(input, output, this.inputAmount())
     );
   }
 
@@ -67,7 +68,7 @@ export class PanelTownMarketComponent {
 
     this.outputAmount.set(Math.floor(this.outputAmount()));
     this.inputAmount.set(
-      Math.floor(input.value * output.value * this.outputAmount()),
+      calculateCurrencyConversionInputAmount(input, output, this.outputAmount())
     );
   }
 
