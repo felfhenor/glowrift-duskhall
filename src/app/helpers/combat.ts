@@ -1,4 +1,7 @@
-import { applySkillToTarget } from '@helpers/combat-damage';
+import {
+  applySkillToTarget,
+  combatantTakeDamage,
+} from '@helpers/combat-damage';
 import {
   checkCombatOver,
   handleCombatDefeat,
@@ -9,6 +12,7 @@ import { logCombatMessage } from '@helpers/combat-log';
 import {
   canTakeTurn,
   handleCombatantStatusEffects,
+  unapplyAllStatusEffects,
 } from '@helpers/combat-statuseffects';
 import {
   availableSkillsForCombatant,
@@ -90,12 +94,24 @@ function combatantTakeTurn(
   combatant: Combatant,
 ): CombatTurnResult {
   if (isDead(combatant)) {
-    logCombatMessage(
-      combat,
-      `**${combatant.name}** is dead, skipping turn.`,
-      combatant,
-    );
-    return {};
+    if (succeedsChance(combatant.combatStats.reviveChance)) {
+      logCombatMessage(
+        combat,
+        `**${combatant.name}** has sprung to life!`,
+        combatant,
+      );
+
+      combatantTakeDamage(combatant, -combatant.totalStats.Health);
+
+      unapplyAllStatusEffects(combat, combatant);
+    } else {
+      logCombatMessage(
+        combat,
+        `**${combatant.name}** is dead, skipping turn.`,
+        combatant,
+      );
+      return {};
+    }
   }
 
   handleCombatantStatusEffects(combat, combatant, 'TurnStart');

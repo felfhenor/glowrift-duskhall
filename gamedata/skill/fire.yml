@@ -194,3 +194,32 @@
           duration: 3
 
       combatMessage: '**{{ combatant.name }}** cast **{{ skill.name }}** on **{{ target.name }}**.'
+
+- id: 917c9e0c-debd-458b-b932-b43ca84b7985
+  name: Phoenix Soul
+
+  sprite: '0064'
+  frames: 4
+
+  disableUpgrades: true
+
+  rarity: Legendary
+  dropLevel: 40
+
+  usesPerCombat: 2
+
+  techniques:
+    - elements: [Fire]
+      targets: 1
+      targetType: Allies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+        - behavior: IfNotStatusEffect
+          statusEffectId: Rebirth
+
+      statusEffects:
+        - statusEffectId: Rebirth
+          chance: 100
+          duration: 10
+
+      combatMessage: '**{{ combatant.name }}** cast **{{ skill.name }}** on **{{ target.name }}**.'

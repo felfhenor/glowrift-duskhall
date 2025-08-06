@@ -68,3 +68,24 @@
       element: Air
       combatStat: repeatActionChance
       value: 20
+
+- id: dc6f5725-bcb6-4c0e-8355-4dc45bbf190b
+  name: Rebirth
+
+  trigger: TurnEnd
+
+  onApply:
+    - type: SendMessage
+      combatMessage: '**{{ combatant.name }}** has been filled with the soul of a phoenix!'
+
+    - type: AddCombatStatNumber
+      combatStat: reviveChance
+      value: 100
+
+  onUnapply:
+    - type: SendMessage
+      combatMessage: '**{{ combatant.name }}** will no longer be reborn!'
+
+    - type: TakeCombatStatNumber
+      combatStat: reviveChance
+      value: 100

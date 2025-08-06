@@ -11,17 +11,20 @@ import type { EquipmentSkill } from '@interfaces/content-skill';
 import type {
   StatusEffect,
   StatusEffectAddCombatStatElement,
+  StatusEffectAddCombatStatNumber,
   StatusEffectBehavior,
   StatusEffectBehaviorAddStat,
   StatusEffectBehaviorDataChange,
   StatusEffectBehaviorTakeStat,
   StatusEffectBehaviorType,
   StatusEffectContent,
+  StatusEffectTakeCombatStatElement,
+  StatusEffectTakeCombatStatNumber,
   StatusEffectTrigger,
 } from '@interfaces/content-statuseffect';
 import type { ElementBlock, GameElement } from '@interfaces/element';
 import type { GameStat } from '@interfaces/stat';
-import { isObject } from 'es-toolkit/compat';
+import { isNumber, isObject } from 'es-toolkit/compat';
 
 export function canTakeTurn(combatant: Combatant): boolean {
   return !combatant.statusEffectData.isFrozen;
@@ -153,11 +156,23 @@ export function applyCombatStatElementDeltaToCombatant(
   (combatant.combatStats[stat] as ElementBlock)[element] += value;
 }
 
+export function applyCombatStatNumberDeltaToCombatant(
+  combatant: Combatant,
+  stat: keyof CombatantCombatStats,
+  value: number,
+): void {
+  const ref = combatant.combatStats[stat];
+  if (!isNumber(ref)) return;
+
+  (combatant.combatStats[stat] as number) += value;
+}
+
 export function handleStatusEffectBehaviors(
   combat: Combat,
   combatant: Combatant,
   effect: StatusEffect,
   behavior: StatusEffectBehavior,
+  suppressMessages = false,
 ): void {
   const templateData = {
     damage: 0,
@@ -213,7 +228,7 @@ export function handleStatusEffectBehaviors(
       );
     },
     TakeCombatStatElement: () => {
-      const behaviorData = behavior as StatusEffectAddCombatStatElement;
+      const behaviorData = behavior as StatusEffectTakeCombatStatElement;
 
       applyCombatStatElementDeltaToCombatant(
         combatant,
@@ -222,11 +237,29 @@ export function handleStatusEffectBehaviors(
         -behaviorData.value,
       );
     },
+    AddCombatStatNumber: () => {
+      const behaviorData = behavior as StatusEffectAddCombatStatNumber;
+
+      applyCombatStatNumberDeltaToCombatant(
+        combatant,
+        behaviorData.combatStat,
+        behaviorData.value,
+      );
+    },
+    TakeCombatStatNumber: () => {
+      const behaviorData = behavior as StatusEffectTakeCombatStatNumber;
+
+      applyCombatStatNumberDeltaToCombatant(
+        combatant,
+        behaviorData.combatStat,
+        -behaviorData.value,
+      );
+    },
   };
 
   behaviorTypes[behavior.type]();
 
-  if (behavior.combatMessage) {
+  if (!suppressMessages && behavior.combatMessage) {
     const message = formatCombatMessage(behavior.combatMessage, templateData);
     logCombatMessage(combat, message, combatant);
   }
@@ -260,4 +293,15 @@ export function triggerUnapplyStatusEffect(
   statusEffect.onUnapply.forEach((beh) =>
     handleStatusEffectBehaviors(combat, combatant, statusEffect, beh),
   );
+}
+
+export function unapplyAllStatusEffects(
+  combat: Combat,
+  combatant: Combatant,
+): void {
+  combatant.statusEffects.forEach((statusEffect) => {
+    statusEffect.onUnapply.forEach((beh) =>
+      handleStatusEffectBehaviors(combat, combatant, statusEffect, beh, true),
+    );
+  });
 }
