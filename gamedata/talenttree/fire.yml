@@ -5,44 +5,44 @@
     - level: 0
       learnableTalents:
         - talentId: Strength of Firewisp I
-        - talentId: Blank Talent
-        - talentId: Blank Talent
-        - talentId: Blank Talent
+        - talentId: Heating Up I
+        - talentId: Fire Force I
+        - talentId: Strength of Fire I
 
     - level: 5
       learnableTalents:
-        - talentId: Strength of Firewisp II
-        - talentId: Heating Up
-        - talentId: Fire Force
+        - talentId: Blank Talent
+        - talentId: Heating Up II
+        - talentId: Lingering Flames I
         - talentId: Blank Talent
 
     - level: 10
       learnableTalents:
-        - talentId: Strength of Firewisp III
+        - talentId: Strength of Firewisp II
         - talentId: Pyroclastic Surge I
-        - talentId: Blank Talent
-        - talentId: Strength of Fire
+        - talentId: Fire Force II
+        - talentId: Strength of Fire II
 
     - level: 15
       learnableTalents:
         - talentId: Blank Talent
         - talentId: Pyroclastic Surge II
-        - talentId: Lingering Flames I
+        - talentId: Lingering Flames II
         - talentId: Blank Talent
 
     - level: 20
       learnableTalents:
+        - talentId: Strength of Firewisp III
         - talentId: Blank Talent
-        - talentId: Blank Talent
-        - talentId: Lingering Flames II
-        - talentId: Blank Talent
+        - talentId: Fire Force III
+        - talentId: Strength of Fire III
 
     - level: 25
       learnableTalents:
         - talentId: Blank Talent
         - talentId: Fiery Fervor
         - talentId: Blank Talent
-        - talentId: Eternal Flame
+        - talentId: Eternal Flame I
 
     - level: 30
       learnableTalents:
@@ -70,4 +70,4 @@
         - talentId: Blank Talent
         - talentId: Blank Talent
         - talentId: Blank Talent
-        - talentId: Blank Talent
+        - talentId: Eternal Flame II

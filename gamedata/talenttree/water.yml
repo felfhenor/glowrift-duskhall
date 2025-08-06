@@ -11,38 +11,37 @@
 
     - level: 5
       learnableTalents:
-        - talentId: Strength of Healsprite II
-        - talentId: Healing Waters
-        - talentId: Tidal Resonance
         - talentId: Blank Talent
+        - talentId: Healing Waters I
+        - talentId: Tidal Resonance I
+        - talentId: Deep Freeze I
 
     - level: 10
       learnableTalents:
-        - talentId: Strength of Healsprite III
+        - talentId: Strength of Healsprite II
         - talentId: Blank Talent
         - talentId: Blank Talent
-        - talentId: Deep Freeze I
-
+        - talentId: Permeating Chill I
     - level: 15
       learnableTalents:
         - talentId: Blank Talent
-        - talentId: Blank Talent
-        - talentId: Permeating Chill
+        - talentId: Healing Waters II
+        - talentId: Tidal Resonance II
         - talentId: Deep Freeze II
 
     - level: 20
       learnableTalents:
-        - talentId: Blank Talent
+        - talentId: Strength of Healsprite III
         - talentId: Regenerative Chill
         - talentId: Blank Talent
-        - talentId: Blank Talent
+        - talentId: Permeating Chill II
 
     - level: 25
       learnableTalents:
         - talentId: Blank Talent
         - talentId: Blank Talent
         - talentId: Blank Talent
-        - talentId: Permafrost
+        - talentId: Permafrost I
 
     - level: 30
       learnableTalents:
@@ -70,4 +69,4 @@
         - talentId: Blank Talent
         - talentId: Blank Talent
         - talentId: Blank Talent
-        - talentId: Blank Talent
+        - talentId: Permafrost II

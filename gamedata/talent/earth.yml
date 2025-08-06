@@ -1,6 +1,6 @@
 - id: 217fd3a1-e819-4c6f-8940-0dfb9b8c7919
   name: Strength of Earthspike I
-  description: Boost the power of Earthspike skills by 300%.
+  description: Boost the Force of Earthspike skills by 300%.
   sprite: '0022'
 
   applyToSkillIds:
@@ -13,7 +13,7 @@
 
 - id: 5e3ed3fe-5566-438f-84d9-cac6a2ee6868
   name: Strength of Earthspike II
-  description: Boost the power of Earthspike skills by 300%.
+  description: Boost the Force of Earthspike skills by 300%.
   sprite: '0022'
 
   requireTalentId: Strength of Earthspike I
@@ -28,7 +28,7 @@
 
 - id: b60ded78-3693-425f-890f-84dc5962c7ef
   name: Strength of Earthspike III
-  description: Boost the power of Earthspike skills by 300%.
+  description: Boost the Force of Earthspike skills by 300%.
   sprite: '0022'
 
   requireTalentId: Strength of Earthspike II
@@ -42,27 +42,62 @@
     Force: 3
 
 - id: f0da46a1-9a9f-4ddb-995b-e54f108df57c
-  name: Geological Persistence
-  description: All Earth spells have a 25% chance to not consume a use.
+  name: Geological Persistence I
+  description: Earth spells have a 25% chance to not consume a use.
   sprite: '0026'
 
   applyToElements: [Earth]
 
   chanceToIgnoreConsume: 25
 
+- id: 4d2fdad9-b651-43e4-8d3f-00924a618737
+  name: Geological Persistence II
+  description: Earth spells have a 25% chance to not consume a use.
+  sprite: '0026'
+
+  requireTalentId: Geological Persistence I
+
+  applyToElements: [Earth]
+
+  chanceToIgnoreConsume: 25
+
 - id: bcfde28b-4507-427b-b97c-2c4184402a24
-  name: Tectonic Force
-  description: All Earth spells do +100% Force damage.
+  name: Tectonic Force I
+  description: Boost the Force of Earth spells by +30%.
   sprite: '0027'
 
   applyToElements: [Earth]
 
   boostStats:
-    Force: 1.00
+    Force: 0.30
+
+- id: edde27c1-1a45-4155-9d26-4b734d795301
+  name: Tectonic Force II
+  description: Boost the Force of Earth spells by +30%.
+  sprite: '0027'
+
+  requireTalentId: Tectonic Force I
+
+  applyToElements: [Earth]
+
+  boostStats:
+    Force: 0.30
+
+- id: 3708ec0d-9dd6-40a1-85ac-cdfb655df4dc
+  name: Tectonic Force III
+  description: Boost the Force of Earth spells by +30%.
+  sprite: '0027'
+
+  requireTalentId: Tectonic Force II
+
+  applyToElements: [Earth]
+
+  boostStats:
+    Force: 0.30
 
 - id: ea7dec47-76c6-47bd-bfdd-a54e75f32725
   name: Earthquake
-  description: Offensive Earth spells also have a chance to apply Crushed to enemies.
+  description: Offensive Earth spells also have a 10% chance to apply Crushed to enemies.
   sprite: '0023'
 
   applyToElements: [Earth]
@@ -75,7 +110,7 @@
 
 - id: 7b87b510-ce14-4444-8b33-ccd0f55e7a52
   name: Earthly Endurance
-  description: Fortified applied by this hero also has a chance to apply Endurance.
+  description: Applying Fortified has a 50% chance to apply Endurance.
   sprite: '0025'
 
   applyToAllSkills: true
@@ -89,7 +124,7 @@
 
 - id: f9817be5-4904-4ba8-98bf-6c4da51fb23a
   name: Resounding Endurance
-  description: This hero has a +20% chance to apply Endurance.
+  description: Boost the chance of applying Endurance by +20%.
   sprite: '0024'
 
   applyToAllSkills: true
@@ -100,7 +135,7 @@
 
 - id: a09be067-6833-4c1c-8d7a-9f1c2c4157c7
   name: Fortifying Spears
-  description: Offensive Earth spells have a chance to apply Fortify to this hero.
+  description: Offensive Earth spells have a 20% chance to self-cast Fortified.
   sprite: '0028'
 
   applyToElements: [Earth]

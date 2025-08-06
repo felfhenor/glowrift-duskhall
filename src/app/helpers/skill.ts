@@ -3,10 +3,10 @@ import { gamestate } from '@helpers/state-game';
 import {
   allHeroTalents,
   talentAddedTechniques,
-  talentStatBoost,
   talentStatusEffectChanceBoost,
   talentStatusEffectDurationBoost,
   talentTargetCountBoost,
+  talentTechniqueAddedStats,
   talentTechniqueAddedStatusEffects,
 } from '@helpers/talent';
 import type {
@@ -114,9 +114,10 @@ export function makeSkillForHero(
     t.targets += talentTargetCountBoost(talents, skill);
 
     Object.keys(t.damageScaling).forEach((stat) => {
-      t.damageScaling[stat as GameStat] += talentStatBoost(
+      t.damageScaling[stat as GameStat] += talentTechniqueAddedStats(
         talents,
         skill,
+        t,
         stat as GameStat,
       );
     });

@@ -7,42 +7,42 @@
         - talentId: Strength of Thunderwave I
         - talentId: Blank Talent
         - talentId: Blank Talent
-        - talentId: Blank Talent
+        - talentId: Storm Caller I
 
     - level: 5
       learnableTalents:
-        - talentId: Strength of Thunderwave II
         - talentId: Blank Talent
-        - talentId: Blank Talent
+        - talentId: Acuity
+        - talentId: Wind Walker I
         - talentId: Blank Talent
 
     - level: 10
       learnableTalents:
-        - talentId: Strength of Thunderwave III
+        - talentId: Strength of Thunderwave II
+        - talentId: Disorienting Winds
         - talentId: Blank Talent
-        - talentId: Blank Talent
-        - talentId: Storm Caller
+        - talentId: Storm Caller II
 
     - level: 15
       learnableTalents:
         - talentId: Blank Talent
-        - talentId: Blank Talent
-        - talentId: Wind Walker
-        - talentId: Acuity
+        - talentId: Thunderstruck I
+        - talentId: Wind Walker II
+        - talentId: Gravitational Force
 
     - level: 20
       learnableTalents:
+        - talentId: Strength of Thunderwave III
         - talentId: Blank Talent
-        - talentId: Thunderstruck I
-        - talentId: Gravitational Force
         - talentId: Blank Talent
+        - talentId: Storm Caller III
 
     - level: 25
       learnableTalents:
         - talentId: Blank Talent
         - talentId: Thunderstruck II
-        - talentId: Disorienting Winds
-        - talentId: Winds of Change
+        - talentId: Blank Talent
+        - talentId: Winds of Change I
 
     - level: 30
       learnableTalents:
@@ -54,7 +54,7 @@
     - level: 35
       learnableTalents:
         - talentId: Blank Talent
-        - talentId: Blank Talent
+        - talentId: Thunderstruck III
         - talentId: Blank Talent
         - talentId: Blank Talent
 
@@ -70,4 +70,4 @@
         - talentId: Blank Talent
         - talentId: Blank Talent
         - talentId: Blank Talent
-        - talentId: Blank Talent
+        - talentId: Winds of Change II

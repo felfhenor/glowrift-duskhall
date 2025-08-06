@@ -1,6 +1,6 @@
 - id: b268cfd1-5f0f-4985-a5b9-71afdf34c3a9
   name: Strength of Healsprite I
-  description: Boost the power of Healsprite skills by 25%.
+  description: Boost the Force of Healsprite skills by 25%.
   sprite: '0007'
 
   applyToSkillIds:
@@ -13,7 +13,7 @@
 
 - id: 2940b343-b2ce-4458-bae5-7d4d0adbee69
   name: Strength of Healsprite II
-  description: Boost the power of Healsprite skills by 25%.
+  description: Boost the Force of Healsprite skills by 25%.
   sprite: '0007'
 
   requireTalentId: Strength of Healsprite I
@@ -28,7 +28,7 @@
 
 - id: 2cd4e91e-f25a-4091-a89b-fa353ffaa0ad
   name: Strength of Healsprite III
-  description: Boost the power of Healsprite skills by 25%.
+  description: Boost the Force of Healsprite skills by 25%.
   sprite: '0007'
 
   requireTalentId: Strength of Healsprite II
@@ -42,7 +42,7 @@
     Force: 0.25
 
 - id: 35136beb-b472-4137-985e-8558342a413b
-  name: Permafrost
+  name: Permafrost I
   description: All Water spells have a 25% chance to not consume a use.
   sprite: '0013'
 
@@ -50,21 +50,59 @@
 
   chanceToIgnoreConsume: 25
 
+- id: 357ea557-e491-4118-bae5-ca27f4bbf1bc
+  name: Permafrost II
+  description: All Water spells have a 25% chance to not consume a use.
+  sprite: '0013'
+
+  requireTalentId: Permafrost I
+
+  applyToElements: [Water]
+
+  chanceToIgnoreConsume: 25
+
 - id: 6a00806a-fac9-4d89-b98f-4e8eee099278
-  name: Healing Waters
-  description: All Healing spells give +50% Force healing and +25% Aura healing.
+  name: Healing Waters I
+  description: All Healing spells give +25% Force healing and +15% Aura healing.
   sprite: '0009'
 
   applyToAttributes: [HealsTarget]
 
   boostStats:
-    Force: 0.5
-    Aura: 0.25
+    Force: 0.25
+    Aura: 0.15
+
+- id: 0cd94bd4-0a71-40fe-aac3-faf6eed69ffa
+  name: Healing Waters II
+  description: All Healing spells give +25% Force healing and +15% Aura healing.
+  sprite: '0009'
+
+  requireTalentId: Healing Waters I
+
+  applyToAttributes: [HealsTarget]
+
+  boostStats:
+    Force: 0.25
+    Aura: 0.15
 
 - id: 506c7ad3-0bda-4dff-9f3c-2b4f03500812
-  name: Tidal Resonance
+  name: Tidal Resonance I
   description: All Healing spells hit +1 target.
   sprite: '0010'
+
+  applyToAttributes: [HealsTarget]
+
+  additionalTargets: 1
+
+- id: 8ced24d7-ec74-456d-b6c3-5a77184d52c8
+  name: Tidal Resonance II
+  description: All Healing spells hit +1 target & +20% Health healing.
+  sprite: '0010'
+
+  requireTalentId: Tidal Resonance I
+
+  boostStats:
+    Health: 0.20
 
   applyToAttributes: [HealsTarget]
 
@@ -95,24 +133,37 @@
   boostedStatusEffectDuration: 1
 
 - id: 31f85a98-075b-43d1-accd-246f5bad32aa
-  name: Permeating Chill
-  description: Boost the chance of Frozen by 5%.
+  name: Permeating Chill I
+  description: Boost the chance of Brittle & Frozen by 5%.
   sprite: '0012'
 
   applyToAllSkills: true
   applyToStatusEffectIds:
     - Frozen
+    - Brittle
+
+  boostedStatusEffectChance: 5
+
+- id: ed03f701-37c6-4d90-add0-0c8f34ea621d
+  name: Permeating Chill II
+  description: Boost the chance of Hypothermia & Frozen by 5%.
+  sprite: '0012'
+
+  applyToAllSkills: true
+  applyToStatusEffectIds:
+    - Frozen
+    - Hypothermia
 
   boostedStatusEffectChance: 5
 
 - id: fe62964f-0fbb-49ab-8908-4fdaed62fd8e
   name: Regenerative Chill
-  description: Healing spells also apply Regeneration for 3 turns.
+  description: Healing spells have a 30% chance to apply Regeneration.
   sprite: '0014'
 
   applyToAttributes: [HealsTarget]
 
   applyStatusEffects:
     - statusEffectId: Regeneration
-      chance: 100
+      chance: 30
       duration: 3

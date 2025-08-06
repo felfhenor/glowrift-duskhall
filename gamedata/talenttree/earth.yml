@@ -7,42 +7,42 @@
         - talentId: Strength of Earthspike I
         - talentId: Blank Talent
         - talentId: Blank Talent
-        - talentId: Blank Talent
+        - talentId: Earthquake
 
     - level: 5
       learnableTalents:
-        - talentId: Strength of Earthspike II
         - talentId: Blank Talent
         - talentId: Blank Talent
+        - talentId: Tectonic Force I
         - talentId: Blank Talent
 
     - level: 10
       learnableTalents:
-        - talentId: Strength of Earthspike III
+        - talentId: Strength of Earthspike II
+        - talentId: Fortifying Spears
         - talentId: Blank Talent
-        - talentId: Blank Talent
-        - talentId: Blank Talent
+        - talentId: Earthly Endurance
 
     - level: 15
       learnableTalents:
         - talentId: Blank Talent
         - talentId: Blank Talent
-        - talentId: Tectonic Force
+        - talentId: Tectonic Force II
         - talentId: Blank Talent
 
     - level: 20
       learnableTalents:
+        - talentId: Strength of Earthspike III
         - talentId: Blank Talent
-        - talentId: Earthquake
         - talentId: Blank Talent
-        - talentId: Earthly Endurance
+        - talentId: Resounding Endurance
 
     - level: 25
       learnableTalents:
         - talentId: Blank Talent
-        - talentId: Resounding Endurance
-        - talentId: Fortifying Spears
-        - talentId: Geological Persistence
+        - talentId: Blank Talent
+        - talentId: Tectonic Force III
+        - talentId: Geological Persistence I
 
     - level: 30
       learnableTalents:
@@ -70,4 +70,4 @@
         - talentId: Blank Talent
         - talentId: Blank Talent
         - talentId: Blank Talent
-        - talentId: Blank Talent
+        - talentId: Geological Persistence II

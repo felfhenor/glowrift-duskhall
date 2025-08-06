@@ -1,16 +1,40 @@
 - id: 62e841f4-0758-450b-9ade-848686dfe54f
-  name: Strength of Fire
-  description: Boost the Force of Fire skills by 50%.
+  name: Strength of Fire I
+  description: Boost the Force of Fire skills by +25%.
   sprite: '0003'
 
   applyToElements: [Fire]
 
   boostStats:
-    Force: 0.50
+    Force: 0.25
+
+- id: 7b0be87e-1478-4138-977b-aba233e48c8e
+  name: Strength of Fire II
+  description: Boost the Force of Fire skills by +25%.
+  sprite: '0003'
+
+  requireTalentId: Strength of Fire I
+
+  applyToElements: [Fire]
+
+  boostStats:
+    Force: 0.25
+
+- id: 2b3251af-f5ef-4e7f-bb2e-19b1f1997161
+  name: Strength of Fire III
+  description: Boost the Force of Fire skills by +25%.
+  sprite: '0003'
+
+  requireTalentId: Strength of Fire II
+
+  applyToElements: [Fire]
+
+  boostStats:
+    Force: 0.25
 
 - id: cde7a7a3-8fbc-4709-b405-affba74837ef
   name: Strength of Firewisp I
-  description: Boost the Force of Firewisp skills by 25%.
+  description: Boost the Force of Firewisp skills by +25%.
   sprite: '0001'
 
   applyToSkillIds:
@@ -23,7 +47,7 @@
 
 - id: d758324d-4333-496a-8c54-222769cfbc38
   name: Strength of Firewisp II
-  description: Boost the Force of Firewisp skills by 25% & it's Burning chance by 10%.
+  description: Boost the Force of Firewisp skills by +25% & it's Burning chance by +10%.
   sprite: '0001'
 
   requireTalentId: Strength of Firewisp I
@@ -43,7 +67,7 @@
 
 - id: cb333d71-2d0b-4117-8ce4-16a0a55f7d3a
   name: Strength of Firewisp III
-  description: Boost the Force of Firewisp skills by 25% & it's Burning duration by 1.
+  description: Boost the Force of Firewisp skills by +25% & it's Burning duration by +1.
   sprite: '0001'
 
   requireTalentId: Strength of Firewisp II
@@ -62,8 +86,8 @@
   boostedStatusEffectDuration: 1
 
 - id: 4997998a-ea6b-421d-b3e7-3b3f5f133c66
-  name: Heating Up
-  description: Boost the chance of Burning by 5%.
+  name: Heating Up I
+  description: Boost the chance of Burning by +5%.
   sprite: '0005'
 
   applyToAllSkills: true
@@ -72,9 +96,23 @@
 
   boostedStatusEffectChance: 5
 
+- id: e14c28e7-871a-4f67-96b5-1559fdfb9ad7
+  name: Heating Up II
+  description: Boost the chance of Burning & Fervor by +5%.
+  sprite: '0005'
+
+  requireTalentId: Heating Up I
+
+  applyToAllSkills: true
+  applyToStatusEffectIds:
+    - Burning
+    - Fervor
+
+  boostedStatusEffectChance: 5
+
 - id: 2bc07a67-6ca8-4dd0-b65c-ae5cc3ce9a64
   name: Lingering Flames I
-  description: Boost the duration of Burning by 1.
+  description: Boost the duration of Burning by +1.
   sprite: '0006'
 
   applyToAllSkills: true
@@ -85,7 +123,7 @@
 
 - id: 4734835d-fc35-45b0-aa9c-6381513aa5e1
   name: Lingering Flames II
-  description: Boost the duration of Burning by 1.
+  description: Boost the duration of Burning & Fervor by +1.
   sprite: '0006'
 
   requireTalentId: Lingering Flames I
@@ -93,12 +131,13 @@
   applyToAllSkills: true
   applyToStatusEffectIds:
     - Burning
+    - Fervor
 
   boostedStatusEffectDuration: 1
 
 - id: 918995df-f0ac-407b-98a8-7601573f4f94
-  name: Fire Force
-  description: Boost the Force of Burning by 20%.
+  name: Fire Force I
+  description: Boost the Force of Burning by +25%.
   sprite: '0002'
 
   applyToAllSkills: true
@@ -106,11 +145,39 @@
     - Burning
 
   boostStatusEffectStats:
-    Force: 0.20
+    Force: 0.25
+
+- id: 987bb69f8-fba7-4b59-8cf2-3fc1ca49e175
+  name: Fire Force II
+  description: Boost the Force of Burning by +25%.
+  sprite: '0002'
+
+  requireTalentId: Fire Force I
+
+  applyToAllSkills: true
+  applyToStatusEffectIds:
+    - Burning
+
+  boostStatusEffectStats:
+    Force: 0.25
+
+- id: cba27812-8fdc-4d3a-8942-3a08a2fdeced
+  name: Fire Force III
+  description: Boost the Force of Burning by +25%.
+  sprite: '0002'
+
+  requireTalentId: Fire Force II
+
+  applyToAllSkills: true
+  applyToStatusEffectIds:
+    - Burning
+
+  boostStatusEffectStats:
+    Force: 0.25
 
 - id: 6f902296-763e-4c20-a4f2-fc49c6da2846
   name: Pyroclastic Surge I
-  description: All Fire spells hit +1 target.
+  description: Fire spells hit +1 target.
   sprite: '0004'
 
   applyToElements: [Fire]
@@ -119,7 +186,7 @@
 
 - id: b8a83f5b-dcf3-4f57-bd3e-614efafead3f
   name: Pyroclastic Surge II
-  description: All Fire spells hit +1 target.
+  description: Fire spells hit +1 target.
   sprite: '0004'
 
   requireTalentId: Pyroclastic Surge I
@@ -129,9 +196,20 @@
   additionalTargets: 1
 
 - id: 9565be6a-f02b-4d73-a4ae-deb0c206f447
-  name: Eternal Flame
-  description: All Fire spells have a 25% chance to not consume a use.
+  name: Eternal Flame I
+  description: Fire spells have a +25% chance to not consume a use.
   sprite: '0008'
+
+  applyToElements: [Fire]
+
+  chanceToIgnoreConsume: 25
+
+- id: e0feaa7f-e7a6-4be9-ac52-1af46d6010d6
+  name: Eternal Flame II
+  description: Fire spells have a +25% chance to not consume a use.
+  sprite: '0008'
+
+  requireTalentId: Eternal Flame I
 
   applyToElements: [Fire]
 
@@ -139,7 +217,7 @@
 
 - id: f7617d5c-1baa-42e4-a6b3-b0c770505b4a
   name: Fiery Fervor
-  description: Offensive Fire spells have a chance to apply Fervor to this hero.
+  description: Offensive Fire spells have a 20% chance to self-cast Fervor.
   sprite: '0030'
 
   applyToElements: [Fire]

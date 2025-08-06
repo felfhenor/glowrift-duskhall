@@ -173,18 +173,6 @@ export function talentStatusEffectStatBoost(
   );
 }
 
-export function talentStatBoost(
-  talents: TalentContent[],
-  skill: EquipmentSkill,
-  stat: GameStat,
-): number {
-  return talentPropDrillTotal(
-    talentsForSkill(talents, skill),
-    'boostStats',
-    stat,
-  );
-}
-
 export function talentStatusEffectChanceBoost(
   talents: TalentContent[],
   skill: EquipmentSkill,
@@ -231,6 +219,19 @@ export function talentTechniqueAddedStatusEffects(
 ): EquipmentSkillTechniqueStatusEffectApplication[] {
   return talentsForSkillTechnique(talents, skill, technique).flatMap(
     (t) => t.applyStatusEffects,
+  );
+}
+
+export function talentTechniqueAddedStats(
+  talents: TalentContent[],
+  skill: EquipmentSkill,
+  technique: EquipmentSkillContentTechnique,
+  stat: GameStat,
+): number {
+  return talentPropDrillTotal(
+    talentsForSkillTechnique(talents, skill, technique),
+    'boostStats',
+    stat,
   );
 }
 

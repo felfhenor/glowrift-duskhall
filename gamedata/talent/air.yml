@@ -1,7 +1,9 @@
 - id: 3fd2f3cd-4b7c-44bc-8e4d-f267f1394716
   name: Strength of Thunderwave I
-  description: Boost the power of Thunderwave skills by 25%.
+  description: Boost the Force of Thunderwave skills by 10%.
   sprite: '0015'
+
+  applyToAttributes: [DamagesTarget]
 
   applyToSkillIds:
     - Thunderwave I
@@ -9,14 +11,15 @@
     - Thunderwave III
 
   boostStats:
-    Force: 0.25
+    Force: 0.10
 
 - id: 5c740066-851e-4101-9e37-c1baaff33eee
   name: Strength of Thunderwave II
-  description: Boost the power of Thunderwave skills by 25%.
+  description: Boost the Force of Thunderwave skills by 10% & a 20% chance to self-cast Swiftness.
   sprite: '0015'
 
   requireTalentId: Strength of Thunderwave I
+  applyToAttributes: [DamagesTarget]
 
   applyToSkillIds:
     - Thunderwave I
@@ -24,14 +27,29 @@
     - Thunderwave III
 
   boostStats:
-    Force: 0.25
+    Force: 0.10
+
+  addTechniques:
+    - elements: [Air]
+      targets: 1
+      targetType: Self
+      targetBehaviors:
+        - behavior: NotZeroHealth
+        - behavior: IfNotStatusEffect
+          statusEffectId: Swiftness
+
+      statusEffects:
+        - statusEffectId: Swiftness
+          chance: 20
+          duration: 3
 
 - id: d6ffb7f9-e960-4dcd-ab61-02ceeb0b0732
   name: Strength of Thunderwave III
-  description: Boost the power of Thunderwave skills by 25%.
+  description: Boost the Force & Aura of Thunderwave skills by 10%.
   sprite: '0015'
 
   requireTalentId: Strength of Thunderwave II
+  applyToAttributes: [DamagesTarget]
 
   applyToSkillIds:
     - Thunderwave I
@@ -39,11 +57,21 @@
     - Thunderwave III
 
   boostStats:
-    Force: 0.25
+    Force: 0.10
+    Aura: 0.10
 
 - id: b3b68fc0-1f1a-44d5-a2ba-aa1150bb7e8d
-  name: Winds of Change
-  description: All Air spells have a 25% chance to not consume a use.
+  name: Winds of Change I
+  description: Air spells have a +25% chance to not consume a use.
+  sprite: '0018'
+
+  applyToElements: [Air]
+
+  chanceToIgnoreConsume: 25
+
+- id: 2fbd573a-17cc-4c16-a05b-8b48c1c98adc
+  name: Winds of Change II
+  description: Air spells have a +25% chance to not consume a use.
   sprite: '0018'
 
   applyToElements: [Air]
@@ -51,8 +79,8 @@
   chanceToIgnoreConsume: 25
 
 - id: fcdebee0-b41e-4222-a8b4-52f3285b4881
-  name: Wind Walker
-  description: Boost Swiftness Speed given by this hero by +100%.
+  name: Wind Walker I
+  description: Boost Speed of Swiftness given by this hero by +50%.
   sprite: '0016'
 
   applyToAllSkills: true
@@ -60,20 +88,54 @@
     - Swiftness
 
   boostStatusEffectStats:
-    Force: 1.00
+    Speed: 0.50
+
+- id: 9b0dc609-a06c-4de6-b909-76296f1e4e54
+  name: Wind Walker II
+  description: Boost Speed of Swiftness given by this hero by +50%.
+  sprite: '0016'
+
+  applyToAllSkills: true
+  applyToStatusEffectIds:
+    - Swiftness
+
+  boostStatusEffectStats:
+    Speed: 0.50
 
 - id: da6aa07a-b2bb-4564-9bbb-4c87047a2194
-  name: Storm Caller
-  description: All Air skills have a 30% chance of allowing the caster to go again.
+  name: Storm Caller I
+  description: Air skills have a +10% chance of allowing the caster to act again.
   sprite: '0020'
 
   combatStats:
     repeatActionChance:
-      Air: 30
+      Air: 10
+
+- id: bf7f6dcd-7982-4b91-9543-0839f2dcdb54
+  name: Storm Caller II
+  description: Air skills have a +10% chance of allowing the caster to act again.
+  sprite: '0020'
+
+  requireTalentId: Storm Caller I
+
+  combatStats:
+    repeatActionChance:
+      Air: 10
+
+- id: b2de0811-d2cd-426d-b666-a8b3f022b231
+  name: Storm Caller III
+  description: Air skills have a +10% chance of allowing the caster to act again.
+  sprite: '0020'
+
+  requireTalentId: Storm Caller II
+
+  combatStats:
+    repeatActionChance:
+      Air: 10
 
 - id: 1a37bdd9-9689-4a2c-9725-cecaec22f76f
   name: Thunderstruck I
-  description: All Air skills have a +15% chance of striking a second time.
+  description: Air skills have a +15% chance of striking a second time.
   sprite: '0017'
 
   combatStats:
@@ -82,7 +144,7 @@
 
 - id: 6c39d754-0067-4d2d-b07d-ac24d0e3f848
   name: Thunderstruck II
-  description: All Air skills have a +15% chance of striking a second time.
+  description: Air skills have a +15% chance of striking a second time.
   sprite: '0017'
 
   requireTalentId: Thunderstruck I
@@ -91,9 +153,20 @@
     skillStrikeAgainChance:
       Air: 15
 
+- id: bccb2e22-c026-49e5-ae3a-f0847884a409
+  name: Thunderstruck III
+  description: Air skills have a +15% chance of striking a second time.
+  sprite: '0017'
+
+  requireTalentId: Thunderstruck II
+
+  combatStats:
+    skillStrikeAgainChance:
+      Air: 15
+
 - id: b6ef1344-b887-4bb8-b9eb-92efff3b4dc4
   name: Gravitational Force
-  description: Offensive Air spells also have a +10% chance to apply Gravity to enemies.
+  description: Offensive Air spells also have a +10% chance to apply Gravity.
   sprite: '0019'
 
   applyToElements: [Air]
@@ -106,7 +179,7 @@
 
 - id: 03585374-384b-4cda-940a-d22c9c798c43
   name: Disorienting Winds
-  description: Offensive Air spells also have a +10% chance to apply Redirect to enemies.
+  description: Offensive Air spells also have a +10% chance to apply Redirect.
   sprite: '0021'
 
   applyToElements: [Air]
@@ -119,7 +192,7 @@
 
 - id: b253cf8d-d932-42fa-a110-ba5cfaac78af
   name: Acuity
-  description: Applying Swiftness has a chance to apply Focus.
+  description: Applying Swiftness has a 50% chance to also apply Focus.
   sprite: '0029'
 
   applyToAllSkills: true
