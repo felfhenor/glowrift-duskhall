@@ -1,6 +1,9 @@
 - id: 2792e492-05b8-48b2-aa95-0de670384612
   name: Crushed
 
+  type: Debuff
+  elements: [Earth]
+
   trigger: TurnEnd
 
   useTargetStats: true
@@ -20,6 +23,9 @@
 
 - id: 1948e429-5078-4525-a09c-d0cf6aa92009
   name: Trembling
+
+  type: Debuff
+  elements: [Earth]
 
   trigger: TurnEnd
 

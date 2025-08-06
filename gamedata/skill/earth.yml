@@ -246,3 +246,32 @@
           duration: 3
 
       combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
+
+- id: cbdee68b-be36-4db5-866a-f8795e84aa00
+  name: Gaiac Aegis
+
+  sprite: '0080'
+  frames: 12
+
+  disableUpgrades: true
+
+  rarity: Legendary
+  dropLevel: 43
+
+  usesPerCombat: 2
+
+  techniques:
+    - elements: [Earth]
+      targets: 1
+      targetType: Allies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+        - behavior: IfNotStatusEffect
+          statusEffectId: Aegis
+
+      statusEffects:
+        - statusEffectId: Aegis
+          chance: 100
+          duration: 4
+
+      combatMessage: '**{{ combatant.name }}** cast **{{ skill.name }}** on **{{ target.name }}**.'

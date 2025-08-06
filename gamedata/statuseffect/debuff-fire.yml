@@ -1,6 +1,9 @@
 - id: d0fec098-34e9-471e-ada5-31f299921017
   name: Burning
 
+  type: Debuff
+  elements: [Fire]
+
   trigger: TurnEnd
 
   statScaling:

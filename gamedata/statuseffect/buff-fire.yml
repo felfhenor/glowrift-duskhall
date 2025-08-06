@@ -1,6 +1,9 @@
 - id: 32f86770-70c2-468b-8083-5911e96b1e27
   name: Empowered
 
+  type: Buff
+  elements: [Fire]
+
   trigger: TurnStart
 
   statScaling:
@@ -18,6 +21,9 @@
 
 - id: 5ea606aa-b36a-4f38-a2bb-13c795061109
   name: Fervor
+
+  type: Buff
+  elements: [Fire]
 
   trigger: TurnEnd
 
@@ -71,6 +77,9 @@
 
 - id: dc6f5725-bcb6-4c0e-8355-4dc45bbf190b
   name: Rebirth
+
+  type: Buff
+  elements: [Fire]
 
   trigger: TurnEnd
 

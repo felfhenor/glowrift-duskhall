@@ -102,6 +102,9 @@ export type StatusEffectContent = IsContentItem & {
   id: StatusEffectId;
   __type: 'statuseffect';
 
+  effectType: 'Buff' | 'Debuff';
+  elements: GameElement[];
+
   trigger: StatusEffectTrigger;
 
   onApply: StatusEffectBehavior[];

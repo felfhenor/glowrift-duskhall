@@ -33,6 +33,7 @@ export type CombatantCombatStats = {
   skillAdditionalUseCount: ElementBlock;
   redirectionChance: ElementBlock;
   missChance: ElementBlock;
+  debuffIgnoreChance: ElementBlock;
   reviveChance: number;
 };
 

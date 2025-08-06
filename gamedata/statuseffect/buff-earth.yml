@@ -1,6 +1,9 @@
 - id: dfbe0520-8e83-41ce-997b-369c051bd67b
   name: Fortified
 
+  type: Buff
+  elements: [Earth]
+
   trigger: TurnStart
 
   statScaling:
@@ -19,6 +22,9 @@
 - id: d2ae00d7-1879-4bb8-bbbb-4304900f8e3a
   name: Endurance
 
+  type: Buff
+  elements: [Earth]
+
   trigger: TurnStart
 
   statScaling:
@@ -33,3 +39,59 @@
     - type: TakeDamageFromStat
       combatMessage: '**{{ combatant.name }}** has lost their endurance (-{{ damage }} Health)!'
       modifyStat: Health
+
+- id: cd54ed90-67f8-42c2-b43e-5f5a36054965
+  name: Aegis
+
+  type: Buff
+  elements: [Earth]
+
+  trigger: TurnStart
+
+  onApply:
+    - type: SendMessage
+      combatMessage: '**{{ combatant.name }}** has fallen under the aegis of Gaia!'
+
+    - type: AddCombatStatElement
+      element: Fire
+      combatStat: debuffIgnoreChance
+      value: 100
+
+    - type: AddCombatStatElement
+      element: Earth
+      combatStat: debuffIgnoreChance
+      value: 100
+
+    - type: AddCombatStatElement
+      element: Water
+      combatStat: debuffIgnoreChance
+      value: 100
+
+    - type: AddCombatStatElement
+      element: Air
+      combatStat: debuffIgnoreChance
+      value: 100
+
+  onUnapply:
+    - type: SendMessage
+      combatMessage: '**{{ combatant.name }}** is no longer protected by Gaia!'
+
+    - type: TakeCombatStatElement
+      element: Fire
+      combatStat: debuffIgnoreChance
+      value: 100
+
+    - type: TakeCombatStatElement
+      element: Earth
+      combatStat: debuffIgnoreChance
+      value: 100
+
+    - type: TakeCombatStatElement
+      element: Water
+      combatStat: debuffIgnoreChance
+      value: 100
+
+    - type: TakeCombatStatElement
+      element: Air
+      combatStat: debuffIgnoreChance
+      value: 100

@@ -1,6 +1,9 @@
 - id: 14f78399-1b13-4605-8681-df0589d3316f
   name: Gravity
 
+  type: Debuff
+  elements: [Air]
+
   trigger: TurnEnd
 
   onApply:
@@ -93,6 +96,9 @@
 
 - id: b86261ec-7c8e-400f-8876-3b472a26d46c
   name: Redirect
+
+  type: Debuff
+  elements: [Air]
 
   trigger: TurnEnd
 

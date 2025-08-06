@@ -1,6 +1,9 @@
 - id: bb242a20-0a49-41fe-bf13-c52edbe39c2a
   name: Frozen
 
+  type: Debuff
+  elements: [Water]
+
   trigger: TurnStart
 
   onApply:
@@ -22,6 +25,9 @@
 - id: 473b3b78-9531-49db-9c60-11b2924cf34f
   name: Brittle
 
+  type: Debuff
+  elements: [Water]
+
   trigger: TurnEnd
 
   useTargetStats: true
@@ -41,6 +47,9 @@
 
 - id: ccc13b2e-0504-4a1e-875b-749dc01e43e4
   name: Hypothermia
+
+  type: Debuff
+  elements: [Water]
 
   trigger: TurnEnd
 

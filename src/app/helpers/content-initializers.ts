@@ -116,6 +116,7 @@ function ensureCombatStats(
     ),
     redirectionChance: ensureAffinities(combatStats.redirectionChance),
     missChance: ensureAffinities(combatStats.missChance),
+    debuffIgnoreChance: ensureAffinities(combatStats.debuffIgnoreChance),
     reviveChance: combatStats.reviveChance ?? 0,
   };
 }
@@ -273,6 +274,8 @@ function ensureStatusEffect(
   return {
     id: statusEffect.id ?? ('UNKNOWN' as StatusEffectId),
     name: statusEffect.name ?? 'UNKNOWN',
+    effectType: statusEffect.effectType ?? 'Buff',
+    elements: statusEffect.elements ?? [],
     __type: statusEffect.__type ?? 'statuseffect',
     trigger: statusEffect.trigger ?? 'TurnEnd',
     onApply: statusEffect.onApply ?? [],

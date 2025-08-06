@@ -1,6 +1,7 @@
 import { allCombatantTalents } from '@helpers/combat';
 import { combatantTakeDamage } from '@helpers/combat-damage';
 import { formatCombatMessage, logCombatMessage } from '@helpers/combat-log';
+import { elementsSucceedsElementCombatStatChance } from '@helpers/combat-stats';
 import { talentStatusEffectStatBoost } from '@helpers/talent';
 import type {
   Combat,
@@ -130,6 +131,21 @@ export function applyStatusEffectToTarget(
     (s) => s.id === statusEffect.id,
   );
   if (existingEffect) return;
+
+  const shouldIgnoreDebuff = elementsSucceedsElementCombatStatChance(
+    statusEffect.elements,
+    combatant,
+    'debuffIgnoreChance',
+  );
+
+  if (statusEffect.effectType === 'Debuff' && shouldIgnoreDebuff) {
+    logCombatMessage(
+      combat,
+      `**${statusEffect.name}** is shrugged off by **${combatant.name}**!`,
+      combatant,
+    );
+    return;
+  }
 
   combatant.statusEffects.push(statusEffect);
   triggerApplyStatusEffect(combat, combatant, statusEffect);

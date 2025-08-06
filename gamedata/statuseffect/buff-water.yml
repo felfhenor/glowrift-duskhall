@@ -1,6 +1,9 @@
 - id: d5afc2de-8e11-45c3-b903-a75e6c73b74b
   name: Regeneration
 
+  type: Buff
+  elements: [Water]
+
   trigger: TurnStart
 
   statScaling:

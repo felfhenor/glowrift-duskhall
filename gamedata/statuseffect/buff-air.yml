@@ -1,6 +1,9 @@
 - id: f7ea7703-b21d-4355-8bad-5690ddfaaf5c
   name: Swiftness
 
+  type: Buff
+  elements: [Air]
+
   trigger: TurnStart
 
   statScaling:
@@ -18,6 +21,9 @@
 
 - id: 9d7116f2-a518-48d0-843f-f0f6414cdaae
   name: Focus
+
+  type: Buff
+  elements: [Air]
 
   trigger: TurnEnd
 
