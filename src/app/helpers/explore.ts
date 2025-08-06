@@ -1,5 +1,6 @@
 import { signal } from '@angular/core';
 import { currentCombatHasGuardiansAlive } from '@helpers/combat-end';
+import { error } from '@helpers/logging';
 import { gamestate } from '@helpers/state-game';
 import { travelToNode } from '@helpers/travel';
 import { globalStatusText } from '@helpers/ui';
@@ -24,7 +25,7 @@ export function travelHome(): void {
   const nearestTown = getNearestTown(currentPosition);
 
   if (!nearestTown) {
-    console.error('No towns found in the world.');
+    error('No towns found in the world.');
     return;
   }
 

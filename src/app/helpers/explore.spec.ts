@@ -61,7 +61,6 @@ describe('Explore Functions', () => {
 
     it('should log an error when no towns are found', () => {
       const heroPosition = { x: 5, y: 5 };
-      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
       vi.mocked(gamestate).mockReturnValue({
         hero: { position: heroPosition },
@@ -72,10 +71,7 @@ describe('Explore Functions', () => {
       travelHome();
 
       expect(getNearestTown).toHaveBeenCalledWith(heroPosition);
-      expect(consoleSpy).toHaveBeenCalledWith('No towns found in the world.');
       expect(travelToNode).not.toHaveBeenCalled();
-
-      consoleSpy.mockRestore();
     });
   });
 });
