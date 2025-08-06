@@ -2,46 +2,46 @@
   <app-game-map-pixi class="absolute inset-0 map-layer"></app-game-map-pixi>
 
   @if (showOptions()) {
-    <div class="absolute inset-0 p-8">
+    <app-panel-container>
       <app-panel-options
         class="absolute inset-0 panel-layer"
       ></app-panel-options>
-    </div>
+    </app-panel-container>
   }
 
   @if (showHeroes()) {
-    <div class="absolute inset-0 p-8">
+    <app-panel-container>
       <app-panel-heroes class="absolute inset-0 panel-layer"></app-panel-heroes>
-    </div>
+    </app-panel-container>
   }
 
   @if (showInventory()) {
-    <div class="absolute inset-0 p-8">
+    <app-panel-container>
       <app-panel-inventory
         class="absolute inset-0 panel-layer"
       ></app-panel-inventory>
-    </div>
+    </app-panel-container>
   }
 
   @if (showCombat()) {
-    <div class="absolute inset-0 p-8">
-      <app-panel-combat class="absolute inset-0 panel-layer"></app-panel-combat>
-    </div>
+    <app-panel-container>
+      <app-panel-combat class="absolute inset-0 panel-layer"></app-panel-combat>    
+    </app-panel-container>
   }
 
   @if (showTown()) {
-    <div class="absolute inset-0 p-8">
+    <app-panel-container>
       <app-panel-town class="absolute inset-0 panel-layer"></app-panel-town>
-    </div>
+    </app-panel-container>
   }
 
   @if (showLocation(); as location) {
-    <div class="absolute inset-0 p-8">
+    <app-panel-container>
       <app-panel-location
         class="absolute inset-0 panel-layer"
         [location]="location"
       ></app-panel-location>
-    </div>
+    </app-panel-container>
   }
 </div>
 
