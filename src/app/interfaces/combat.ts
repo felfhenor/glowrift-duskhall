@@ -34,6 +34,7 @@ export type CombatantCombatStats = {
   redirectionChance: ElementBlock;
   missChance: ElementBlock;
   debuffIgnoreChance: ElementBlock;
+  damageReflectPercent: ElementBlock;
   reviveChance: number;
 };
 

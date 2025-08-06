@@ -273,3 +273,40 @@
           duration: 3
 
       combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
+
+- id: bd71983f-9002-49ef-91d8-be503c1c654d
+  name: Snow Angel
+
+  sprite: '0236'
+  frames: 8
+
+  disableUpgrades: true
+
+  rarity: Legendary
+  dropLevel: 47
+
+  usesPerCombat: 1
+
+  techniques:
+    - elements: [Water]
+      attributes: [BypassDefense, HealsTarget]
+      targets: 4
+      targetType: Allies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+        - behavior: IfNotStatusEffect
+          statusEffectId: Crystalline
+
+      statusEffects:
+        - statusEffectId: Crystalline
+          chance: 100
+          duration: 4
+
+        - statusEffectId: Regeneration
+          chance: 100
+          duration: 4
+
+      damageScaling:
+        Aura: 5
+
+      combatMessage: '**{{ combatant.name }}** cast **{{ skill.name }}** on **{{ target.name }}** for {{ absdamage }} healing ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'

@@ -117,6 +117,7 @@ function ensureCombatStats(
     redirectionChance: ensureAffinities(combatStats.redirectionChance),
     missChance: ensureAffinities(combatStats.missChance),
     debuffIgnoreChance: ensureAffinities(combatStats.debuffIgnoreChance),
+    damageReflectPercent: ensureAffinities(combatStats.damageReflectPercent),
     reviveChance: combatStats.reviveChance ?? 0,
   };
 }

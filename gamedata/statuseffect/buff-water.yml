@@ -16,3 +16,59 @@
   onTick:
     - type: HealDamage
       combatMessage: '**{{ combatant.name }}** regenerates {{ healing }} health ({{ combatant.hp }}/{{ combatant.totalStats.Health }} HP remaining).'
+
+- id: 43064336-df44-4b63-9c27-8fbd5a08e557
+  name: Crystalline
+
+  type: Buff
+  elements: [Water]
+
+  trigger: TurnStart
+
+  onApply:
+    - type: SendMessage
+      combatMessage: '**{{ combatant.name }}** has been coated in crystals!'
+
+    - type: AddCombatStatElement
+      element: Fire
+      combatStat: damageReflectPercent
+      value: 20
+
+    - type: AddCombatStatElement
+      element: Earth
+      combatStat: damageReflectPercent
+      value: 20
+
+    - type: AddCombatStatElement
+      element: Water
+      combatStat: damageReflectPercent
+      value: 20
+
+    - type: AddCombatStatElement
+      element: Air
+      combatStat: damageReflectPercent
+      value: 20
+
+  onUnapply:
+    - type: SendMessage
+      combatMessage: '**{{ combatant.name }}** is no longer coated in crystals!'
+
+    - type: TakeCombatStatElement
+      element: Fire
+      combatStat: damageReflectPercent
+      value: 20
+
+    - type: TakeCombatStatElement
+      element: Earth
+      combatStat: damageReflectPercent
+      value: 20
+
+    - type: TakeCombatStatElement
+      element: Water
+      combatStat: damageReflectPercent
+      value: 20
+
+    - type: TakeCombatStatElement
+      element: Air
+      combatStat: damageReflectPercent
+      value: 20

@@ -96,6 +96,8 @@ export function applySkillToTarget(
     absdamage: 0,
   };
 
+  let retaliationDamage = 0;
+
   if (baseDamage > 0) {
     const baseTargetDefense = target.totalStats.Aura;
     const targetDefense =
@@ -142,11 +144,31 @@ export function applySkillToTarget(
 
     templateData.damage = effectiveDamage;
     templateData.absdamage = Math.abs(effectiveDamage);
+
+    const damageReflectPercent = meanBy(
+      technique.elements,
+      (el) => target.combatStats.damageReflectPercent[el],
+    );
+    if (effectiveDamage > 0 && damageReflectPercent > 0) {
+      retaliationDamage = Math.floor(
+        (effectiveDamage * damageReflectPercent) / 100,
+      );
+    }
   }
 
   if (technique.combatMessage) {
     const message = formatCombatMessage(technique.combatMessage, templateData);
     logCombatMessage(combat, message, combatant);
+  }
+
+  if (retaliationDamage > 0) {
+    combatantTakeDamage(combatant, retaliationDamage);
+
+    logCombatMessage(
+      combat,
+      `**${combatant.name}** took ${retaliationDamage} damage in retaliation (${combatant.hp}/${combatant.totalStats.Health} HP remaining)!`,
+      combatant,
+    );
   }
 
   technique.statusEffects.forEach((effData) => {

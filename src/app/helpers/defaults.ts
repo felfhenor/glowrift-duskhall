@@ -171,6 +171,7 @@ export function getDefaultCombatStats(): CombatantCombatStats {
     redirectionChance: getDefaultAffinities(),
     missChance: getDefaultAffinities(),
     debuffIgnoreChance: getDefaultAffinities(),
+    damageReflectPercent: getDefaultAffinities(),
     reviveChance: 0,
   };
 }
