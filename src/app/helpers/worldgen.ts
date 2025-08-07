@@ -754,10 +754,10 @@ function numGuardiansForLocation(
     const distance = distanceBetweenNodes(location, worldCenter);
     const distancePercentage = Math.min((distance / maxDistance) * 100, 100);
     
-    // Scale from 0 to 10 based on distance percentage
-    // At 10% distance: 1 extra creature
-    // At 100% distance: 10 extra creatures
-    distanceBonus = Math.floor(distancePercentage / 10);
+    // Scale from 0 to 5 based on distance percentage
+    // At 20% distance: 1 extra creature
+    // At 100% distance: 5 extra creatures
+    distanceBonus = Math.floor(distancePercentage / 20);
   }
 
   return Math.max(0, modifier + baseCount + distanceBonus);

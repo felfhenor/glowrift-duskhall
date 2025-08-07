@@ -92,13 +92,13 @@ describe('Distance-based Guardian Scaling', () => {
     const nearGuardians = getGuardiansForLocation(nearLocation, worldCenter, maxDistance);
     const farGuardians = getGuardiansForLocation(farLocation, worldCenter, maxDistance);
 
-    // Near location should have base count (1) + small distance bonus (~1)
+    // Near location should have base count (1) + small distance bonus (~0-1)
     expect(nearGuardians.length).toBeGreaterThanOrEqual(1);
-    expect(nearGuardians.length).toBeLessThanOrEqual(3);
+    expect(nearGuardians.length).toBeLessThanOrEqual(2);
 
-    // Far location should have base count (1) + large distance bonus (~10)
-    expect(farGuardians.length).toBeGreaterThanOrEqual(10);
-    expect(farGuardians.length).toBeLessThanOrEqual(12);
+    // Far location should have base count (1) + distance bonus (~5)
+    expect(farGuardians.length).toBeGreaterThanOrEqual(5);
+    expect(farGuardians.length).toBeLessThanOrEqual(7);
 
     // Far location should have significantly more guardians than near location
     expect(farGuardians.length).toBeGreaterThan(nearGuardians.length);
@@ -148,7 +148,7 @@ describe('Distance-based Guardian Scaling', () => {
 
     const guardians = getGuardiansForLocation(farCastle, worldCenter, maxDistance);
     
-    // Castle base (10) + distance bonus (10) = 20 guardians
-    expect(guardians.length).toBe(20);
+    // Castle base (10) + distance bonus (5) = 15 guardians
+    expect(guardians.length).toBe(15);
   });
 });
