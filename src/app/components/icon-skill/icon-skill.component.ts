@@ -2,6 +2,7 @@ import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 import { AtlasAnimationComponent } from '@components/atlas-animation/atlas-animation.component';
 import { IconBlankSlotComponent } from '@components/icon-blank-slot/icon-blank-slot.component';
+import { IconComponent } from '@components/icon/icon.component';
 import { StatsSkillCompareComponent } from '@components/stats-skill-compare/stats-skill-compare.component';
 import { StatsSkillComponent } from '@components/stats-skill/stats-skill.component';
 import { getSkillEnchantLevel, rarityItemOutlineColor } from '@helpers';
@@ -18,6 +19,7 @@ import { TippyDirective } from '@ngneat/helipopper';
     NgClass,
     StatsSkillComponent,
     StatsSkillCompareComponent,
+    IconComponent,
   ],
   templateUrl: './icon-skill.component.html',
   styleUrl: './icon-skill.component.scss',

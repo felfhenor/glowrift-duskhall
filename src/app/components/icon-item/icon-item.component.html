@@ -39,6 +39,12 @@
   </div>
 }
 
+@if (itemData.isFavorite) {
+  <div class="z-30 absolute top-[2px] left-[2px]">
+    <app-icon name="gameSevenPointedStar" size="16px" color="gold"></app-icon>
+  </div>
+}
+
 <ng-template #itemInfo let-hide>
   @if (compareItem(); as compareWith) {
     <app-stats-item-compare

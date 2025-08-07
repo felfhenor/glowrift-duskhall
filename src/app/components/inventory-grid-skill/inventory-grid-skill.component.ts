@@ -2,7 +2,7 @@ import { Component, computed, input, output, signal } from '@angular/core';
 
 import { DecimalPipe } from '@angular/common';
 import { IconSkillComponent } from '@components/icon-skill/icon-skill.component';
-import { skillSalvage, skillSalvageValue } from '@helpers';
+import { skillSalvage, skillSalvageValue, toggleSkillFavorite } from '@helpers';
 import type {
   EquipmentSkill,
   EquipmentSkillId,
@@ -44,5 +44,9 @@ export class InventoryGridSkillComponent {
 
   salvageItem(item: EquipmentSkill) {
     skillSalvage(item);
+  }
+
+  toggleFavorite(item: EquipmentSkill) {
+    toggleSkillFavorite(item);
   }
 }

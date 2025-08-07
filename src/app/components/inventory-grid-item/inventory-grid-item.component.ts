@@ -3,7 +3,7 @@ import { Component, input, output } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { IconBlankSlotComponent } from '@components/icon-blank-slot/icon-blank-slot.component';
 import { IconItemComponent } from '@components/icon-item/icon-item.component';
-import { itemSalvage, itemSalvageValue } from '@helpers';
+import { itemSalvage, itemSalvageValue, toggleItemFavorite } from '@helpers';
 import type {
   EquipmentItem,
   EquipmentItemId,
@@ -39,6 +39,10 @@ export class InventoryGridItemComponent {
 
   salvageItem(item: EquipmentItem) {
     itemSalvage(item);
+  }
+
+  toggleFavorite(item: EquipmentItem) {
+    toggleItemFavorite(item);
   }
 
   compareWithItem(item: EquipmentItem) {
