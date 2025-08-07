@@ -76,7 +76,7 @@
     Aura: 2.8
 
   talentBoosts:
-    - talentId: Strength of Firewisp I
+    - talentId: Strength of Dustwisp I
       value: 1
 
 - id: 704228c1-70a7-4722-b79a-de824599c279
@@ -93,7 +93,7 @@
     Health: 15
 
   talentBoosts:
-    - talentId: Strength of Thunderwave I
+    - talentId: Wind Walker I
       value: 1
 
 - id: b73a8cb2-9de8-410f-9df1-8501b41654c5
@@ -151,7 +151,7 @@
   talentBoosts:
     - talentId: Strength of Firewisp I
       value: 1
-    - talentId: Strength of Healsprite I
+    - talentId: Strength of Chillstar I
       value: 1
 
 - id: 089847a7-55e5-46b2-a659-fa38719be8a1

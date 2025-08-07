@@ -76,7 +76,7 @@
     Speed: 0.7
 
   talentBoosts:
-    - talentId: Strength of Firewisp I
+    - talentId: Strength of Windshear I
       value: 1
 
 - id: a3c0221a-67f6-4236-8d71-c7a7abfde58b
@@ -131,11 +131,11 @@
     Speed: 1.4
 
   talentBoosts:
-    - talentId: Strength of Thunderwave I
+    - talentId: Strength of Dustwisp I
       value: 1
 
   skillIds:
-    - Thunderwave I
+    - Dustwisp I
 
 - id: 95b19af4-53ae-49c7-bb7f-47f51f019517
   name: Legendary Broadsword of Elements
@@ -150,14 +150,14 @@
     Aura: 1.8
 
   talentBoosts:
-    - talentId: Strength of Firewisp I
+    - talentId: Storm Caller I
       value: 1
-    - talentId: Strength of Earthspike I
+    - talentId: Winds of Change I
       value: 1
 
   skillIds:
-    - Firewisp I
-    - Earthspike I
+    - Windshear I
+    - Static Gust
 
 - id: ddf8bb76-b532-45b1-aad7-9d064d8ddec9
   name: Longbow of Precision
@@ -194,11 +194,11 @@
     Aura: 1.4
 
   talentBoosts:
-    - talentId: Strength of Thunderwave I
+    - talentId: Wind Walker I
       value: 1
 
   skillIds:
-    - Thunderwave II
+    - Zephyr Speed
 
 - id: 521131d1-8b04-4d1c-a4c1-07536966b2f8
   name: Ancient Trident of the Depths
@@ -215,11 +215,11 @@
   talentBoosts:
     - talentId: Strength of Healsprite I
       value: 1
-    - talentId: Strength of Earthspike I
+    - talentId: Strength of Dustwisp I
       value: 1
 
   skillIds:
-    - Healsprite II
+    - Stonemist II
 
 - id: 78895c9b-651e-47ba-89ac-165e27a4ad41
   name: Mithril Greataxe
@@ -282,7 +282,7 @@
       value: 1
 
   skillIds:
-    - Healsprite III
+    - Soothing Bubbles
 
 - id: be4492be-a848-42c5-aa0d-22023a8829f3
   name: Platinum Staff
@@ -319,11 +319,11 @@
     Health: 70
 
   talentBoosts:
-    - talentId: Strength of Earthspike I
+    - talentId: Gravitational Force
       value: 1
 
   skillIds:
-    - Earthspike III
+    - Gaiac Aegis
 
 - id: e1c51b4c-9a2d-4e58-8f0c-33b2cc80b06b
   name: Excalibur
@@ -339,17 +339,17 @@
     Health: 100
 
   talentBoosts:
-    - talentId: Strength of Firewisp I
+    - talentId: Thunderstruck III
       value: 1
-    - talentId: Strength of Healsprite I
+    - talentId: Disorienting Winds
       value: 1
-    - talentId: Strength of Thunderwave I
+    - talentId: Acuity
       value: 1
-    - talentId: Strength of Earthspike I
+    - talentId: Storm Caller III
       value: 1
 
   skillIds:
-    - Firewisp III
-    - Healsprite III
-    - Thunderwave III
-    - Earthspike III
+    - Eye of the Storm
+    - Rejuvenating Gust
+    - Vaporize
+    - Smite
