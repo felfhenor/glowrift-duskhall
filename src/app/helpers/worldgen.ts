@@ -376,7 +376,7 @@ export async function generateWorld(
       x: Math.max(0, firstTown.x - distMax),
       y: Math.max(0, firstTown.y - distMax),
       width: Math.min(config.width, 2 * distMax + 1),
-      height: Math.min(config.height, 2 * distMax + 1),
+      height: Math.min(config.height - queryBounds.y, 2 * distMax + 1),
     };
 
     const candidates = positionQuadtree.retrieve(queryBounds);
