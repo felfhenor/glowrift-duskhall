@@ -127,8 +127,8 @@ describe('World Generation - Node Distribution', () => {
       // Get all nodes with actual content (not empty nodes)
       const contentNodes = Object.values(world.nodes).filter(node => node.nodeType);
       
-      // Check corner areas (10% of map size from each corner as implemented)
-      const cornerMargin = Math.floor(Math.min(mediumWorldConfig.width, mediumWorldConfig.height) * 0.1);
+      // Check corner areas (20% of map size from each corner as implemented)
+      const cornerMargin = Math.floor(Math.min(mediumWorldConfig.width, mediumWorldConfig.height) * 0.2);
       let cornerNodes = 0;
       
       contentNodes.forEach(node => {
@@ -242,8 +242,8 @@ describe('World Generation - Node Distribution', () => {
       // Get all nodes with actual content (not empty nodes)
       const contentNodes = Object.values(world.nodes).filter(node => node.nodeType);
       
-      // Check corner areas (10% of map size from each corner as implemented)
-      const cornerMargin = Math.floor(Math.min(largeWorldConfig.width, largeWorldConfig.height) * 0.1);
+      // Check corner areas (20% of map size from each corner as implemented)
+      const cornerMargin = Math.floor(Math.min(largeWorldConfig.width, largeWorldConfig.height) * 0.2);
       let cornerNodes = 0;
       
       contentNodes.forEach(node => {

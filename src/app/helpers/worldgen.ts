@@ -305,8 +305,8 @@ function addCornerNodes(
   rng: PRNG,
   counts: Record<LocationType, number>,
 ): void {
-  // Define corner areas - within 10% of each corner
-  const cornerMargin = Math.floor(Math.min(config.width, config.height) * 0.1);
+  // Define corner areas - within 20% of each corner
+  const cornerMargin = Math.floor(Math.min(config.width, config.height) * 0.2);
   
   const corners = [
     { x: 0, y: 0, maxX: cornerMargin, maxY: cornerMargin }, // top-left
