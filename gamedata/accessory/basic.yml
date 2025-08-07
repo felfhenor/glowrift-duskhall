@@ -39,3 +39,295 @@
   talentBoosts:
     - talentId: Strength of Firewisp I
       value: 1
+
+- id: 3d246a2f-fb18-4360-806b-0a7f232da6ef
+  name: Simple Band
+  sprite: '0020'
+
+  rarity: Common
+  dropLevel: 5
+
+  baseStats:
+    Speed: 1.0
+    Force: 1.0
+
+- id: 70488eec-ad1a-4a59-b1fb-5f699b90c0f6
+  name: Novice Ring
+  sprite: '0019'
+
+  rarity: Uncommon
+  dropLevel: 8
+
+  baseStats:
+    Speed: 1.2
+    Force: 1.2
+    Aura: 2.4
+
+- id: e7860655-393a-4a34-9a67-5a30a6769a88
+  name: Apprentice Charm
+  sprite: '0008'
+
+  rarity: Rare
+  dropLevel: 12
+
+  baseStats:
+    Speed: 1.4
+    Force: 1.4
+    Aura: 2.8
+
+  talentBoosts:
+    - talentId: Strength of Firewisp I
+      value: 1
+
+- id: 704228c1-70a7-4722-b79a-de824599c279
+  name: Mystic Pendant
+  sprite: '0005'
+
+  rarity: Mystical
+  dropLevel: 15
+
+  baseStats:
+    Speed: 1.6
+    Force: 1.6
+    Aura: 3.2
+    Health: 15
+
+  talentBoosts:
+    - talentId: Strength of Thunderwave I
+      value: 1
+
+- id: b73a8cb2-9de8-410f-9df1-8501b41654c5
+  name: Wood Shield
+  sprite: '0053'
+
+  rarity: Common
+  dropLevel: 18
+
+  baseStats:
+    Force: 3.5
+    Aura: 2.0
+
+- id: 924ab975-55d2-40ac-9d15-9f85cc06a82a
+  name: Steel Shield
+  sprite: '0037'
+
+  rarity: Uncommon
+  dropLevel: 20
+
+  baseStats:
+    Force: 4.2
+    Aura: 2.4
+    Health: 24
+
+- id: 5118493e-d045-4025-b199-b121fece109e
+  name: Earth-powered Shield
+  sprite: '0041'
+
+  rarity: Rare
+  dropLevel: 22
+
+  baseStats:
+    Force: 4.9
+    Aura: 2.8
+    Speed: 2.1
+
+  talentBoosts:
+    - talentId: Strength of Earthspike I
+      value: 1
+
+- id: 53c2a8d6-7a8c-4c25-8eb7-da2163e603f1
+  name: Elemental Core
+  sprite: '0011'
+
+  rarity: Legendary
+  dropLevel: 25
+
+  baseStats:
+    Force: 7.0
+    Aura: 4.0
+    Speed: 3.0
+    Health: 40
+
+  talentBoosts:
+    - talentId: Strength of Firewisp I
+      value: 1
+    - talentId: Strength of Healsprite I
+      value: 1
+
+- id: 089847a7-55e5-46b2-a659-fa38719be8a1
+  name: Iron Circlet
+  sprite: '0004'
+
+  rarity: Common
+  dropLevel: 28
+
+  baseStats:
+    Aura: 6.0
+    Health: 30
+
+- id: fbc2e4f2-f819-417e-9c88-1c9e16d87898
+  name: Warrior's Medal
+  sprite: '0045'
+
+  rarity: Uncommon
+  dropLevel: 30
+
+  baseStats:
+    Force: 6.0
+    Speed: 3.6
+    Health: 36
+
+- id: e54d5fd7-146b-435e-ab95-5d58b1d88fef
+  name: Scholar's Emblem
+  sprite: '0001'
+
+  rarity: Rare
+  dropLevel: 32
+
+  baseStats:
+    Aura: 8.4
+    Speed: 4.2
+    Force: 2.8
+
+  talentBoosts:
+    - talentId: Strength of Healsprite I
+      value: 1
+
+- id: a3a75f9f-fc94-4018-9ddf-5a789cbe2129
+  name: Ancient Relic Shield
+  sprite: '0049'
+
+  rarity: Mystical
+  dropLevel: 35
+
+  baseStats:
+    Force: 8.0
+    Aura: 8.0
+    Speed: 4.8
+
+  talentBoosts:
+    - talentId: Strength of Thunderwave I
+      value: 1
+    - talentId: Strength of Earthspike I
+      value: 1
+
+- id: 6e28ed96-6552-46f7-b0a8-576929e4dcc7
+  name: Mithril Band
+  sprite: '0013'
+
+  rarity: Common
+  dropLevel: 38
+
+  baseStats:
+    Speed: 8.0
+    Force: 6.0
+
+- id: 1c882b9a-ae30-4a3a-9b70-8f8fda48b666
+  name: Steel Tower Shield
+  sprite: '0038'
+
+  rarity: Uncommon
+  dropLevel: 40
+
+  baseStats:
+    Speed: 9.6
+    Force: 7.2
+    Aura: 4.8
+
+- id: 401437f7-f189-4a9f-a227-968c0b47a1e0
+  name: Ancient Relic Tower Shield
+  sprite: '0050'
+
+  rarity: Rare
+  dropLevel: 42
+
+  baseStats:
+    Speed: 11.2
+    Force: 8.4
+    Aura: 5.6
+    Health: 56
+
+  talentBoosts:
+    - talentId: Strength of Firewisp I
+      value: 1
+
+- id: 2477983d-053f-4f1b-a726-a1ecb5e7a49d
+  name: Ethereal Band
+  sprite: '0016'
+
+  rarity: Mystical
+  dropLevel: 45
+
+  baseStats:
+    Speed: 12.8
+    Force: 9.6
+    Aura: 6.4
+    Health: 64
+
+  talentBoosts:
+    - talentId: Strength of Firewisp I
+      value: 1
+    - talentId: Strength of Firewisp II
+      value: 1
+
+- id: 24cb86ae-40ae-406f-b899-d2038e8e5a7e
+  name: Garnet Amulet
+  sprite: '0007'
+
+  rarity: Common
+  dropLevel: 47
+
+  baseStats:
+    Aura: 15.0
+    Health: 75
+
+- id: 2345d2d7-3af2-4ef9-b353-bbaf728b9add
+  name: Champion's Tower Shield
+  sprite: '0046'
+
+  rarity: Uncommon
+  dropLevel: 48
+
+  baseStats:
+    Force: 18.0
+    Speed: 12.0
+    Health: 60
+
+- id: d9d365d2-4433-4672-9e84-04eeefa9ecfe
+  name: Electric Shield
+  sprite: '0029'
+
+  rarity: Rare
+  dropLevel: 49
+
+  baseStats:
+    Force: 14.0
+    Speed: 14.0
+    Aura: 14.0
+
+  talentBoosts:
+    - talentId: Strength of Thunderwave I
+      value: 1
+
+- id: 1e454626-22d4-473e-908f-75e877f24a92
+  name: Omega Catalyst
+  sprite: '0052'
+
+  rarity: Legendary
+  dropLevel: 50
+
+  baseStats:
+    Force: 20.0
+    Speed: 20.0
+    Aura: 20.0
+    Health: 100
+
+  talentBoosts:
+    - talentId: Strength of Firewisp I
+      value: 1
+    - talentId: Strength of Healsprite I
+      value: 1
+    - talentId: Strength of Thunderwave I
+      value: 1
+    - talentId: Strength of Earthspike I
+      value: 1
