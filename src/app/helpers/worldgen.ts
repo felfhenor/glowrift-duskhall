@@ -34,7 +34,7 @@ import {
   locationTraitLootCountModifier,
 } from '@helpers/trait-location-worldgen';
 import { distanceBetweenNodes } from '@helpers/travel';
-import type { TraitLocationContent } from '@interfaces';
+import type { DropRarity, TraitLocationContent } from '@interfaces';
 import {
   type DroppableEquippable,
   type GameElement,
@@ -341,9 +341,16 @@ function addCornerNodes(
     
     if (nodesToAdd > 0 && emptyPositions.length > 0) {
       for (let i = 0; i < Math.min(nodesToAdd, emptyPositions.length); i++) {
-        // Randomly choose node type (prefer caves and dungeons for corners)
-        const nodeTypes: LocationType[] = ['cave', 'cave', 'dungeon', 'castle']; // Higher chance for caves
-        const nodeType = randomChoice(nodeTypes, rng);
+        
+        const nodeTypesWithRarities: Array<{ rarity: DropRarity, type: LocationType }> = [
+          { rarity: 'Common', type: 'cave' },
+          { rarity: 'Rare', type: 'dungeon' },
+          { rarity: 'Mystical', type: 'castle' },
+        ];
+
+
+        const chosenNode = randomChoiceByRarity(nodeTypesWithRarities, rng);
+        const nodeType = chosenNode!.type;
         
         // Pick random empty position in this corner
         const positionIndex = randomNumberRange(0, emptyPositions.length - 1, rng);
