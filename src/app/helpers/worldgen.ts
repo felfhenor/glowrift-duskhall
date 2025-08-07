@@ -299,6 +299,74 @@ function fillSpacesWithLoot(nodes: Record<string, WorldLocation>): void {
   });
 }
 
+function addCornerNodes(
+  config: WorldConfigContent,
+  nodes: Record<string, WorldLocation>,
+  rng: PRNG,
+  counts: Record<LocationType, number>,
+): void {
+  // Define corner areas - within 10% of each corner
+  const cornerMargin = Math.floor(Math.min(config.width, config.height) * 0.1);
+  
+  const corners = [
+    { x: 0, y: 0, maxX: cornerMargin, maxY: cornerMargin }, // top-left
+    { x: config.width - cornerMargin, y: 0, maxX: config.width, maxY: cornerMargin }, // top-right
+    { x: 0, y: config.height - cornerMargin, maxX: cornerMargin, maxY: config.height }, // bottom-left
+    { x: config.width - cornerMargin, y: config.height - cornerMargin, maxX: config.width, maxY: config.height }, // bottom-right
+  ];
+
+  corners.forEach((corner, cornerIndex) => {
+    // Count existing nodes in this corner
+    let existingNodesInCorner = 0;
+    let emptyPositions: Array<{x: number, y: number}> = [];
+    
+    for (let x = corner.x; x < corner.maxX; x++) {
+      for (let y = corner.y; y < corner.maxY; y++) {
+        const nodeKey = `${x},${y}`;
+        if (nodes[nodeKey]?.nodeType) {
+          existingNodesInCorner++;
+        } else {
+          emptyPositions.push({x, y});
+        }
+      }
+    }
+    
+    // Calculate how many nodes this corner should have
+    // Aim for about 1-2 nodes per corner area, more for larger corners
+    const cornerArea = (corner.maxX - corner.x) * (corner.maxY - corner.y);
+    const targetNodesInCorner = Math.max(1, Math.floor(cornerArea / 20)); // 1 node per ~20 tiles
+    
+    // Add nodes if corner is underutilized
+    const nodesToAdd = Math.max(0, targetNodesInCorner - existingNodesInCorner);
+    
+    if (nodesToAdd > 0 && emptyPositions.length > 0) {
+      for (let i = 0; i < Math.min(nodesToAdd, emptyPositions.length); i++) {
+        // Randomly choose node type (prefer caves and dungeons for corners)
+        const nodeTypes: LocationType[] = ['cave', 'cave', 'dungeon', 'castle']; // Higher chance for caves
+        const nodeType = randomChoice(nodeTypes, rng);
+        
+        // Pick random empty position in this corner
+        const positionIndex = randomNumberRange(0, emptyPositions.length - 1, rng);
+        const position = emptyPositions.splice(positionIndex, 1)[0];
+        
+        // Create the node
+        const cornerNode: WorldLocation = {
+          ...getDefaultWorldNode(),
+          id: uuid(),
+          x: position.x,
+          y: position.y,
+          nodeType,
+          name: `${nodeType} (corner ${cornerIndex + 1}-${i + 1})`,
+        };
+        
+        // Add to nodes and update counts
+        nodes[`${position.x},${position.y}`] = cornerNode;
+        counts[nodeType]++;
+      }
+    }
+  });
+}
+
 function cleanUpEmptyNodes(nodes: Record<string, WorldLocation>): void {
   Object.keys(nodes).forEach((nodePos) => {
     if (!nodes[nodePos].nodeType) {
@@ -391,38 +459,7 @@ export async function generateWorld(
 
     if (freeNodes.length === 0) return { x: -1, y: -1 };
 
-    // Calculate corner bias: prefer positions that are closer to corners but not necessarily in outer regions
-    const getCornerDistance = (node: QuadtreePoint): number => {
-      const corners = [
-        { x: 0, y: 0 }, // top-left
-        { x: config.width - 1, y: 0 }, // top-right
-        { x: 0, y: config.height - 1 }, // bottom-left
-        { x: config.width - 1, y: config.height - 1 }, // bottom-right
-      ];
-      
-      return Math.min(...corners.map(corner => 
-        Math.sqrt((node.x - corner.x) ** 2 + (node.y - corner.y) ** 2)
-      ));
-    };
-
-    // Distance from center for regional filtering
-    const centerDistance = distanceBetweenNodes(firstTown, { x: 0, y: 0 });
-    const centerDistanceThreshold = centerDistance * 0.67; // Only bias toward corners in inner/middle regions
-
-    // Split nodes into corner-biased and regular candidates
-    const cornerThreshold = Math.min(config.width, config.height) * 0.3; // 30% of map size
-    const cornerNodes = freeNodes.filter(n => {
-      const toCenter = distanceBetweenNodes(n, firstTown);
-      const toCorner = getCornerDistance(n);
-      // Corner bias only for nodes that are near corners AND not in far outer regions
-      return toCorner <= cornerThreshold && toCenter <= centerDistanceThreshold;
-    });
-
-    // 40% chance to prefer corner nodes if available
-    const useCornerBias = succeedsChance(40, rng) && cornerNodes.length > 0;
-    const candidatePool = useCornerBias ? cornerNodes : freeNodes;
-
-    const chosenNode = randomChoice<QuadtreePoint>(candidatePool, rng);
+    const chosenNode = randomChoice<QuadtreePoint>(freeNodes, rng);
     return { x: chosenNode.x, y: chosenNode.y };
   };
 
@@ -568,6 +605,9 @@ export async function generateWorld(
   if (node.isLast) {
     setWorldGenStatus(`Filling empty space...`);
     fillEmptySpaceWithEmptyNodes(config, nodes);
+
+    setWorldGenStatus('Adding corner nodes...');
+    addCornerNodes(config, nodes, rng, counts);
 
     setWorldGenStatus('Adding spice to the world...');
     addTraitsToLocations(nodes, rng);
