@@ -16,6 +16,7 @@ import {
   getDefaultWorldNode,
 } from '@helpers/defaults';
 import { createGuardianForLocation } from '@helpers/guardian';
+import { Quadtree, type QuadtreePoint } from '@helpers/quadtree';
 import {
   gamerng,
   randomChoice,
@@ -320,6 +321,14 @@ export async function generateWorld(
     { x: number; y: number; taken: boolean }
   > = {};
 
+  // Initialize quadtree for efficient spatial queries
+  const positionQuadtree = new Quadtree({
+    x: 0,
+    y: 0,
+    width: config.width,
+    height: config.height,
+  });
+
   const centerPosition: WorldPosition = {
     x: Math.floor(config.width / 2),
     y: Math.floor(config.height / 2),
@@ -361,15 +370,28 @@ export async function generateWorld(
     x: number;
     y: number;
   } = (distMin: number, distMax: number) => {
-    const freeNodes = Object.values(nodePositionsAvailable).filter((n) => {
+    // Query a large area that could contain positions within our distance range
+    // We use a conservative bounds that covers the maximum possible area
+    const queryX = Math.max(0, firstTown.x - distMax);
+    const queryY = Math.max(0, firstTown.y - distMax);
+    const queryBounds = {
+      x: queryX,
+      y: queryY,
+      width: Math.min(config.width - queryX, 2 * distMax + 1),
+      height: Math.min(config.height - queryY, 2 * distMax + 1),
+    };
+
+    const candidates = positionQuadtree.retrieve(queryBounds);
+    const freeNodes = candidates.filter((n) => {
       const dist = distanceBetweenNodes(n, firstTown);
       if (dist < distMin || dist > distMax) return false;
       if (n.taken) return false;
       return true;
     });
+
     if (freeNodes.length === 0) return { x: -1, y: -1 };
 
-    const chosenNode = randomChoice<{ x: number; y: number }>(freeNodes, rng);
+    const chosenNode = randomChoice<QuadtreePoint>(freeNodes, rng);
     return { x: chosenNode.x, y: chosenNode.y };
   };
 
@@ -377,6 +399,7 @@ export async function generateWorld(
     nodeList.push(node);
     nodes[`${node.x},${node.y}`] = node;
     nodePositionsAvailable[`${node.x},${node.y}`].taken = true;
+    positionQuadtree.updatePoint(node.x, node.y, true);
   };
 
   setWorldGenStatus('Generating world...');
@@ -392,7 +415,9 @@ export async function generateWorld(
 
   for (let x = 0; x < config.width; x++) {
     for (let y = 0; y < config.height; y++) {
-      nodePositionsAvailable[`${x},${y}`] = { x, y, taken: false };
+      const position = { x, y, taken: false };
+      nodePositionsAvailable[`${x},${y}`] = position;
+      positionQuadtree.insert(position);
     }
   }
 

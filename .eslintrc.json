@@ -41,7 +41,8 @@
         "comma-spacing": ["error", { "before": false, "after": true }],
         "arrow-spacing": ["error", { "before": true, "after": true }],
         "space-before-blocks": ["error"],
-        "typescript-paths/absolute-import": ["error", { "enableAlias": true }]
+        "typescript-paths/absolute-import": ["error", { "enableAlias": true }],
+        "eqeqeq": ["error", "always"]
       }
     },
     {

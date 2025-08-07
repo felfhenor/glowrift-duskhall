@@ -11,30 +11,32 @@
     <div class="card-body">
       <div class="card-title relative">Break Down Items</div>
 
-      <div class="flex flex-row flex-wrap gap-2">
-        @for (slot of maxSlots() | repeat; track $index) {
-          <app-icon-blank-slot
-            class="cursor-pointer"
-            (click)="unchooseItem($index)"
-            (contextmenu)="unchooseItem($index)"
-          >
-            @if (items[slot]; as item) {
-              <app-icon-item [item]="item"></app-icon-item>
-            } @else {
-              Choose
-            }
-          </app-icon-blank-slot>
-        }
-      </div>
+      <div class="flex flex-col justify-between h-full">
+        <div class="flex flex-row flex-wrap gap-2">
+          @for (slot of maxSlots() | repeat; track $index) {
+            <app-icon-blank-slot
+              class="cursor-pointer"
+              (click)="unchooseItem($index)"
+              (contextmenu)="unchooseItem($index)"
+            >
+              @if (items[slot]; as item) {
+                <app-icon-item [item]="item"></app-icon-item>
+              } @else {
+                Choose
+              }
+            </app-icon-blank-slot>
+          }
+        </div>
 
-      <div class="mt-4">
-        <button
-          class="btn btn-secondary btn-sm"
-          (click)="autoChooseItems()"
-          [disabled]="selectedItems().length >= maxSlots()"
-        >
-          Auto-choose Items
-        </button>
+        <div class="mt-4">
+          <button
+            class="btn btn-secondary btn-block"
+            (click)="autoChooseItems()"
+            [disabled]="selectedItems().length >= maxSlots()"
+          >
+            Auto-choose Items
+          </button>
+        </div>
       </div>
     </div>
   </div>

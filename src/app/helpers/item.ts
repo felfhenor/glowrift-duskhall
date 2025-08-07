@@ -89,10 +89,20 @@ export function getItemElementMultiplier(
     .filter((e) => e.element === element)
     .map((i) => i.multiplier ?? 0);
 
+  const itemModTraitMultipliers = (
+    (item as EquipmentItem)?.mods?.traitIds ?? []
+  )
+    ?.flatMap(
+      (t) => getEntry<TraitEquipmentContent>(t)?.elementMultipliers ?? [],
+    )
+    .filter((e) => e.element === element)
+    .map((i) => i.multiplier ?? 0);
+
   return sum([
     ...itemMultipliers,
     ...itemModMultipliers,
     ...itemTraitMultipliers,
+    ...itemModTraitMultipliers,
   ]);
 }
 
