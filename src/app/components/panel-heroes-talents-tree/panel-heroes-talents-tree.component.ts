@@ -56,7 +56,13 @@ export class PanelHeroesTalentsTreeComponent {
           ...talentNode,
           talentData,
           isLearned: heroHasTalent(this.hero(), talentData.id),
-          canPurchase: canHeroBuyTalent(this.hero(), talentData, level.level),
+          canPurchase: canHeroBuyTalent(
+            this.hero(), 
+            talentData, 
+            level.level, 
+            talentTree, 
+            level.requiredTalentsInvested
+          ),
           talentLevel: heroTotalTalentLevel(this.hero(), talentData.id),
         } as TalentTreeHeroNode;
       }) as TalentTreeHeroNode[];
