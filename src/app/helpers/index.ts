@@ -80,6 +80,7 @@ export * from './trait-location-currency';
 export * from './trait-location-exploration';
 export * from './trait-location-worldgen';
 export * from './travel';
+export * from './travel-visualization';
 export * from './ui';
 export * from './version';
 export * from './world';

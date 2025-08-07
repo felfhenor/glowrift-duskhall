@@ -2,15 +2,21 @@ import type { ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { Component, computed, effect, inject, viewChild } from '@angular/core';
 import {
   createClaimIndicatorTextures,
+  createDestinationIndicator,
   createGameMapContainers,
   createNodeSprites,
   createPlayerIndicator,
+  createTravelingHeroIndicator,
+  createTravelLine,
   gamestate,
   generateMapGrid,
   getOption,
   getSpriteFromNodeType,
+  getTravelProgress,
   initializePixiApp,
   isAtNode,
+  isTraveling,
+  isTravelingToPosition,
   loadGameMapTextures,
   setupMapDragging,
   setupResponsiveCanvas,
@@ -42,10 +48,12 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
   private mapContainer?: Container;
   private terrainTextures: LoadedTextures = {};
   private objectTextures: LoadedTextures = {};
+  private heroTextures: LoadedTextures = {};
   private checkTexture?: Texture;
   private xTexture?: Texture;
   private nodeSprites: Record<string, NodeSpriteData> = {};
   private playerIndicatorContainer?: Container;
+  private travelVisualizationContainer?: Container;
   private resizeObserver?: ResizeObserver;
 
   public nodeWidth = computed(() =>
@@ -81,6 +89,15 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
         this.updateMap(mapData.tiles);
       }
     });
+
+    // Separate effect for travel visualization to ensure it updates when travel state or camera changes
+    effect(() => {
+      this.camera(); // Watch camera changes
+      isTraveling(); // Watch travel state changes
+      if (this.app && this.travelVisualizationContainer) {
+        this.updateTravelVisualization();
+      }
+    });
   }
 
   async ngOnInit() {
@@ -105,6 +122,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     const containers = createGameMapContainers(this.app);
     this.mapContainer = containers.mapContainer;
     this.playerIndicatorContainer = containers.playerIndicatorContainer;
+    this.travelVisualizationContainer = containers.travelVisualizationContainer;
     this.mapContainer.cullable = true;
 
     this.resizeObserver = setupResponsiveCanvas(
@@ -116,12 +134,12 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
   }
 
   private setupMouseDragging() {
-    if (!this.app || !this.mapContainer || !this.playerIndicatorContainer)
+    if (!this.app || !this.mapContainer || !this.playerIndicatorContainer || !this.travelVisualizationContainer)
       return;
 
     setupMapDragging({
       app: this.app,
-      containers: [this.mapContainer, this.playerIndicatorContainer],
+      containers: [this.mapContainer, this.playerIndicatorContainer, this.travelVisualizationContainer],
       viewportWidth: this.nodeWidth(),
       viewportHeight: this.nodeHeight(),
     });
@@ -136,6 +154,13 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       );
       this.terrainTextures = textures.terrainTextures;
       this.objectTextures = textures.objectTextures;
+
+      // Load hero textures
+      const { loadTexturesFromAtlas } = await import('@helpers/pixi-texture-loader');
+      this.heroTextures = await loadTexturesFromAtlas(
+        'art/spritesheets/hero.png',
+        artAtlases['hero'],
+      );
 
       const claimTextures = createClaimIndicatorTextures();
       this.checkTexture = claimTextures.checkTexture;
@@ -193,18 +218,74 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
   private updatePlayerIndicators(mapData: MapTileData[][]) {
     if (!this.playerIndicatorContainer || !this.app) return;
 
+    const travelProgress = getTravelProgress();
+
     mapData.forEach((row) => {
       row.forEach(({ x, y, nodeData }) => {
-        if (!isAtNode(nodeData)) return;
+        // Show normal player indicator when at a node and not traveling
+        if (!travelProgress.isActive && isAtNode(nodeData)) {
+          createPlayerIndicator(
+            x,
+            y,
+            this.playerIndicatorContainer!,
+            this.app!.ticker,
+          );
+        }
 
-        createPlayerIndicator(
-          x,
-          y,
-          this.playerIndicatorContainer!,
-          this.app!.ticker,
-        );
+        // Show destination indicator when this node is the travel target
+        if (travelProgress.isActive && isTravelingToPosition({ x, y })) {
+          createDestinationIndicator(
+            x,
+            y,
+            this.playerIndicatorContainer!,
+            this.app!.ticker,
+          );
+        }
       });
     });
+  }
+
+  private updateTravelVisualization() {
+    if (!this.travelVisualizationContainer || !this.app) return;
+
+    // Clear previous travel visualization
+    this.travelVisualizationContainer.removeChildren();
+
+    const travelProgress = getTravelProgress();
+    if (!travelProgress.isActive) return;
+
+    const { fromPosition, toPosition, interpolatedPosition } = travelProgress;
+
+    // Convert world coordinates to relative coordinates based on current camera
+    const camera = this.camera();
+    const relativeFromX = fromPosition.x - camera.x;
+    const relativeFromY = fromPosition.y - camera.y;
+    const relativeToX = toPosition.x - camera.x;
+    const relativeToY = toPosition.y - camera.y;
+    const relativeInterpolatedX = interpolatedPosition.x - camera.x;
+    const relativeInterpolatedY = interpolatedPosition.y - camera.y;
+
+    // Draw travel line between source and destination using relative coordinates
+    createTravelLine(
+      relativeFromX,
+      relativeFromY,
+      relativeToX,
+      relativeToY,
+      this.travelVisualizationContainer,
+    );
+
+    // Show traveling hero sprite at interpolated position using relative coordinates
+    const state = gamestate();
+    const partyLeader = state.hero.heroes[0]; // Get party leader
+    if (partyLeader && this.heroTextures[partyLeader.sprite]) {
+      createTravelingHeroIndicator(
+        relativeInterpolatedX,
+        relativeInterpolatedY,
+        this.heroTextures[partyLeader.sprite],
+        this.travelVisualizationContainer,
+        this.app.ticker,
+      );
+    }
   }
 
   private investigateLocation(nodeData: WorldLocation) {
