@@ -26,7 +26,17 @@ export class Quadtree {
 
   constructor(bounds: QuadtreeBounds, level = 0) {
     this.bounds = bounds;
+  private readonly maxLevels: number;
+
+  private level: number;
+  private points: QuadtreePoint[] = [];
+  private bounds: QuadtreeBounds;
+  private nodes: (Quadtree | null)[] = [null, null, null, null];
+
+  constructor(bounds: QuadtreeBounds, level = 0, maxLevels = 5) {
+    this.bounds = bounds;
     this.level = level;
+    this.maxLevels = maxLevels;
   }
 
   /**
