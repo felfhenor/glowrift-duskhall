@@ -102,11 +102,22 @@ export function getNodesWithinRiskTolerance(
 ): WorldLocation[] {
   const riskTolerance = gamestate().hero.riskTolerance;
   const heroLevel = gamestate().hero.heroes[0].level;
+  const tooHardNodes = gamestate().hero.tooHardNodes;
 
   let levelThreshold = 3;
   if (riskTolerance === 'medium') levelThreshold = 7;
   else if (riskTolerance === 'high') levelThreshold = 100;
-  return nodes.filter((n) => n.encounterLevel <= heroLevel + levelThreshold);
+  
+  return nodes.filter((n) => {
+    // Check if this node is too hard based on encounter level
+    if (n.encounterLevel > heroLevel + levelThreshold) return false;
+    
+    // Check if this node is in the "too hard" list
+    const nodeId = `${n.x},${n.y}`;
+    if (tooHardNodes.includes(nodeId)) return false;
+    
+    return true;
+  });
 }
 
 export function getClaimedNodes(): WorldLocation[] {

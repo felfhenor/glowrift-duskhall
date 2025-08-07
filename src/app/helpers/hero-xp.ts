@@ -1,7 +1,7 @@
 import { updateHeroData } from '@helpers/hero';
 import { recalculateStats } from '@helpers/hero-stats';
 import { randomChoice, seededrng } from '@helpers/rng';
-import { gamestate } from '@helpers/state-game';
+import { gamestate, updateGamestate } from '@helpers/state-game';
 import type { Hero, StatBlock } from '@interfaces';
 import { clamp } from 'es-toolkit/compat';
 
@@ -33,6 +33,12 @@ export function heroLevelUp(hero: Hero): void {
   if (newHero) {
     recalculateStats(newHero.id);
   }
+
+  // Clear the "too hard" nodes list when any hero levels up
+  updateGamestate((state) => {
+    state.hero.tooHardNodes = [];
+    return state;
+  });
 }
 
 export function heroGainXp(hero: Hero, xp: number): void {
