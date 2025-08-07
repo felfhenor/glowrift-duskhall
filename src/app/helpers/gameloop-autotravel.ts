@@ -1,4 +1,5 @@
 import { isExploring } from '@helpers/explore';
+import { areAllHeroesDead } from '@helpers/hero';
 import { isTraveling, travelToNode } from '@helpers/travel';
 import { globalStatusText } from '@helpers/ui';
 import {
@@ -11,6 +12,10 @@ import {
 export function autoTravelGameloop(): void {
   if (isExploring()) return;
   if (isTraveling()) return;
+  if (areAllHeroesDead()) {
+    globalStatusText.set('All heroes are defeated; cannot travel.');
+    return;
+  }
 
   const currentNode = getCurrentWorldNode();
   if (currentNode) {

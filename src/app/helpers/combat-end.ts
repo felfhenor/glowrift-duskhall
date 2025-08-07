@@ -8,11 +8,11 @@ import {
   travelHome,
   updateExploringAndGlobalStatusText,
 } from '@helpers/explore';
-import { allHeroes } from '@helpers/hero';
+import { allHeroes, updateHeroData } from '@helpers/hero';
 import { heroGainXp } from '@helpers/hero-xp';
 import { locationTraitCurrencySpecialModifier } from '@helpers/trait-location-currency';
 import { gainNodeRewards, getWorldNode } from '@helpers/world';
-import type { Combat, Combatant, DroppableEquippable } from '@interfaces';
+import type { Combat, Combatant, DroppableEquippable, HeroId } from '@interfaces';
 
 export function currentCombatHasGuardiansAlive(): boolean {
   const combat = currentCombat();
@@ -22,6 +22,14 @@ export function currentCombatHasGuardiansAlive(): boolean {
 
 export function isDead(combatant: Combatant): boolean {
   return combatant.hp <= 0;
+}
+
+function updateHeroHealthAfterCombat(combat: Combat): void {
+  combat.heroes.forEach((combatant) => {
+    updateHeroData(combatant.id as HeroId, {
+      hp: combatant.hp,
+    });
+  });
 }
 
 export function isCombatOver(combat: Combat): boolean {
@@ -39,6 +47,9 @@ export function didHeroesWin(combat: Combat): boolean {
 
 export function handleCombatVictory(combat: Combat): void {
   logCombatMessage(combat, 'Heroes have won the combat!');
+
+  // Update hero health after combat
+  updateHeroHealthAfterCombat(combat);
 
   const currentNode = getWorldNode(
     combat.locationPosition.x,
@@ -89,6 +100,9 @@ export function handleCombatVictory(combat: Combat): void {
 export function handleCombatDefeat(combat: Combat): void {
   logCombatMessage(combat, 'Heroes have lost the combat!');
   logCombatMessage(combat, 'Heroes have been sent home for recovery!');
+
+  // Update hero health after combat
+  updateHeroHealthAfterCombat(combat);
 
   travelHome();
 }

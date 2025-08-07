@@ -62,3 +62,16 @@ export function setHeroRiskTolerance(riskTolerance: HeroRiskTolerance): void {
 export function getHero(heroId: HeroId): Hero | undefined {
   return allHeroes().find((h) => h.id === heroId);
 }
+
+export function areAllHeroesDead(): boolean {
+  return allHeroes().every((hero) => hero.hp <= 0);
+}
+
+export function healHero(heroId: HeroId, amount: number): void {
+  const hero = getHero(heroId);
+  if (!hero) return;
+  
+  const maxHealth = hero.totalStats.Health;
+  const newHp = Math.min(hero.hp + amount, maxHealth);
+  updateHeroData(heroId, { hp: newHp });
+}
