@@ -7,47 +7,49 @@
     </button>
   </div>
 
-  <div class="flex flex-row h-full">
-    <div class="flex flex-col h-full justify-between w-[128px]">
+  <div class="flex flex-col h-full">
+    <!-- Hero Selection Section -->
+    <div class="flex flex-row gap-4 pb-4 border-b">
       @for (hero of allHeroes(); track hero.id) {
         @let isActive = hero === activeHero();
         <div
-          class="flex flex-col items-center p-6 cursor-pointer"
-          [class.border-r]="!isActive"
-          [class.border-l]="isActive"
-          [class.border-t]="isActive"
-          [class.border-b]="isActive"
+          class="flex flex-col items-center p-4 cursor-pointer rounded-lg"
+          [class.bg-base-200]="isActive"
+          [class.border-2]="isActive"
+          [class.border-primary]="isActive"
           (click)="setHeroIndex($index)"
         >
           <app-icon-hero [hero]="hero"></app-icon-hero>
-
-          <div>{{ hero.name }}</div>
+          <div class="text-sm mt-2">{{ hero.name }}</div>
         </div>
       }
     </div>
 
-    <div
-      class="flex-1 flex flex-col justify-between border-t border-r border-b p-4"
-    >
-      <div class="flex flex-row h-full gap-2 mb-4">
-        <div class="w-[300px] flex flex-col gap-4">
+    <!-- Hero Information Section -->
+    <div class="flex-1 flex flex-col gap-4 pt-4 overflow-y-auto">
+      <!-- Stats and Targeting -->
+      <div class="flex flex-row gap-4">
+        <div class="flex-1">
           <app-panel-heroes-stats
             [hero]="activeHero()"
           ></app-panel-heroes-stats>
-
+        </div>
+        <div class="flex-1">
           <app-panel-heroes-targetting
             [hero]="activeHero()"
           ></app-panel-heroes-targetting>
         </div>
-
-        <div class="flex-1">
-          <app-panel-heroes-talents
-            [hero]="activeHero()"
-          ></app-panel-heroes-talents>
-        </div>
       </div>
 
-      <div class="flex flex-row h-full gap-2">
+      <!-- Talents Section -->
+      <div class="border-t pt-4">
+        <app-panel-heroes-talents
+          [hero]="activeHero()"
+        ></app-panel-heroes-talents>
+      </div>
+
+      <!-- Equipment and Skills Section -->
+      <div class="flex flex-row gap-4 border-t pt-4">
         <div class="flex-1">
           <app-panel-heroes-equipment
             [hero]="activeHero()"
@@ -56,7 +58,6 @@
             [highlightSlot]="equipItemType()"
           ></app-panel-heroes-equipment>
         </div>
-
         <div class="flex-1">
           <app-panel-heroes-skills
             [hero]="activeHero()"
