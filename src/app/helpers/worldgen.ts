@@ -34,7 +34,7 @@ import {
   locationTraitLootCountModifier,
 } from '@helpers/trait-location-worldgen';
 import { distanceBetweenNodes } from '@helpers/travel';
-import type { TraitLocationContent } from '@interfaces';
+import type { DropRarity, TraitLocationContent } from '@interfaces';
 import {
   type DroppableEquippable,
   type GameElement,
@@ -299,6 +299,81 @@ function fillSpacesWithLoot(nodes: Record<string, WorldLocation>): void {
   });
 }
 
+function addCornerNodes(
+  config: WorldConfigContent,
+  nodes: Record<string, WorldLocation>,
+  rng: PRNG,
+  counts: Record<LocationType, number>,
+): void {
+  // Define corner areas - within 20% of each corner
+  const cornerMargin = Math.floor(Math.min(config.width, config.height) * 0.2);
+  
+  const corners = [
+    { x: 0, y: 0, maxX: cornerMargin, maxY: cornerMargin }, // top-left
+    { x: config.width - cornerMargin, y: 0, maxX: config.width, maxY: cornerMargin }, // top-right
+    { x: 0, y: config.height - cornerMargin, maxX: cornerMargin, maxY: config.height }, // bottom-left
+    { x: config.width - cornerMargin, y: config.height - cornerMargin, maxX: config.width, maxY: config.height }, // bottom-right
+  ];
+
+  corners.forEach((corner, cornerIndex) => {
+    // Count existing nodes in this corner
+    let existingNodesInCorner = 0;
+    const emptyPositions: Array<{x: number, y: number}> = [];
+    
+    for (let x = corner.x; x < corner.maxX; x++) {
+      for (let y = corner.y; y < corner.maxY; y++) {
+        const nodeKey = `${x},${y}`;
+        if (nodes[nodeKey]?.nodeType) {
+          existingNodesInCorner++;
+        } else {
+          emptyPositions.push({ x, y });
+        }
+      }
+    }
+    
+    // Calculate how many nodes this corner should have
+    // Aim for about 1-2 nodes per corner area, more for larger corners
+    const cornerArea = (corner.maxX - corner.x) * (corner.maxY - corner.y);
+    const targetNodesInCorner = Math.max(1, Math.floor(cornerArea / 4)); // 1 node per ~4 tiles
+    
+    // Add nodes if corner is underutilized
+    const nodesToAdd = Math.max(0, targetNodesInCorner - existingNodesInCorner);
+    
+    if (nodesToAdd > 0 && emptyPositions.length > 0) {
+      for (let i = 0; i < Math.min(nodesToAdd, emptyPositions.length); i++) {
+        
+        const nodeTypesWithRarities: Array<{ rarity: DropRarity, type: LocationType }> = [
+          { rarity: 'Common', type: 'cave' },
+          { rarity: 'Rare', type: 'dungeon' },
+          { rarity: 'Mystical', type: 'castle' },
+        ];
+
+
+        const chosenNode = randomChoiceByRarity(nodeTypesWithRarities, rng);
+        const nodeType = chosenNode!.type;
+        
+        // Pick random empty position in this corner
+        const positionIndex = randomNumberRange(0, emptyPositions.length - 1, rng);
+        const position = emptyPositions.splice(positionIndex, 1)[0];
+        
+        // Create the node
+        const cornerNode: WorldLocation = {
+          ...getDefaultWorldNode(),
+          id: uuid(),
+          x: position.x,
+          y: position.y,
+          nodeType,
+          name: `${nodeType} (corner ${cornerIndex + 1}-${i + 1})`,
+        };
+        
+        // Add to nodes and update counts
+        nodes[`${position.x},${position.y}`] = cornerNode;
+        counts[nodeType]++;
+      }
+    }
+  });
+}
+
 function cleanUpEmptyNodes(nodes: Record<string, WorldLocation>): void {
   Object.keys(nodes).forEach((nodePos) => {
     if (!nodes[nodePos].nodeType) {
@@ -495,7 +570,7 @@ export async function generateWorld(
             nodeCount,
             nodeNum: i,
             worldGenDisplayType: nodeType,
-            minDist: minDistancesForLocationNode[node.nodeType!],
+            minDist: minDistancesForLocationNode[node.nodeType!] * randomNumberRange(0.5, 1.5, rng),
             maxDist: maxDistance,
             isLast: false,
           };
@@ -537,6 +612,9 @@ export async function generateWorld(
   if (node.isLast) {
     setWorldGenStatus(`Filling empty space...`);
     fillEmptySpaceWithEmptyNodes(config, nodes);
+
+    setWorldGenStatus('Adding corner nodes...');
+    addCornerNodes(config, nodes, rng, counts);
 
     setWorldGenStatus('Adding spice to the world...');
     addTraitsToLocations(nodes, rng);
