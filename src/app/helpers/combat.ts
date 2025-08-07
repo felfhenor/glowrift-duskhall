@@ -249,7 +249,21 @@ export function doCombatIteration(): void {
   });
 
   updateGamestate((state) => {
+    const previousRounds = combat.rounds;
     combat.rounds++;
+    
+    // Check if we've crossed into a new deadlock prevention tier
+    const previousMultiplierTier = Math.floor(previousRounds / 25);
+    const currentMultiplierTier = Math.floor(combat.rounds / 25);
+    
+    if (currentMultiplierTier > previousMultiplierTier && currentMultiplierTier > 0) {
+      const damageIncreasePercent = currentMultiplierTier * 25;
+      logCombatMessage(
+        combat,
+        `Due to exhaustion, damage received is increased by ${damageIncreasePercent}% for all combatants.`
+      );
+    }
+    
     state.hero.combat = combat;
     return state;
   });
