@@ -11,9 +11,18 @@
   </p>
 }
 
-@if (requiredTalentsInvested() !== undefined) {
-  <p class="text-xs italic mt-2 text-yellow-400">
-    Requires {{ requiredTalentsInvested() }} talents invested in this tree
-    ({{ currentTalentsInvested() }}/{{ requiredTalentsInvested() }})
+@if (requiredTalentsInvested()) {
+  <p
+    class="text-xs italic mt-2"
+    [class.text-yellow-400]="
+      currentTalentsInvested() < requiredTalentsInvested()
+    "
+    [class.text-green-400]="
+      currentTalentsInvested() >= requiredTalentsInvested()
+    "
+  >
+    Requires {{ requiredTalentsInvested() }} talents invested in this tree ({{
+      currentTalentsInvested()
+    }}/{{ requiredTalentsInvested() }})
   </p>
 }
