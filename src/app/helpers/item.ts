@@ -72,7 +72,7 @@ export function getItemElementMultiplier(
   item: EquipmentItemContent,
   element: GameElement,
 ): number {
-  const itemMultipliers = item.elementMultipliers
+  const itemMultipliers = (item.elementMultipliers ?? [])
     .filter((e) => e.element === element)
     .map((i) => i.multiplier ?? 0);
 
