@@ -283,11 +283,15 @@ function setEncounterLevels(
   });
 }
 
-function fillSpacesWithGuardians(nodes: Record<string, WorldLocation>): void {
+function fillSpacesWithGuardians(
+  nodes: Record<string, WorldLocation>, 
+  worldCenter: WorldPosition, 
+  maxDistance: number
+): void {
   Object.values(nodes).forEach((node) => {
     if (!node.nodeType) return;
 
-    populateLocationWithGuardians(node);
+    populateLocationWithGuardians(node, worldCenter, maxDistance);
   });
 }
 
@@ -626,7 +630,7 @@ export async function generateWorld(
     addElementsToWorld(config, nodes);
 
     setWorldGenStatus(`Giving darkness to the world...`);
-    fillSpacesWithGuardians(nodes);
+    fillSpacesWithGuardians(nodes, centerPosition, maxDistance);
 
     setWorldGenStatus(`Giving treasure to the world...`);
     fillSpacesWithLoot(nodes);
@@ -695,17 +699,25 @@ function numLootForLocation(location: WorldLocation): number {
   return Math.max(0, modifier + (nodeTypes[location.nodeType ?? 'cave'] ?? 0));
 }
 
-function populateLocationWithGuardians(location: WorldLocation): void {
+function populateLocationWithGuardians(
+  location: WorldLocation, 
+  worldCenter: WorldPosition, 
+  maxDistance: number
+): void {
   if (location.currentlyClaimed) return;
 
-  location.guardianIds = getGuardiansForLocation(location).map((i) => i.id);
+  location.guardianIds = getGuardiansForLocation(location, worldCenter, maxDistance).map((i) => i.id);
 }
 
-export function getGuardiansForLocation(location: WorldLocation): Guardian[] {
+export function getGuardiansForLocation(
+  location: WorldLocation,
+  worldCenter?: WorldPosition,
+  maxDistance?: number
+): Guardian[] {
   const rng = seededrng(
     `$${gamestate().gameId}-${location.id}-${location.claimCount}`,
   );
-  const numGuardians = numGuardiansForLocation(location);
+  const numGuardians = numGuardiansForLocation(location, worldCenter, maxDistance);
   const guardians = Array.from({ length: numGuardians }, () => {
     const randomGuardianDataId = randomIdentifiableChoice<GuardianContent>(
       getEntriesByType<GuardianContent>('guardian'),
@@ -720,7 +732,11 @@ export function getGuardiansForLocation(location: WorldLocation): Guardian[] {
   return guardians;
 }
 
-function numGuardiansForLocation(location: WorldLocation): number {
+function numGuardiansForLocation(
+  location: WorldLocation,
+  worldCenter?: WorldPosition,
+  maxDistance?: number
+): number {
   const nodeTypes: Record<LocationType, number> = {
     castle: 10,
     town: 7,
@@ -730,6 +746,19 @@ function numGuardiansForLocation(location: WorldLocation): number {
   };
 
   const modifier = locationTraitGuardianCountModifier(location);
+  const baseCount = nodeTypes[location.nodeType ?? 'cave'] ?? 0;
 
-  return Math.max(0, modifier + (nodeTypes[location.nodeType ?? 'cave'] ?? 0));
+  // Calculate distance-based bonus if world center and max distance are provided
+  let distanceBonus = 0;
+  if (worldCenter && maxDistance && maxDistance > 0) {
+    const distance = distanceBetweenNodes(location, worldCenter);
+    const distancePercentage = Math.min((distance / maxDistance) * 100, 100);
+    
+    // Scale from 0 to 10 based on distance percentage
+    // At 10% distance: 1 extra creature
+    // At 100% distance: 10 extra creatures
+    distanceBonus = Math.floor(distancePercentage / 10);
+  }
+
+  return Math.max(0, modifier + baseCount + distanceBonus);
 }
