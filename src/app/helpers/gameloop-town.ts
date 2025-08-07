@@ -1,5 +1,5 @@
 import { townMerchantGameloop } from '@helpers/gameloop-town-merchant';
-import { allHeroes } from '@helpers/hero';
+import { allHeroes, healHero } from '@helpers/hero';
 import { heroGainXp } from '@helpers/hero-xp';
 import { getCurrentWorldNode } from '@helpers/world';
 
@@ -11,5 +11,10 @@ export function townGameloop(numTicks: number): void {
 
   allHeroes().forEach((hero) => {
     heroGainXp(hero, numTicks);
+    
+    // Heal heroes over time in town (1 HP per tick)
+    if (hero.hp < hero.totalStats.Health) {
+      healHero(hero.id, numTicks);
+    }
   });
 }

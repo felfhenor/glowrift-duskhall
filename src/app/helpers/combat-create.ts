@@ -31,8 +31,8 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
 
     baseStats: cloneDeep(h.baseStats),
     statBoosts: getDefaultStats(),
-    totalStats: cloneDeep(h.baseStats),
-    hp: h.baseStats.Health,
+    totalStats: cloneDeep(h.totalStats),
+    hp: h.hp,
     level: h.level,
     sprite: h.sprite,
     frames: h.frames,
