@@ -108,15 +108,23 @@ export function getNodesWithinRiskTolerance(
   if (riskTolerance === 'medium') levelThreshold = 7;
   else if (riskTolerance === 'high') levelThreshold = 100;
   
-  return nodes.filter((n) => {
-    // Check if this node is too hard based on encounter level
+  // First filter out nodes that are too high level based on encounter level
+  const viableNodes = nodes.filter((n) => {
     if (n.encounterLevel > heroLevel + levelThreshold) return false;
-    
-    // Check if this node is in the "too hard" list
-    const nodeId = `${n.x},${n.y}`;
-    if (tooHardNodes.includes(nodeId)) return false;
-    
     return true;
+  });
+
+  // Then sort them so that "too hard" nodes come last (de-prioritized)
+  return viableNodes.sort((a, b) => {
+    const aId = `${a.x},${a.y}`;
+    const bId = `${b.x},${b.y}`;
+    const aIsTooHard = tooHardNodes.includes(aId);
+    const bIsTooHard = tooHardNodes.includes(bId);
+    
+    // If one is too hard and the other isn't, prioritize the non-too-hard one
+    if (aIsTooHard && !bIsTooHard) return 1; // a comes after b
+    if (!aIsTooHard && bIsTooHard) return -1; // a comes before b
+    return 0; // maintain original order for same priority
   });
 }
 

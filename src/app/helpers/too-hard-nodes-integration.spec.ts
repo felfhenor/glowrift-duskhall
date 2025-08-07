@@ -152,10 +152,11 @@ describe('Too Hard Nodes Integration Test', () => {
     expect(updateGamestate).toHaveBeenCalled();
     expect(mockState.hero.tooHardNodes).toContain('1,1');
 
-    // Step 3: Auto-travel should now avoid Test Node 1
+    // Step 3: Auto-travel should now de-prioritize Test Node 1 (put it last)
     viableNodes = getNodesWithinRiskTolerance(baseNode, availableNodes);
-    expect(viableNodes).toHaveLength(1);
-    expect(viableNodes[0].name).toBe('Test Node 2');
+    expect(viableNodes).toHaveLength(2);
+    expect(viableNodes[0].name).toBe('Test Node 2'); // Should come first (not too hard)
+    expect(viableNodes[1].name).toBe('Test Node 1'); // Should come last (too hard)
 
     // Step 4: Hero levels up
     heroLevelUp(testHero);
@@ -194,9 +195,12 @@ describe('Too Hard Nodes Integration Test', () => {
     handleCombatDefeat(combat2);
     expect(mockState.hero.tooHardNodes).toContain('2,2');
 
-    // Both nodes should now be unavailable
+    // Both nodes should now be de-prioritized but still available
     let viableNodes = getNodesWithinRiskTolerance(baseNode, availableNodes);
-    expect(viableNodes).toHaveLength(0);
+    expect(viableNodes).toHaveLength(2); // Both nodes should still be available
+    // Both should be at the end since both are too hard, but they should still be included
+    expect(viableNodes).toContain(testNode1);
+    expect(viableNodes).toContain(testNode2);
 
     // Level up should clear everything
     heroLevelUp(testHero);
