@@ -332,9 +332,10 @@ function addCornerNodes(
     }
     
     // Calculate how many nodes this corner should have
-    // Aim for about 1-2 nodes per corner area, more for larger corners
+    // Aim for about 2-4 nodes per corner area, scaled by world size
     const cornerArea = (corner.maxX - corner.x) * (corner.maxY - corner.y);
-    const targetNodesInCorner = Math.max(1, Math.floor(cornerArea / 4)); // 1 node per ~4 tiles
+    const baseNodesPerCorner = Math.max(2, Math.min(6, Math.floor(cornerArea / 50))); // Much more conservative
+    const targetNodesInCorner = baseNodesPerCorner;
     
     // Add nodes if corner is underutilized
     const nodesToAdd = Math.max(0, targetNodesInCorner - existingNodesInCorner);
