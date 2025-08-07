@@ -375,7 +375,7 @@ export async function generateWorld(
     const queryBounds = {
       x: Math.max(0, firstTown.x - distMax),
       y: Math.max(0, firstTown.y - distMax),
-      width: Math.min(config.width, 2 * distMax + 1),
+      width: Math.min(config.width - queryBounds.x, 2 * distMax + 1),
       height: Math.min(config.height - queryBounds.y, 2 * distMax + 1),
     };
 
