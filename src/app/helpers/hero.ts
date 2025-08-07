@@ -64,7 +64,9 @@ export function getHero(heroId: HeroId): Hero | undefined {
 }
 
 export function areAllHeroesDead(): boolean {
-  return allHeroes().every((hero) => hero.hp <= 0);
+  const heroes = allHeroes();
+  if (heroes.length === 0) return false; // No heroes means not "all dead"
+  return heroes.every((hero) => hero.hp <= 0);
 }
 
 export function healHero(heroId: HeroId, amount: number): void {

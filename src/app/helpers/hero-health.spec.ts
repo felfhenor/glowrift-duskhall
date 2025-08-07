@@ -78,4 +78,12 @@ describe('Hero Health Management', () => {
 
     expect(gamestate().hero.heroes[0].hp).toBe(5);
   });
+
+  test('areAllHeroesDead returns false when no heroes exist', () => {
+    const state = blankGameState();
+    state.hero.heroes = [];
+    setGameState(state);
+
+    expect(areAllHeroesDead()).toBe(false);
+  });
 });
