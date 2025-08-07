@@ -169,3 +169,114 @@ export function createClaimIndicator(
 
   return sprite;
 }
+
+/**
+ * Creates a travel line between two positions
+ * @param fromX Start grid x position
+ * @param fromY Start grid y position
+ * @param toX End grid x position
+ * @param toY End grid y position
+ * @param container Container to add line to
+ * @returns Graphics object representing the travel line
+ */
+export function createTravelLine(
+  fromX: number,
+  fromY: number,
+  toX: number,
+  toY: number,
+  container: Container,
+): Graphics {
+  const graphics = new Graphics();
+  
+  const fromPixelX = fromX * 64 + 32; // Center of tile
+  const fromPixelY = fromY * 64 + 32; // Center of tile
+  const toPixelX = toX * 64 + 32; // Center of tile
+  const toPixelY = toY * 64 + 32; // Center of tile
+
+  graphics.setStrokeStyle({ width: 3, color: 0xffffff, alpha: 0.8 });
+  graphics.moveTo(fromPixelX, fromPixelY);
+  graphics.lineTo(toPixelX, toPixelY);
+  graphics.stroke();
+
+  container.addChild(graphics);
+  return graphics;
+}
+
+/**
+ * Creates a destination marker for the travel target
+ * @param x Grid x position
+ * @param y Grid y position
+ * @param container Container to add indicator to
+ * @param ticker PIXI ticker for animation
+ * @returns Graphics object with cleanup function
+ */
+export function createDestinationIndicator(
+  x: number,
+  y: number,
+  container: Container,
+  ticker: Ticker,
+): Graphics {
+  const pixelX = x * 64;
+  const pixelY = y * 64;
+
+  const graphics = new Graphics();
+  graphics.setStrokeStyle({ width: 4, color: 0xff8000, alpha: 1 });
+  graphics.rect(pixelX, pixelY, 64, 64);
+  graphics.stroke();
+
+  let scale = 1;
+  let direction = 1;
+
+  const animate = () => {
+    scale += direction * 0.005;
+    if (scale <= 0.9) direction = 1;
+    if (scale >= 1.1) direction = -1;
+    graphics.scale.set(scale, scale);
+    graphics.x = pixelX + (64 * (1 - scale)) / 2;
+    graphics.y = pixelY + (64 * (1 - scale)) / 2;
+  };
+
+  ticker.add(animate);
+  container.addChild(graphics);
+
+  return graphics;
+}
+
+/**
+ * Creates a hero sprite indicator at the interpolated travel position
+ * @param x Interpolated x position (can be fractional)
+ * @param y Interpolated y position (can be fractional)
+ * @param heroTexture Texture for the hero sprite
+ * @param container Container to add sprite to
+ * @param ticker PIXI ticker for animation
+ * @returns Sprite object representing the traveling hero
+ */
+export function createTravelingHeroIndicator(
+  x: number,
+  y: number,
+  heroTexture: Texture,
+  container: Container,
+  ticker: Ticker,
+): Sprite {
+  const pixelX = x * 64 + 16; // Offset to center the sprite
+  const pixelY = y * 64 + 16; // Offset to center the sprite
+
+  const sprite = new Sprite(heroTexture);
+  sprite.x = pixelX;
+  sprite.y = pixelY;
+  sprite.width = 32; // Smaller than full tile
+  sprite.height = 32; // Smaller than full tile
+  sprite.anchor.set(0.5, 0.5);
+
+  // Add a subtle bobbing animation
+  let bobOffset = 0;
+  const animate = () => {
+    bobOffset += 0.1;
+    sprite.y = pixelY + Math.sin(bobOffset) * 2;
+  };
+
+  ticker.add(animate);
+  container.addChild(sprite);
+
+  return sprite;
+}
