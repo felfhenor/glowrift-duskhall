@@ -10,6 +10,7 @@ export interface TalentTreeContentNode {
 export interface TalentTreeContentLevel {
   level: number;
   learnableTalents: TalentTreeContentNode[];
+  requiredTalentsInvested?: number;
 }
 
 export type TalentTreeContent = IsContentItem & {

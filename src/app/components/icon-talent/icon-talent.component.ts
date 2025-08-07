@@ -20,4 +20,6 @@ export class IconTalentComponent {
   public talent = input.required<TalentContent>();
   public isBought = input<boolean>(false);
   public boostValue = input<number>(0);
+  public requiredTalentsInvested = input<number | undefined>(undefined);
+  public currentTalentsInvested = input<number>(0);
 }

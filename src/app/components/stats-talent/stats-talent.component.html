@@ -10,3 +10,10 @@
     <app-content-name [id]="talentData.requireTalentId"></app-content-name>
   </p>
 }
+
+@if (requiredTalentsInvested() !== undefined) {
+  <p class="text-xs italic mt-2 text-yellow-400">
+    Requires {{ requiredTalentsInvested() }} talents invested in this tree
+    ({{ currentTalentsInvested() }}/{{ requiredTalentsInvested() }})
+  </p>
+}

@@ -3,6 +3,7 @@ import {
   heroHasTalent,
   heroRemainingTalentPoints,
   heroSpendTalentPoint,
+  heroTalentsInvestedInTree,
 } from '@helpers/hero-talent';
 import type {
   Hero,
@@ -10,6 +11,8 @@ import type {
   StatBlock,
   TalentContent,
   TalentId,
+  TalentTreeContent,
+  TalentTreeId,
 } from '@interfaces';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -22,7 +25,12 @@ vi.mock('@helpers/hero', () => ({
   updateHeroData: vi.fn(),
 }));
 
+vi.mock('@helpers/talent', () => ({
+  allTalentIdsInTalentTree: vi.fn(),
+}));
+
 import { updateHeroData } from '@helpers/hero';
+import { allTalentIdsInTalentTree } from '@helpers/talent';
 
 describe('Hero Talent Functions', () => {
   let testHero: Hero;
@@ -104,6 +112,52 @@ describe('Hero Talent Functions', () => {
     });
   });
 
+  describe('heroTalentsInvestedInTree', () => {
+    let testTalentTree: TalentTreeContent;
+
+    beforeEach(() => {
+      testTalentTree = {
+        id: 'fire-tree' as TalentTreeId,
+        name: 'Fire Talent Tree',
+        __type: 'talenttree',
+        talents: [
+          {
+            level: 0,
+            learnableTalents: [
+              { talentId: 'talent-1' as TalentId },
+              { talentId: 'talent-2' as TalentId },
+            ],
+          },
+        ],
+      };
+
+      vi.mocked(allTalentIdsInTalentTree).mockReturnValue([
+        'talent-1' as TalentId,
+        'talent-2' as TalentId,
+        'talent-3' as TalentId,
+      ]);
+    });
+
+    it('should calculate total talents invested in tree', () => {
+      expect(heroTalentsInvestedInTree(testHero, testTalentTree)).toBe(3); // talent-1 (1) + talent-2 (2) = 3
+    });
+
+    it('should return 0 when no talents from tree are invested', () => {
+      testHero.talents = { 'other-talent': 2 };
+      expect(heroTalentsInvestedInTree(testHero, testTalentTree)).toBe(0);
+    });
+
+    it('should sum all talent levels in tree', () => {
+      testHero.talents = {
+        'talent-1': 2,
+        'talent-2': 3,
+        'talent-3': 1,
+        'other-talent': 5, // not in tree
+      };
+      expect(heroTalentsInvestedInTree(testHero, testTalentTree)).toBe(6); // 2+3+1
+    });
+  });
+
   describe('canHeroBuyTalent', () => {
     const testTalent: TalentContent = {
       id: 'new-talent' as TalentId,
@@ -117,10 +171,48 @@ describe('Hero Talent Functions', () => {
       applyToStatusEffectIds: [],
       boostedStatusEffectChance: 0,
       boostStatusEffectStats: baseStats,
+      applyToAllSkills: false,
+      applyToAllStatusEffects: false,
+      applyToAttributes: [],
+      boostedStatusEffectDuration: 0,
+      additionalTargets: 0,
+      chanceToIgnoreConsume: 0,
+      applyStatusEffects: [],
+      combatStats: {},
+      addTechniques: [],
     };
+
+    let testTalentTree: TalentTreeContent;
+
+    beforeEach(() => {
+      testTalentTree = {
+        id: 'fire-tree' as TalentTreeId,
+        name: 'Fire Talent Tree', 
+        __type: 'talenttree',
+        talents: [],
+      };
+
+      vi.mocked(allTalentIdsInTalentTree).mockReturnValue([
+        'talent-1' as TalentId,
+        'talent-2' as TalentId,
+      ]);
+    });
 
     it('should return true when all conditions are met', () => {
       expect(canHeroBuyTalent(testHero, testTalent, 5)).toBe(true);
+    });
+
+    it('should return true when investment requirement is met', () => {
+      expect(canHeroBuyTalent(testHero, testTalent, 5, testTalentTree, 2)).toBe(true); // hero has 3 invested, need 2
+      expect(canHeroBuyTalent(testHero, testTalent, 5, testTalentTree, 3)).toBe(true); // hero has 3 invested, need 3
+    });
+
+    it('should return false when investment requirement is not met', () => {
+      expect(canHeroBuyTalent(testHero, testTalent, 5, testTalentTree, 5)).toBe(false); // hero has 3 invested, need 5
+    });
+
+    it('should work with no investment requirement', () => {
+      expect(canHeroBuyTalent(testHero, testTalent, 5, testTalentTree)).toBe(true); // no requirement specified
     });
 
     it('should return false for "Blank Talent"', () => {
