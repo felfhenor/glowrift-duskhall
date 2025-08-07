@@ -1,4 +1,5 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, viewChild } from '@angular/core';
+import type { OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { TippyDirective } from '@ngneat/helipopper';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
@@ -20,8 +21,10 @@ import {
 } from '@helpers';
 import type { GameCurrency, Icon } from '@interfaces';
 import { MetaService } from '@services/meta.service';
+import type { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { IconComponent } from '@components/icon/icon.component';
 import { MarkerCurrencyCurrentComponent } from '@components/marker-currency-current/marker-currency-current.component';
+import { HotkeysService } from '@ngneat/hotkeys';
 
 @Component({
   selector: 'app-navbar',
@@ -37,7 +40,8 @@ import { MarkerCurrencyCurrentComponent } from '@components/marker-currency-curr
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit, OnDestroy {
+  public leaveSwal = viewChild<SwalComponent>('leaveSwal');
   public meta = inject(MetaService);
   public router = inject(Router);
 
@@ -147,5 +151,53 @@ export class NavbarComponent {
 
   public togglePause() {
     setOption('gameloopPaused', !this.isPaused());
+  }
+
+  //KEYBOARD SHORTCUTS HERE!
+  private hotkeys = inject(HotkeysService);
+  constructor() {}
+
+  ngOnInit() {
+    // Menu toggles
+    this.hotkeys.addShortcut({ keys: '1' }).subscribe(() => this.toggleTown());
+    this.hotkeys
+      .addShortcut({ keys: '2' })
+      .subscribe(() => this.toggleCombat());
+    this.hotkeys
+      .addShortcut({ keys: '3' })
+      .subscribe(() => this.toggleInventory());
+    this.hotkeys
+      .addShortcut({ keys: '4' })
+      .subscribe(() => this.toggleHeroes());
+    this.hotkeys
+      .addShortcut({ keys: '6' })
+      .subscribe(() => this.toggleOptions());
+
+    // Game controls
+    this.hotkeys.addShortcut({ keys: '5' }).subscribe(() => this.focusCamera());
+    this.hotkeys
+      .addShortcut({ keys: 'space' })
+      .subscribe(() => this.togglePause());
+    this.hotkeys
+      .addShortcut({ keys: 'escape' })
+      .subscribe(() => closeAllMenus());
+
+    // Navigation
+    this.hotkeys.addShortcut({ keys: 'q' }).subscribe(() => {
+      this.leaveSwal()?.fire();
+    });
+  }
+  ngOnDestroy() {
+    this.hotkeys.removeShortcuts([
+      '1',
+      '2',
+      '3',
+      '4',
+      '5',
+      '6',
+      'space',
+      'escape',
+      'q',
+    ]);
   }
 }

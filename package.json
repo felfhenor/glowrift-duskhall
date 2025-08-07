@@ -46,6 +46,7 @@
     "@ng-icons/tabler-icons": "^29.8.0",
     "@ng-select/ng-select": "^14.9.0",
     "@ngneat/helipopper": "^9.2.1",
+    "@ngneat/hotkeys": "^4.1.0",
     "@ngneat/overview": "^6.1.2",
     "@ngxpert/hot-toast": "^3.0.2",
     "@pixi/graphics": "^7.4.3",
