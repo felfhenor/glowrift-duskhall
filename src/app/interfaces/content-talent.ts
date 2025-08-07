@@ -12,6 +12,8 @@ import type { HasDescription } from '@interfaces/traits';
 
 export type TalentId = Branded<string, 'TalentId'>;
 
+export type TalentBoost = { talentId: TalentId; value: number };
+
 export type TalentContent = IsContentItem &
   Artable &
   HasDescription & {

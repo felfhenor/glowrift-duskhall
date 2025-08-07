@@ -1,5 +1,5 @@
 import type { EquipmentSkillId } from '@interfaces/content-skill';
-import type { TalentId } from '@interfaces/content-talent';
+import type { TalentBoost } from '@interfaces/content-talent';
 import type { TraitEquipmentId } from '@interfaces/content-trait-equipment';
 import type { DroppableEquippable } from '@interfaces/droppable';
 import type { GameElement } from '@interfaces/element';
@@ -13,8 +13,6 @@ export type EquipmentItemId = Branded<string, 'EquipmentItemId'>;
 
 export type EquipmentBlock = Record<EquipmentSlot, EquipmentItem | undefined>;
 
-export type EquipmentTalent = { talentId: TalentId; value: number };
-
 export type EquipmentElement = {
   element: GameElement;
   multiplier: number;
@@ -23,7 +21,7 @@ export type EquipmentElement = {
 export type EquipmentModifiable = {
   enchantLevel: number;
   baseStats: StatBlock;
-  talentBoosts: EquipmentTalent[];
+  talentBoosts: TalentBoost[];
   elementMultipliers: EquipmentElement[];
   traitIds: TraitEquipmentId[];
   skillIds: EquipmentSkillId[];

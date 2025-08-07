@@ -11,7 +11,6 @@ import type {
   EquipmentSkillContentTechnique,
   EquipmentSkillId,
   EquipmentSkillTechniqueStatusEffectApplication,
-  EquipmentTalent,
   FestivalContent,
   GuardianContent,
   GuardianId,
@@ -19,6 +18,7 @@ import type {
   StatBlock,
   StatusEffectContent,
   StatusEffectId,
+  TalentBoost,
   TalentContent,
   TalentId,
   TalentTreeContent,
@@ -91,9 +91,7 @@ function ensureTechniqueStatusEffect(
   };
 }
 
-function ensureEquipmentTalentBoost(
-  boost: Partial<EquipmentTalent>,
-): Required<EquipmentTalent> {
+function ensureTalentBoost(boost: Partial<TalentBoost>): Required<TalentBoost> {
   return {
     talentId: boost.talentId ?? ('UNKNOWN' as TalentId),
     value: boost.value ?? 0,
@@ -156,7 +154,7 @@ function ensureGuardian(
     skillIds: guardian.skillIds ?? [],
     resistance: ensureAffinities(guardian.resistance),
     affinity: ensureAffinities(guardian.affinity),
-    talentIds: guardian.talentIds ?? {},
+    talents: (guardian.talents ?? []).map(ensureTalentBoost),
 
     combatStats: ensureCombatStats(guardian.combatStats),
   };
@@ -203,7 +201,7 @@ function ensureItem(
 
     enchantLevel: item.enchantLevel ?? 0,
     baseStats: ensureStats(item.baseStats),
-    talentBoosts: (item.talentBoosts ?? []).map(ensureEquipmentTalentBoost),
+    talentBoosts: (item.talentBoosts ?? []).map(ensureTalentBoost),
     elementMultipliers: (item.elementMultipliers ?? []).map(
       ensureEquipmentElement,
     ),
@@ -304,8 +302,6 @@ function ensureTraitEquipment(
     ),
     skillIds: traitEquipment.skillIds ?? [],
     traitIds: traitEquipment.traitIds ?? [],
-    talentBoosts: (traitEquipment.talentBoosts ?? []).map(
-      ensureEquipmentTalentBoost,
-    ),
+    talentBoosts: (traitEquipment.talentBoosts ?? []).map(ensureTalentBoost),
   };
 }

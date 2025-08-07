@@ -4,7 +4,7 @@ import type {
   CombatantTargettingType,
 } from '@interfaces/combat';
 import type { EquipmentSkillId } from '@interfaces/content-skill';
-import type { TalentId } from '@interfaces/content-talent';
+import type { TalentBoost } from '@interfaces/content-talent';
 import type { ElementBlock } from '@interfaces/element';
 import type { Branded, IsContentItem } from '@interfaces/identifiable';
 import type { StatBlock } from '@interfaces/stat';
@@ -21,7 +21,7 @@ export type GuardianContent = Animatable &
     resistance: ElementBlock;
     affinity: ElementBlock;
 
-    talentIds: Record<TalentId, number>;
+    talents: TalentBoost[];
 
     targettingType: CombatantTargettingType;
 
