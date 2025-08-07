@@ -1,17 +1,17 @@
 @let items = selectedItems();
 
-<div class="flex flex-row gap-2 h-full">
-  <div class="flex-1 flex flex-col h-full">
+<div class="flex flex-col gap-4 h-full">
+  <div class="w-full">
     <app-panel-town-building-upgrade
       [building]="'Salvager'"
     ></app-panel-town-building-upgrade>
   </div>
 
-  <div class="flex-1 card bg-base-100 foreground shadow-xl h-full">
+  <div class="w-full card bg-base-100 foreground shadow-xl">
     <div class="card-body">
       <div class="card-title relative">Break Down Items</div>
 
-      <div class="flex flex-col justify-between h-full">
+      <div class="flex flex-col justify-between">
         <div class="flex flex-row flex-wrap gap-2">
           @for (slot of maxSlots() | repeat; track $index) {
             <app-icon-blank-slot
@@ -41,11 +41,11 @@
     </div>
   </div>
 
-  <div class="flex-1 card bg-base-100 foreground shadow-xl">
+  <div class="w-full card bg-base-100 foreground shadow-xl">
     <div class="card-body">
       <div class="card-title relative">Results</div>
 
-      <div class="flex flex-col gap-2 justify-between h-full">
+      <div class="flex flex-col gap-2 justify-between">
         <div class="flex-1">
           @if (items.length > 0) {
             @for (earning of earnings(); track $index) {
