@@ -91,14 +91,14 @@ describe('World Generation - Node Distribution', () => {
       expect(innerNodes).toBeGreaterThan(0);
       expect(middleNodes).toBeGreaterThan(0);
       
-      // At least 50% of nodes should be in inner + middle regions (with enhanced corner placement)
+      // At least 70% of nodes should be in inner + middle regions (not clustered at far edges)
       const totalContentNodes = contentNodes.length;
       const innerAndMiddleRatio = (innerNodes + middleNodes) / totalContentNodes;
-      expect(innerAndMiddleRatio).toBeGreaterThan(0.5);
+      expect(innerAndMiddleRatio).toBeGreaterThan(0.7);
       
-      // No more than 50% should be in the far outer region (includes corner enhancement)
+      // No more than 30% should be in the far outer region to avoid edge clustering
       const outerRatio = outerNodes / totalContentNodes;
-      expect(outerRatio).toBeLessThan(0.5);
+      expect(outerRatio).toBeLessThan(0.3);
     });
 
     it('should add nodes to corner areas through post-processing', async () => {
@@ -206,14 +206,14 @@ describe('World Generation - Node Distribution', () => {
       expect(innerNodes).toBeGreaterThan(0);
       expect(middleNodes).toBeGreaterThan(0);
       
-      // At least 50% of nodes should be in inner + middle regions (with enhanced corner placement)
+      // At least 70% of nodes should be in inner + middle regions (not clustered at far edges)
       const totalContentNodes = contentNodes.length;
       const innerAndMiddleRatio = (innerNodes + middleNodes) / totalContentNodes;
-      expect(innerAndMiddleRatio).toBeGreaterThan(0.5);
+      expect(innerAndMiddleRatio).toBeGreaterThan(0.7);
       
-      // No more than 50% should be in the far outer region (includes corner enhancement)
+      // No more than 30% should be in the far outer region to avoid edge clustering
       const outerRatio = outerNodes / totalContentNodes;
-      expect(outerRatio).toBeLessThan(0.5);
+      expect(outerRatio).toBeLessThan(0.3);
     });
 
     it('should add nodes to corner areas through post-processing', async () => {
