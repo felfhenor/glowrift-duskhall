@@ -24,14 +24,14 @@
           <li class="menu-title">{{ item.name }}</li>
 
           <li>
-            <a (click)="toggleFavorite(item)">
+            <a (click)="toggleFavorite(item); hide()">
               {{ item.isFavorite ? 'Unfavorite' : 'Favorite' }}
             </a>
           </li>
 
           @if (actions.includes('Salvage')) {
             <li [class.menu-disabled]="item.isFavorite">
-              <a (click)="salvageItem(item)">
+              <a (click)="salvageItem(item); hide()">
                 Salvage for {{ salvageValue(item) | number }} Mana
               </a>
             </li>
