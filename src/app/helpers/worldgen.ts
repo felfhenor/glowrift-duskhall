@@ -318,7 +318,7 @@ function addCornerNodes(
   corners.forEach((corner, cornerIndex) => {
     // Count existing nodes in this corner
     let existingNodesInCorner = 0;
-    let emptyPositions: Array<{x: number, y: number}> = [];
+    const emptyPositions: Array<{x: number, y: number}> = [];
     
     for (let x = corner.x; x < corner.maxX; x++) {
       for (let y = corner.y; y < corner.maxY; y++) {
@@ -326,7 +326,7 @@ function addCornerNodes(
         if (nodes[nodeKey]?.nodeType) {
           existingNodesInCorner++;
         } else {
-          emptyPositions.push({x, y});
+          emptyPositions.push({ x, y });
         }
       }
     }
