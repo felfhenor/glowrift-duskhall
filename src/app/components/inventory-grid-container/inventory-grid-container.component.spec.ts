@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { InventoryGridContainerComponent } from './inventory-grid-container.component';
-import { signal } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import type { ComponentFixture } from '@angular/core/testing';
+import { InventoryGridContainerComponent } from '@components/inventory-grid-container/inventory-grid-container.component';
 
 describe('InventoryGridContainerComponent', () => {
   let component: InventoryGridContainerComponent;
