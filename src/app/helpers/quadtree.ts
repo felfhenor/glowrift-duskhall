@@ -16,7 +16,7 @@ export interface QuadtreeBounds {
 }
 
 export class Quadtree {
-  private readonly MAX_POINTS = 10;
+  private readonly MAX_POINTS: number;
   private readonly MAX_LEVELS = 5;
 
   private level: number;
