@@ -47,19 +47,22 @@ export function setupResponsiveCanvas(
 /**
  * Creates the main containers for the game map
  * @param app pixijs application
- * @returns Map and player indicator containers
+ * @returns Map, player indicator, and travel visualization containers
  */
 export function createGameMapContainers(app: Application): {
   mapContainer: Container;
   playerIndicatorContainer: Container;
+  travelVisualizationContainer: Container;
 } {
   const mapContainer = new Container();
   const playerIndicatorContainer = new Container();
+  const travelVisualizationContainer = new Container();
 
   app.stage.addChild(mapContainer);
+  app.stage.addChild(travelVisualizationContainer);
   app.stage.addChild(playerIndicatorContainer);
 
-  return { mapContainer, playerIndicatorContainer };
+  return { mapContainer, playerIndicatorContainer, travelVisualizationContainer };
 }
 
 /**
