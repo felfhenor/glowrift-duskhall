@@ -25,7 +25,7 @@ type TalentTreeHeroNode = TalentTreeContentNode & {
   canPurchase: boolean;
   isLearned: boolean;
   talentLevel: number;
-  requiredTalentsInvested?: number;
+  requiredTalentsInvested: number;
   currentTalentsInvested: number;
 };
 
@@ -52,7 +52,10 @@ export class PanelHeroesTalentsTreeComponent {
       `${this.element()} Talent Tree`,
     )!;
 
-    const currentTalentsInvested = heroTalentsInvestedInTree(this.hero(), talentTree);
+    const currentTalentsInvested = heroTalentsInvestedInTree(
+      this.hero(),
+      talentTree,
+    );
 
     talentTree.talents = talentTree.talents.map((level) => {
       level.learnableTalents = level.learnableTalents.map((talentNode) => {
@@ -62,11 +65,11 @@ export class PanelHeroesTalentsTreeComponent {
           talentData,
           isLearned: heroHasTalent(this.hero(), talentData.id),
           canPurchase: canHeroBuyTalent(
-            this.hero(), 
-            talentData, 
-            level.level, 
-            talentTree, 
-            level.requiredTalentsInvested
+            this.hero(),
+            talentData,
+            level.level,
+            talentTree,
+            level.requiredTalentsInvested,
           ),
           talentLevel: heroTotalTalentLevel(this.hero(), talentData.id),
           requiredTalentsInvested: level.requiredTalentsInvested,
