@@ -30,8 +30,8 @@
     Aura: 3
 
 - id: d548422e-1f8c-400c-b45d-85f65e6d08a2
-  name: Healing Scepter
-  sprite: '0143'
+  name: Shocking Scepter
+  sprite: '0035'
 
   rarity: Mystical
   dropLevel: 20
@@ -40,4 +40,316 @@
     Force: 10
 
   skillIds:
+    - Thunderwave III
+
+- id: 41e282ed-417a-4739-ade4-8ea6a4291eb3
+  name: Simple Shortsword
+  sprite: '0008'
+
+  rarity: Common
+  dropLevel: 5
+
+  baseStats:
+    Force: 1.0
+    Speed: 0.5
+
+- id: 65d8a1c1-4810-479f-9fba-b71f17384571
+  name: Iron Club
+  sprite: '0046'
+
+  rarity: Uncommon
+  dropLevel: 8
+
+  baseStats:
+    Force: 1.2
+    Health: 6
+
+- id: 970cd26d-b67c-461e-bdbb-13eb256f25b9
+  name: Hunter's Crossbow
+  sprite: '0006'
+
+  rarity: Rare
+  dropLevel: 12
+
+  baseStats:
+    Force: 1.4
+    Speed: 0.7
+
+  talentBoosts:
+    - talentId: Strength of Firewisp I
+      value: 1
+
+- id: a3c0221a-67f6-4236-8d71-c7a7abfde58b
+  name: Mystic Staff of Healing
+  sprite: '0096'
+
+  rarity: Mystical
+  dropLevel: 15
+
+  baseStats:
+    Aura: 0.8
+    Force: 0.8
+
+  talentBoosts:
+    - talentId: Strength of Healsprite I
+      value: 1
+
+  skillIds:
+    - Healsprite I
+
+- id: 4337a7dc-8db1-417e-91bc-7e63efc645cf
+  name: Steel Axe
+  sprite: '0050'
+
+  rarity: Common
+  dropLevel: 18
+
+  baseStats:
+    Force: 1.8
+    Health: 10
+
+- id: edcacef8-be01-41bc-9f78-633a12a953de
+  name: Reinforced Hammer
+  sprite: '0048'
+
+  rarity: Uncommon
+  dropLevel: 20
+
+  baseStats:
+    Force: 2.2
+    Speed: 1.2
+
+- id: b011d401-e8d2-48c7-8552-cd659238c2c3
+  name: Battle Spear of Thunder
+  sprite: '0033'
+
+  rarity: Rare
+  dropLevel: 22
+
+  baseStats:
+    Force: 2.5
+    Speed: 1.4
+
+  talentBoosts:
+    - talentId: Strength of Thunderwave I
+      value: 1
+
+  skillIds:
+    - Thunderwave I
+
+- id: 95b19af4-53ae-49c7-bb7f-47f51f019517
+  name: Legendary Broadsword of Elements
+  sprite: '0062'
+
+  rarity: Legendary
+  dropLevel: 25
+
+  baseStats:
+    Force: 3.6
+    Speed: 2.0
+    Aura: 1.8
+
+  talentBoosts:
+    - talentId: Strength of Firewisp I
+      value: 1
+    - talentId: Strength of Earthspike I
+      value: 1
+
+  skillIds:
+    - Firewisp I
+    - Earthspike I
+
+- id: ddf8bb76-b532-45b1-aad7-9d064d8ddec9
+  name: Longbow of Precision
+  sprite: '0052'
+
+  rarity: Common
+  dropLevel: 28
+
+  baseStats:
+    Force: 3.0
+    Speed: 1.5
+
+- id: 411605e2-7186-438f-94ad-c8e7fbe86154
+  name: Spiked Club of War
+  sprite: '0046'
+
+  rarity: Uncommon
+  dropLevel: 30
+
+  baseStats:
+    Force: 3.6
+    Health: 18
+
+- id: ae885765-d3cc-477e-ae13-f9fe52735857
+  name: Falchion of Storms
+  sprite: '0065'
+
+  rarity: Rare
+  dropLevel: 32
+
+  baseStats:
+    Force: 4.2
+    Speed: 2.1
+    Aura: 1.4
+
+  talentBoosts:
+    - talentId: Strength of Thunderwave I
+      value: 1
+
+  skillIds:
+    - Thunderwave II
+
+- id: 521131d1-8b04-4d1c-a4c1-07536966b2f8
+  name: Ancient Trident of the Depths
+  sprite: '0152'
+
+  rarity: Mystical
+  dropLevel: 35
+
+  baseStats:
+    Force: 4.0
+    Aura: 2.4
+    Speed: 1.6
+
+  talentBoosts:
+    - talentId: Strength of Healsprite I
+      value: 1
+    - talentId: Strength of Earthspike I
+      value: 1
+
+  skillIds:
+    - Healsprite II
+
+- id: 78895c9b-651e-47ba-89ac-165e27a4ad41
+  name: Mithril Greataxe
+  sprite: '0069'
+
+  rarity: Common
+  dropLevel: 38
+
+  baseStats:
+    Force: 4.0
+    Health: 25
+
+- id: d23007e1-4090-42d8-9e5c-33b8b5ab167e
+  name: Elite Lance of Courage
+  sprite: '0047'
+
+  rarity: Uncommon
+  dropLevel: 40
+
+  baseStats:
+    Force: 4.8
+    Speed: 2.4
+    Health: 24
+
+- id: be045101-61ef-4b74-81c3-fa41af221136
+  name: Master's Shortsword
+  sprite: '0018'
+
+  rarity: Rare
+  dropLevel: 42
+
+  baseStats:
+    Force: 5.6
+    Speed: 4.2
+    Aura: 2.8
+
+  talentBoosts:
+    - talentId: Strength of Firewisp I
+      value: 1
+
+  skillIds:
+    - Firewisp II
+
+- id: f525f555-65f9-4e70-a270-326cf09548b4
+  name: Ethereal Cross of Light
+  sprite: '0073'
+
+  rarity: Mystical
+  dropLevel: 45
+
+  baseStats:
+    Force: 4.8
+    Aura: 6.4
+    Health: 32
+
+  talentBoosts:
+    - talentId: Strength of Healsprite I
+      value: 1
+    - talentId: Strength of Healsprite II
+      value: 1
+
+  skillIds:
     - Healsprite III
+
+- id: be4492be-a848-42c5-aa0d-22023a8829f3
+  name: Platinum Staff
+  sprite: '0110'
+
+  rarity: Common
+  dropLevel: 47
+
+  baseStats:
+    Aura: 7.5
+    Force: 2.5
+
+- id: 7a0df1e2-97fa-4976-86df-62669a2ba33f
+  name: Champion's Slingshot
+  sprite: '0105'
+
+  rarity: Uncommon
+  dropLevel: 48
+
+  baseStats:
+    Force: 9.0
+    Speed: 6.0
+
+- id: 308d7367-2c45-4ade-947f-3258c8d2fb2a
+  name: Grandmaster's Hammer
+  sprite: '0131'
+
+  rarity: Rare
+  dropLevel: 49
+
+  baseStats:
+    Force: 7.0
+    Speed: 3.5
+    Health: 70
+
+  talentBoosts:
+    - talentId: Strength of Earthspike I
+      value: 1
+
+  skillIds:
+    - Earthspike III
+
+- id: e1c51b4c-9a2d-4e58-8f0c-33b2cc80b06b
+  name: Excalibur
+  sprite: '0066'
+
+  rarity: Legendary
+  dropLevel: 50
+
+  baseStats:
+    Force: 10.0
+    Speed: 10.0
+    Aura: 10.0
+    Health: 100
+
+  talentBoosts:
+    - talentId: Strength of Firewisp I
+      value: 1
+    - talentId: Strength of Healsprite I
+      value: 1
+    - talentId: Strength of Thunderwave I
+      value: 1
+    - talentId: Strength of Earthspike I
+      value: 1
+
+  skillIds:
+    - Firewisp III
+    - Healsprite III
+    - Thunderwave III
+    - Earthspike III
