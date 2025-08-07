@@ -32,17 +32,9 @@
             </a>
           </li>
 
-          @if (actions.includes('Salvage') && !item.isFavorite) {
-            <li>
+          @if (actions.includes('Salvage')) {
+            <li [class.menu-disabled]="item.isFavorite">
               <a (click)="salvageItem(item)">
-                Salvage for {{ salvageValue(item) | number }} Mana
-              </a>
-            </li>
-          }
-
-          @if (actions.includes('Salvage') && item.isFavorite) {
-            <li>
-              <a class="disabled">
                 Salvage for {{ salvageValue(item) | number }} Mana
               </a>
             </li>
