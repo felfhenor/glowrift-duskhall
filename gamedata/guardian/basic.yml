@@ -3,6 +3,8 @@
   sprite: '0136'
   frames: 4
 
+  minLevel: 1
+
   targettingType: Random
 
   statScaling:
@@ -16,6 +18,8 @@
   sprite: '0140'
   frames: 4
 
+  minLevel: 1
+
   targettingType: Random
 
   statScaling:
@@ -28,6 +32,8 @@
   name: Fire Goblin
   sprite: '0144'
   frames: 4
+
+  minLevel: 3
 
   targettingType: Weakest
   statScaling:
@@ -50,6 +56,8 @@
   sprite: '0196'
   frames: 4
 
+  minLevel: 1
+
   targettingType: Random
 
   statScaling:
@@ -63,6 +71,8 @@
   sprite: '0200'
   frames: 4
 
+  minLevel: 4
+
   targettingType: Random
 
   statScaling:
@@ -75,6 +85,8 @@
   name: Small Snake
   sprite: '0220'
   frames: 4
+
+  minLevel: 5
 
   targettingType: Weakest
 
@@ -93,6 +105,8 @@
   sprite: '0468'
   frames: 4
 
+  minLevel: 8
+
   targettingType: Random
 
   statScaling:
@@ -108,6 +122,8 @@
   name: Fire Slime
   sprite: '0476'
   frames: 4
+
+  minLevel: 10
 
   targettingType: Weakest
 
@@ -133,6 +149,8 @@
   name: Water Mage
   sprite: '0000'
   frames: 4
+
+  minLevel: 12
 
   targettingType: Weakest
 
@@ -160,6 +178,8 @@
   sprite: '0180'
   frames: 4
 
+  minLevel: 5
+
   targettingType: Random
 
   statScaling:
@@ -177,6 +197,8 @@
   sprite: '0424'
   frames: 4
 
+  minLevel: 5
+
   targettingType: Strongest
 
   statScaling:
@@ -192,6 +214,8 @@
   name: Kobold
   sprite: '0084'
   frames: 4
+
+  minLevel: 10
 
   targettingType: Random
 
@@ -209,6 +233,8 @@
   sprite: '0104'
   frames: 4
 
+  minLevel: 12
+
   targettingType: Random
 
   statScaling:
@@ -225,6 +251,8 @@
   name: Kobold Rogue
   sprite: '0092'
   frames: 4
+
+  minLevel: 14
 
   targettingType: Random
 
@@ -250,6 +278,8 @@
   sprite: '0156'
   frames: 4
 
+  minLevel: 16
+
   targettingType: Strongest
 
   statScaling:
@@ -269,6 +299,8 @@
   name: Priest
   sprite: '0016'
   frames: 4
+
+  minLevel: 25
 
   targettingType: Random
 
@@ -290,6 +322,8 @@
   name: Dwarf Guardian
   sprite: '0160'
   frames: 4
+
+  minLevel: 18
 
   targettingType: Strongest
 
@@ -317,6 +351,8 @@
   sprite: '0248'
   frames: 4
 
+  minLevel: 15
+
   targettingType: Random
 
   statScaling:
@@ -336,6 +372,8 @@
   name: Zombie
   sprite: '0208'
   frames: 4
+
+  minLevel: 15
 
   targettingType: Random
 
@@ -357,6 +395,8 @@
   name: Wolf
   sprite: '0240'
   frames: 4
+
+  minLevel: 15
 
   targettingType: Weakest
 
@@ -382,6 +422,8 @@
   sprite: '0012'
   frames: 4
 
+  minLevel: 18
+
   targettingType: Weakest
 
   statScaling:
@@ -401,6 +443,8 @@
   name: Cultist
   sprite: '0040'
   frames: 4
+
+  minLevel: 20
 
   targettingType: Random
 
@@ -422,6 +466,8 @@
   name: Fire Demon
   sprite: '0300'
   frames: 4
+
+  minLevel: 25
 
   targettingType: Weakest
 
@@ -453,6 +499,8 @@
   sprite: '0360'
   frames: 4
 
+  minLevel: 25
+
   targettingType: Weakest
 
   statScaling:
@@ -476,6 +524,8 @@
   sprite: '0060'
   frames: 4
 
+  minLevel: 25
+
   targettingType: Strongest
 
   statScaling:
@@ -498,6 +548,8 @@
   name: Dark Knight
   sprite: '0064'
   frames: 4
+
+  minLevel: 25
 
   targettingType: Random
 
@@ -526,6 +578,8 @@
   name: Vampire
   sprite: '0228'
   frames: 4
+
+  minLevel: 30
 
   targettingType: Random
 
@@ -557,6 +611,8 @@
   sprite: '0224'
   frames: 4
 
+  minLevel: 30
+
   targettingType: Strongest
 
   statScaling:
@@ -586,6 +642,8 @@
   sprite: '0232'
   frames: 4
 
+  minLevel: 35
+
   targettingType: Weakest
 
   statScaling:
@@ -613,6 +671,8 @@
   name: Hotrock Golem
   sprite: '0384'
   frames: 4
+
+  minLevel: 35
 
   targettingType: Random
 
@@ -644,6 +704,8 @@
   sprite: '0236'
   frames: 4
 
+  minLevel: 40
+
   targettingType: Weakest
 
   statScaling:
@@ -672,6 +734,8 @@
   name: Red Dragon
   sprite: '0348'
   frames: 4
+
+  minLevel: 40
 
   targettingType: Random
 
@@ -710,6 +774,8 @@
   sprite: '0032'
   frames: 4
 
+  minLevel: 25
+
   targettingType: Weakest
 
   statScaling:
@@ -733,6 +799,8 @@
   sprite: '0056'
   frames: 4
 
+  minLevel: 25
+
   targettingType: Random
 
   statScaling:
@@ -755,6 +823,8 @@
   name: Halberdier
   sprite: '0068'
   frames: 4
+
+  minLevel: 25
 
   targettingType: Random
 
@@ -781,6 +851,8 @@
   name: Monk
   sprite: '0076'
   frames: 4
+
+  minLevel: 25
 
   targettingType: Random
 
@@ -809,6 +881,8 @@
   sprite: '0080'
   frames: 4
 
+  minLevel: 25
+
   targettingType: Random
 
   statScaling:
@@ -829,6 +903,8 @@
   name: Kobold Knight
   sprite: '0096'
   frames: 4
+
+  minLevel: 15
 
   targettingType: Strongest
 
@@ -853,6 +929,8 @@
   sprite: '0100'
   frames: 4
 
+  minLevel: 15
+
   targettingType: Weakest
 
   statScaling:
@@ -873,6 +951,8 @@
   name: Goblin Leader
   sprite: '0148'
   frames: 4
+
+  minLevel: 15
 
   targettingType: Random
 
@@ -899,6 +979,8 @@
   sprite: '0152'
   frames: 4
 
+  minLevel: 15
+
   targettingType: Weakest
 
   statScaling:
@@ -921,6 +1003,8 @@
   name: Demon
   sprite: '0300'
   frames: 4
+
+  minLevel: 35
 
   targettingType: Strongest
 

@@ -148,6 +148,8 @@ function ensureGuardian(
     frames: guardian.frames ?? 1,
     sprite: guardian.sprite ?? '0000',
 
+    minLevel: guardian.minLevel ?? 1,
+
     targettingType: guardian.targettingType ?? 'Random',
 
     statScaling: ensureStats(guardian.statScaling),

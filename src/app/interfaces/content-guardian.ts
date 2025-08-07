@@ -15,6 +15,8 @@ export type GuardianContent = Animatable &
   IsContentItem & {
     id: GuardianId;
 
+    minLevel: number;
+
     statScaling: StatBlock;
     skillIds: EquipmentSkillId[];
 
