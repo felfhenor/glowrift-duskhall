@@ -3,7 +3,7 @@ import { heroLevelUp } from '@helpers/hero-xp';
 import { getNodesWithinRiskTolerance } from '@helpers/world';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { Combat, Hero, HeroId, WorldLocation } from '@interfaces';
+import type { Combat, GameState, Hero, HeroId, WorldLocation } from '@interfaces';
 
 // Mock all dependencies
 vi.mock('@helpers/combat-log', () => ({
@@ -35,7 +35,7 @@ vi.mock('@helpers/state-game', () => ({
 import { gamestate, updateGamestate } from '@helpers/state-game';
 
 describe('Too Hard Nodes Integration Test', () => {
-  let mockState: any;
+  let mockState: GameState;
   let baseNode: WorldLocation;
   let testNode1: WorldLocation;
   let testNode2: WorldLocation;

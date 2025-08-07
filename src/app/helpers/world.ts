@@ -115,16 +115,9 @@ export function getNodesWithinRiskTolerance(
   });
 
   // Then sort them so that "too hard" nodes come last (de-prioritized)
-  return viableNodes.sort((a, b) => {
-    const aId = `${a.x},${a.y}`;
-    const bId = `${b.x},${b.y}`;
-    const aIsTooHard = tooHardNodes.includes(aId);
-    const bIsTooHard = tooHardNodes.includes(bId);
-    
-    // If one is too hard and the other isn't, prioritize the non-too-hard one
-    if (aIsTooHard && !bIsTooHard) return 1; // a comes after b
-    if (!aIsTooHard && bIsTooHard) return -1; // a comes before b
-    return 0; // maintain original order for same priority
+  return sortBy(viableNodes, (node) => {
+    const nodeId = `${node.x},${node.y}`;
+    return tooHardNodes.includes(nodeId) ? 1 : 0;
   });
 }
 
@@ -256,6 +249,22 @@ export function winGame(): void {
   updateGamestate((state) => {
     state.meta.hasWon = true;
     state.meta.wonAtTick = state.actionClock.numTicks;
+    return state;
+  });
+}
+
+export function clearNodesTooHardForHeroes(): void {
+  updateGamestate((state) => {
+    state.hero.tooHardNodes = [];
+    return state;
+  });
+}
+
+export function addTooHardNode(nodeId: string): void {
+  updateGamestate((state) => {
+    if (!state.hero.tooHardNodes.includes(nodeId)) {
+      state.hero.tooHardNodes.push(nodeId);
+    }
     return state;
   });
 }

@@ -10,9 +10,8 @@ import {
 } from '@helpers/explore';
 import { allHeroes, updateHeroData } from '@helpers/hero';
 import { heroGainXp } from '@helpers/hero-xp';
-import { updateGamestate } from '@helpers/state-game';
 import { locationTraitCurrencySpecialModifier } from '@helpers/trait-location-currency';
-import { gainNodeRewards, getWorldNode } from '@helpers/world';
+import { addTooHardNode, gainNodeRewards, getWorldNode } from '@helpers/world';
 import type { Combat, Combatant, DroppableEquippable, HeroId } from '@interfaces';
 
 export function currentCombatHasGuardiansAlive(): boolean {
@@ -107,12 +106,7 @@ export function handleCombatDefeat(combat: Combat): void {
 
   // Track this node as too hard for now
   const currentNodeId = `${combat.locationPosition.x},${combat.locationPosition.y}`;
-  updateGamestate((state) => {
-    if (!state.hero.tooHardNodes.includes(currentNodeId)) {
-      state.hero.tooHardNodes.push(currentNodeId);
-    }
-    return state;
-  });
+  addTooHardNode(currentNodeId);
 
   travelHome();
 }
