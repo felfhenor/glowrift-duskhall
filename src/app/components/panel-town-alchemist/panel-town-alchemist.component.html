@@ -11,30 +11,32 @@
     <div class="card-body">
       <div class="card-title relative">Break Down Spells</div>
 
-      <div class="flex flex-row flex-wrap gap-2">
-        @for (slot of maxSlots() | repeat; track $index) {
-          <app-icon-blank-slot
-            class="cursor-pointer"
-            (click)="unchooseItem($index)"
-            (contextmenu)="unchooseItem($index)"
-          >
-            @if (items[slot]; as item) {
-              <app-icon-skill [skill]="item"></app-icon-skill>
-            } @else {
-              Choose
-            }
-          </app-icon-blank-slot>
-        }
-      </div>
+      <div class="flex flex-col justify-between h-full">
+        <div class="flex flex-row flex-wrap gap-2">
+          @for (slot of maxSlots() | repeat; track $index) {
+            <app-icon-blank-slot
+              class="cursor-pointer"
+              (click)="unchooseItem($index)"
+              (contextmenu)="unchooseItem($index)"
+            >
+              @if (items[slot]; as item) {
+                <app-icon-skill [skill]="item"></app-icon-skill>
+              } @else {
+                Choose
+              }
+            </app-icon-blank-slot>
+          }
+        </div>
 
-      <div class="mt-4">
-        <button
-          class="btn btn-secondary btn-sm"
-          (click)="autoChooseSkills()"
-          [disabled]="selectedSkills().length >= maxSlots()"
-        >
-          Auto-choose Skills
-        </button>
+        <div class="mt-4">
+          <button
+            class="btn btn-secondary btn-block"
+            (click)="autoChooseSkills()"
+            [disabled]="selectedSkills().length >= maxSlots()"
+          >
+            Auto-choose Skills
+          </button>
+        </div>
       </div>
     </div>
   </div>
