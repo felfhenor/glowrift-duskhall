@@ -7,6 +7,7 @@ import {
   createPlayerIndicator,
   gamestate,
   generateMapGrid,
+  getOption,
   getSpriteFromNodeType,
   initializePixiApp,
   isAtNode,
@@ -54,6 +55,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     Math.min(gamestate().world.config.height, windowHeightTiles() + 1),
   );
   public camera = computed(() => gamestate().camera);
+  public debugMapNodePositions = computed(() => getOption('debugMapNodePositions'));
   public map = computed(() => {
     const camera = this.camera();
     const width = this.nodeWidth();
@@ -73,6 +75,8 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
   constructor() {
     effect(() => {
       const mapData = this.map();
+      // debugMapNodePositions is tracked automatically by the effect
+      this.debugMapNodePositions();
       if (this.app && this.mapContainer) {
         this.updateMap(mapData.tiles);
       }
@@ -178,6 +182,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       this.checkTexture,
       this.xTexture,
       (nodeData: WorldLocation) => this.investigateLocation(nodeData),
+      this.debugMapNodePositions(),
     );
 
     if (spriteData) {

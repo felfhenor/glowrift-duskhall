@@ -1,7 +1,7 @@
 import type { WorldLocation } from '@interfaces';
 import type { NodeSpriteData } from '@interfaces/sprite';
 import type { Container, Texture, Ticker } from 'pixi.js';
-import { Graphics, Sprite } from 'pixi.js';
+import { Graphics, Sprite, Text } from 'pixi.js';
 
 /**
  * Creates terrain and object sprites for a single map node
@@ -14,6 +14,7 @@ import { Graphics, Sprite } from 'pixi.js';
  * @param checkTexture Texture for claimed indicator
  * @param xTexture Texture for unclaimed indicator
  * @param onObjectClick Callback for object sprite clicks
+ * @param debugMode Whether to show debug coordinates
  * @returns Created sprite data
  */
 export function createNodeSprites(
@@ -28,6 +29,7 @@ export function createNodeSprites(
   checkTexture?: Texture,
   xTexture?: Texture,
   onObjectClick?: (nodeData: WorldLocation) => void,
+  debugMode?: boolean,
 ): NodeSpriteData | null {
   const pixelX = x * 64;
   const pixelY = y * 64;
@@ -75,6 +77,26 @@ export function createNodeSprites(
     claimIndicator.cullable = true;
     mapContainer.addChild(claimIndicator);
     spriteData.claimIndicator = claimIndicator;
+  }
+
+  // Add debug text showing coordinates if debug mode is enabled
+  if (debugMode) {
+    const debugText = new Text({
+      text: `${x},${y}`,
+      style: {
+        fontSize: 12,
+        fill: 0xffffff, // White text
+        fontFamily: 'Arial',
+      },
+    });
+    
+    // Position text at bottom of tile
+    debugText.x = pixelX + 2;
+    debugText.y = pixelY + 64 - 14; // 14px from bottom for 12px font
+    debugText.cullable = true;
+    
+    mapContainer.addChild(debugText);
+    spriteData.debugText = debugText;
   }
 
   return spriteData;
