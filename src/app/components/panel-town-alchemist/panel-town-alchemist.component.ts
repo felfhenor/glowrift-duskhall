@@ -12,6 +12,8 @@ import {
   notifySuccess,
   salvageSkills,
 } from '@helpers';
+import { sortedRarityList } from '@helpers/item';
+import { gamestate } from '@helpers/state-game';
 import type { EquipmentSkill, GameCurrency } from '@interfaces';
 import { TeleportDirective } from '@ngneat/overview';
 import { RepeatPipe } from 'ngxtension/repeat-pipe';
@@ -72,5 +74,23 @@ export class PanelTownAlchemistComponent {
     notifySuccess(`You salvaged ${this.selectedSkills().length} spells!`);
 
     this.selectedSkills.set([]);
+  }
+
+  autoChooseSkills() {
+    const availableSlots = this.maxSlots() - this.selectedSkills().length;
+    if (availableSlots <= 0) return;
+
+    // Get all skills, sorted by rarity/level
+    const allSkills = sortedRarityList<EquipmentSkill>(
+      gamestate().inventory.skills.filter(
+        (skill) => !this.disabledSkillIds().includes(skill.id)
+      )
+    );
+
+    // Take the worst skills (last in the sorted list)
+    const worstSkills = allSkills.slice(-availableSlots);
+
+    // Add them to selected skills
+    this.selectedSkills.update((skills) => [...skills, ...worstSkills]);
   }
 }
