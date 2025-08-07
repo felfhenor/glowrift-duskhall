@@ -24,6 +24,7 @@ describe('World Functions', () => {
           y: 0,
           nodeType: 'town',
           traitIds: [],
+          currentlyClaimed: true,
         } as WorldLocation,
         {
           id: 'town-2',
@@ -32,6 +33,7 @@ describe('World Functions', () => {
           y: 0,
           nodeType: 'town',
           traitIds: [],
+          currentlyClaimed: true,
         } as WorldLocation,
         {
           id: 'town-3',
@@ -40,6 +42,7 @@ describe('World Functions', () => {
           y: 0,
           nodeType: 'town',
           traitIds: [],
+          currentlyClaimed: true,
         } as WorldLocation,
       ];
 
@@ -102,6 +105,7 @@ describe('World Functions', () => {
         y: 100,
         nodeType: 'town',
         traitIds: [],
+        currentlyClaimed: true,
       } as WorldLocation;
 
       vi.mocked(gamestate).mockReturnValue({
@@ -125,6 +129,7 @@ describe('World Functions', () => {
           y: 0,
           nodeType: 'town',
           traitIds: [],
+          currentlyClaimed: true,
         } as WorldLocation,
         {
           id: 'town-2',
@@ -133,6 +138,7 @@ describe('World Functions', () => {
           y: 0,
           nodeType: 'town',
           traitIds: [],
+          currentlyClaimed: true,
         } as WorldLocation,
       ];
 

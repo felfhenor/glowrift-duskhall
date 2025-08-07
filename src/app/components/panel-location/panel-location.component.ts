@@ -23,6 +23,7 @@ import {
   totalTicksElapsed,
   travelTimeFromCurrentLocationTo,
   travelToNode,
+  areAllHeroesDead,
 } from '@helpers';
 import type { TraitLocationContent } from '@interfaces';
 import {
@@ -83,7 +84,7 @@ export class PanelLocationComponent {
   public isAtThisNode = computed(() => isAtNode(this.location()));
 
   public canTravelToThisNode = computed(
-    () => !this.isAtThisNode() && !this.isTravelingToThisNode(),
+    () => !this.isAtThisNode() && !this.isTravelingToThisNode() && !areAllHeroesDead(),
   );
 
   public nodeLostTime = computed(

@@ -10,4 +10,6 @@ import type { TalentContent } from '@interfaces';
 })
 export class StatsTalentComponent {
   public talent = input.required<TalentContent>();
+  public requiredTalentsInvested = input<number>(0);
+  public currentTalentsInvested = input<number>(0);
 }
