@@ -17,6 +17,7 @@ export * from './content-initializers';
 export * from './creator-equipment';
 export * from './creator-skill';
 export * from './currency';
+export * from './currency-conversion';
 export * from './defaults';
 export * from './discord';
 export * from './drag-handler';
