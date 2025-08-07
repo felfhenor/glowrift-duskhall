@@ -129,10 +129,18 @@ export function getItemTraits(item: EquipmentItem): TraitEquipmentContent[] {
 }
 
 export function getItemTalents(item: EquipmentItem): EquipmentTalent[] {
-  const talentLevels = groupBy(
-    [...item.talentBoosts, ...(item.mods?.talentBoosts ?? [])],
-    (t) => t.talentId,
+  // Get talents from item and mods
+  const itemTalents = [...item.talentBoosts, ...(item.mods?.talentBoosts ?? [])];
+  
+  // Get talents from traits
+  const traitTalents = getItemTraits(item).flatMap(
+    trait => trait.talentBoosts ?? []
   );
+  
+  // Combine all talent sources
+  const allTalents = [...itemTalents, ...traitTalents];
+  
+  const talentLevels = groupBy(allTalents, (t) => t.talentId);
 
   return Object.keys(talentLevels).map((tId) => ({
     talentId: tId as TalentId,
