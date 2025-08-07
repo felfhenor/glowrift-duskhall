@@ -1,5 +1,5 @@
 import type { OnInit } from '@angular/core';
-import { Component, computed, input, model, output } from '@angular/core';
+import { Component, computed, effect, input, model, output } from '@angular/core';
 import { InventoryGridItemComponent } from '@components/inventory-grid-item/inventory-grid-item.component';
 import { InventoryGridSkillComponent } from '@components/inventory-grid-skill/inventory-grid-skill.component';
 import { sortedRarityList } from '@helpers/item';
@@ -103,6 +103,19 @@ export class InventoryGridContainerComponent implements OnInit {
   public skills = computed(() =>
     sortedRarityList<EquipmentSkill>(gamestate().inventory.skills),
   );
+
+  constructor() {
+    // Reset currentItemType when allowedItemTypes changes
+    effect(() => {
+      const visibleTypes = this.visibleItemTypes();
+      const currentType = this.currentItemType();
+      
+      // If current type is not in the visible types, reset to first visible type
+      if (currentType && !visibleTypes.some(vt => vt.type === currentType)) {
+        this.currentItemType.set(visibleTypes[0]?.type);
+      }
+    });
+  }
 
   ngOnInit() {
     if (!this.currentItemType())
