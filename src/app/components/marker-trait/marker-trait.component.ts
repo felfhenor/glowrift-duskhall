@@ -2,10 +2,11 @@ import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 import { rarityItemOutlineColor, rarityItemTextColor } from '@helpers/item';
 import type { TraitEquipmentContent } from '@interfaces/content-trait-equipment';
+import { TippyDirective } from '@ngneat/helipopper';
 
 @Component({
   selector: 'app-marker-trait',
-  imports: [NgClass],
+  imports: [NgClass, TippyDirective],
   templateUrl: './marker-trait.component.html',
   styleUrl: './marker-trait.component.scss',
 })
