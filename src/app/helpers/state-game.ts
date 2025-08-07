@@ -54,6 +54,7 @@ export function blankGameState(): GameState {
         ticksLeft: 0,
         ticksTotal: 0,
       },
+      tooHardNodes: [],
     },
     inventory: {
       items: [],

@@ -51,6 +51,7 @@ export interface GameStateHeroes {
   travel: GameStateHeroesTraveling;
   location: GameStateHeroesLocation;
   respawnTicks: number;
+  tooHardNodes: string[];
   combat?: Combat;
 }
 
