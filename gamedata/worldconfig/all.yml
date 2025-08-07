@@ -17,7 +17,7 @@
   width: 50
   height: 50
 
-  maxLevel: 50
+  maxLevel: 55
 
   nodeCount:
     town: { min: 2, max: 5 }
@@ -31,25 +31,25 @@
   width: 75
   height: 75
 
-  maxLevel: 100
+  maxLevel: 55
 
   nodeCount:
     town: { min: 2, max: 5 }
     village: { min: 25, max: 50 }
     cave: { min: 500, max: 900 }
     dungeon: { min: 200, max: 400 }
-    castle: { min: 50, max: 150 }
+    castle: { min: 25, max: 75 }
 
 - id: c8d7c7ed-700f-40f0-bf23-2e5a274b497e
   name: Large
   width: 100
   height: 100
 
-  maxLevel: 100
+  maxLevel: 55
 
   nodeCount:
     town: { min: 2, max: 5 }
     village: { min: 50, max: 75 }
     cave: { min: 1000, max: 1500 }
     dungeon: { min: 350, max: 600 }
-    castle: { min: 100, max: 250 }
+    castle: { min: 50, max: 150 }

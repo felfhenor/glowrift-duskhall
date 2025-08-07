@@ -17,6 +17,7 @@ import type {
   EquipmentSkill,
   EquipmentSkillId,
   Guardian,
+  TalentId,
   WorldLocation,
 } from '@interfaces';
 import { cloneDeep } from 'es-toolkit/compat';
@@ -77,7 +78,15 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
       frames: g.frames,
       skillIds: ['Attack' as EquipmentSkillId, ...g.skillIds],
       skillRefs: [],
-      talents: g.talentIds ?? {},
+      talents: g.talents.reduce(
+        (acc, t) => {
+          const talentId = t.talentId as TalentId;
+
+          acc[talentId] = (acc[talentId] ?? 0) + (t.value ?? 0);
+          return acc;
+        },
+        {} as Record<TalentId, number>,
+      ),
       combatStats: cloneDeep(g.combatStats),
 
       affinity: {

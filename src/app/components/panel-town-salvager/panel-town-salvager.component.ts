@@ -80,12 +80,13 @@ export class PanelTownSalvagerComponent {
     const availableSlots = this.maxSlots() - this.selectedItems().length;
     if (availableSlots <= 0) return;
 
-    // Get all equipment items, sorted by rarity/level
+    // Get all equipment items, sorted by rarity/level, excluding favorited items
     const allItems = sortedRarityList<EquipmentItem>(
       gamestate().inventory.items.filter(
         (item) =>
           ['accessory', 'armor', 'trinket', 'weapon'].includes(item.__type) &&
-          !this.disabledItemIds().includes(item.id)
+          !this.disabledItemIds().includes(item.id) &&
+          !item.isFavorite
       )
     );
 

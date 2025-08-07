@@ -283,11 +283,15 @@ function setEncounterLevels(
   });
 }
 
-function fillSpacesWithGuardians(nodes: Record<string, WorldLocation>): void {
+function fillSpacesWithGuardians(
+  nodes: Record<string, WorldLocation>,
+  worldCenter: WorldPosition,
+  maxDistance: number,
+): void {
   Object.values(nodes).forEach((node) => {
     if (!node.nodeType) return;
 
-    populateLocationWithGuardians(node);
+    populateLocationWithGuardians(node, worldCenter, maxDistance);
   });
 }
 
@@ -307,19 +311,34 @@ function addCornerNodes(
 ): void {
   // Define corner areas - within 20% of each corner
   const cornerMargin = Math.floor(Math.min(config.width, config.height) * 0.2);
-  
+
   const corners = [
     { x: 0, y: 0, maxX: cornerMargin, maxY: cornerMargin }, // top-left
-    { x: config.width - cornerMargin, y: 0, maxX: config.width, maxY: cornerMargin }, // top-right
-    { x: 0, y: config.height - cornerMargin, maxX: cornerMargin, maxY: config.height }, // bottom-left
-    { x: config.width - cornerMargin, y: config.height - cornerMargin, maxX: config.width, maxY: config.height }, // bottom-right
+    {
+      x: config.width - cornerMargin,
+      y: 0,
+      maxX: config.width,
+      maxY: cornerMargin,
+    }, // top-right
+    {
+      x: 0,
+      y: config.height - cornerMargin,
+      maxX: cornerMargin,
+      maxY: config.height,
+    }, // bottom-left
+    {
+      x: config.width - cornerMargin,
+      y: config.height - cornerMargin,
+      maxX: config.width,
+      maxY: config.height,
+    }, // bottom-right
   ];
 
   corners.forEach((corner, cornerIndex) => {
     // Count existing nodes in this corner
     let existingNodesInCorner = 0;
-    const emptyPositions: Array<{x: number, y: number}> = [];
-    
+    const emptyPositions: Array<{ x: number; y: number }> = [];
+
     for (let x = corner.x; x < corner.maxX; x++) {
       for (let y = corner.y; y < corner.maxY; y++) {
         const nodeKey = `${x},${y}`;
@@ -330,32 +349,37 @@ function addCornerNodes(
         }
       }
     }
-    
+
     // Calculate how many nodes this corner should have
     // Aim for about 1-2 nodes per corner area, more for larger corners
     const cornerArea = (corner.maxX - corner.x) * (corner.maxY - corner.y);
     const targetNodesInCorner = Math.max(1, Math.floor(cornerArea / 4)); // 1 node per ~4 tiles
-    
+
     // Add nodes if corner is underutilized
     const nodesToAdd = Math.max(0, targetNodesInCorner - existingNodesInCorner);
-    
+
     if (nodesToAdd > 0 && emptyPositions.length > 0) {
       for (let i = 0; i < Math.min(nodesToAdd, emptyPositions.length); i++) {
-        
-        const nodeTypesWithRarities: Array<{ rarity: DropRarity, type: LocationType }> = [
+        const nodeTypesWithRarities: Array<{
+          rarity: DropRarity;
+          type: LocationType;
+        }> = [
           { rarity: 'Common', type: 'cave' },
           { rarity: 'Rare', type: 'dungeon' },
           { rarity: 'Mystical', type: 'castle' },
         ];
 
-
         const chosenNode = randomChoiceByRarity(nodeTypesWithRarities, rng);
         const nodeType = chosenNode!.type;
-        
+
         // Pick random empty position in this corner
-        const positionIndex = randomNumberRange(0, emptyPositions.length - 1, rng);
+        const positionIndex = randomNumberRange(
+          0,
+          emptyPositions.length - 1,
+          rng,
+        );
         const position = emptyPositions.splice(positionIndex, 1)[0];
-        
+
         // Create the node
         const cornerNode: WorldLocation = {
           ...getDefaultWorldNode(),
@@ -365,7 +389,7 @@ function addCornerNodes(
           nodeType,
           name: `${nodeType} (corner ${cornerIndex + 1}-${i + 1})`,
         };
-        
+
         // Add to nodes and update counts
         nodes[`${position.x},${position.y}`] = cornerNode;
         counts[nodeType]++;
@@ -570,7 +594,7 @@ export async function generateWorld(
             nodeCount,
             nodeNum: i,
             worldGenDisplayType: nodeType,
-            minDist: minDistancesForLocationNode[node.nodeType!] * randomNumberRange(0.5, 1.5, rng),
+            minDist: minDistancesForLocationNode[node.nodeType!],
             maxDist: maxDistance,
             isLast: false,
           };
@@ -626,7 +650,7 @@ export async function generateWorld(
     addElementsToWorld(config, nodes);
 
     setWorldGenStatus(`Giving darkness to the world...`);
-    fillSpacesWithGuardians(nodes);
+    fillSpacesWithGuardians(nodes, centerPosition, maxDistance);
 
     setWorldGenStatus(`Giving treasure to the world...`);
     fillSpacesWithLoot(nodes);
@@ -695,20 +719,41 @@ function numLootForLocation(location: WorldLocation): number {
   return Math.max(0, modifier + (nodeTypes[location.nodeType ?? 'cave'] ?? 0));
 }
 
-function populateLocationWithGuardians(location: WorldLocation): void {
+function populateLocationWithGuardians(
+  location: WorldLocation,
+  worldCenter: WorldPosition,
+  maxDistance: number,
+): void {
   if (location.currentlyClaimed) return;
 
-  location.guardianIds = getGuardiansForLocation(location).map((i) => i.id);
+  location.guardianIds = getGuardiansForLocation(
+    location,
+    worldCenter,
+    maxDistance,
+  ).map((i) => i.id);
 }
 
-export function getGuardiansForLocation(location: WorldLocation): Guardian[] {
+export function getGuardiansForLocation(
+  location: WorldLocation,
+  worldCenter?: WorldPosition,
+  maxDistance?: number,
+): Guardian[] {
   const rng = seededrng(
     `$${gamestate().gameId}-${location.id}-${location.claimCount}`,
   );
-  const numGuardians = numGuardiansForLocation(location);
+
+  const validGuardians = getEntriesByType<GuardianContent>('guardian').filter(
+    (g) => g.minLevel <= location.encounterLevel,
+  );
+
+  const numGuardians = numGuardiansForLocation(
+    location,
+    worldCenter,
+    maxDistance,
+  );
   const guardians = Array.from({ length: numGuardians }, () => {
     const randomGuardianDataId = randomIdentifiableChoice<GuardianContent>(
-      getEntriesByType<GuardianContent>('guardian'),
+      validGuardians,
       rng,
     );
     const randomGuardianData = getEntry<GuardianContent>(randomGuardianDataId);
@@ -720,7 +765,11 @@ export function getGuardiansForLocation(location: WorldLocation): Guardian[] {
   return guardians;
 }
 
-function numGuardiansForLocation(location: WorldLocation): number {
+function numGuardiansForLocation(
+  location: WorldLocation,
+  worldCenter?: WorldPosition,
+  maxDistance?: number,
+): number {
   const nodeTypes: Record<LocationType, number> = {
     castle: 10,
     town: 7,
@@ -730,6 +779,19 @@ function numGuardiansForLocation(location: WorldLocation): number {
   };
 
   const modifier = locationTraitGuardianCountModifier(location);
+  const baseCount = nodeTypes[location.nodeType ?? 'cave'] ?? 0;
 
-  return Math.max(0, modifier + (nodeTypes[location.nodeType ?? 'cave'] ?? 0));
+  // Calculate distance-based bonus if world center and max distance are provided
+  let distanceBonus = 0;
+  if (worldCenter && maxDistance && maxDistance > 0) {
+    const distance = distanceBetweenNodes(location, worldCenter);
+    const distancePercentage = Math.min((distance / maxDistance) * 100, 100);
+
+    // Scale from 0 to 5 based on distance percentage
+    // At 20% distance: 1 extra creature
+    // At 100% distance: 5 extra creatures
+    distanceBonus = Math.floor(distancePercentage / 20);
+  }
+
+  return Math.max(0, modifier + baseCount + distanceBonus);
 }

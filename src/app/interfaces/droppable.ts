@@ -17,6 +17,7 @@ export type Droppable = HasRarity & {
   preventModification?: boolean;
   preventDrop?: boolean;
   dropLevel: number;
+  isFavorite?: boolean;
 };
 
 export type DroppableEquippable = IsContentItem & Artable & Droppable;

@@ -45,7 +45,7 @@ describe('Guardian Helper Functions', () => {
         skillIds: [],
         resistance: {} as Record<GameElement, number>,
         affinity: {} as Record<GameElement, number>,
-        talentIds: {},
+        talents: {},
         targettingType: 'Random' as CombatantTargettingType,
       };
 
@@ -98,7 +98,7 @@ describe('Guardian Helper Functions', () => {
         skillIds: ['skill-1' as EquipmentSkillId],
         resistance: { Fire: 10 } as Record<GameElement, number>,
         affinity: { Water: 5 } as Record<GameElement, number>,
-        talentIds: { 'talent-1': 1 } as Record<TalentId, number>,
+        talents: { 'talent-1': 1 } as Record<TalentId, number>,
         targettingType: 'Strongest' as CombatantTargettingType,
       };
 
@@ -111,7 +111,7 @@ describe('Guardian Helper Functions', () => {
       expect(guardian.skillIds).toEqual(guardianContent.skillIds);
       expect(guardian.resistance).toEqual(guardianContent.resistance);
       expect(guardian.affinity).toEqual(guardianContent.affinity);
-      expect(guardian.talentIds).toEqual(guardianContent.talentIds);
+      expect(guardian.talents).toEqual(guardianContent.talents);
       expect(guardian.targettingType).toBe(guardianContent.targettingType);
     });
   });

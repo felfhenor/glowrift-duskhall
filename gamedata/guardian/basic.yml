@@ -3,6 +3,8 @@
   sprite: '0136'
   frames: 4
 
+  minLevel: 1
+
   targettingType: Random
 
   statScaling:
@@ -16,6 +18,8 @@
   sprite: '0140'
   frames: 4
 
+  minLevel: 1
+
   targettingType: Random
 
   statScaling:
@@ -28,6 +32,8 @@
   name: Fire Goblin
   sprite: '0144'
   frames: 4
+
+  minLevel: 3
 
   targettingType: Weakest
   statScaling:
@@ -44,3 +50,991 @@
 
   skillIds:
     - Firewisp I
+
+- id: 14029b96-8c9d-4431-a949-0459359ec585
+  name: Tiny Spider
+  sprite: '0196'
+  frames: 4
+
+  minLevel: 1
+
+  targettingType: Random
+
+  statScaling:
+    Force: 0.3
+    Health: 3
+    Speed: 0.4
+    Aura: 0.1
+
+- id: 91d05ef2-7fa6-4f33-931c-82b2ae36af16
+  name: Rat
+  sprite: '0200'
+  frames: 4
+
+  minLevel: 4
+
+  targettingType: Random
+
+  statScaling:
+    Force: 0.4
+    Health: 4
+    Speed: 0.5
+    Aura: 0.1
+
+- id: edaca9be-a7bd-4ff2-a032-601d27e44dfa
+  name: Small Snake
+  sprite: '0220'
+  frames: 4
+
+  minLevel: 5
+
+  targettingType: Weakest
+
+  statScaling:
+    Force: 0.5
+    Health: 3
+    Speed: 0.6
+    Aura: 0.2
+
+  combatStats:
+    missChance:
+      Fire: 0.15
+
+- id: 3e158d17-9b44-44c5-991f-ca25624cdd92
+  name: Slime
+  sprite: '0468'
+  frames: 4
+
+  minLevel: 8
+
+  targettingType: Random
+
+  statScaling:
+    Force: 0.2
+    Health: 8
+    Speed: 0.2
+    Aura: 0.3
+
+  resistance:
+    Water: 0.3
+
+- id: 893800c2-6141-4f43-948f-4c0b722ff04d
+  name: Fire Slime
+  sprite: '0476'
+  frames: 4
+
+  minLevel: 10
+
+  targettingType: Weakest
+
+  statScaling:
+    Force: 0.8
+    Health: 5
+    Speed: 0.7
+    Aura: 0.5
+
+  resistance:
+    Fire: 0.5
+  affinity:
+    Fire: 0.5
+
+  skillIds:
+    - Firewisp I
+
+  talents:
+    - talentId: Strength of Firewisp I
+      value: 1
+
+- id: 5fe461ed-e84d-412a-bb73-349bcce1a958
+  name: Water Mage
+  sprite: '0000'
+  frames: 4
+
+  minLevel: 12
+
+  targettingType: Weakest
+
+  statScaling:
+    Force: 0.3
+    Health: 8
+    Speed: 0.4
+    Aura: 1.2
+
+  resistance:
+    Water: 0.4
+  affinity:
+    Water: 0.6
+
+  skillIds:
+    - Healsprite I
+    - Frostdrop I
+
+  talents:
+    - talentId: Strength of Healsprite I
+      value: 1
+
+- id: f3b6901f-9f12-46cc-9239-b6129654cc1d
+  name: Bat
+  sprite: '0180'
+  frames: 4
+
+  minLevel: 5
+
+  targettingType: Random
+
+  statScaling:
+    Force: 0.6
+    Health: 4
+    Speed: 1.0
+    Aura: 0.2
+
+  combatStats:
+    skillStrikeAgainChance:
+      Air: 0.10
+
+- id: ca9e2db0-ef6c-4c76-95fa-fe2ea28b446f
+  name: Beetle
+  sprite: '0424'
+  frames: 4
+
+  minLevel: 5
+
+  targettingType: Strongest
+
+  statScaling:
+    Force: 0.7
+    Health: 12
+    Speed: 0.3
+    Aura: 0.2
+
+  resistance:
+    Earth: 0.4
+
+- id: f67f6d2d-1c12-42f7-8301-d03514b0cdbe
+  name: Kobold
+  sprite: '0084'
+  frames: 4
+
+  minLevel: 10
+
+  targettingType: Random
+
+  statScaling:
+    Force: 1.2
+    Health: 15
+    Speed: 0.8
+    Aura: 0.4
+
+  skillIds:
+    - Dustwisp I
+
+- id: be836ddd-37fe-4bd0-83d3-a18ccac26c1c
+  name: Kobold Archer
+  sprite: '0104'
+  frames: 4
+
+  minLevel: 12
+
+  targettingType: Random
+
+  statScaling:
+    Force: 1.5
+    Health: 12
+    Speed: 1.0
+    Aura: 0.3
+
+  combatStats:
+    skillStrikeAgainChance:
+      Air: 0.15
+
+- id: 73997a84-da0f-491e-9a19-1b2d94ce8d43
+  name: Kobold Rogue
+  sprite: '0092'
+  frames: 4
+
+  minLevel: 14
+
+  targettingType: Random
+
+  statScaling:
+    Force: 1.8
+    Health: 10
+    Speed: 1.2
+    Aura: 0.5
+
+  combatStats:
+    skillStrikeAgainChance:
+      Air: 0.20
+
+  talents:
+    - talentId: Wind Walker I
+      value: 1
+
+  skillIds:
+    - Windshear I
+
+- id: 4a9de0fe-b8fb-4f69-8fef-228a5eeae88e
+  name: Goblin Brute
+  sprite: '0156'
+  frames: 4
+
+  minLevel: 16
+
+  targettingType: Strongest
+
+  statScaling:
+    Force: 2.0
+    Health: 20
+    Speed: 0.5
+    Aura: 0.3
+
+  skillIds:
+    - Earthspike I
+
+  talents:
+    - talentId: Strength of Earthspike I
+      value: 1
+
+- id: 953fdbbb-e945-48a8-bb04-f459ffb1b7d5
+  name: Priest
+  sprite: '0016'
+  frames: 4
+
+  minLevel: 25
+
+  targettingType: Random
+
+  statScaling:
+    Force: 1.2
+    Health: 18
+    Speed: 0.6
+    Aura: 2.0
+
+  skillIds:
+    - Healsprite II
+    - Smite
+
+  talents:
+    - talentId: Strength of Healsprite II
+      value: 1
+
+- id: 770b43a9-ca93-47b2-a028-bf16ba433de3
+  name: Dwarf Guardian
+  sprite: '0160'
+  frames: 4
+
+  minLevel: 18
+
+  targettingType: Strongest
+
+  statScaling:
+    Force: 2.8
+    Health: 30
+    Speed: 0.4
+    Aura: 0.8
+
+  resistance:
+    Earth: 0.5
+    Fire: 0.3
+
+  skillIds:
+    - Dustwisp I
+
+  talents:
+    - talentId: Strength of Dustwisp I
+      value: 1
+    - talentId: Tectonic Force I
+      value: 1
+
+- id: 6f2c71f8-0a10-4cc6-b5ca-2cbdcb5bd51d
+  name: Lizardman
+  sprite: '0248'
+  frames: 4
+
+  minLevel: 15
+
+  targettingType: Random
+
+  statScaling:
+    Force: 2.2
+    Health: 22
+    Speed: 0.9
+    Aura: 0.5
+
+  resistance:
+    Water: 0.3
+
+  combatStats:
+    debuffIgnoreChance:
+      Water: 0.10
+
+- id: a21098a2-caec-4954-9932-35a3d4e10d27
+  name: Zombie
+  sprite: '0208'
+  frames: 4
+
+  minLevel: 15
+
+  targettingType: Random
+
+  statScaling:
+    Force: 1.8
+    Health: 35
+    Speed: 0.3
+    Aura: 0.2
+
+  combatStats:
+    damageReflectPercent:
+      Earth: 0.20
+
+  talents:
+    - talentId: Geological Persistence I
+      value: 1
+
+- id: 345f2d76-369a-4afc-b126-12fa6234d4a9
+  name: Wolf
+  sprite: '0240'
+  frames: 4
+
+  minLevel: 15
+
+  targettingType: Weakest
+
+  statScaling:
+    Force: 2.4
+    Health: 18
+    Speed: 1.5
+    Aura: 0.4
+
+  combatStats:
+    skillStrikeAgainChance:
+      Air: 0.25
+
+  skillIds:
+    - Windshear I
+
+  talents:
+    - talentId: Wind Walker I
+      value: 1
+
+- id: 76e7bade-873a-458d-9535-32443b412703
+  name: Elite Archer
+  sprite: '0012'
+  frames: 4
+
+  minLevel: 18
+
+  targettingType: Weakest
+
+  statScaling:
+    Force: 2.6
+    Health: 16
+    Speed: 1.2
+    Aura: 0.8
+
+  combatStats:
+    skillStrikeAgainChance:
+      Air: 0.20
+
+  skillIds:
+    - Windshear I
+
+- id: 165ec4a6-4dc5-4250-9084-5c4ae329fe4e
+  name: Cultist
+  sprite: '0040'
+  frames: 4
+
+  minLevel: 20
+
+  targettingType: Random
+
+  statScaling:
+    Force: 2.0
+    Health: 20
+    Speed: 0.7
+    Aura: 2.2
+
+  skillIds:
+    - Frostdrop II
+    - Chillstar I
+
+  talents:
+    - talentId: Strength of Chillstar I
+      value: 1
+
+- id: 7b8d4549-8381-41c0-8e5f-90d5d580f327
+  name: Fire Demon
+  sprite: '0300'
+  frames: 4
+
+  minLevel: 25
+
+  targettingType: Weakest
+
+  statScaling:
+    Force: 3.5
+    Health: 25
+    Speed: 1.0
+    Aura: 3.5
+
+  resistance:
+    Fire: 0.6
+  affinity:
+    Fire: 0.8
+
+  skillIds:
+    - Firewisp II
+    - Fireball I
+
+  talents:
+    - talentId: Strength of Firewisp I
+      value: 1
+    - talentId: Strength of Firewisp II
+      value: 1
+    - talentId: Strength of Fireball I
+      value: 1
+
+- id: 4bae832d-c2f2-4c32-9b92-498b1b252ed2
+  name: Storm Harpy
+  sprite: '0360'
+  frames: 4
+
+  minLevel: 25
+
+  targettingType: Weakest
+
+  statScaling:
+    Force: 3.0
+    Health: 20
+    Speed: 0.8
+    Aura: 4.0
+
+  skillIds:
+    - Thunderwave II
+    - Vaporize
+
+  talents:
+    - talentId: Strength of Thunderwave II
+      value: 1
+    - talentId: Storm Caller I
+      value: 1
+
+- id: 82a209bb-fe9f-4935-8c05-cd9f8e47e1a8
+  name: Divine Paladin
+  sprite: '0060'
+  frames: 4
+
+  minLevel: 25
+
+  targettingType: Strongest
+
+  statScaling:
+    Force: 4.0
+    Health: 40
+    Speed: 0.8
+    Aura: 2.0
+
+  skillIds:
+    - Smite
+    - Healsprite II
+
+  talents:
+    - talentId: Strength of Healsprite II
+      value: 1
+    - talentId: Healing Waters I
+      value: 1
+
+- id: 611a5d51-2efb-4753-a1a2-40a7741778a1
+  name: Dark Knight
+  sprite: '0064'
+  frames: 4
+
+  minLevel: 25
+
+  targettingType: Random
+
+  statScaling:
+    Force: 4.5
+    Health: 35
+    Speed: 1.0
+    Aura: 1.5
+
+  combatStats:
+    skillStrikeAgainChance:
+      Earth: 0.30
+    damageReflectPercent:
+      Earth: 0.15
+
+  skillIds:
+    - Earthspike II
+
+  talents:
+    - talentId: Strength of Earthspike I
+      value: 1
+    - talentId: Strength of Earthspike II
+      value: 1
+
+- id: 5d45c38b-7cd8-4c5d-924f-fa299f4d758a
+  name: Vampire
+  sprite: '0228'
+  frames: 4
+
+  minLevel: 30
+
+  targettingType: Random
+
+  statScaling:
+    Force: 3.2
+    Health: 30
+    Speed: 0.6
+    Aura: 4.2
+
+  combatStats:
+    debuffIgnoreChance:
+      Water: 0.25
+
+  skillIds:
+    - Frostdrop II
+    - Chillstar I
+    - Static Gust
+
+  talents:
+    - talentId: Strength of Chillstar I
+      value: 1
+    - talentId: Strength of Chillstar II
+      value: 1
+    - talentId: Deep Freeze I
+      value: 1
+
+- id: 72fa53b1-c206-4847-be48-689d21c4a885
+  name: Minotaur
+  sprite: '0224'
+  frames: 4
+
+  minLevel: 30
+
+  targettingType: Strongest
+
+  statScaling:
+    Force: 5.0
+    Health: 45
+    Speed: 0.9
+    Aura: 1.0
+
+  combatStats:
+    skillStrikeAgainChance:
+      Earth: 0.35
+
+  skillIds:
+    - Earthspike II
+    - Gaiac Aegis
+
+  talents:
+    - talentId: Strength of Earthspike I
+      value: 1
+    - talentId: Strength of Earthspike II
+      value: 1
+    - talentId: Tectonic Force II
+      value: 1
+
+- id: 62b7d335-3f93-4359-9d43-6673b58e04ba
+  name: Vampire Lord
+  sprite: '0232'
+  frames: 4
+
+  minLevel: 35
+
+  targettingType: Weakest
+
+  statScaling:
+    Force: 4.2
+    Health: 38
+    Speed: 1.5
+    Aura: 2.5
+
+  combatStats:
+    skillStrikeAgainChance:
+      Air: 0.40
+    skillAdditionalUseChance:
+      Air: 0.30
+
+  skillIds:
+    - Windshear II
+
+  talents:
+    - talentId: Wind Walker II
+      value: 1
+    - talentId: Disorienting Winds
+      value: 1
+
+- id: 996b6665-8a3c-46dc-8649-2f30c66bbf31
+  name: Hotrock Golem
+  sprite: '0384'
+  frames: 4
+
+  minLevel: 35
+
+  targettingType: Random
+
+  statScaling:
+    Force: 4.8
+    Health: 50
+    Speed: 0.5
+    Aura: 3.0
+
+  resistance:
+    Earth: 0.7
+    Fire: 0.4
+    Water: 0.4
+    Air: 0.4
+
+  skillIds:
+    - Stonemist II
+    - Dustwisp I
+    - Meltdown
+
+  talents:
+    - talentId: Strength of Dustwisp I
+      value: 1
+    - talentId: Geological Persistence II
+      value: 1
+
+- id: 1d6ee257-377a-4dd0-9d8b-42e5a107990d
+  name: Lich
+  sprite: '0236'
+  frames: 4
+
+  minLevel: 40
+
+  targettingType: Weakest
+
+  statScaling:
+    Force: 5.5
+    Health: 35
+    Speed: 0.7
+    Aura: 5.0
+
+  combatStats:
+    debuffIgnoreChance:
+      Water: 0.40
+
+  skillIds:
+    - Frostdrop III
+    - Eye of the Storm
+
+  talents:
+    - talentId: Strength of Chillstar III
+      value: 1
+    - talentId: Deep Freeze II
+      value: 1
+    - talentId: Permafrost II
+      value: 1
+
+- id: bb36595b-8315-4805-bb03-5353fadc794d
+  name: Red Dragon
+  sprite: '0348'
+  frames: 4
+
+  minLevel: 40
+
+  targettingType: Random
+
+  statScaling:
+    Force: 8.0
+    Health: 80
+    Speed: 2.0
+    Aura: 6.0
+
+  resistance:
+    Fire: 0.8
+    Air: 0.5
+
+  affinity:
+    Fire: 1.0
+
+  combatStats:
+    skillStrikeAgainChance:
+      Fire: 0.50
+
+  skillIds:
+    - Fireball II
+    - Thunderwave III
+    - Vaporize
+
+  talents:
+    - talentId: Strength of Fireball II
+      value: 1
+    - talentId: Pyroclastic Surge II
+      value: 1
+    - talentId: Thunderstruck II
+      value: 1
+
+- id: 77afde08-b55c-4df6-9a12-ada68cd2060b
+  name: Druid
+  sprite: '0032'
+  frames: 4
+
+  minLevel: 25
+
+  targettingType: Weakest
+
+  statScaling:
+    Force: 2.0
+    Health: 25
+    Speed: 0.8
+    Aura: 3.0
+
+  skillIds:
+    - Growth
+    - Healsprite II
+
+  talents:
+    - talentId: Healing Waters I
+      value: 1
+    - talentId: Tidal Resonance I
+      value: 1
+
+- id: b49105db-a930-44f8-9a78-8a0a8742d6f2
+  name: Bard
+  sprite: '0056'
+  frames: 4
+
+  minLevel: 25
+
+  targettingType: Random
+
+  statScaling:
+    Force: 1.5
+    Health: 20
+    Speed: 1.2
+    Aura: 2.8
+
+  skillIds:
+    - Rejuvenating Gust
+    - Zephyr Speed
+
+  talents:
+    - talentId: Winds of Change I
+      value: 1
+    - talentId: Acuity
+      value: 1
+
+- id: 7311e125-7c77-48c9-9b58-12f475151cde
+  name: Halberdier
+  sprite: '0068'
+  frames: 4
+
+  minLevel: 25
+
+  targettingType: Random
+
+  statScaling:
+    Force: 3.8
+    Health: 32
+    Speed: 1.0
+    Aura: 1.2
+
+  combatStats:
+    skillStrikeAgainChance:
+      Earth: 0.25
+
+  skillIds:
+    - Earthspike II
+
+  talents:
+    - talentId: Strength of Earthspike I
+      value: 1
+    - talentId: Tectonic Force I
+      value: 1
+
+- id: 51b97722-7f5a-448d-9246-78a9cb21230e
+  name: Monk
+  sprite: '0076'
+  frames: 4
+
+  minLevel: 25
+
+  targettingType: Random
+
+  statScaling:
+    Force: 3.2
+    Health: 28
+    Speed: 1.8
+    Aura: 2.0
+
+  combatStats:
+    skillStrikeAgainChance:
+      Air: 0.30
+
+  skillIds:
+    - Windshear I
+    - Soothing Bubbles
+
+  talents:
+    - talentId: Wind Walker I
+      value: 1
+    - talentId: Healing Waters I
+      value: 1
+
+- id: 15a4dbf6-5f56-4450-bbfe-999cd471cafa
+  name: Tamer
+  sprite: '0080'
+  frames: 4
+
+  minLevel: 25
+
+  targettingType: Random
+
+  statScaling:
+    Force: 2.8
+    Health: 24
+    Speed: 1.0
+    Aura: 2.5
+
+  skillIds:
+    - Growth
+    - Dustwisp I
+
+  talents:
+    - talentId: Strength of Dustwisp I
+      value: 1
+
+- id: 5386b8ad-860b-4b40-819e-8d144be2d5f2
+  name: Kobold Knight
+  sprite: '0096'
+  frames: 4
+
+  minLevel: 15
+
+  targettingType: Strongest
+
+  statScaling:
+    Force: 2.5
+    Health: 28
+    Speed: 0.8
+    Aura: 1.0
+
+  resistance:
+    Earth: 0.3
+
+  skillIds:
+    - Earthspike I
+
+  talents:
+    - talentId: Strength of Earthspike I
+      value: 1
+
+- id: b42fefa9-4fe3-44b8-800d-88936cae981a
+  name: Kobold Priest
+  sprite: '0100'
+  frames: 4
+
+  minLevel: 15
+
+  targettingType: Weakest
+
+  statScaling:
+    Force: 1.8
+    Health: 22
+    Speed: 0.6
+    Aura: 2.2
+
+  skillIds:
+    - Healsprite I
+    - Dustwisp I
+
+  talents:
+    - talentId: Strength of Healsprite I
+      value: 1
+
+- id: 8d4135f0-c093-43a1-93b4-5698c51b47b4
+  name: Goblin Leader
+  sprite: '0148'
+  frames: 4
+
+  minLevel: 15
+
+  targettingType: Random
+
+  statScaling:
+    Force: 3.0
+    Health: 35
+    Speed: 1.2
+    Aura: 1.5
+
+  combatStats:
+    skillStrikeAgainChance:
+      Air: 0.20
+
+  skillIds:
+    - Thunderwave I
+    - Earthspike I
+
+  talents:
+    - talentId: Strength of Thunderwave I
+      value: 1
+
+- id: caad602e-724d-4fb5-bfa1-f471bcdaedaa
+  name: Goblin Shaman
+  sprite: '0152'
+  frames: 4
+
+  minLevel: 15
+
+  targettingType: Weakest
+
+  statScaling:
+    Force: 2.2
+    Health: 18
+    Speed: 0.8
+    Aura: 3.2
+
+  skillIds:
+    - Firewisp II
+    - Chillstar I
+
+  talents:
+    - talentId: Strength of Firewisp I
+      value: 1
+    - talentId: Strength of Chillstar I
+      value: 1
+
+- id: a4201e74-894b-4a5b-affc-c1a147ce992c
+  name: Demon
+  sprite: '0300'
+  frames: 4
+
+  minLevel: 35
+
+  targettingType: Strongest
+
+  statScaling:
+    Force: 6.0
+    Health: 60
+    Speed: 1.5
+    Aura: 4.5
+
+  resistance:
+    Fire: 0.6
+
+  affinity:
+    Fire: 0.8
+
+  combatStats:
+    skillStrikeAgainChance:
+      Fire: 0.45
+    damageReflectPercent:
+      Fire: 0.30
+
+  skillIds:
+    - Fireball II
+    - Meltdown
+    - Static Gust
+
+  talents:
+    - talentId: Strength of Fireball II
+      value: 1
+    - talentId: Pyroclastic Surge I
+      value: 1
+    - talentId: Eternal Flame I
+      value: 1

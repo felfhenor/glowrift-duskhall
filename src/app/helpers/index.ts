@@ -23,6 +23,7 @@ export * from './discord';
 export * from './drag-handler';
 export * from './droppable';
 export * from './explore';
+export * from './favorites';
 export * from './festival';
 export * from './festival-combat';
 export * from './festival-exploration';

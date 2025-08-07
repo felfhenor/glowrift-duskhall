@@ -11,7 +11,6 @@ import type {
   EquipmentSkillContentTechnique,
   EquipmentSkillId,
   EquipmentSkillTechniqueStatusEffectApplication,
-  EquipmentTalent,
   FestivalContent,
   GuardianContent,
   GuardianId,
@@ -19,6 +18,7 @@ import type {
   StatBlock,
   StatusEffectContent,
   StatusEffectId,
+  TalentBoost,
   TalentContent,
   TalentId,
   TalentTreeContent,
@@ -91,9 +91,7 @@ function ensureTechniqueStatusEffect(
   };
 }
 
-function ensureEquipmentTalentBoost(
-  boost: Partial<EquipmentTalent>,
-): Required<EquipmentTalent> {
+function ensureTalentBoost(boost: Partial<TalentBoost>): Required<TalentBoost> {
   return {
     talentId: boost.talentId ?? ('UNKNOWN' as TalentId),
     value: boost.value ?? 0,
@@ -150,13 +148,15 @@ function ensureGuardian(
     frames: guardian.frames ?? 1,
     sprite: guardian.sprite ?? '0000',
 
+    minLevel: guardian.minLevel ?? 1,
+
     targettingType: guardian.targettingType ?? 'Random',
 
     statScaling: ensureStats(guardian.statScaling),
     skillIds: guardian.skillIds ?? [],
     resistance: ensureAffinities(guardian.resistance),
     affinity: ensureAffinities(guardian.affinity),
-    talentIds: guardian.talentIds ?? {},
+    talents: (guardian.talents ?? []).map(ensureTalentBoost),
 
     combatStats: ensureCombatStats(guardian.combatStats),
   };
@@ -178,6 +178,7 @@ function ensureSkill(
     dropLevel: skill.dropLevel ?? 0,
     preventDrop: skill.preventDrop ?? false,
     preventModification: skill.preventModification ?? false,
+    isFavorite: skill.isFavorite ?? false,
     usesPerCombat: skill.usesPerCombat ?? -1,
     numTargets: skill.numTargets ?? 0,
     damageScaling: ensureStats(skill.damageScaling),
@@ -200,10 +201,11 @@ function ensureItem(
     dropLevel: item.dropLevel ?? 0,
     preventDrop: item.preventDrop ?? false,
     preventModification: item.preventModification ?? false,
+    isFavorite: item.isFavorite ?? false,
 
     enchantLevel: item.enchantLevel ?? 0,
     baseStats: ensureStats(item.baseStats),
-    talentBoosts: (item.talentBoosts ?? []).map(ensureEquipmentTalentBoost),
+    talentBoosts: (item.talentBoosts ?? []).map(ensureTalentBoost),
     elementMultipliers: (item.elementMultipliers ?? []).map(
       ensureEquipmentElement,
     ),
@@ -304,8 +306,6 @@ function ensureTraitEquipment(
     ),
     skillIds: traitEquipment.skillIds ?? [],
     traitIds: traitEquipment.traitIds ?? [],
-    talentBoosts: (traitEquipment.talentBoosts ?? []).map(
-      ensureEquipmentTalentBoost,
-    ),
+    talentBoosts: (traitEquipment.talentBoosts ?? []).map(ensureTalentBoost),
   };
 }

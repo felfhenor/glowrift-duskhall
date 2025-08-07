@@ -26,8 +26,14 @@
         <ul class="menu bg-base-200 rounded-box w-56 p-0">
           <li class="menu-title">{{ item.name }}</li>
 
+          <li>
+            <a (click)="toggleFavorite(item)">
+              {{ item.isFavorite ? 'Unfavorite' : 'Favorite' }}
+            </a>
+          </li>
+
           @if (actions.includes('Salvage')) {
-            <li>
+            <li [class.menu-disabled]="item.isFavorite">
               <a (click)="salvageItem(item)">
                 Salvage for {{ salvageValue(item) | number }} Mana
               </a>
