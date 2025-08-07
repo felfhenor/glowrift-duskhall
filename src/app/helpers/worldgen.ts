@@ -391,7 +391,38 @@ export async function generateWorld(
 
     if (freeNodes.length === 0) return { x: -1, y: -1 };
 
-    const chosenNode = randomChoice<QuadtreePoint>(freeNodes, rng);
+    // Calculate corner bias: prefer positions that are closer to corners but not necessarily in outer regions
+    const getCornerDistance = (node: QuadtreePoint): number => {
+      const corners = [
+        { x: 0, y: 0 }, // top-left
+        { x: config.width - 1, y: 0 }, // top-right
+        { x: 0, y: config.height - 1 }, // bottom-left
+        { x: config.width - 1, y: config.height - 1 }, // bottom-right
+      ];
+      
+      return Math.min(...corners.map(corner => 
+        Math.sqrt((node.x - corner.x) ** 2 + (node.y - corner.y) ** 2)
+      ));
+    };
+
+    // Distance from center for regional filtering
+    const centerDistance = distanceBetweenNodes(firstTown, { x: 0, y: 0 });
+    const centerDistanceThreshold = centerDistance * 0.67; // Only bias toward corners in inner/middle regions
+
+    // Split nodes into corner-biased and regular candidates
+    const cornerThreshold = Math.min(config.width, config.height) * 0.3; // 30% of map size
+    const cornerNodes = freeNodes.filter(n => {
+      const toCenter = distanceBetweenNodes(n, firstTown);
+      const toCorner = getCornerDistance(n);
+      // Corner bias only for nodes that are near corners AND not in far outer regions
+      return toCorner <= cornerThreshold && toCenter <= centerDistanceThreshold;
+    });
+
+    // 40% chance to prefer corner nodes if available
+    const useCornerBias = succeedsChance(40, rng) && cornerNodes.length > 0;
+    const candidatePool = useCornerBias ? cornerNodes : freeNodes;
+
+    const chosenNode = randomChoice<QuadtreePoint>(candidatePool, rng);
     return { x: chosenNode.x, y: chosenNode.y };
   };
 

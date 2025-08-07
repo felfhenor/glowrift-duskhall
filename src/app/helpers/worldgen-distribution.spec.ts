@@ -100,6 +100,61 @@ describe('World Generation - Node Distribution', () => {
       const outerRatio = outerNodes / totalContentNodes;
       expect(outerRatio).toBeLessThan(0.3);
     });
+
+    it('should place some nodes in corner areas to better utilize map space', async () => {
+      const mediumWorldConfig: WorldConfigContent = {
+        id: 'test-medium-corners',
+        type: 'worldconfig',
+        name: 'Test Medium Corners',
+        width: 75,
+        height: 75,
+        maxLevel: 100,
+        nodeCount: {
+          town: { min: 2, max: 3 },
+          village: { min: 5, max: 8 },
+          cave: { min: 20, max: 30 },
+          dungeon: { min: 8, max: 12 },
+          castle: { min: 5, max: 8 },
+        },
+      };
+
+      const world = await generateWorld(mediumWorldConfig);
+      
+      if (!world.didFinish) {
+        return;
+      }
+
+      // Get all nodes with actual content (not empty nodes)
+      const contentNodes = Object.values(world.nodes).filter(node => node.nodeType);
+      
+      // Check corner areas (20% of map size from each corner)
+      const cornerSize = Math.floor(mediumWorldConfig.width * 0.2);
+      let cornerNodes = 0;
+      
+      contentNodes.forEach(node => {
+        const isInCorner = 
+          // Top-left corner
+          (node.x < cornerSize && node.y < cornerSize) ||
+          // Top-right corner
+          (node.x >= mediumWorldConfig.width - cornerSize && node.y < cornerSize) ||
+          // Bottom-left corner
+          (node.x < cornerSize && node.y >= mediumWorldConfig.height - cornerSize) ||
+          // Bottom-right corner
+          (node.x >= mediumWorldConfig.width - cornerSize && node.y >= mediumWorldConfig.height - cornerSize);
+        
+        if (isInCorner) {
+          cornerNodes++;
+        }
+      });
+      
+      // With corner bias, we should have at least some nodes in corner areas
+      // This is a probabilistic test, so we use a reasonable threshold
+      expect(cornerNodes).toBeGreaterThan(0);
+      
+      // Corner areas should contain at least 3% of nodes to ensure corners aren't completely empty
+      const cornerRatio = cornerNodes / contentNodes.length;
+      expect(cornerRatio).toBeGreaterThan(0.03);
+    });
   });
 
   describe('Large World Distribution', () => {
@@ -166,6 +221,60 @@ describe('World Generation - Node Distribution', () => {
       // No more than 30% should be in the far outer region to avoid edge clustering
       const outerRatio = outerNodes / totalContentNodes;
       expect(outerRatio).toBeLessThan(0.3);
+    });
+
+    it('should place some nodes in corner areas to better utilize map space', async () => {
+      const largeWorldConfig: WorldConfigContent = {
+        id: 'test-large-corners',
+        type: 'worldconfig',
+        name: 'Test Large Corners',
+        width: 100,
+        height: 100,
+        maxLevel: 100,
+        nodeCount: {
+          town: { min: 2, max: 3 },
+          village: { min: 8, max: 12 },
+          cave: { min: 30, max: 40 },
+          dungeon: { min: 12, max: 18 },
+          castle: { min: 8, max: 12 },
+        },
+      };
+
+      const world = await generateWorld(largeWorldConfig);
+      
+      if (!world.didFinish) {
+        return;
+      }
+
+      // Get all nodes with actual content (not empty nodes)
+      const contentNodes = Object.values(world.nodes).filter(node => node.nodeType);
+      
+      // Check corner areas (20% of map size from each corner)
+      const cornerSize = Math.floor(largeWorldConfig.width * 0.2);
+      let cornerNodes = 0;
+      
+      contentNodes.forEach(node => {
+        const isInCorner = 
+          // Top-left corner
+          (node.x < cornerSize && node.y < cornerSize) ||
+          // Top-right corner
+          (node.x >= largeWorldConfig.width - cornerSize && node.y < cornerSize) ||
+          // Bottom-left corner
+          (node.x < cornerSize && node.y >= largeWorldConfig.height - cornerSize) ||
+          // Bottom-right corner
+          (node.x >= largeWorldConfig.width - cornerSize && node.y >= largeWorldConfig.height - cornerSize);
+        
+        if (isInCorner) {
+          cornerNodes++;
+        }
+      });
+      
+      // With corner bias, we should have at least some nodes in corner areas
+      expect(cornerNodes).toBeGreaterThan(0);
+      
+      // Corner areas should contain at least 3% of nodes to ensure corners aren't completely empty
+      const cornerRatio = cornerNodes / contentNodes.length;
+      expect(cornerRatio).toBeGreaterThan(0.03);
     });
   });
 });
