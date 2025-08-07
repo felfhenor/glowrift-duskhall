@@ -64,6 +64,11 @@ export function getCombatantBaseStatDamageForTechnique(
   return baseStatWithoutMultiplier + multipliedStat;
 }
 
+export function getDeadlockPreventionDamageMultiplier(rounds: number): number {
+  const multiplierTiers = Math.floor(rounds / 25);
+  return 1 + (0.25 * multiplierTiers);
+}
+
 export function combatantTakeDamage(combatant: Combatant, damage: number) {
   combatant.hp = clamp(combatant.hp - damage, 0, combatant.totalStats.Health);
 }
@@ -139,7 +144,13 @@ export function applySkillToTarget(
         1 + getCombatOutgoingAttributeMultiplier('damage');
     }
 
-    effectiveDamage *= damageMultiplierFromFestivals;
+    // Apply deadlock prevention damage multiplier (only for damage, not healing)
+    let deadlockPreventionMultiplier = 1;
+    if (effectiveDamage > 0) {
+      deadlockPreventionMultiplier = getDeadlockPreventionDamageMultiplier(combat.rounds);
+    }
+
+    effectiveDamage *= damageMultiplierFromFestivals * deadlockPreventionMultiplier;
     effectiveDamage = Math.floor(effectiveDamage);
 
     combatantTakeDamage(target, effectiveDamage);
