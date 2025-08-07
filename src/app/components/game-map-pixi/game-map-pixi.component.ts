@@ -14,6 +14,7 @@ import {
   getTravelProgress,
   initializePixiApp,
   isAtNode,
+  isTraveling,
   isTravelingToPosition,
   loadGameMapTextures,
   setupMapDragging,
@@ -82,6 +83,15 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       const mapData = this.map();
       if (this.app && this.mapContainer) {
         this.updateMap(mapData.tiles);
+      }
+    });
+
+    // Separate effect for travel visualization to ensure it updates when travel state or camera changes
+    effect(() => {
+      this.camera(); // Watch camera changes
+      isTraveling(); // Watch travel state changes
+      if (this.app && this.travelVisualizationContainer) {
+        this.updateTravelVisualization();
       }
     });
   }
@@ -157,11 +167,10 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
   }
 
   private updateMap(mapData: MapTileData[][]) {
-    if (!this.mapContainer || !this.playerIndicatorContainer || !this.travelVisualizationContainer) return;
+    if (!this.mapContainer || !this.playerIndicatorContainer) return;
 
     this.mapContainer.removeChildren();
     this.playerIndicatorContainer.removeChildren();
-    this.travelVisualizationContainer.removeChildren();
     this.nodeSprites = {};
 
     mapData.forEach((row) => {
@@ -171,7 +180,6 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     });
 
     this.updatePlayerIndicators(mapData);
-    this.updateTravelVisualization();
   }
 
   private createNodeSprites(
@@ -235,27 +243,39 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
   private updateTravelVisualization() {
     if (!this.travelVisualizationContainer || !this.app) return;
 
+    // Clear previous travel visualization
+    this.travelVisualizationContainer.removeChildren();
+
     const travelProgress = getTravelProgress();
     if (!travelProgress.isActive) return;
 
     const { fromPosition, toPosition, interpolatedPosition } = travelProgress;
 
-    // Draw travel line between source and destination
+    // Convert world coordinates to relative coordinates based on current camera
+    const camera = this.camera();
+    const relativeFromX = fromPosition.x - camera.x;
+    const relativeFromY = fromPosition.y - camera.y;
+    const relativeToX = toPosition.x - camera.x;
+    const relativeToY = toPosition.y - camera.y;
+    const relativeInterpolatedX = interpolatedPosition.x - camera.x;
+    const relativeInterpolatedY = interpolatedPosition.y - camera.y;
+
+    // Draw travel line between source and destination using relative coordinates
     createTravelLine(
-      fromPosition.x,
-      fromPosition.y,
-      toPosition.x,
-      toPosition.y,
+      relativeFromX,
+      relativeFromY,
+      relativeToX,
+      relativeToY,
       this.travelVisualizationContainer,
     );
 
-    // Show traveling hero sprite at interpolated position
+    // Show traveling hero sprite at interpolated position using relative coordinates
     const state = gamestate();
     const partyLeader = state.hero.heroes[0]; // Get party leader
     if (partyLeader && this.heroTextures[partyLeader.sprite]) {
       createTravelingHeroIndicator(
-        interpolatedPosition.x,
-        interpolatedPosition.y,
+        relativeInterpolatedX,
+        relativeInterpolatedY,
         this.heroTextures[partyLeader.sprite],
         this.travelVisualizationContainer,
         this.app.ticker,

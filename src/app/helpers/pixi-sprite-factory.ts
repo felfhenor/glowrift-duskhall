@@ -171,7 +171,7 @@ export function createTravelLine(
   const toPixelX = toX * 64 + 32; // Center of tile
   const toPixelY = toY * 64 + 32; // Center of tile
 
-  graphics.setStrokeStyle({ width: 3, color: 0xffff00, alpha: 0.8 });
+  graphics.setStrokeStyle({ width: 3, color: 0xffffff, alpha: 0.8 });
   graphics.moveTo(fromPixelX, fromPixelY);
   graphics.lineTo(toPixelX, toPixelY);
   graphics.stroke();

@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { getTravelProgress, isTravelingToPosition } from './travel-visualization';
-import { updateGamestate } from './state-game';
+import { getTravelProgress, isTravelingToPosition } from '@helpers/travel-visualization';
+import { updateGamestate } from '@helpers/state-game';
 
 describe('Travel Visualization', () => {
   beforeEach(() => {
