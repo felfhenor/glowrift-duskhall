@@ -35,7 +35,7 @@ export class Quadtree {
   clear(): void {
     this.points = [];
     for (let i = 0; i < this.nodes.length; i++) {
-      if (this.nodes[i] != null) {
+      if (this.nodes[i] !== null) {
         this.nodes[i]!.clear();
         this.nodes[i] = null;
       }
@@ -53,19 +53,19 @@ export class Quadtree {
 
     this.nodes[0] = new Quadtree(
       { x: x + subWidth, y: y, width: subWidth, height: subHeight },
-      this.level + 1
+      this.level + 1,
     );
     this.nodes[1] = new Quadtree(
       { x: x, y: y, width: subWidth, height: subHeight },
-      this.level + 1
+      this.level + 1,
     );
     this.nodes[2] = new Quadtree(
       { x: x, y: y + subHeight, width: subWidth, height: subHeight },
-      this.level + 1
+      this.level + 1,
     );
     this.nodes[3] = new Quadtree(
       { x: x + subWidth, y: y + subHeight, width: subWidth, height: subHeight },
-      this.level + 1
+      this.level + 1,
     );
   }
 
@@ -78,7 +78,8 @@ export class Quadtree {
     const horizontalMidpoint = this.bounds.y + this.bounds.height / 2;
 
     // Point can completely fit within the top quadrants
-    const topQuadrant = point.y < horizontalMidpoint && point.y >= this.bounds.y;
+    const topQuadrant =
+      point.y < horizontalMidpoint && point.y >= this.bounds.y;
     // Point can completely fit within the bottom quadrants
     const bottomQuadrant = point.y >= horizontalMidpoint;
 
@@ -112,7 +113,7 @@ export class Quadtree {
     }
 
     // If we have child nodes, try to insert into them
-    if (this.nodes[0] != null) {
+    if (this.nodes[0] !== null) {
       const index = this.getIndex(point);
 
       if (index !== -1) {
@@ -126,7 +127,7 @@ export class Quadtree {
 
     // If we have too many points and can still split, split
     if (this.points.length > this.MAX_POINTS && this.level < this.MAX_LEVELS) {
-      if (this.nodes[0] == null) {
+      if (this.nodes[0] === null) {
         this.split();
       }
 
@@ -191,9 +192,9 @@ export class Quadtree {
     }
 
     // If we have child nodes, retrieve from them too
-    if (this.nodes[0] != null) {
+    if (this.nodes[0] !== null) {
       for (const node of this.nodes) {
-        if (node != null) {
+        if (node !== null) {
           returnObjects.push(...node.retrieve(bounds));
         }
       }
@@ -224,7 +225,7 @@ export class Quadtree {
     }
 
     // Search in child nodes
-    if (this.nodes[0] != null) {
+    if (this.nodes[0] !== null) {
       const testPoint = { x, y, taken: false };
       const index = this.getIndex(testPoint);
       if (index !== -1) {
@@ -232,7 +233,7 @@ export class Quadtree {
       } else {
         // Point might be in any child node if it's on a boundary
         for (const node of this.nodes) {
-          if (node != null) {
+          if (node !== null) {
             const found = node.findPoint(x, y);
             if (found) {
               return found;
@@ -251,9 +252,9 @@ export class Quadtree {
   getAllPoints(): QuadtreePoint[] {
     const allPoints: QuadtreePoint[] = [...this.points];
 
-    if (this.nodes[0] != null) {
+    if (this.nodes[0] !== null) {
       for (const node of this.nodes) {
-        if (node != null) {
+        if (node !== null) {
           allPoints.push(...node.getAllPoints());
         }
       }
