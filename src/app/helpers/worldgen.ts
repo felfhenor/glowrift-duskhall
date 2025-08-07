@@ -425,10 +425,10 @@ export async function generateWorld(
 
   const minDistancesForLocationNode: Record<LocationType, number> = {
     cave: 0,
-    town: maxDistance * 0.15, // Reduced from 0.5 to allow towns closer to center
-    village: maxDistance * 0.25, // Reduced from 0.75 to spread villages more
-    dungeon: maxDistance * 0.1, // Reduced from 0.3 for better spread
-    castle: maxDistance * 0.2, // Reduced from 0.7 to avoid edge clustering
+    town: maxDistance * 0.5,
+    village: maxDistance * 0.75,
+    dungeon: maxDistance * 0.3,
+    castle: maxDistance * 0.7,
   };
 
   const findUnusedPosition: (
