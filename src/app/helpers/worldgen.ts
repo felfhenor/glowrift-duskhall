@@ -372,11 +372,13 @@ export async function generateWorld(
   } = (distMin: number, distMax: number) => {
     // Query a large area that could contain positions within our distance range
     // We use a conservative bounds that covers the maximum possible area
+    const queryX = Math.max(0, firstTown.x - distMax);
+    const queryY = Math.max(0, firstTown.y - distMax);
     const queryBounds = {
-      x: Math.max(0, firstTown.x - distMax),
-      y: Math.max(0, firstTown.y - distMax),
-      width: Math.min(config.width - queryBounds.x, 2 * distMax + 1),
-      height: Math.min(config.height - queryBounds.y, 2 * distMax + 1),
+      x: queryX,
+      y: queryY,
+      width: Math.min(config.width - queryX, 2 * distMax + 1),
+      height: Math.min(config.height - queryY, 2 * distMax + 1),
     };
 
     const candidates = positionQuadtree.retrieve(queryBounds);
