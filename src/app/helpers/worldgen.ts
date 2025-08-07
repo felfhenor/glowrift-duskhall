@@ -590,9 +590,7 @@ export async function generateWorld(
             nodeCount,
             nodeNum: i,
             worldGenDisplayType: nodeType,
-            minDist:
-              minDistancesForLocationNode[node.nodeType!] *
-              randomNumberRange(0.5, 1.5, rng),
+            minDist: minDistancesForLocationNode[node.nodeType!],
             maxDist: maxDistance,
             isLast: false,
           };
