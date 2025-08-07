@@ -80,10 +80,10 @@ export class PanelTownAlchemistComponent {
     const availableSlots = this.maxSlots() - this.selectedSkills().length;
     if (availableSlots <= 0) return;
 
-    // Get all skills, sorted by rarity/level
+    // Get all skills, sorted by rarity/level, excluding favorited skills
     const allSkills = sortedRarityList<EquipmentSkill>(
       gamestate().inventory.skills.filter(
-        (skill) => !this.disabledSkillIds().includes(skill.id)
+        (skill) => !this.disabledSkillIds().includes(skill.id) && !skill.isFavorite
       )
     );
 

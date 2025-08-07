@@ -176,6 +176,7 @@ function ensureSkill(
     dropLevel: skill.dropLevel ?? 0,
     preventDrop: skill.preventDrop ?? false,
     preventModification: skill.preventModification ?? false,
+    isFavorite: skill.isFavorite ?? false,
     usesPerCombat: skill.usesPerCombat ?? -1,
     numTargets: skill.numTargets ?? 0,
     damageScaling: ensureStats(skill.damageScaling),
@@ -198,6 +199,7 @@ function ensureItem(
     dropLevel: item.dropLevel ?? 0,
     preventDrop: item.preventDrop ?? false,
     preventModification: item.preventModification ?? false,
+    isFavorite: item.isFavorite ?? false,
 
     enchantLevel: item.enchantLevel ?? 0,
     baseStats: ensureStats(item.baseStats),

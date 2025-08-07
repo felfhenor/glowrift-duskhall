@@ -1,5 +1,6 @@
 import { itemSalvageValue } from '@helpers/action-equipment';
 import { gainCurrency } from '@helpers/currency';
+import { notifyError } from '@helpers/notify';
 import { updateHeroData } from '@helpers/hero';
 import { recalculateStats } from '@helpers/hero-stats';
 import { sortedRarityList } from '@helpers/item';
@@ -28,13 +29,31 @@ export function addItemToInventory(item: EquipmentItem): void {
     const itemType = item.__type;
     const items = itemGroups[itemType] || [];
     
-    // If we're at capacity for this item type, remove the worst existing item first
+    // If we're at capacity for this item type, find a non-favorited item to remove
     if (items.length >= maxItemInventorySize()) {
       const sortedItems = sortedRarityList(items);
-      const worstItem = sortedItems.pop();
-      if (worstItem) {
-        lostItems.push(worstItem);
+      
+      // Find the worst non-favorited item
+      let worstItemIndex = -1;
+      for (let i = sortedItems.length - 1; i >= 0; i--) {
+        if (!sortedItems[i].isFavorite) {
+          worstItemIndex = i;
+          break;
+        }
       }
+      
+      // If no non-favorited items found, reject the new item
+      if (worstItemIndex === -1) {
+        // Auto-salvage the new item and show error
+        const value = itemSalvageValue(item);
+        gainCurrency('Mana', value);
+        notifyError('Could not add item to inventory as there is no space');
+        return state; // Don't add the item to inventory
+      }
+      
+      // Remove the worst non-favorited item
+      const worstItem = sortedItems.splice(worstItemIndex, 1)[0];
+      lostItems.push(worstItem);
       itemGroups[itemType] = sortedItems;
     }
     
@@ -52,8 +71,11 @@ export function addItemToInventory(item: EquipmentItem): void {
     return state;
   });
 
+  // Salvage any lost items for mana
   const value = sumBy(lostItems, (s) => itemSalvageValue(s));
-  gainCurrency('Mana', value);
+  if (value > 0) {
+    gainCurrency('Mana', value);
+  }
 }
 
 export function removeItemFromInventory(item: EquipmentItem): void {
