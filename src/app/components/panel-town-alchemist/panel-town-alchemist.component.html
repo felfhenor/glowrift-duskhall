@@ -26,6 +26,16 @@
           </app-icon-blank-slot>
         }
       </div>
+
+      <div class="mt-4">
+        <button
+          class="btn btn-secondary btn-sm"
+          (click)="autoChooseSkills()"
+          [disabled]="selectedSkills().length >= maxSlots()"
+        >
+          Auto-choose Skills
+        </button>
+      </div>
     </div>
   </div>
 

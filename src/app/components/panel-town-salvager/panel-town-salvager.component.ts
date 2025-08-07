@@ -12,6 +12,8 @@ import {
   notifySuccess,
   salvageItems,
 } from '@helpers';
+import { sortedRarityList } from '@helpers/item';
+import { gamestate } from '@helpers/state-game';
 import type { EquipmentItem, GameCurrency } from '@interfaces';
 import { TeleportDirective } from '@ngneat/overview';
 import { RepeatPipe } from 'ngxtension/repeat-pipe';
@@ -72,5 +74,25 @@ export class PanelTownSalvagerComponent {
     notifySuccess(`You salvaged ${this.selectedItems().length} items!`);
 
     this.selectedItems.set([]);
+  }
+
+  autoChooseItems() {
+    const availableSlots = this.maxSlots() - this.selectedItems().length;
+    if (availableSlots <= 0) return;
+
+    // Get all equipment items, sorted by rarity/level
+    const allItems = sortedRarityList<EquipmentItem>(
+      gamestate().inventory.items.filter(
+        (item) =>
+          ['accessory', 'armor', 'trinket', 'weapon'].includes(item.__type) &&
+          !this.disabledItemIds().includes(item.id)
+      )
+    );
+
+    // Take the worst items (last in the sorted list)
+    const worstItems = allItems.slice(-availableSlots);
+
+    // Add them to selected items
+    this.selectedItems.update((items) => [...items, ...worstItems]);
   }
 }
