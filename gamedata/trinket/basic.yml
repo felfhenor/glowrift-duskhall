@@ -1,6 +1,6 @@
 - id: c6602e03-6e4e-407e-933d-9520047ce41a
   name: Spellbook of Weak Force
-  sprite: '0000'
+  sprite: '0001'
 
   rarity: Common
   dropLevel: 1
@@ -17,3 +17,291 @@
 
   baseStats:
     Aura: 1
+
+- id: d1027360-8bca-4d51-880c-b277807105db
+  name: Minor Crystal Orb
+  sprite: '0011'
+
+  rarity: Common
+  dropLevel: 5
+
+  baseStats:
+    Force: 0.5
+    Aura: 0.5
+
+- id: 701d4b93-3e70-4a06-ac22-941c43476679
+  name: Apprentice Spellbook
+  sprite: '0005'
+
+  rarity: Uncommon
+  dropLevel: 8
+
+  baseStats:
+    Force: 0.6
+    Aura: 0.6
+    Speed: 0.6
+
+- id: 8d17b918-c79d-4057-8e6d-25bd9af0eac5
+  name: Scholar's Gem
+  sprite: '0020'
+
+  rarity: Rare
+  dropLevel: 12
+
+  baseStats:
+    Force: 0.7
+    Aura: 0.7
+    Speed: 0.7
+
+  talentBoosts:
+    - talentId: Strength of Firewisp I
+      value: 1
+
+- id: 76313fe3-a00f-4fd6-87b3-adf800f2b0c4
+  name: Heart Crystal of Vitality
+  sprite: '0026'
+
+  rarity: Mystical
+  dropLevel: 15
+
+  baseStats:
+    Aura: 0.8
+    Health: 15
+
+  talentBoosts:
+    - talentId: Strength of Healsprite I
+      value: 1
+
+- id: e2059efe-a83f-4b23-b5b0-bf0739967715
+  name: Iron Key of Strength
+  sprite: '0034'
+
+  rarity: Common
+  dropLevel: 18
+
+  baseStats:
+    Force: 1.8
+    Speed: 1.0
+
+- id: ac86789e-008e-4fad-94fa-e0cacd8d285c
+  name: Warrior's Skull Charm
+  sprite: '0036'
+
+  rarity: Uncommon
+  dropLevel: 20
+
+  baseStats:
+    Force: 2.2
+    Speed: 1.2
+    Health: 12
+
+- id: f93fbe22-fc7d-4216-a3f2-90bc57f36ef9
+  name: Battle Orb of Thunderous Power
+  sprite: '0016'
+
+  rarity: Rare
+  dropLevel: 22
+
+  baseStats:
+    Force: 2.5
+    Speed: 1.4
+    Aura: 1.4
+
+  talentBoosts:
+    - talentId: Strength of Thunderwave I
+      value: 1
+
+- id: 15a475f4-5e7a-490e-bf2d-cb9ab5a34b40
+  name: Legendary Tome of Elements
+  sprite: '0002'
+
+  rarity: Legendary
+  dropLevel: 25
+
+  baseStats:
+    Force: 3.6
+    Aura: 3.6
+    Speed: 2.0
+    Health: 20
+
+  talentBoosts:
+    - talentId: Strength of Firewisp I
+      value: 1
+    - talentId: Strength of Earthspike I
+      value: 1
+
+- id: a0703c5c-c4b5-46cf-8523-057a2e96edac
+  name: Crystal Heart of Wisdom
+  sprite: '0023'
+
+  rarity: Common
+  dropLevel: 28
+
+  baseStats:
+    Aura: 3.0
+    Health: 30
+
+- id: 60a18dfa-d13e-4a54-9775-1df954809450
+  name: Silver Key of Agility
+  sprite: '0029'
+
+  rarity: Uncommon
+  dropLevel: 30
+
+  baseStats:
+    Speed: 3.6
+    Force: 1.8
+    Aura: 1.8
+
+- id: a9d09935-595f-4796-a96a-9abd3c655911
+  name: Mystic Spellbook of Storms
+  sprite: '0004'
+
+  rarity: Rare
+  dropLevel: 32
+
+  baseStats:
+    Aura: 4.2
+    Force: 2.8
+    Speed: 2.1
+
+  talentBoosts:
+    - talentId: Strength of Thunderwave I
+      value: 1
+
+- id: fa5abbe2-4e72-4f62-b597-d4ed93b09e88
+  name: Ancient Gem of the Void
+  sprite: '0018'
+
+  rarity: Mystical
+  dropLevel: 35
+
+  baseStats:
+    Force: 4.0
+    Aura: 4.0
+    Speed: 2.4
+
+  talentBoosts:
+    - talentId: Strength of Healsprite I
+      value: 1
+    - talentId: Strength of Firewisp I
+      value: 1
+
+- id: a2b9607a-0f95-40c6-ac34-e4e240572e6a
+  name: Mithril Orb of Focus
+  sprite: '0014'
+
+  rarity: Common
+  dropLevel: 38
+
+  baseStats:
+    Aura: 4.0
+    Force: 3.0
+
+- id: f3aa49a9-407b-47be-82b2-31f3fc826687
+  name: Poisoned Heart Crystal
+  sprite: '0024'
+
+  rarity: Uncommon
+  dropLevel: 40
+
+  baseStats:
+    Health: 48
+    Aura: 2.4
+    Speed: 2.4
+
+- id: 31ad42e1-013f-4f4b-8bed-a64b1a8d023a
+  name: Master's Skull of Power
+  sprite: '0039'
+
+  rarity: Rare
+  dropLevel: 42
+
+  baseStats:
+    Force: 5.6
+    Speed: 4.2
+    Aura: 2.8
+
+  talentBoosts:
+    - talentId: Strength of Earthspike I
+      value: 1
+
+- id: e878e3de-ab98-42c2-945a-d5873274a110
+  name: Ethereal Key of Mysteries
+  sprite: '0033'
+
+  rarity: Mystical
+  dropLevel: 45
+
+  baseStats:
+    Aura: 6.4
+    Force: 4.8
+    Speed: 3.2
+
+  talentBoosts:
+    - talentId: Strength of Firewisp I
+      value: 1
+    - talentId: Strength of Firewisp II
+      value: 1
+
+- id: bc750cfe-e508-4d04-b80f-2ffd75ebe708
+  name: Platinum Wristlet of Mastery
+  sprite: '0009'
+
+  rarity: Common
+  dropLevel: 47
+
+  baseStats:
+    Speed: 7.5
+    Health: 50
+
+- id: 489b1285-eb95-4c5b-8845-9e37edfeceaa
+  name: Champion's Spellbook
+  sprite: '0003'
+
+  rarity: Uncommon
+  dropLevel: 48
+
+  baseStats:
+    Force: 9.0
+    Aura: 6.0
+    Speed: 3.0
+
+- id: 9e4e63bd-08c5-4e5c-b1de-3a12a3f7fbd3
+  name: Grandmaster's Half-Heart Crystal
+  sprite: '0027'
+
+  rarity: Rare
+  dropLevel: 49
+
+  baseStats:
+    Force: 7.0
+    Aura: 7.0
+    Health: 70
+
+  talentBoosts:
+    - talentId: Strength of Healsprite I
+      value: 1
+
+- id: c65b9821-0633-43af-89fe-3062686f8fd8
+  name: Legendary Meat Drumstick of Ultimate Power
+  sprite: '0017'
+
+  rarity: Legendary
+  dropLevel: 50
+
+  baseStats:
+    Force: 10.0
+    Speed: 10.0
+    Aura: 10.0
+    Health: 100
+
+  talentBoosts:
+    - talentId: Strength of Firewisp I
+      value: 1
+    - talentId: Strength of Healsprite I
+      value: 1
+    - talentId: Strength of Thunderwave I
+      value: 1
+    - talentId: Strength of Earthspike I
+      value: 1

@@ -24,5 +24,9 @@
 }
 
 <ng-template #talentInfo let-hide>
-  <app-stats-talent [talent]="talentData"></app-stats-talent>
+  <app-stats-talent 
+    [talent]="talentData"
+    [requiredTalentsInvested]="requiredTalentsInvested()"
+    [currentTalentsInvested]="currentTalentsInvested()"
+  ></app-stats-talent>
 </ng-template>

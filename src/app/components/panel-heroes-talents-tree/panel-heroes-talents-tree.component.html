@@ -8,6 +8,8 @@
           [talent]="talent.talentData"
           [isBought]="talent.isLearned"
           [boostValue]="talent.talentLevel"
+          [requiredTalentsInvested]="talent.requiredTalentsInvested"
+          [currentTalentsInvested]="talent.currentTalentsInvested"
           [class.opacity-50]="!talent.canPurchase"
           [class.cursor-pointer]="talent.canPurchase && !talent.isLearned"
           [class.cursor-disabled]="!talent.canPurchase"

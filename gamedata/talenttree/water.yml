@@ -17,12 +17,14 @@
         - talentId: Deep Freeze I
 
     - level: 10
+      requiredTalentsInvested: 2
       learnableTalents:
         - talentId: Strength of Healsprite II
         - talentId: Blank Talent
         - talentId: Blank Talent
         - talentId: Permeating Chill I
     - level: 15
+      requiredTalentsInvested: 2
       learnableTalents:
         - talentId: Blank Talent
         - talentId: Healing Waters II
@@ -30,6 +32,7 @@
         - talentId: Deep Freeze II
 
     - level: 20
+      requiredTalentsInvested: 4
       learnableTalents:
         - talentId: Strength of Healsprite III
         - talentId: Regenerative Chill
@@ -37,6 +40,7 @@
         - talentId: Permeating Chill II
 
     - level: 25
+      requiredTalentsInvested: 4
       learnableTalents:
         - talentId: Strength of Chillstar I
         - talentId: Blank Talent
@@ -44,6 +48,7 @@
         - talentId: Permafrost I
 
     - level: 30
+      requiredTalentsInvested: 6
       learnableTalents:
         - talentId: Blank Talent
         - talentId: Blank Talent
@@ -51,6 +56,7 @@
         - talentId: Blank Talent
 
     - level: 35
+      requiredTalentsInvested: 6
       learnableTalents:
         - talentId: Strength of Chillstar II
         - talentId: Blank Talent
@@ -58,6 +64,7 @@
         - talentId: Blank Talent
 
     - level: 40
+      requiredTalentsInvested: 8
       learnableTalents:
         - talentId: Blank Talent
         - talentId: Blank Talent
@@ -65,6 +72,7 @@
         - talentId: Blank Talent
 
     - level: 45
+      requiredTalentsInvested: 8
       learnableTalents:
         - talentId: Strength of Chillstar III
         - talentId: Blank Talent

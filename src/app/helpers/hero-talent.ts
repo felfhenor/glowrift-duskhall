@@ -1,6 +1,7 @@
 import { getEntry } from '@helpers/content';
 import { updateHeroData } from '@helpers/hero';
-import type { Hero, TalentContent, TalentId } from '@interfaces';
+import { allTalentIdsInTalentTree } from '@helpers/talent';
+import type { Hero, TalentContent, TalentId, TalentTreeContent } from '@interfaces';
 import { sum } from 'es-toolkit/compat';
 
 export function heroRemainingTalentPoints(hero: Hero): number {
@@ -49,6 +50,14 @@ export function heroTotalTalentLevel(hero: Hero, talentId: string): number {
   );
 }
 
+export function heroTalentsInvestedInTree(hero: Hero, talentTree: TalentTreeContent): number {
+  const talentIdsInTree = allTalentIdsInTalentTree(talentTree);
+  return sum(
+    talentIdsInTree
+      .map(talentId => hero.talents[talentId] ?? 0)
+  );
+}
+
 export function getFullHeroTalentHash(hero: Hero): Record<TalentId, number> {
   const baseLevels = Object.assign({}, hero.talents);
   allHeroEquipmentTalents(hero).forEach((boost) => {
@@ -63,12 +72,20 @@ export function canHeroBuyTalent(
   hero: Hero,
   talent: TalentContent,
   requiredLevel: number,
+  talentTree?: TalentTreeContent,
+  requiredTalentsInvested?: number,
 ): boolean {
+  const meetsInvestmentRequirement = 
+    !requiredTalentsInvested || 
+    !talentTree || 
+    heroTalentsInvestedInTree(hero, talentTree) >= requiredTalentsInvested;
+
   return (
     talent.name !== 'Blank Talent' &&
     (talent.requireTalentId ? !!hero.talents[talent.requireTalentId] : true) &&
     !hero.talents[talent.id] &&
     hero.level >= requiredLevel &&
-    heroRemainingTalentPoints(hero) > 0
+    heroRemainingTalentPoints(hero) > 0 &&
+    meetsInvestmentRequirement
   );
 }
