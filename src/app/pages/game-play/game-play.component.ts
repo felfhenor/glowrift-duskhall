@@ -1,5 +1,5 @@
 import { DecimalPipe } from '@angular/common';
-import { Component, computed, HostListener } from '@angular/core';
+import { Component, computed } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { GameMapPixiComponent } from '@components/game-map-pixi/game-map-pixi.component';
 import { PanelCombatComponent } from '@components/panel-combat/panel-combat.component';
@@ -11,12 +11,9 @@ import { PanelOptionsComponent } from '@components/panel-options/panel-options.c
 import { PanelTownComponent } from '@components/panel-town/panel-town.component';
 
 import {
-  closeAllMenus,
   dismissWinGameDialog,
   gamestate,
-  getOption,
   isCatchingUp,
-  setOption,
   showCombatMenu,
   showHeroesMenu,
   showInventoryMenu,
@@ -49,27 +46,12 @@ export class GamePlayComponent {
   public showLocation = computed(() => showLocationMenu());
   public showInventory = computed(() => showInventoryMenu());
   public showTown = computed(() => showTownMenu());
-  private isGameloopPaused = computed(() => getOption('gameloopPaused'));
   public isCatchingUp = computed(() => isCatchingUp());
   public showWinNotification = computed(
     () =>
       gamestate().meta.hasWon && !gamestate().meta.hasDismissedWinNotification,
   );
   public winTicks = computed(() => gamestate().meta.wonAtTick);
-
-  @HostListener('document:keydown.escape', ['$event'])
-  onEscapeKey(event: KeyboardEvent) {
-    closeAllMenus();
-    event.preventDefault();
-    event.stopPropagation();
-  }
-
-  @HostListener('document:keydown.space', ['$event'])
-  onSpaceKey(event: KeyboardEvent) {
-    setOption('gameloopPaused', !this.isGameloopPaused());
-    event.preventDefault();
-    event.stopPropagation();
-  }
 
   continuePlayingPostWin() {
     dismissWinGameDialog();
