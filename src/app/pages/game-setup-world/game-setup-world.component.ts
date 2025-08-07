@@ -38,9 +38,9 @@ export class GameSetupWorldComponent implements OnInit {
     getEntriesByType<WorldConfigContent>('worldconfig');
 
   public heroNames = [
+    signal<string>('Terrus'),
     signal<string>('Ignatius'),
     signal<string>('Aquara'),
-    signal<string>('Terrus'),
     signal<string>('Zephyra'),
   ];
 

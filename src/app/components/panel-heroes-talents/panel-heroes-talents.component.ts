@@ -33,6 +33,15 @@ export class PanelHeroesTalentsComponent {
   public allTalents: Signal<Array<{ element: GameElement; amount: number }>> =
     computed(() => [
       {
+        element: 'Earth',
+        amount: intersection(
+          Object.keys(this.hero().talents),
+          allTalentIdsInTalentTree(
+            getEntry<TalentTreeContent>('Earth Talent Tree')!,
+          ),
+        ).length,
+      },
+      {
         element: 'Fire',
         amount: intersection(
           Object.keys(this.hero().talents),
@@ -56,15 +65,6 @@ export class PanelHeroesTalentsComponent {
           Object.keys(this.hero().talents),
           allTalentIdsInTalentTree(
             getEntry<TalentTreeContent>('Air Talent Tree')!,
-          ),
-        ).length,
-      },
-      {
-        element: 'Earth',
-        amount: intersection(
-          Object.keys(this.hero().talents),
-          allTalentIdsInTalentTree(
-            getEntry<TalentTreeContent>('Earth Talent Tree')!,
           ),
         ).length,
       },
