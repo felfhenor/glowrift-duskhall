@@ -18,6 +18,7 @@
     "gamedata:build": "ts-node scripts/gamedata-build",
     "gamedata:maps": "ts-node scripts/gamedata-maps",
     "gamedata:art:spritesheets": "ts-node scripts/gamedata-art-spritesheets",
+    "schemas:generate": "ts-node scripts/schema-generate",
     "bump:major": "npm version major -m \"chore(release): Major %s\"",
     "bump:minor": "npm version minor -m \"chore(release): Minor %s\"",
     "bump:patch": "npm version patch -m \"chore(release): Patch %s\"",
@@ -29,7 +30,7 @@
     "preversion": "npm run util:dirtycheck && npm run lint && npm run test && npm run build",
     "postversion": "npm run util:changelog:generate && npm run util:changelog:generate:current && npm run util:changelog:commit && npm run util:version:reversion && npm run push",
     "push": "git push && git push --tags",
-    "postinstall": "npm run gamedata:build && npm run gamedata:art:spritesheets"
+    "postinstall": "npm run gamedata:build && npm run gamedata:art:spritesheets && npm run schemas:generate"
   },
   "private": true,
   "dependencies": {
@@ -84,6 +85,7 @@
     "@angular/build": "^19.2.1",
     "@angular/cli": "^19.2.1",
     "@angular/compiler-cli": "^19.2.1",
+    "@types/fs-extra": "^11.0.4",
     "@types/js-yaml": "^4.0.9",
     "@types/mustache": "^4.2.6",
     "@types/node": "^22.15.30",
@@ -110,6 +112,7 @@
     "tailwindcss": "^4.1.7",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
+    "typescript-json-schema": "^0.65.1",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.2.4",
     "vitest-tsconfig-paths": "^3.4.1"

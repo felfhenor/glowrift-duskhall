@@ -12,5 +12,21 @@
   "eslint.format.enable": true,
   "eslint.lintTask.enable": true,
   "eslint.validate": ["typescript", "javascript"],
-  "eslint.workingDirectories": [{ "mode": "auto" }]
+  "eslint.workingDirectories": [{ "mode": "auto" }],
+  "yaml.schemas": {
+    "./schemas/armor.schema.json": "gamedata/armor/*.yml",
+    "./schemas/accessory.schema.json": "gamedata/accessory/*.yml",
+    "./schemas/trinket.schema.json": "gamedata/trinket/*.yml", 
+    "./schemas/weapon.schema.json": "gamedata/weapon/*.yml",
+    "./schemas/skill.schema.json": "gamedata/skill/*.yml",
+    "./schemas/talent.schema.json": "gamedata/talent/*.yml",
+    "./schemas/statuseffect.schema.json": "gamedata/statuseffect/*.yml",
+    "./schemas/guardian.schema.json": "gamedata/guardian/*.yml",
+    "./schemas/currency.schema.json": "gamedata/currency/*.yml",
+    "./schemas/festival.schema.json": "gamedata/festival/*.yml",
+    "./schemas/talenttree.schema.json": "gamedata/talenttree/*.yml",
+    "./schemas/traitequipment.schema.json": "gamedata/traitequipment/*.yml",
+    "./schemas/traitlocation.schema.json": "gamedata/traitlocation/*.yml",
+    "./schemas/worldconfig.schema.json": "gamedata/worldconfig/*.yml"
+  }
 }
