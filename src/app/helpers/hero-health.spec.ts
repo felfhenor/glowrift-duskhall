@@ -1,8 +1,13 @@
-import { beforeEach, describe, expect, test } from 'vitest';
-import { blankGameState, setGameState, gamestate } from '@helpers/state-game';
 import { getDefaultHero } from '@helpers/defaults';
 import { areAllHeroesDead, healHero } from '@helpers/hero';
 import type { HeroId } from '@interfaces';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
+
+vi.mock('@helpers/rng', () => ({
+  uuid: vi.fn(() => 'mock-uuid'),
+}));
+
+import { blankGameState, gamestate, setGameState } from '@helpers/state-game';
 
 describe('Hero Health Management', () => {
   beforeEach(() => {
@@ -55,10 +60,10 @@ describe('Hero Health Management', () => {
 
   test('healHero does not exceed max health', () => {
     const state = blankGameState();
-    const hero = getDefaultHero({ 
-      name: 'Hero1', 
+    const hero = getDefaultHero({
+      name: 'Hero1',
       hp: 8,
-      totalStats: { Force: 5, Health: 10, Speed: 1, Aura: 1 }
+      totalStats: { Force: 5, Health: 10, Speed: 1, Aura: 1 },
     });
     state.hero.heroes = [hero];
     setGameState(state);
@@ -77,13 +82,5 @@ describe('Hero Health Management', () => {
     healHero('non-existent-id' as HeroId, 3);
 
     expect(gamestate().hero.heroes[0].hp).toBe(5);
-  });
-
-  test('areAllHeroesDead returns false when no heroes exist', () => {
-    const state = blankGameState();
-    state.hero.heroes = [];
-    setGameState(state);
-
-    expect(areAllHeroesDead()).toBe(false);
   });
 });

@@ -3,7 +3,14 @@ import { heroLevelUp } from '@helpers/hero-xp';
 import { getNodesMatchingHeroPreferences } from '@helpers/world';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { Combat, Hero, HeroId, WorldLocation } from '@interfaces';
+import type {
+  Combat,
+  CombatId,
+  GameState,
+  Hero,
+  HeroId,
+  WorldLocation,
+} from '@interfaces';
 
 // Mock dependencies
 vi.mock('@helpers/combat-log', () => ({
@@ -47,20 +54,34 @@ describe('Too Hard Nodes Feature', () => {
   describe('handleCombatDefeat', () => {
     it('should add current node to tooHardNodes list when heroes are defeated', () => {
       const combat: Combat = {
+        id: 'test-combat' as CombatId,
         heroes: [],
         guardians: [],
         rounds: 1,
         locationPosition: { x: 5, y: 10 },
-        messages: [],
+        locationName: 'Test Location',
+        elementalModifiers: {
+          Fire: 0,
+          Water: 0,
+          Earth: 0,
+          Air: 0,
+        },
       };
 
       const mockState = {
         hero: {
           tooHardNodes: ['1,2'],
+          nodeTypePreferences: {
+            cave: true,
+            town: true,
+            village: true,
+            dungeon: true,
+            castle: true,
+          },
         },
-      };
+      } as Partial<GameState>;
 
-      vi.mocked(gamestate).mockReturnValue(mockState);
+      vi.mocked(gamestate).mockReturnValue(mockState as GameState);
 
       handleCombatDefeat(combat);
 
@@ -72,28 +93,42 @@ describe('Too Hard Nodes Feature', () => {
         hero: {
           tooHardNodes: ['1,2'],
         },
-      };
+      } as Partial<GameState>;
 
-      updateFunction(testState);
-      expect(testState.hero.tooHardNodes).toContain('5,10');
+      updateFunction(testState as GameState);
+      expect(testState.hero?.tooHardNodes).toContain('5,10');
     });
 
     it('should not add duplicate nodes to tooHardNodes list', () => {
       const combat: Combat = {
+        id: 'test-combat-2' as CombatId,
         heroes: [],
         guardians: [],
         rounds: 1,
         locationPosition: { x: 5, y: 10 },
-        messages: [],
+        locationName: 'Test Location',
+        elementalModifiers: {
+          Fire: 0,
+          Water: 0,
+          Earth: 0,
+          Air: 0,
+        },
       };
 
       const mockState = {
         hero: {
           tooHardNodes: ['5,10'],
+          nodeTypePreferences: {
+            cave: true,
+            town: true,
+            village: true,
+            dungeon: true,
+            castle: true,
+          },
         },
-      };
+      } as Partial<GameState>;
 
-      vi.mocked(gamestate).mockReturnValue(mockState);
+      vi.mocked(gamestate).mockReturnValue(mockState as GameState);
 
       handleCombatDefeat(combat);
 
@@ -105,10 +140,10 @@ describe('Too Hard Nodes Feature', () => {
         hero: {
           tooHardNodes: ['5,10'],
         },
-      };
+      } as Partial<GameState>;
 
-      updateFunction(testState);
-      expect(testState.hero.tooHardNodes).toEqual(['5,10']);
+      updateFunction(testState as GameState);
+      expect(testState.hero?.tooHardNodes).toEqual(['5,10']);
     });
   });
 
@@ -145,8 +180,16 @@ describe('Too Hard Nodes Feature', () => {
         hero: {
           heroes: [hero],
           tooHardNodes: ['1,1', '2,2', '3,3'],
+          riskTolerance: 'medium',
+          nodeTypePreferences: {
+            cave: true,
+            town: true,
+            village: true,
+            dungeon: true,
+            castle: true,
+          },
         },
-      });
+      } as Partial<GameState> as GameState);
 
       heroLevelUp(hero);
 
@@ -158,10 +201,10 @@ describe('Too Hard Nodes Feature', () => {
         hero: {
           tooHardNodes: ['1,1', '2,2', '3,3'],
         },
-      };
+      } as Partial<GameState>;
 
-      updateFunction(testState);
-      expect(testState.hero.tooHardNodes).toEqual([]);
+      updateFunction(testState as GameState);
+      expect(testState.hero?.tooHardNodes).toEqual([]);
     });
   });
 
@@ -234,10 +277,17 @@ describe('Too Hard Nodes Feature', () => {
       vi.mocked(gamestate).mockReturnValue({
         hero: {
           riskTolerance: 'medium',
-          heroes: [{ level: 5 }],
+          heroes: [{ level: 5 } as Hero],
           tooHardNodes: ['2,2'],
+          nodeTypePreferences: {
+            cave: true,
+            town: true,
+            village: true,
+            dungeon: true,
+            castle: true,
+          },
         },
-      });
+      } as unknown as GameState);
 
       const availableNodes = [validNode, tooHardNode, highLevelNode];
       const result = getNodesMatchingHeroPreferences(baseNode, availableNodes);
@@ -290,10 +340,17 @@ describe('Too Hard Nodes Feature', () => {
       vi.mocked(gamestate).mockReturnValue({
         hero: {
           riskTolerance: 'medium',
-          heroes: [{ level: 5 }],
+          heroes: [{ level: 5 } as Hero],
           tooHardNodes: [], // Empty list, so node should be included normally
+          nodeTypePreferences: {
+            cave: true,
+            town: true,
+            village: true,
+            dungeon: true,
+            castle: true,
+          },
         },
-      });
+      } as unknown as GameState);
 
       const availableNodes = [validNode];
       const result = getNodesMatchingHeroPreferences(baseNode, availableNodes);
@@ -386,10 +443,17 @@ describe('Too Hard Nodes Feature', () => {
       vi.mocked(gamestate).mockReturnValue({
         hero: {
           riskTolerance: 'medium',
-          heroes: [{ level: 5 }],
+          heroes: [{ level: 5 } as Hero],
           tooHardNodes: ['2,2', '3,3'],
+          nodeTypePreferences: {
+            cave: true,
+            town: true,
+            village: true,
+            dungeon: true,
+            castle: true,
+          },
         },
-      });
+      } as unknown as GameState);
 
       const availableNodes = [tooHardNode1, goodNode1, tooHardNode2, goodNode2];
       const result = getNodesMatchingHeroPreferences(baseNode, availableNodes);

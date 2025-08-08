@@ -125,6 +125,13 @@ describe('Too Hard Nodes Integration Test', () => {
         riskTolerance: 'medium',
         heroes: [testHero],
         tooHardNodes: [],
+        nodeTypePreferences: {
+          cave: true,
+          town: true,
+          village: true,
+          dungeon: true,
+          castle: true,
+        },
       },
     };
 
