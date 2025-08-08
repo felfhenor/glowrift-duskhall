@@ -102,11 +102,23 @@ export function getNodesWithinRiskTolerance(
 ): WorldLocation[] {
   const riskTolerance = gamestate().hero.riskTolerance;
   const heroLevel = gamestate().hero.heroes[0].level;
+  const tooHardNodes = gamestate().hero.tooHardNodes;
 
   let levelThreshold = 3;
   if (riskTolerance === 'medium') levelThreshold = 7;
   else if (riskTolerance === 'high') levelThreshold = 100;
-  return nodes.filter((n) => n.encounterLevel <= heroLevel + levelThreshold);
+  
+  // First filter out nodes that are too high level based on encounter level
+  const viableNodes = nodes.filter((n) => {
+    if (n.encounterLevel > heroLevel + levelThreshold) return false;
+    return true;
+  });
+
+  // Then sort them so that "too hard" nodes come last (de-prioritized)
+  return sortBy(viableNodes, (node) => {
+    const nodeId = `${node.x},${node.y}`;
+    return tooHardNodes.includes(nodeId) ? 1 : 0;
+  });
 }
 
 export function getClaimedNodes(): WorldLocation[] {
@@ -237,6 +249,22 @@ export function winGame(): void {
   updateGamestate((state) => {
     state.meta.hasWon = true;
     state.meta.wonAtTick = state.actionClock.numTicks;
+    return state;
+  });
+}
+
+export function clearNodesTooHardForHeroes(): void {
+  updateGamestate((state) => {
+    state.hero.tooHardNodes = [];
+    return state;
+  });
+}
+
+export function addTooHardNode(nodeId: string): void {
+  updateGamestate((state) => {
+    if (!state.hero.tooHardNodes.includes(nodeId)) {
+      state.hero.tooHardNodes.push(nodeId);
+    }
     return state;
   });
 }

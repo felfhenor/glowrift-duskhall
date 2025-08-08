@@ -18,6 +18,7 @@ vi.mock('@helpers/hero-stats', () => ({
 
 vi.mock('@helpers/state-game', () => ({
   gamestate: vi.fn(),
+  updateGamestate: vi.fn(),
 }));
 
 vi.mock('@helpers/rng', () => ({
