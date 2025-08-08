@@ -89,12 +89,12 @@ export function createNodeSprites(
         fontFamily: 'Arial',
       },
     });
-    
+
     // Position text at bottom of tile
     debugText.x = pixelX + 2;
     debugText.y = pixelY + 64 - 14; // 14px from bottom for 12px font
     debugText.cullable = true;
-    
+
     mapContainer.addChild(debugText);
     spriteData.debugText = debugText;
   }
@@ -162,7 +162,7 @@ export function createClaimIndicator(
   const texture = isClaimed ? checkTexture : xTexture;
   const sprite = new Sprite(texture);
 
-  sprite.x = pixelX + 2;
+  sprite.x = pixelX + 44;
   sprite.y = pixelY + 64 - 24;
   sprite.width = 20;
   sprite.height = 20;
@@ -187,7 +187,7 @@ export function createTravelLine(
   container: Container,
 ): Graphics {
   const graphics = new Graphics();
-  
+
   const fromPixelX = fromX * 64 + 32; // Center of tile
   const fromPixelY = fromY * 64 + 32; // Center of tile
   const toPixelX = toX * 64 + 32; // Center of tile

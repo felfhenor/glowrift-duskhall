@@ -1,10 +1,9 @@
 import { Component, input } from '@angular/core';
 import type { WorldLocation } from '@interfaces';
-import { IconComponent } from '@components/icon/icon.component';
 
 @Component({
   selector: 'app-marker-location-claim',
-  imports: [IconComponent],
+  imports: [],
   templateUrl: './marker-location-claim.component.html',
   styleUrl: './marker-location-claim.component.css',
 })
