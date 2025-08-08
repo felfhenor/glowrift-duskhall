@@ -78,7 +78,7 @@ export function areHeroesRecoveringInTown(): boolean {
   if (getCurrentWorldNode()?.nodeType !== 'town') return false;
 
   const heroes = allHeroes();
-  return heroes.every((hero) => hero.hp < hero.totalStats.Health);
+  return heroes.some((hero) => hero.hp < hero.totalStats.Health);
 }
 
 export function heroRecoveryPercent(): string {
