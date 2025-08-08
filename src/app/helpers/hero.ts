@@ -1,7 +1,13 @@
-import type { Hero, HeroId, HeroRiskTolerance, WorldPosition } from '@interfaces';
 import { indexToSprite } from '@helpers/sprite';
 import { gamestate, updateGamestate } from '@helpers/state-game';
-import { getWorldNode } from '@helpers/world';
+import { getCurrentWorldNode, getWorldNode } from '@helpers/world';
+import type {
+  Hero,
+  HeroId,
+  HeroRiskTolerance,
+  WorldPosition,
+} from '@interfaces';
+import { meanBy } from 'es-toolkit/compat';
 
 export function allHeroes(): Hero[] {
   return gamestate().hero.heroes;
@@ -65,14 +71,28 @@ export function getHero(heroId: HeroId): Hero | undefined {
 
 export function areAllHeroesDead(): boolean {
   const heroes = allHeroes();
-  if (heroes.length === 0) return false; // No heroes means not "all dead"
   return heroes.every((hero) => hero.hp <= 0);
+}
+
+export function areHeroesRecoveringInTown(): boolean {
+  if (getCurrentWorldNode()?.nodeType !== 'town') return false;
+
+  const heroes = allHeroes();
+  return heroes.every((hero) => hero.hp < hero.totalStats.Health);
+}
+
+export function heroRecoveryPercent(): string {
+  return (
+    meanBy(allHeroes(), (hero) => {
+      return Math.min(hero.hp / hero.totalStats.Health, 1);
+    }) * 100
+  ).toFixed(0);
 }
 
 export function healHero(heroId: HeroId, amount: number): void {
   const hero = getHero(heroId);
   if (!hero) return;
-  
+
   const maxHealth = hero.totalStats.Health;
   const newHp = Math.min(hero.hp + amount, maxHealth);
   updateHeroData(heroId, { hp: newHp });

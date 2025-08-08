@@ -1,5 +1,9 @@
 import { isExploring } from '@helpers/explore';
-import { areAllHeroesDead } from '@helpers/hero';
+import {
+  areAllHeroesDead,
+  areHeroesRecoveringInTown,
+  heroRecoveryPercent,
+} from '@helpers/hero';
 import { isTraveling, travelToNode } from '@helpers/travel';
 import { globalStatusText } from '@helpers/ui';
 import {
@@ -14,6 +18,13 @@ export function autoTravelGameloop(): void {
   if (isTraveling()) return;
   if (areAllHeroesDead()) {
     globalStatusText.set('All heroes are defeated; cannot travel.');
+    return;
+  }
+
+  if (areHeroesRecoveringInTown()) {
+    globalStatusText.set(
+      `Heroes are recovering in town; cannot travel (${heroRecoveryPercent()}% recovered).`,
+    );
     return;
   }
 
