@@ -10,7 +10,12 @@ import { townGameloop } from '@helpers/gameloop-town';
 import { travelGameloop } from '@helpers/gameloop-travel';
 import { debug } from '@helpers/logging';
 import { isSetup } from '@helpers/setup';
-import { isGameStateReady, updateGamestate } from '@helpers/state-game';
+import {
+  beginGameStateCommits,
+  endGameStateCommits,
+  isGameStateReady,
+  updateGamestate,
+} from '@helpers/state-game';
 import { getOption, setOption } from '@helpers/state-options';
 import {
   areAllNodesClaimed,
@@ -34,6 +39,8 @@ export function doGameloop(totalTicks: number): void {
     setOption('gameloopPaused', true);
     return;
   }
+
+  beginGameStateCommits();
 
   const numTicks = totalTicks * getOption('debugTickMultiplier');
 
@@ -78,4 +85,6 @@ export function doGameloop(totalTicks: number): void {
     state.actionClock.numTicks += numTicks;
     return state;
   });
+
+  endGameStateCommits();
 }

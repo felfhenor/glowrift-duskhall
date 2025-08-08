@@ -93,8 +93,14 @@ export function blankGameState(): GameState {
   };
 }
 
+let uncommittedGamestate: GameState | undefined = undefined;
+
 const _gamestate = localStorageSignal<GameState>('gamestate', blankGameState());
-export const gamestate: Signal<GameState> = _gamestate.asReadonly();
+const __backingGamestate: Signal<GameState> = _gamestate.asReadonly();
+
+export function gamestate(): GameState {
+  return uncommittedGamestate ?? __backingGamestate();
+}
 
 export const isGameStateReady = signal<boolean>(false);
 
@@ -107,10 +113,27 @@ export function setGameState(state: GameState): void {
 }
 
 export function updateGamestate(func: (state: GameState) => GameState): void {
-  const newState = func(gamestate());
+  if (uncommittedGamestate) {
+    uncommittedGamestate = func(cloneDeep(uncommittedGamestate));
+    return;
+  }
+
+  const newState = func(__backingGamestate());
   setGameState(newState);
 }
 
 export function myGameId(): GameId {
-  return gamestate().gameId;
+  return __backingGamestate().gameId;
+}
+
+export function beginGameStateCommits(): void {
+  uncommittedGamestate = cloneDeep(__backingGamestate());
+}
+
+export function endGameStateCommits(): void {
+  if (uncommittedGamestate) {
+    setGameState(uncommittedGamestate);
+  }
+
+  uncommittedGamestate = undefined;
 }

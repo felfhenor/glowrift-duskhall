@@ -50,8 +50,6 @@ export function allHeroesGainXp(xp: number): void {
     }
   });
 
-  console.log(heroes);
-
   updateGamestate((state) => {
     state.hero.heroes = cloneDeep(heroes);
     return state;
