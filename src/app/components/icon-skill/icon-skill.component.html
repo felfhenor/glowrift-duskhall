@@ -3,8 +3,9 @@
 <app-icon-blank-slot class="absolute"></app-icon-blank-slot>
 
 <div
-  class="h-[64px] w-[64px] outline outline-2 z-0 absolute"
-  [ngClass]="itemOutlineClass()"
+  class="h-[64px] w-[64px] outline outline-2 z-0 absolute outline-{{
+    skillData.rarity
+  }}"
 ></div>
 
 <app-atlas-animation

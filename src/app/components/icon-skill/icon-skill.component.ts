@@ -5,7 +5,7 @@ import { IconBlankSlotComponent } from '@components/icon-blank-slot/icon-blank-s
 import { IconComponent } from '@components/icon/icon.component';
 import { StatsSkillCompareComponent } from '@components/stats-skill-compare/stats-skill-compare.component';
 import { StatsSkillComponent } from '@components/stats-skill/stats-skill.component';
-import { getSkillEnchantLevel, rarityItemOutlineColor } from '@helpers';
+import { getSkillEnchantLevel } from '@helpers';
 import type { Hero } from '@interfaces';
 import { type EquipmentSkill, type EquipmentSkillContent } from '@interfaces';
 import { TippyDirective } from '@ngneat/helipopper';
@@ -32,9 +32,5 @@ export class IconSkillComponent {
 
   public skillEnchantLevel = computed(() =>
     getSkillEnchantLevel(this.skill() as EquipmentSkill),
-  );
-
-  public itemOutlineClass = computed(() =>
-    rarityItemOutlineColor(this.skill().rarity),
   );
 }

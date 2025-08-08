@@ -11,7 +11,6 @@ import {
   getItemStat,
   getItemTalents,
   getItemTraits,
-  rarityItemTextColor,
 } from '@helpers';
 import type { ElementBlock, GameElement, TalentContent } from '@interfaces';
 import {
@@ -41,9 +40,6 @@ export class StatsItemComponent {
     getItemEnchantLevel(this.item() as EquipmentItem),
   );
 
-  public itemRarityClass = computed(() =>
-    rarityItemTextColor(this.item().rarity),
-  );
   public itemAura = computed(() => getItemStat(this.item(), 'Aura'));
   public itemForce = computed(() => getItemStat(this.item(), 'Force'));
   public itemHealth = computed(() => getItemStat(this.item(), 'Health'));

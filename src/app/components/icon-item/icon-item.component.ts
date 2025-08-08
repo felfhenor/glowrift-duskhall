@@ -5,11 +5,7 @@ import { IconBlankSlotComponent } from '@components/icon-blank-slot/icon-blank-s
 import { IconComponent } from '@components/icon/icon.component';
 import { StatsItemCompareComponent } from '@components/stats-item-compare/stats-item-compare.component';
 import { StatsItemComponent } from '@components/stats-item/stats-item.component';
-import {
-  getItemEnchantLevel,
-  itemBuyValue,
-  rarityItemOutlineColor,
-} from '@helpers';
+import { getItemEnchantLevel, itemBuyValue } from '@helpers';
 import type { EquipmentItem, EquipmentItemContent } from '@interfaces';
 import { TippyDirective } from '@ngneat/helipopper';
 import { GameCurrencyPipe } from '@pipes/game-currency.pipe';
@@ -42,8 +38,4 @@ export class IconItemComponent {
   public showPrice = input<boolean>(false);
 
   public shopPrice = computed(() => itemBuyValue(this.item()));
-
-  public itemOutlineClass = computed(
-    () => `${rarityItemOutlineColor(this.item().rarity)}`,
-  );
 }

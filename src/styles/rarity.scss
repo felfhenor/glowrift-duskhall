@@ -10,28 +10,52 @@
   --color-rose-400: #fb7185;
 }
 
-.Common {
+.text-Common {
   @apply text-white;
 }
 
-.Uncommon {
+.text-Uncommon {
   @apply text-green-400;
 }
 
-.Rare {
+.text-Rare {
   @apply text-blue-400;
 }
 
-.Mystical {
+.text-Mystical {
   @apply text-purple-400;
 }
 
-.Legendary {
+.text-Legendary {
   @apply text-yellow-400;
 }
 
-.Unique {
+.text-Unique {
   @apply text-rose-400;
+}
+
+.outline-Common {
+  @apply outline-white;
+}
+
+.outline-Uncommon {
+  @apply outline-green-400;
+}
+
+.outline-Rare {
+  @apply outline-blue-400;
+}
+
+.outline-Mystical {
+  @apply outline-purple-400;
+}
+
+.outline-Legendary {
+  @apply outline-yellow-400;
+}
+
+.outline-Unique {
+  @apply outline-rose-400;
 }
 
 .bg-Common {

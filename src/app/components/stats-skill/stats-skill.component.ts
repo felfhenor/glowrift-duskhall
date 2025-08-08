@@ -10,7 +10,6 @@ import {
   getSkillTechniqueStatusEffectDuration,
   getSkillUses,
   makeSkillForHero,
-  rarityItemTextColor,
   skillDisplayElement,
 } from '@helpers';
 import type {
@@ -54,10 +53,6 @@ export class StatsSkillComponent {
   );
 
   public element = computed(() => skillDisplayElement(this.skill()));
-
-  public skillRarityClass = computed(() =>
-    rarityItemTextColor(this.skill().rarity),
-  );
 
   public techniqueTexts = computed(() => {
     const skillRef = this.skillRef() ?? this.skill();

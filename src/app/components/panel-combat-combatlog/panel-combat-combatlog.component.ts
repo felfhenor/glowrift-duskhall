@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed } from '@angular/core';
 import { IconSpriteCombatComponent } from '@components/icon-combat-sprite/icon-combat-sprite.component';
-import { combatLog, rarityItemTextColor } from '@helpers';
+import { combatLog } from '@helpers';
 import { getHealthColor } from '@helpers/combat-log';
-import type { DropRarity } from '@interfaces/droppable';
 import { marked } from 'marked';
 
 @Component({
@@ -20,8 +19,7 @@ export class PanelCombatCombatlogComponent {
     renderer.codespan = ({ text }: { text: string }) => {
       if (text.startsWith('rarity:')) {
         const [, rarity, itemName] = text.split(':');
-        const colorClass = rarityItemTextColor(rarity as DropRarity);
-        return `<span class="${colorClass} font-bold">${itemName}</span>`;
+        return `<span class="text-${rarity} font-bold">${itemName}</span>`;
       }
       return `<code>${text}</code>`;
     };

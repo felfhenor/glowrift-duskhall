@@ -1,1 +1,8 @@
-<div class="badge badge-outline" [ngClass]="classes()" [tp]="trait().description">{{ trait().name }}</div>
+<div
+  class="badge badge-outline text-{{ trait().rarity }} outline-{{
+    trait().rarity
+  }}"
+  [tp]="trait().description"
+>
+  {{ trait().name }}
+</div>
