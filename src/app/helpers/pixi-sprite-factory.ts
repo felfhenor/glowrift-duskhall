@@ -1,7 +1,99 @@
+import { getEntry } from '@helpers/content';
 import type { WorldLocation } from '@interfaces';
+import type { EquipmentItemContent } from '@interfaces/content-equipment';
+import type { DropRarity } from '@interfaces/droppable';
 import type { NodeSpriteData } from '@interfaces/sprite';
 import type { Container, Texture, Ticker } from 'pixi.js';
 import { Graphics, Sprite, Text } from 'pixi.js';
+
+/**
+ * Maps rarity levels to their priority for determining highest rarity
+ */
+const RARITY_PRIORITY: Record<DropRarity, number> = {
+  Common: 1,
+  Uncommon: 2,
+  Rare: 3,
+  Mystical: 4,
+  Legendary: 5,
+  Unique: 6,
+};
+
+/**
+ * Maps rarity levels to their display colors
+ */
+const RARITY_COLORS: Record<DropRarity, number> = {
+  Common: 0xffffff, // White
+  Uncommon: 0x1eff00, // Green
+  Rare: 0x0070dd, // Blue
+  Mystical: 0xa335ee, // Purple
+  Legendary: 0xff8000, // Orange
+  Unique: 0xe6cc80, // Gold
+};
+
+/**
+ * Gets the highest rarity from a location's loot items
+ * @param location World location with loot IDs
+ * @returns Highest rarity found, or null if no loot items
+ */
+function getHighestLootRarity(location: WorldLocation): DropRarity | null {
+  if (!location.claimLootIds.length) return null;
+
+  let highestPriority = 0;
+  let highestRarity: DropRarity | null = null;
+
+  for (const lootId of location.claimLootIds) {
+    // Extract the base item ID (before the |uuid part if it exists)
+    const baseId = lootId.split('|')[0];
+    const itemData = getEntry<EquipmentItemContent>(baseId);
+
+    if (itemData?.rarity) {
+      const priority = RARITY_PRIORITY[itemData.rarity];
+      if (priority > highestPriority) {
+        highestPriority = priority;
+        highestRarity = itemData.rarity;
+      }
+    }
+  }
+
+  return highestRarity;
+}
+
+/**
+ * Creates a level indicator sprite showing the location level and rarity color
+ * @param x Grid x position
+ * @param y Grid y position
+ * @param location World location data
+ * @returns Text sprite for the level indicator
+ */
+export function createLevelIndicator(
+  x: number,
+  y: number,
+  location: WorldLocation,
+): Text {
+  const pixelX = x * 64;
+  const pixelY = y * 64;
+
+  const highestRarity = getHighestLootRarity(location);
+  const color = highestRarity ? RARITY_COLORS[highestRarity] : 0xffffff; // Default to white
+
+  const levelText = new Text({
+    text: `Lv.${location.encounterLevel}`,
+    style: {
+      fontSize: 12,
+      fill: color,
+      fontFamily: 'Arial',
+      fontWeight: 'bold',
+      stroke: { color: 0x000000, width: 1 }, // Black outline for better visibility
+    },
+  });
+
+  // Position text at bottom left of tile
+  levelText.x = pixelX + 2;
+  levelText.y = pixelY + 64 - 14; // 14px from bottom for 12px font
+  levelText.cullable = true;
+
+  return levelText;
+}
 
 /**
  * Creates terrain and object sprites for a single map node
@@ -79,20 +171,27 @@ export function createNodeSprites(
     spriteData.claimIndicator = claimIndicator;
   }
 
+  // Add level indicator showing encounter level with rarity-based color
+  if (nodeData.encounterLevel >= 1) {
+    const levelIndicator = createLevelIndicator(x, y, nodeData);
+    mapContainer.addChild(levelIndicator);
+    spriteData.levelIndicator = levelIndicator;
+  }
+
   // Add debug text showing coordinates if debug mode is enabled
   if (debugMode) {
     const debugText = new Text({
       text: `${x},${y}`,
       style: {
-        fontSize: 12,
+        fontSize: 10,
         fill: 0xffffff, // White text
         fontFamily: 'Arial',
       },
     });
 
-    // Position text at bottom of tile
-    debugText.x = pixelX + 2;
-    debugText.y = pixelY + 64 - 14; // 14px from bottom for 12px font
+    // Position text at top right of tile to avoid conflict with level indicator
+    debugText.x = pixelX + 64 - 30; // 30px from right edge
+    debugText.y = pixelY + 2; // 2px from top
     debugText.cullable = true;
 
     mapContainer.addChild(debugText);
