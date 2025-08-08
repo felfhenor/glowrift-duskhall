@@ -89,7 +89,7 @@ export function createLevelIndicator(
 
   // Position text at bottom left of tile
   levelText.x = pixelX + 2;
-  levelText.y = pixelY + 64 - 14; // 14px from bottom for 12px font
+  levelText.y = pixelY + 64 - 22; // 14px from bottom for 12px font
   levelText.cullable = true;
 
   return levelText;
