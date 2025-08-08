@@ -17,7 +17,9 @@ export type EquipmentSkillAttribute =
   | 'BypassDefense'
   | 'DamagesTarget'
   | 'AllowPlink'
-  | 'HealsTarget';
+  | 'HealsTarget'
+  | 'Buff'
+  | 'Debuff';
 
 export type EquipmentSkillTargetType = 'Allies' | 'Enemies' | 'Self' | 'All';
 

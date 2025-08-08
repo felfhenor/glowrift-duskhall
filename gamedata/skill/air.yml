@@ -82,6 +82,7 @@
 
   techniques:
     - elements: [Air]
+      attributes: [Buff]
       targets: 4
       targetType: Allies
       targetBehaviors:

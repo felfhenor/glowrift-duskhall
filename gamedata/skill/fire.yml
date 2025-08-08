@@ -181,6 +181,7 @@
 
   techniques:
     - elements: [Fire]
+      attributes: [Buff]
       targets: 4
       targetType: Allies
       targetBehaviors:
@@ -210,6 +211,7 @@
 
   techniques:
     - elements: [Fire]
+      attributes: [Buff]
       targets: 1
       targetType: Allies
       targetBehaviors:

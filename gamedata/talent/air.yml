@@ -31,6 +31,7 @@
 
   addTechniques:
     - elements: [Air]
+      attributes: [Buff]
       targets: 1
       targetType: Self
       targetBehaviors:
@@ -42,6 +43,8 @@
         - statusEffectId: Swiftness
           chance: 20
           duration: 3
+
+      combatMessage: ''
 
 - id: d6ffb7f9-e960-4dcd-ab61-02ceeb0b0732
   name: Strength of Thunderwave III
@@ -93,6 +96,7 @@
 
   addTechniques:
     - elements: [Air]
+      attributes: [Buff]
       targets: 1
       targetType: Self
       targetBehaviors:
@@ -104,6 +108,8 @@
         - statusEffectId: Focus
           chance: 20
           duration: 3
+
+      combatMessage: ''
 
 - id: b5ba1468-46f5-46c9-b8ff-d4e17a6457b0
   name: Strength of Windshear III

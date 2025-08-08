@@ -159,6 +159,9 @@ function fixSchema(schema: any): any {
         'applyToElements', 'applyToSkillIds', 'applyToStatusEffectIds', 
         'applyToAttributes', 'boostedStatusEffectChance', 'boostedStatusEffectDuration',
         'additionalTargets', 'chanceToIgnoreConsume', 'applyStatusEffects', 'addTechniques',
+
+        // Status Effect proprties that should be optional
+        'effectType', 'onTick', 'onUnapply', 'useTargetStats',
         
         // Trait properties that should be optional (most trait properties)
         'effects', 'enchantLevel', 'baseStats', 'talentBoosts', 'elementMultipliers', 'traitIds',

@@ -11,6 +11,7 @@
 
   techniques:
     - attributes: [DamagesTarget, AllowPlink]
+      elements: []
       targets: 1
       targetType: Enemies
       targetBehaviors:
