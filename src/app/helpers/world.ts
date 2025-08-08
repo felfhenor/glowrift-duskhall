@@ -15,7 +15,9 @@ import { addTimerAndAction, getRegisterTick } from '@helpers/timer';
 import { distanceBetweenNodes } from '@helpers/travel';
 import { getGuardiansForLocation, getLootForLocation } from '@helpers/worldgen';
 import type {
+  DropRarity,
   DroppableEquippable,
+  EquipmentItemContent,
   GameCurrency,
   GameId,
   GameStateWorld,
@@ -24,6 +26,48 @@ import type {
   WorldLocation,
 } from '@interfaces';
 import { sortBy } from 'es-toolkit/compat';
+
+/**
+ * Maps rarity levels to their priority for determining highest rarity
+ */
+const RARITY_PRIORITY: Record<DropRarity, number> = {
+  Common: 1,
+  Uncommon: 2,
+  Rare: 3,
+  Mystical: 4,
+  Legendary: 5,
+  Unique: 6,
+};
+
+/**
+ * Get the highest rarity of loot items at a location
+ * @param location World location with loot IDs
+ * @returns Highest rarity found, or null if no loot items
+ */
+export function getHighestLootRarity(
+  location: WorldLocation,
+): DropRarity | null {
+  if (!location.claimLootIds.length) return null;
+
+  let highestPriority = 0;
+  let highestRarity: DropRarity | null = null;
+
+  for (const lootId of location.claimLootIds) {
+    // Extract the base item ID (before the |uuid part if it exists)
+    const baseId = lootId.split('|')[0];
+    const itemData = getEntry<EquipmentItemContent>(baseId);
+
+    if (itemData?.rarity) {
+      const priority = RARITY_PRIORITY[itemData.rarity];
+      if (priority > highestPriority) {
+        highestPriority = priority;
+        highestRarity = itemData.rarity;
+      }
+    }
+  }
+
+  return highestRarity;
+}
 
 export function setWorldSeed(seed: string | null): void {
   if (!seed) return;
@@ -104,6 +148,7 @@ export function getNodesMatchingHeroPreferences(
   const heroLevel = gamestate().hero.heroes[0].level;
   const tooHardNodes = gamestate().hero.tooHardNodes;
   const locationTypePreferences = gamestate().hero.nodeTypePreferences;
+  const lootRarityPreferences = gamestate().hero.lootRarityPreferences;
 
   let levelThreshold = 3;
   if (riskTolerance === 'medium') levelThreshold = 7;
@@ -113,11 +158,21 @@ export function getNodesMatchingHeroPreferences(
   const viableNodes = nodes.filter((n) => {
     if (n.encounterLevel > heroLevel + levelThreshold) return false;
     if (!locationTypePreferences[n.nodeType!]) return false;
+
+    // Check if the node has loot that matches our rarity preferences
+    const highestRarity = getHighestLootRarity(n);
+    if (highestRarity && !lootRarityPreferences[highestRarity]) return false;
+
     return true;
   });
 
+  const sortedByRarity = sortBy(viableNodes, (n) => {
+    const highestRarity = getHighestLootRarity(n);
+    return highestRarity ? -RARITY_PRIORITY[highestRarity] : 0;
+  });
+
   // Then sort them so that "too hard" nodes come last (de-prioritized)
-  return sortBy(viableNodes, (node) => {
+  return sortBy(sortedByRarity, (node) => {
     const nodeId = `${node.x},${node.y}`;
     return tooHardNodes.includes(nodeId) ? 1 : 0;
   });

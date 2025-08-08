@@ -5,7 +5,7 @@
 @let allElements = elementBoosts();
 @let allSkills = skills();
 
-<h3 class="text-lg" [ngClass]="itemRarityClass()">
+<h3 class="text-lg" [ngClass]="[itemData.rarity]">
   {{ itemData.name }}
 
   @if (enchantLevel() > 0) {
@@ -17,7 +17,7 @@
   <div>Level {{ itemData.dropLevel }}</div>
 
   <div>
-    <span [ngClass]="itemRarityClass()">{{ itemData.rarity }}</span>
+    <span [ngClass]="[itemData.rarity]">{{ itemData.rarity }}</span>
     {{ itemData.__type }}
   </div>
 

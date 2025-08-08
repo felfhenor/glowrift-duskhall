@@ -42,6 +42,18 @@ vi.mock('@helpers/state-game', () => ({
 import { randomChoice } from '@helpers/rng';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 
+// Helper function to create default loot rarity preferences for tests
+function getDefaultTestLootRarityPreferences() {
+  return {
+    Common: true,
+    Uncommon: true,
+    Rare: true,
+    Mystical: true,
+    Legendary: true,
+    Unique: true,
+  };
+}
+
 describe('Too Hard Nodes Feature', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -78,6 +90,7 @@ describe('Too Hard Nodes Feature', () => {
             dungeon: true,
             castle: true,
           },
+          lootRarityPreferences: getDefaultTestLootRarityPreferences(),
         },
       } as Partial<GameState>;
 
@@ -125,6 +138,7 @@ describe('Too Hard Nodes Feature', () => {
             dungeon: true,
             castle: true,
           },
+          lootRarityPreferences: getDefaultTestLootRarityPreferences(),
         },
       } as Partial<GameState>;
 
@@ -286,6 +300,7 @@ describe('Too Hard Nodes Feature', () => {
             dungeon: true,
             castle: true,
           },
+          lootRarityPreferences: getDefaultTestLootRarityPreferences(),
         },
       } as unknown as GameState);
 
@@ -349,6 +364,7 @@ describe('Too Hard Nodes Feature', () => {
             dungeon: true,
             castle: true,
           },
+          lootRarityPreferences: getDefaultTestLootRarityPreferences(),
         },
       } as unknown as GameState);
 
@@ -452,6 +468,7 @@ describe('Too Hard Nodes Feature', () => {
             dungeon: true,
             castle: true,
           },
+          lootRarityPreferences: getDefaultTestLootRarityPreferences(),
         },
       } as unknown as GameState);
 

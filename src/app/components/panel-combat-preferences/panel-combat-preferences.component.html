@@ -62,6 +62,30 @@
         </button>
       }
     </div>
+
+    <h3 class="text-lg mt-4">Loot Rarity</h3>
+
+    <div class="join mt-2">
+      @let rarityPrefs = lootRarityPreferences();
+      @for (rarity of lootRarities; track rarity) {
+        <button
+          class="btn join-item"
+          [class.btn-outline]="!rarityPrefs[rarity]"
+          [class.btn-light]="!rarityPrefs[rarity]"
+          [ngClass]="[rarityPrefs[rarity] ? 'bg-' + rarity : '']"
+          (click)="toggleLootRarity(rarity)"
+          [tp]="
+            'Heroes will ' +
+            (rarityPrefs[rarity] ? 'attempt' : 'avoid') +
+            ' locations with ' +
+            rarity.toLowerCase() +
+            ' loot.'
+          "
+        >
+          {{ rarity }}
+        </button>
+      }
+    </div>
   </div>
 
   <div class="flex-1"></div>

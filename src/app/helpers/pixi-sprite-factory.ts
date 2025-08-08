@@ -1,22 +1,9 @@
-import { getEntry } from '@helpers/content';
+import { getHighestLootRarity } from '@helpers/world';
 import type { WorldLocation } from '@interfaces';
-import type { EquipmentItemContent } from '@interfaces/content-equipment';
 import type { DropRarity } from '@interfaces/droppable';
 import type { NodeSpriteData } from '@interfaces/sprite';
 import type { Container, Texture, Ticker } from 'pixi.js';
 import { Graphics, Sprite, Text } from 'pixi.js';
-
-/**
- * Maps rarity levels to their priority for determining highest rarity
- */
-const RARITY_PRIORITY: Record<DropRarity, number> = {
-  Common: 1,
-  Uncommon: 2,
-  Rare: 3,
-  Mystical: 4,
-  Legendary: 5,
-  Unique: 6,
-};
 
 /**
  * Maps rarity levels to their display colors
@@ -29,34 +16,6 @@ const RARITY_COLORS: Record<DropRarity, number> = {
   Legendary: 0xff8000, // Orange
   Unique: 0xe6cc80, // Gold
 };
-
-/**
- * Gets the highest rarity from a location's loot items
- * @param location World location with loot IDs
- * @returns Highest rarity found, or null if no loot items
- */
-function getHighestLootRarity(location: WorldLocation): DropRarity | null {
-  if (!location.claimLootIds.length) return null;
-
-  let highestPriority = 0;
-  let highestRarity: DropRarity | null = null;
-
-  for (const lootId of location.claimLootIds) {
-    // Extract the base item ID (before the |uuid part if it exists)
-    const baseId = lootId.split('|')[0];
-    const itemData = getEntry<EquipmentItemContent>(baseId);
-
-    if (itemData?.rarity) {
-      const priority = RARITY_PRIORITY[itemData.rarity];
-      if (priority > highestPriority) {
-        highestPriority = priority;
-        highestRarity = itemData.rarity;
-      }
-    }
-  }
-
-  return highestRarity;
-}
 
 /**
  * Creates a level indicator sprite showing the location level and rarity color

@@ -3,6 +3,7 @@ import { signal } from '@angular/core';
 import {
   getDefaultCurrencyBlock,
   getDefaultHero,
+  getDefaultLootRarityPreferences,
   getDefaultNodeCountBlock,
   getDefaultNodeTypePreferences,
   getDefaultPosition,
@@ -37,6 +38,7 @@ export function blankGameState(): GameState {
       respawnTicks: 0,
       riskTolerance: 'medium',
       nodeTypePreferences: getDefaultNodeTypePreferences(),
+      lootRarityPreferences: getDefaultLootRarityPreferences(),
       heroes: [
         getDefaultHero({ name: 'Ignatius', sprite: '0004' }),
         getDefaultHero({ name: 'Aquara', sprite: '0000' }),

@@ -2,6 +2,7 @@ import { uuid } from '@helpers/rng';
 import type {
   CombatantCombatStats,
   CurrencyBlock,
+  DropRarity,
   ElementBlock,
   Hero,
   HeroId,
@@ -151,6 +152,17 @@ export function getDefaultNodeTypePreferences(): Record<LocationType, boolean> {
     dungeon: true,
     town: true,
     village: true,
+  };
+}
+
+export function getDefaultLootRarityPreferences(): Record<DropRarity, boolean> {
+  return {
+    Common: true,
+    Uncommon: true,
+    Rare: true,
+    Mystical: true,
+    Legendary: true,
+    Unique: true,
   };
 }
 

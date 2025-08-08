@@ -2,6 +2,7 @@ import type { Combat } from '@interfaces/combat';
 import type { CurrencyBlock } from '@interfaces/content-currency';
 import type { EquipmentItem } from '@interfaces/content-equipment';
 import type { EquipmentSkill } from '@interfaces/content-skill';
+import type { DropRarity } from '@interfaces/droppable';
 import type { Hero, HeroRiskTolerance } from '@interfaces/hero';
 import type { Branded } from '@interfaces/identifiable';
 import type { Timer } from '@interfaces/timer';
@@ -47,6 +48,7 @@ export type GameStateHeroesLocation = {
 export interface GameStateHeroes {
   riskTolerance: HeroRiskTolerance;
   nodeTypePreferences: Record<LocationType, boolean>;
+  lootRarityPreferences: Record<DropRarity, boolean>;
   heroes: Hero[];
   position: GameStateHeroesPosition;
   travel: GameStateHeroesTraveling;

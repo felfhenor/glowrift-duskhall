@@ -2,6 +2,7 @@ import { indexToSprite } from '@helpers/sprite';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { getCurrentWorldNode, getWorldNode } from '@helpers/world';
 import type {
+  DropRarity,
   Hero,
   HeroId,
   HeroRiskTolerance,
@@ -78,6 +79,20 @@ export function setNodeTypePreference(
 
 export function getNodeTypePreferences(): Record<LocationType, boolean> {
   return gamestate().hero.nodeTypePreferences;
+}
+
+export function setLootRarityPreference(
+  rarity: DropRarity,
+  enabled: boolean,
+): void {
+  updateGamestate((state) => {
+    state.hero.lootRarityPreferences[rarity] = enabled;
+    return state;
+  });
+}
+
+export function getLootRarityPreferences(): Record<DropRarity, boolean> {
+  return gamestate().hero.lootRarityPreferences;
 }
 
 export function getHero(heroId: HeroId): Hero | undefined {
