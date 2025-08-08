@@ -25,7 +25,7 @@ import type {
   WorldConfigContent,
   WorldLocation,
 } from '@interfaces';
-import { sortBy } from 'es-toolkit/compat';
+import { isNumber, sortBy } from 'es-toolkit/compat';
 
 /**
  * Maps rarity levels to their priority for determining highest rarity
@@ -168,7 +168,7 @@ export function getNodesMatchingHeroPreferences(
 
   const sortedByRarity = sortBy(viableNodes, (n) => {
     const highestRarity = getHighestLootRarity(n);
-    return highestRarity ? -RARITY_PRIORITY[highestRarity] : 0;
+    return isNumber(highestRarity) ? RARITY_PRIORITY[highestRarity] : -1;
   });
 
   // Then sort them so that "too hard" nodes come last (de-prioritized)
