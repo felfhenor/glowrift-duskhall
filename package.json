@@ -18,7 +18,7 @@
     "gamedata:build": "ts-node scripts/gamedata-build",
     "gamedata:maps": "ts-node scripts/gamedata-maps",
     "gamedata:art:spritesheets": "ts-node scripts/gamedata-art-spritesheets",
-    "schemas:generate": "node scripts/schema-generate",
+    "schemas:generate": "npx ts-node scripts/schema-generate",
     "bump:major": "npm version major -m \"chore(release): Major %s\"",
     "bump:minor": "npm version minor -m \"chore(release): Minor %s\"",
     "bump:patch": "npm version patch -m \"chore(release): Patch %s\"",

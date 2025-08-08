@@ -37,42 +37,95 @@ fs.ensureDirSync(schemasDir);
 
 console.log('Generating JSON schemas from TypeScript interfaces...');
 
-// Post-process schema to fix issues with branded types and StatBlocks
-function fixSchema(schema) {
+// Post-process schema to fix issues with branded types, StatBlocks, and optional properties
+function fixSchema(schema: any): any {
   if (!schema) return schema;
   
   // Recursively process the schema
-  function processSchema(obj) {
+  function processSchema(obj: any, parentKey?: string): any {
     if (typeof obj !== 'object' || obj === null) return obj;
     
     if (Array.isArray(obj)) {
-      return obj.map(processSchema);
+      return obj.map((item: any) => processSchema(item));
     }
     
-    const processed = {};
+    const processed: any = {};
     for (const [key, value] of Object.entries(obj)) {
-      let processedValue = processSchema(value);
+      let processedValue = processSchema(value as any, key);
       
       // Fix branded type IDs - convert complex allOf structures to simple strings for ID fields
       if (key === 'id' || key.includes('Id') || key.endsWith('id')) {
-        if (processedValue && typeof processedValue === 'object' && processedValue.allOf) {
-          // Convert branded types to simple string type
-          processedValue = {
-            type: 'string',
-            title: key
-          };
+        if (processedValue && typeof processedValue === 'object') {
+          if (processedValue.allOf || processedValue.type === 'object') {
+            // Convert branded types to simple string type
+            processedValue = {
+              type: 'string',
+              title: key
+            };
+          }
         }
       }
       
-      // Fix StatBlock objects to make all properties optional instead of required
-      if (key === 'baseStats' || key === 'damageScaling' || key === 'boostStats' || key === 'boostStatusEffectStats') {
+      // Fix StatBlock objects and similar Record types to make all properties optional
+      const statBlockKeys = [
+        'baseStats', 'damageScaling', 'boostStats', 'boostStatusEffectStats', 'statScaling'
+      ];
+      const elementBlockKeys = [
+        'resistance', 'affinity', 'repeatActionChance', 'skillStrikeAgainChance', 
+        'skillAdditionalUseChance', 'skillAdditionalUseCount', 'redirectionChance', 
+        'missChance', 'debuffIgnoreChance', 'damageReflectPercent'
+      ];
+      
+      if (statBlockKeys.includes(key)) {
         if (processedValue && processedValue.properties && processedValue.required) {
           // Make all StatBlock properties optional
           delete processedValue.required;
           processedValue.title = key;
-          // Add description to explain partial stat blocks are allowed
           processedValue.description = 'Stat block - you can specify any combination of Force, Health, Speed, and Aura values';
         }
+      }
+      
+      if (elementBlockKeys.includes(key)) {
+        if (processedValue && processedValue.properties && processedValue.required) {
+          // Make all ElementBlock properties optional
+          delete processedValue.required;
+          processedValue.title = key;
+          processedValue.description = 'Element block - you can specify any combination of Fire, Water, Earth, and Air values';
+        }
+      }
+      
+      // Fix CombatantCombatStats to make all sub-properties optional
+      if (key === 'combatStats') {
+        if (processedValue && processedValue.properties) {
+          // Make the top-level combatStats properties optional
+          if (processedValue.required) {
+            delete processedValue.required;
+          }
+          
+          // Make all element block sub-properties optional too
+          for (const [subKey, subValue] of Object.entries(processedValue.properties)) {
+            if (subValue && typeof subValue === 'object' && (subValue as any).required) {
+              delete (subValue as any).required;
+            }
+          }
+          
+          processedValue.description = 'Combat stats - all properties are optional';
+        }
+      }
+      
+      // Fix statusEffects in techniques to be optional
+      if (key === 'statusEffects' && parentKey === 'techniques') {
+        // This should already be handled by the required field filtering below
+      }
+      
+      // Fix all ID-related arrays to be arrays of strings (run after processing)
+      if (key.includes('Id') && key.endsWith('s') && processedValue && processedValue.type === 'array') {
+        processedValue = {
+          type: 'array',
+          items: { type: 'string' },
+          title: key,
+          description: `Array of ${key.replace('s', '')} IDs`
+        };
       }
       
       processed[key] = processedValue;
@@ -81,16 +134,41 @@ function fixSchema(schema) {
     // Remove certain properties from required arrays 
     if (processed.required && Array.isArray(processed.required)) {
       const fieldsToMakeOptional = [
+        // Build-time generated fields
+        '__type',
+        
         // StatBlock fields should be optional in content
-        'baseStats', 'damageScaling', 'boostStats', 'boostStatusEffectStats',
+        'baseStats', 'damageScaling', 'boostStats', 'boostStatusEffectStats', 'statScaling',
+        
+        // Equipment-specific optional fields
+        'talentBoosts', 'elementMultipliers', 'skillIds', 'traitIds',
+        
+        // Guardian-specific optional fields  
+        'affinity', 'combatStats', 'resistance', 'talents',
+        
         // Skill properties that are filled in at import time
         'enchantLevel', 'usesPerCombat', 'numTargets', 'techniques',
         'statusEffectDurationBoost', 'statusEffectChanceBoost',
-        'disableUpgrades', 'unableToUpgrade'
+        'disableUpgrades', 'unableToUpgrade',
+        
+        // Technique properties
+        'statusEffects',
+        
+        // Talent properties that should be optional
+        'requireTalentId', 'applyToAllSkills', 'applyToAllStatusEffects', 
+        'applyToElements', 'applyToSkillIds', 'applyToStatusEffectIds', 
+        'applyToAttributes', 'boostedStatusEffectChance', 'boostedStatusEffectDuration',
+        'additionalTargets', 'chanceToIgnoreConsume', 'applyStatusEffects', 'addTechniques',
+        
+        // Trait properties that should be optional (most trait properties)
+        'effects', 'enchantLevel', 'baseStats', 'talentBoosts', 'elementMultipliers', 'traitIds',
+        
+        // Location trait effects that should be optional
+        'combat', 'currency', 'worldgen', 'exploration'
       ];
       
       // Filter out fields that should be optional
-      processed.required = processed.required.filter(field => 
+      processed.required = processed.required.filter((field: string) => 
         !fieldsToMakeOptional.includes(field)
       );
       
@@ -104,6 +182,51 @@ function fixSchema(schema) {
   }
   
   return processSchema(schema);
+}
+
+// Additional post-processing function to fix complex nested ID arrays 
+function postProcessIdArrays(schema: any): any {
+  if (!schema) return schema;
+  
+  function traverse(obj: any): any {
+    if (typeof obj !== 'object' || obj === null) return obj;
+    
+    if (Array.isArray(obj)) {
+      return obj.map(traverse);
+    }
+    
+    const result: any = {};
+    for (const [key, value] of Object.entries(obj)) {
+      let processedValue = traverse(value);
+      
+      // Fix any array with complex allOf items that should be simple strings
+      if (key.includes('Id') && key.endsWith('s') && 
+          processedValue && processedValue.type === 'array' && 
+          processedValue.items && processedValue.items.allOf) {
+        
+        // Check if it's a branded type pattern (empty object + string)
+        const hasString = processedValue.items.allOf.some((item: any) => item.type === 'string');
+        const hasEmptyObject = processedValue.items.allOf.some((item: any) => 
+          item.type === 'object' && (!item.properties || Object.keys(item.properties).length === 0)
+        );
+        
+        if (hasString && hasEmptyObject) {
+          processedValue = {
+            type: 'array',
+            items: { type: 'string' },
+            title: key,
+            description: `Array of ${key.replace('s', '')} IDs`
+          };
+        }
+      }
+      
+      result[key] = processedValue;
+    }
+    
+    return result;
+  }
+  
+  return traverse(schema);
 }
 
 // Settings for typescript-json-schema
@@ -185,7 +308,7 @@ try {
   
   if (equipmentSchema) {
     // Fix schema issues
-    equipmentSchema = fixSchema(equipmentSchema);
+    equipmentSchema = postProcessIdArrays(fixSchema(equipmentSchema));
     
     // Convert single item schema to array schema for YAML content files
     const arraySchema = {
@@ -211,7 +334,7 @@ try {
   } else {
     console.warn('Could not generate equipment schema from EquipmentItemContent');
   }
-} catch (error) {
+} catch (error: any) {
   console.error('Error generating equipment schema:', error?.message || 'Unknown error');
 }
 
@@ -228,7 +351,7 @@ for (const [contentType, typeName] of Object.entries(contentTypeMap)) {
     }
     
     // Fix schema issues
-    schema = fixSchema(schema);
+    schema = postProcessIdArrays(fixSchema(schema));
     
     // For single content items, wrap in array for YAML content files
     const arraySchema = {
@@ -243,7 +366,7 @@ for (const [contentType, typeName] of Object.entries(contentTypeMap)) {
     fs.writeJsonSync(schemaPath, arraySchema, { spaces: 2 });
     console.log(`✓ Generated schema: ${schemaPath}`);
     
-  } catch (error) {
+  } catch (error: any) {
     console.error(`Error generating schema for ${contentType}:`, error?.message || 'Unknown error');
     console.error(error.stack);
   }
