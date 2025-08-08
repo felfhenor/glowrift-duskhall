@@ -151,16 +151,18 @@ export function claimNode(node: WorldLocation): void {
   mergeCurrencyClaims(claims);
 
   const claimDuration = (100 - node.encounterLevel) * 25;
-  addTimerAndAction(
-    {
-      location: {
-        x: node.x,
-        y: node.y,
+  if (node.nodeType !== 'town') {
+    addTimerAndAction(
+      {
+        location: {
+          x: node.x,
+          y: node.y,
+        },
+        type: 'UnclaimVillage',
       },
-      type: 'UnclaimVillage',
-    },
-    claimDuration,
-  );
+      claimDuration,
+    );
+  }
 
   updateGamestate((state) => {
     const updateNodeData = getWorldNode(node.x, node.y, state);
