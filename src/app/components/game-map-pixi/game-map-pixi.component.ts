@@ -56,13 +56,21 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
   public nodeWidth = computed(() =>
     Math.min(gamestate().world.config.width, windowWidthTiles() + 1),
   );
+
   public nodeHeight = computed(() =>
     Math.min(gamestate().world.config.height, windowHeightTiles() + 1),
   );
+
   public camera = computed(() => gamestate().camera);
+
   public debugMapNodePositions = computed(() =>
     getOption('debugMapNodePositions'),
   );
+
+  public firstHero = computed(() => gamestate().hero.heroes[0]);
+
+  public position = computed(() => gamestate().hero.position);
+
   public map = computed(() => {
     const camera = this.camera();
     const width = this.nodeWidth();
@@ -229,9 +237,8 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     if (!this.playerIndicatorContainer || !this.app) return;
 
     const camera = this.camera();
-    const state = gamestate();
+    const heroPosition = this.position();
 
-    const heroPosition = state.hero.position;
     const relativeX = heroPosition.x - Math.floor(camera.x);
     const relativeY = heroPosition.y - Math.floor(camera.y);
 
@@ -282,8 +289,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     );
 
     // Show traveling hero sprite at interpolated position using relative coordinates
-    const state = gamestate();
-    const partyLeader = state.hero.heroes[0]; // Get party leader
+    const partyLeader = this.firstHero();
     if (partyLeader && this.heroTextures[partyLeader.sprite]) {
       createTravelingHeroIndicator(
         relativeInterpolatedX,
