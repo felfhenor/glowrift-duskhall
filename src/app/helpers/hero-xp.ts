@@ -1,16 +1,16 @@
-import { updateHeroData } from '@helpers/hero';
-import { recalculateStats } from '@helpers/hero-stats';
+import { allHeroes } from '@helpers/hero';
+import { heroStats } from '@helpers/hero-stats';
 import { randomChoice, seededrng } from '@helpers/rng';
-import { gamestate } from '@helpers/state-game';
+import { updateGamestate } from '@helpers/state-game';
 import { clearNodesTooHardForHeroes } from '@helpers/world';
 import type { Hero, StatBlock } from '@interfaces';
-import { clamp } from 'es-toolkit/compat';
+import { clamp, cloneDeep } from 'es-toolkit/compat';
 
 export function heroXpRequiredForLevelUp(level: number): number {
   return 10 * (level + 1) ** 2;
 }
 
-export function heroLevelUp(hero: Hero): void {
+function heroLevelUp(hero: Hero): void {
   const levelUpSeed = `${hero.id}-${hero.level}`;
   const rng = seededrng(levelUpSeed);
 
@@ -23,28 +23,37 @@ export function heroLevelUp(hero: Hero): void {
     Aura: hero.baseStats.Aura + randomChoice([0.3, 0.5, 1, 1.5, 2], rng),
   };
 
-  updateHeroData(hero.id, {
-    level: hero.level + 1,
-    xp: 0,
-    baseStats: newStats,
-    hp: newStats.Health,
-  });
+  hero.level += 1;
+  hero.xp = 0;
+  hero.baseStats = newStats;
+  hero.hp = newStats.Health;
 
-  const newHero = gamestate().hero.heroes.find((h) => h.id === hero.id);
-  if (newHero) {
-    recalculateStats(newHero.id);
-  }
+  const newTotalStats = heroStats(hero);
+  hero.totalStats = newTotalStats;
+  hero.hp = hero.totalStats.Health;
 
   // Clear the "too hard" nodes list when any hero levels up
   clearNodesTooHardForHeroes();
 }
 
-export function heroGainXp(hero: Hero, xp: number): void {
-  const maxXp = heroXpRequiredForLevelUp(hero.level);
-  const newXp = clamp(hero.xp + xp, 0, maxXp);
-  updateHeroData(hero.id, { xp: newXp });
+export function allHeroesGainXp(xp: number): void {
+  const heroes = allHeroes();
 
-  if (newXp >= maxXp && hero.level < 99) {
-    heroLevelUp(hero);
-  }
+  heroes.forEach((hero) => {
+    const maxXp = heroXpRequiredForLevelUp(hero.level);
+    const newXp = clamp(hero.xp + xp, 0, maxXp);
+
+    hero.xp = newXp;
+
+    if (newXp >= maxXp && hero.level < 99) {
+      heroLevelUp(hero);
+    }
+  });
+
+  console.log(heroes);
+
+  updateGamestate((state) => {
+    state.hero.heroes = cloneDeep(heroes);
+    return state;
+  });
 }

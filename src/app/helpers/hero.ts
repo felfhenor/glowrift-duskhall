@@ -9,7 +9,7 @@ import type {
   LocationType,
   WorldPosition,
 } from '@interfaces';
-import { meanBy } from 'es-toolkit/compat';
+import { cloneDeep, meanBy } from 'es-toolkit/compat';
 
 export function allHeroes(): Hero[] {
   return gamestate().hero.heroes;
@@ -119,11 +119,17 @@ export function heroRecoveryPercent(): string {
   ).toFixed(0);
 }
 
-export function healHero(heroId: HeroId, amount: number): void {
-  const hero = getHero(heroId);
-  if (!hero) return;
+export function allHeroesHeal(amount: number): void {
+  const heroes = allHeroes();
+  heroes.forEach((hero) => {
+    const maxHealth = hero.totalStats.Health;
+    const newHp = Math.min(hero.hp + amount, maxHealth);
 
-  const maxHealth = hero.totalStats.Health;
-  const newHp = Math.min(hero.hp + amount, maxHealth);
-  updateHeroData(heroId, { hp: newHp });
+    hero.hp = newHp;
+  });
+
+  updateGamestate((state) => {
+    state.hero.heroes = cloneDeep(heroes);
+    return state;
+  });
 }

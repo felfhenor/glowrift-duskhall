@@ -67,6 +67,6 @@ export function recalculateStats(heroId: HeroId): void {
 
   updateHeroData(thisHero.id, {
     totalStats: newStats,
-    hp: newStats.Health,
+    hp: Math.min(newStats.Health, thisHero.hp),
   });
 }
