@@ -1,4 +1,3 @@
-import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 import { AtlasAnimationComponent } from '@components/atlas-animation/atlas-animation.component';
 import { IconBlankSlotComponent } from '@components/icon-blank-slot/icon-blank-slot.component';
@@ -16,7 +15,6 @@ import { TippyDirective } from '@ngneat/helipopper';
     AtlasAnimationComponent,
     TippyDirective,
     IconBlankSlotComponent,
-    NgClass,
     StatsSkillComponent,
     StatsSkillCompareComponent,
     IconComponent,

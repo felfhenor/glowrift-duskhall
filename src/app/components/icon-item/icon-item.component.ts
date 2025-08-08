@@ -1,4 +1,3 @@
-import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 import { AtlasImageComponent } from '@components/atlas-image/atlas-image.component';
 import { IconBlankSlotComponent } from '@components/icon-blank-slot/icon-blank-slot.component';
@@ -19,7 +18,6 @@ import { GameCurrencyPipe } from '@pipes/game-currency.pipe';
     StatsItemCompareComponent,
     GameCurrencyPipe,
     IconBlankSlotComponent,
-    NgClass,
     IconComponent,
   ],
   templateUrl: './icon-item.component.html',
