@@ -16,7 +16,7 @@ export function isSetup(): boolean {
 }
 
 function giveHeroesDefaultItems(): void {
-  const items = ['Firewisp I', 'Healsprite I', 'Earthspike I', 'Thunderwave I'];
+  const items = ['Earthspike I', 'Firewisp I', 'Healsprite I', 'Thunderwave I'];
 
   allHeroes().forEach((hero, index) => {
     const skill = items[index];

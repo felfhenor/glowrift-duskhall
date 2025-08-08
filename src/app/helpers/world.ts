@@ -96,17 +96,31 @@ export function getClosestUnclaimedClaimableNode(
   return nodes.filter((n) => !n.currentlyClaimed)[0];
 }
 
-export function getNodesWithinRiskTolerance(
+export function getNodesMatchingHeroPreferences(
   node: WorldLocation,
   nodes = getAllNodesInOrderOfCloseness(node),
 ): WorldLocation[] {
   const riskTolerance = gamestate().hero.riskTolerance;
   const heroLevel = gamestate().hero.heroes[0].level;
+  const tooHardNodes = gamestate().hero.tooHardNodes;
+  const locationTypePreferences = gamestate().hero.nodeTypePreferences;
 
   let levelThreshold = 3;
   if (riskTolerance === 'medium') levelThreshold = 7;
   else if (riskTolerance === 'high') levelThreshold = 100;
-  return nodes.filter((n) => n.encounterLevel <= heroLevel + levelThreshold);
+
+  // First filter out nodes that are too high level based on encounter level
+  const viableNodes = nodes.filter((n) => {
+    if (n.encounterLevel > heroLevel + levelThreshold) return false;
+    if (!locationTypePreferences[n.nodeType!]) return false;
+    return true;
+  });
+
+  // Then sort them so that "too hard" nodes come last (de-prioritized)
+  return sortBy(viableNodes, (node) => {
+    const nodeId = `${node.x},${node.y}`;
+    return tooHardNodes.includes(nodeId) ? 1 : 0;
+  });
 }
 
 export function getClaimedNodes(): WorldLocation[] {
@@ -139,16 +153,18 @@ export function claimNode(node: WorldLocation): void {
   mergeCurrencyClaims(claims);
 
   const claimDuration = (100 - node.encounterLevel) * 25;
-  addTimerAndAction(
-    {
-      location: {
-        x: node.x,
-        y: node.y,
+  if (node.nodeType !== 'town') {
+    addTimerAndAction(
+      {
+        location: {
+          x: node.x,
+          y: node.y,
+        },
+        type: 'UnclaimVillage',
       },
-      type: 'UnclaimVillage',
-    },
-    claimDuration,
-  );
+      claimDuration,
+    );
+  }
 
   updateGamestate((state) => {
     const updateNodeData = getWorldNode(node.x, node.y, state);
@@ -157,7 +173,10 @@ export function claimNode(node: WorldLocation): void {
       updateNodeData.currentlyClaimed = true;
       updateNodeData.guardianIds = [];
       updateNodeData.claimLootIds = [];
-      updateNodeData.unclaimTime = getRegisterTick(claimDuration);
+
+      if (updateNodeData.nodeType !== 'town') {
+        updateNodeData.unclaimTime = getRegisterTick(claimDuration);
+      }
 
       if (updateNodeData.nodeType) {
         state.world.claimedCounts[updateNodeData.nodeType]++;
@@ -237,6 +256,22 @@ export function winGame(): void {
   updateGamestate((state) => {
     state.meta.hasWon = true;
     state.meta.wonAtTick = state.actionClock.numTicks;
+    return state;
+  });
+}
+
+export function clearNodesTooHardForHeroes(): void {
+  updateGamestate((state) => {
+    state.hero.tooHardNodes = [];
+    return state;
+  });
+}
+
+export function addTooHardNode(nodeId: string): void {
+  updateGamestate((state) => {
+    if (!state.hero.tooHardNodes.includes(nodeId)) {
+      state.hero.tooHardNodes.push(nodeId);
+    }
     return state;
   });
 }

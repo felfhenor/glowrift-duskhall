@@ -46,11 +46,13 @@ export type GameStateHeroesLocation = {
 
 export interface GameStateHeroes {
   riskTolerance: HeroRiskTolerance;
+  nodeTypePreferences: Record<LocationType, boolean>;
   heroes: Hero[];
   position: GameStateHeroesPosition;
   travel: GameStateHeroesTraveling;
   location: GameStateHeroesLocation;
   respawnTicks: number;
+  tooHardNodes: string[];
   combat?: Combat;
 }
 

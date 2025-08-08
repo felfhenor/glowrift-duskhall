@@ -457,7 +457,7 @@ export async function generateWorld(
   const minDistancesForLocationNode: Record<LocationType, number> = {
     cave: 0,
     town: maxDistance * 0.5,
-    village: maxDistance * 0.75,
+    village: maxDistance * 0.4,
     dungeon: maxDistance * 0.3,
     castle: maxDistance * 0.7,
   };

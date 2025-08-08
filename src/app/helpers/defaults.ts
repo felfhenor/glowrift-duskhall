@@ -144,6 +144,16 @@ export function getDefaultNodeCountBlock(): Record<LocationType, number> {
   };
 }
 
+export function getDefaultNodeTypePreferences(): Record<LocationType, boolean> {
+  return {
+    castle: true,
+    cave: true,
+    dungeon: true,
+    town: true,
+    village: true,
+  };
+}
+
 export function getDefaultWorldNode(x = -1, y = -1): WorldLocation {
   return {
     id: uuid(),

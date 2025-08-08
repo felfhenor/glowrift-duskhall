@@ -2,7 +2,6 @@ import type { ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { Component, computed, effect, inject, viewChild } from '@angular/core';
 import {
   createClaimIndicatorTextures,
-  createDestinationIndicator,
   createGameMapContainers,
   createNodeSprites,
   createPlayerIndicator,
@@ -14,9 +13,7 @@ import {
   getSpriteFromNodeType,
   getTravelProgress,
   initializePixiApp,
-  isAtNode,
   isTraveling,
-  isTravelingToPosition,
   loadGameMapTextures,
   setupMapDragging,
   setupResponsiveCanvas,
@@ -59,11 +56,21 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
   public nodeWidth = computed(() =>
     Math.min(gamestate().world.config.width, windowWidthTiles() + 1),
   );
+
   public nodeHeight = computed(() =>
     Math.min(gamestate().world.config.height, windowHeightTiles() + 1),
   );
+
   public camera = computed(() => gamestate().camera);
-  public debugMapNodePositions = computed(() => getOption('debugMapNodePositions'));
+
+  public debugMapNodePositions = computed(() =>
+    getOption('debugMapNodePositions'),
+  );
+
+  public firstHero = computed(() => gamestate().hero.heroes[0]);
+
+  public position = computed(() => gamestate().hero.position);
+
   public map = computed(() => {
     const camera = this.camera();
     const width = this.nodeWidth();
@@ -134,12 +141,21 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
   }
 
   private setupMouseDragging() {
-    if (!this.app || !this.mapContainer || !this.playerIndicatorContainer || !this.travelVisualizationContainer)
+    if (
+      !this.app ||
+      !this.mapContainer ||
+      !this.playerIndicatorContainer ||
+      !this.travelVisualizationContainer
+    )
       return;
 
     setupMapDragging({
       app: this.app,
-      containers: [this.mapContainer, this.playerIndicatorContainer, this.travelVisualizationContainer],
+      containers: [
+        this.mapContainer,
+        this.playerIndicatorContainer,
+        this.travelVisualizationContainer,
+      ],
       viewportWidth: this.nodeWidth(),
       viewportHeight: this.nodeHeight(),
     });
@@ -156,7 +172,9 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       this.objectTextures = textures.objectTextures;
 
       // Load hero textures
-      const { loadTexturesFromAtlas } = await import('@helpers/pixi-texture-loader');
+      const { loadTexturesFromAtlas } = await import(
+        '@helpers/pixi-texture-loader'
+      );
       this.heroTextures = await loadTexturesFromAtlas(
         'art/spritesheets/hero.png',
         artAtlases['hero'],
@@ -183,7 +201,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       });
     });
 
-    this.updatePlayerIndicators(mapData);
+    this.updatePlayerIndicators();
   }
 
   private createNodeSprites(
@@ -215,34 +233,29 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     }
   }
 
-  private updatePlayerIndicators(mapData: MapTileData[][]) {
+  private updatePlayerIndicators() {
     if (!this.playerIndicatorContainer || !this.app) return;
 
-    const travelProgress = getTravelProgress();
+    const camera = this.camera();
+    const heroPosition = this.position();
 
-    mapData.forEach((row) => {
-      row.forEach(({ x, y, nodeData }) => {
-        // Show normal player indicator when at a node and not traveling
-        if (!travelProgress.isActive && isAtNode(nodeData)) {
-          createPlayerIndicator(
-            x,
-            y,
-            this.playerIndicatorContainer!,
-            this.app!.ticker,
-          );
-        }
+    const relativeX = heroPosition.x - Math.floor(camera.x);
+    const relativeY = heroPosition.y - Math.floor(camera.y);
 
-        // Show destination indicator when this node is the travel target
-        if (travelProgress.isActive && isTravelingToPosition({ x, y })) {
-          createDestinationIndicator(
-            x,
-            y,
-            this.playerIndicatorContainer!,
-            this.app!.ticker,
-          );
-        }
-      });
-    });
+    // Only show indicator if it's within the visible viewport
+    if (
+      relativeX >= 0 &&
+      relativeX < this.nodeWidth() &&
+      relativeY >= 0 &&
+      relativeY < this.nodeHeight()
+    ) {
+      createPlayerIndicator(
+        relativeX,
+        relativeY,
+        this.playerIndicatorContainer,
+        this.app.ticker,
+      );
+    }
   }
 
   private updateTravelVisualization() {
@@ -257,13 +270,14 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     const { fromPosition, toPosition, interpolatedPosition } = travelProgress;
 
     // Convert world coordinates to relative coordinates based on current camera
+    // Use Math.floor on camera position to match map grid generation logic
     const camera = this.camera();
-    const relativeFromX = fromPosition.x - camera.x;
-    const relativeFromY = fromPosition.y - camera.y;
-    const relativeToX = toPosition.x - camera.x;
-    const relativeToY = toPosition.y - camera.y;
-    const relativeInterpolatedX = interpolatedPosition.x - camera.x;
-    const relativeInterpolatedY = interpolatedPosition.y - camera.y;
+    const relativeFromX = fromPosition.x - Math.floor(camera.x);
+    const relativeFromY = fromPosition.y - Math.floor(camera.y);
+    const relativeToX = toPosition.x - Math.floor(camera.x);
+    const relativeToY = toPosition.y - Math.floor(camera.y);
+    const relativeInterpolatedX = interpolatedPosition.x - Math.floor(camera.x);
+    const relativeInterpolatedY = interpolatedPosition.y - Math.floor(camera.y);
 
     // Draw travel line between source and destination using relative coordinates
     createTravelLine(
@@ -275,8 +289,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     );
 
     // Show traveling hero sprite at interpolated position using relative coordinates
-    const state = gamestate();
-    const partyLeader = state.hero.heroes[0]; // Get party leader
+    const partyLeader = this.firstHero();
     if (partyLeader && this.heroTextures[partyLeader.sprite]) {
       createTravelingHeroIndicator(
         relativeInterpolatedX,

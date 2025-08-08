@@ -20,7 +20,7 @@
   maxLevel: 55
 
   nodeCount:
-    town: { min: 2, max: 5 }
+    town: { min: 4, max: 5 }
     village: { min: 15, max: 30 }
     cave: { min: 100, max: 200 }
     dungeon: { min: 30, max: 50 }
@@ -34,7 +34,7 @@
   maxLevel: 55
 
   nodeCount:
-    town: { min: 2, max: 5 }
+    town: { min: 4, max: 8 }
     village: { min: 25, max: 50 }
     cave: { min: 500, max: 900 }
     dungeon: { min: 200, max: 400 }
@@ -48,7 +48,7 @@
   maxLevel: 55
 
   nodeCount:
-    town: { min: 2, max: 5 }
+    town: { min: 5, max: 10 }
     village: { min: 50, max: 75 }
     cave: { min: 1000, max: 1500 }
     dungeon: { min: 350, max: 600 }

@@ -4,6 +4,7 @@ import {
   getDefaultCurrencyBlock,
   getDefaultHero,
   getDefaultNodeCountBlock,
+  getDefaultNodeTypePreferences,
   getDefaultPosition,
   getDefaultWorldConfig,
 } from '@helpers/defaults';
@@ -35,6 +36,7 @@ export function blankGameState(): GameState {
     hero: {
       respawnTicks: 0,
       riskTolerance: 'medium',
+      nodeTypePreferences: getDefaultNodeTypePreferences(),
       heroes: [
         getDefaultHero({ name: 'Ignatius', sprite: '0004' }),
         getDefaultHero({ name: 'Aquara', sprite: '0000' }),
@@ -54,6 +56,7 @@ export function blankGameState(): GameState {
         ticksLeft: 0,
         ticksTotal: 0,
       },
+      tooHardNodes: [],
     },
     inventory: {
       items: [],

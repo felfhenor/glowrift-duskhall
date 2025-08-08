@@ -1,5 +1,5 @@
-import { Assets, Rectangle, Texture } from 'pixi.js';
 import type { LoadedTextures, TextureAtlas } from '@interfaces';
+import { Assets, Rectangle, Texture } from 'pixi.js';
 
 /**
  * Loads textures from a spritesheet and atlas data
@@ -97,7 +97,7 @@ export function createClaimIndicatorTextures(): {
   xTexture: Texture;
 } {
   return {
-    checkTexture: createIconTexture('✓', '#00ff00', 20),
-    xTexture: createIconTexture('✗', '#ff0000', 20),
+    checkTexture: createIconTexture('✓', '#16a34a', 20),
+    xTexture: createIconTexture('✗', '#dc2626', 20),
   };
 }
