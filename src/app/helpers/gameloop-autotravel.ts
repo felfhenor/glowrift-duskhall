@@ -10,7 +10,7 @@ import {
   getAllNodesInOrderOfCloseness,
   getClosestUnclaimedClaimableNode,
   getCurrentWorldNode,
-  getNodesWithinRiskTolerance,
+  getNodesMatchingHeroPreferences,
 } from '@helpers/world';
 
 export function autoTravelGameloop(): void {
@@ -39,7 +39,8 @@ export function autoTravelGameloop(): void {
       return;
     }
 
-    const nodesWithinRiskTolerance = getNodesWithinRiskTolerance(currentNode);
+    const nodesWithinRiskTolerance =
+      getNodesMatchingHeroPreferences(currentNode);
     const nextNode = getClosestUnclaimedClaimableNode(
       currentNode,
       nodesWithinRiskTolerance,

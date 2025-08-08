@@ -33,6 +33,35 @@
         Risky
       </button>
     </div>
+
+    <h3 class="text-lg mt-4">Location Types</h3>
+
+    <div class="join mt-2">
+      @let preferences = nodeTypePreferences();
+      @for (nodeType of locationTypes; track nodeType) {
+        <button
+          class="btn btn-primary join-item relative"
+          [class.btn-outline]="!preferences[nodeType]"
+          (click)="toggleNodeType(nodeType)"
+          [tp]="
+            'Heroes will ' +
+            (preferences[nodeType] ? 'attempt' : 'avoid') +
+            ' ' +
+            nodeType +
+            ' locations.'
+          "
+        >
+          <app-icon-location
+            class="scale-50 absolute left-[-4px]"
+            [type]="nodeType"
+          ></app-icon-location>
+
+          <span class="pl-8">
+            {{ nodeType | titlecase }}
+          </span>
+        </button>
+      }
+    </div>
   </div>
 
   <div class="flex-1"></div>

@@ -5,6 +5,7 @@ import type {
   Hero,
   HeroId,
   HeroRiskTolerance,
+  LocationType,
   WorldPosition,
 } from '@interfaces';
 import { meanBy } from 'es-toolkit/compat';
@@ -63,6 +64,20 @@ export function setHeroRiskTolerance(riskTolerance: HeroRiskTolerance): void {
     state.hero.riskTolerance = riskTolerance;
     return state;
   });
+}
+
+export function setNodeTypePreference(
+  nodeType: LocationType,
+  enabled: boolean,
+): void {
+  updateGamestate((state) => {
+    state.hero.nodeTypePreferences[nodeType] = enabled;
+    return state;
+  });
+}
+
+export function getNodeTypePreferences(): Record<LocationType, boolean> {
+  return gamestate().hero.nodeTypePreferences;
 }
 
 export function getHero(heroId: HeroId): Hero | undefined {

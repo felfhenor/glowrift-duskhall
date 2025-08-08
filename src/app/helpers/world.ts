@@ -96,13 +96,14 @@ export function getClosestUnclaimedClaimableNode(
   return nodes.filter((n) => !n.currentlyClaimed)[0];
 }
 
-export function getNodesWithinRiskTolerance(
+export function getNodesMatchingHeroPreferences(
   node: WorldLocation,
   nodes = getAllNodesInOrderOfCloseness(node),
 ): WorldLocation[] {
   const riskTolerance = gamestate().hero.riskTolerance;
   const heroLevel = gamestate().hero.heroes[0].level;
   const tooHardNodes = gamestate().hero.tooHardNodes;
+  const locationTypePreferences = gamestate().hero.nodeTypePreferences;
 
   let levelThreshold = 3;
   if (riskTolerance === 'medium') levelThreshold = 7;
@@ -111,6 +112,7 @@ export function getNodesWithinRiskTolerance(
   // First filter out nodes that are too high level based on encounter level
   const viableNodes = nodes.filter((n) => {
     if (n.encounterLevel > heroLevel + levelThreshold) return false;
+    if (!locationTypePreferences[n.nodeType!]) return false;
     return true;
   });
 

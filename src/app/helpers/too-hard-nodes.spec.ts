@@ -1,6 +1,6 @@
 import { handleCombatDefeat } from '@helpers/combat-end';
 import { heroLevelUp } from '@helpers/hero-xp';
-import { getNodesWithinRiskTolerance } from '@helpers/world';
+import { getNodesMatchingHeroPreferences } from '@helpers/world';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { Combat, Hero, HeroId, WorldLocation } from '@interfaces';
@@ -66,14 +66,14 @@ describe('Too Hard Nodes Feature', () => {
 
       expect(updateGamestate).toHaveBeenCalled();
       const updateFunction = vi.mocked(updateGamestate).mock.calls[0][0];
-      
+
       // Test that the update function adds the node correctly
       const testState = {
         hero: {
           tooHardNodes: ['1,2'],
         },
       };
-      
+
       updateFunction(testState);
       expect(testState.hero.tooHardNodes).toContain('5,10');
     });
@@ -99,14 +99,14 @@ describe('Too Hard Nodes Feature', () => {
 
       expect(updateGamestate).toHaveBeenCalled();
       const updateFunction = vi.mocked(updateGamestate).mock.calls[0][0];
-      
+
       // Test that the update function doesn't add duplicates
       const testState = {
         hero: {
           tooHardNodes: ['5,10'],
         },
       };
-      
+
       updateFunction(testState);
       expect(testState.hero.tooHardNodes).toEqual(['5,10']);
     });
@@ -152,14 +152,14 @@ describe('Too Hard Nodes Feature', () => {
 
       expect(updateGamestate).toHaveBeenCalledTimes(1);
       const updateFunction = vi.mocked(updateGamestate).mock.calls[0][0];
-      
+
       // Test that the update function clears the tooHardNodes
       const testState = {
         hero: {
           tooHardNodes: ['1,1', '2,2', '3,3'],
         },
       };
-      
+
       updateFunction(testState);
       expect(testState.hero.tooHardNodes).toEqual([]);
     });
@@ -240,16 +240,18 @@ describe('Too Hard Nodes Feature', () => {
       });
 
       const availableNodes = [validNode, tooHardNode, highLevelNode];
-      const result = getNodesWithinRiskTolerance(baseNode, availableNodes);
+      const result = getNodesMatchingHeroPreferences(baseNode, availableNodes);
 
       // Should include both validNode and tooHardNode, but exclude highLevelNode (too high level)
       expect(result).toContain(validNode);
       expect(result).toContain(tooHardNode);
       expect(result).not.toContain(highLevelNode);
       expect(result).toHaveLength(2);
-      
+
       // Valid node should come before too hard node (de-prioritized)
-      expect(result.indexOf(validNode)).toBeLessThan(result.indexOf(tooHardNode));
+      expect(result.indexOf(validNode)).toBeLessThan(
+        result.indexOf(tooHardNode),
+      );
     });
 
     it('should include previously too hard nodes if not in tooHardNodes list', () => {
@@ -294,7 +296,7 @@ describe('Too Hard Nodes Feature', () => {
       });
 
       const availableNodes = [validNode];
-      const result = getNodesWithinRiskTolerance(baseNode, availableNodes);
+      const result = getNodesMatchingHeroPreferences(baseNode, availableNodes);
 
       expect(result).toContain(validNode);
       expect(result).toHaveLength(1);
@@ -390,7 +392,7 @@ describe('Too Hard Nodes Feature', () => {
       });
 
       const availableNodes = [tooHardNode1, goodNode1, tooHardNode2, goodNode2];
-      const result = getNodesWithinRiskTolerance(baseNode, availableNodes);
+      const result = getNodesMatchingHeroPreferences(baseNode, availableNodes);
 
       // Should include all 4 nodes
       expect(result).toHaveLength(4);
