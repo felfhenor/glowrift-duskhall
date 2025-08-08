@@ -80,6 +80,7 @@
 
   addTechniques:
     - elements: [Water]
+      attributes: [Buff]
       targets: 1
       targetType: Self
       targetBehaviors:
@@ -91,6 +92,8 @@
         - statusEffectId: Crystalline
           chance: 20
           duration: 3
+
+      combatMessage: ''
 
 - id: 87728038-10d4-4f18-92cc-f4596dddb9c1
   name: Strength of Chillstar III

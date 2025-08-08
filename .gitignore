@@ -53,3 +53,6 @@ electron/browser
 electron/icons
 electron/node_modules
 electron/out
+
+# Generated schemas
+/schemas

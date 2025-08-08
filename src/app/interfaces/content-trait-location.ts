@@ -31,8 +31,8 @@ export interface TraitLocationEffectsCurrencyValue {
 }
 
 export interface TraitLocationEffectsCurrency {
-  generate: TraitLocationEffectsCurrencyValue[];
-  special: TraitLocationEffectsCurrencyValue[];
+  generate?: TraitLocationEffectsCurrencyValue[];
+  special?: TraitLocationEffectsCurrencyValue[];
 }
 
 export interface TraitLocationEffectsCombat {

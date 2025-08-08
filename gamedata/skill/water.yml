@@ -94,6 +94,7 @@
 
   techniques:
     - elements: [Water]
+      attributes: [Debuff]
       targets: 1
       targetType: Enemies
       targetBehaviors:
@@ -131,6 +132,7 @@
 
   techniques:
     - elements: [Water]
+      attributes: [Debuff]
       targets: 1
       targetType: Enemies
       targetBehaviors:
@@ -168,6 +170,7 @@
 
   techniques:
     - elements: [Water]
+      attributes: [Debuff]
       targets: 1
       targetType: Enemies
       targetBehaviors:

@@ -295,6 +295,7 @@
 
   addTechniques:
     - elements: [Fire]
+      attributes: [Buff]
       targets: 1
       targetType: Self
       targetBehaviors:
@@ -306,3 +307,5 @@
         - statusEffectId: Fervor
           chance: 20
           duration: 3
+
+      combatMessage: ''

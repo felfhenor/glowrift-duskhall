@@ -88,6 +88,7 @@
 
   techniques:
     - elements: [Earth]
+      attributes: [Buff]
       targets: 1
       targetType: Allies
       targetBehaviors:
@@ -117,6 +118,7 @@
 
   techniques:
     - elements: [Earth]
+      attributes: [Buff]
       targets: 2
       targetType: Allies
       targetBehaviors:
@@ -146,6 +148,7 @@
 
   techniques:
     - elements: [Earth]
+      attributes: [Buff]
       targets: 3
       targetType: Allies
       targetBehaviors:
@@ -262,6 +265,7 @@
 
   techniques:
     - elements: [Earth]
+      attributes: [Buff]
       targets: 1
       targetType: Allies
       targetBehaviors:

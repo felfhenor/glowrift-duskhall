@@ -122,6 +122,8 @@
           chance: 35
           duration: 3
 
+      combatMessage: '**{{ combatant.name }}** cast **{{ skill.name }}** on **{{ target.name }}**.'
+
 - id: bba0eecf-c41e-42e7-ba7f-c7ecb8a2de4b
   name: Rejuvenating Gust
 
@@ -154,6 +156,8 @@
         - statusEffectId: Focus
           chance: 35
           duration: 3
+
+      combatMessage: '**{{ combatant.name }}** cast **{{ skill.name }}** on **{{ target.name }}**.'
 
 - id: 40133d25-4fe3-4c2c-b8ca-b8ae7500ab19
   name: Static Gust
