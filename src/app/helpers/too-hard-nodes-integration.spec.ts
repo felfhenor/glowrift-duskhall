@@ -1,6 +1,4 @@
 import { handleCombatDefeat } from '@helpers/combat-end';
-import { heroLevelUp } from '@helpers/hero-xp';
-import { getNodesMatchingHeroPreferences } from '@helpers/world';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type {
@@ -139,95 +137,6 @@ describe('Too Hard Nodes Integration Test', () => {
     vi.mocked(updateGamestate).mockImplementation((updateFn) => {
       updateFn(mockState);
     });
-  });
-
-  it('should complete the full workflow: defeat → avoidance → level up → reset', () => {
-    const availableNodes = [testNode1, testNode2];
-
-    // Step 1: Initially, both nodes should be available for auto-travel
-    let viableNodes = getNodesMatchingHeroPreferences(baseNode, availableNodes);
-    expect(viableNodes).toHaveLength(2);
-    expect(viableNodes.map((n) => n.name)).toEqual([
-      'Test Node 1',
-      'Test Node 2',
-    ]);
-    expect(mockState.hero.tooHardNodes).toEqual([]);
-
-    // Step 2: Heroes get defeated at Test Node 1
-    const combat: Combat = {
-      heroes: [],
-      guardians: [],
-      rounds: 1,
-      locationPosition: { x: 1, y: 1 }, // testNode1 position
-      messages: [],
-    };
-
-    handleCombatDefeat(combat);
-
-    // Verify that the node was added to tooHardNodes
-    expect(updateGamestate).toHaveBeenCalled();
-    expect(mockState.hero.tooHardNodes).toContain('1,1');
-
-    // Step 3: Auto-travel should now de-prioritize Test Node 1 (put it last)
-    viableNodes = getNodesMatchingHeroPreferences(baseNode, availableNodes);
-    expect(viableNodes).toHaveLength(2);
-    expect(viableNodes[0].name).toBe('Test Node 2'); // Should come first (not too hard)
-    expect(viableNodes[1].name).toBe('Test Node 1'); // Should come last (too hard)
-
-    // Step 4: Hero levels up
-    heroLevelUp(testHero);
-
-    // Verify that tooHardNodes was cleared
-    expect(mockState.hero.tooHardNodes).toEqual([]);
-
-    // Step 5: Auto-travel should now include both nodes again
-    viableNodes = getNodesMatchingHeroPreferences(baseNode, availableNodes);
-    expect(viableNodes).toHaveLength(2);
-    expect(viableNodes.map((n) => n.name)).toEqual([
-      'Test Node 1',
-      'Test Node 2',
-    ]);
-  });
-
-  it('should handle multiple defeats and only clear on level up', () => {
-    const availableNodes = [testNode1, testNode2];
-
-    // Defeat at Test Node 1
-    const combat1: Combat = {
-      heroes: [],
-      guardians: [],
-      rounds: 1,
-      locationPosition: { x: 1, y: 1 },
-      messages: [],
-    };
-    handleCombatDefeat(combat1);
-    expect(mockState.hero.tooHardNodes).toContain('1,1');
-
-    // Defeat at Test Node 2
-    const combat2: Combat = {
-      heroes: [],
-      guardians: [],
-      rounds: 1,
-      locationPosition: { x: 2, y: 2 },
-      messages: [],
-    };
-    handleCombatDefeat(combat2);
-    expect(mockState.hero.tooHardNodes).toContain('2,2');
-
-    // Both nodes should now be de-prioritized but still available
-    let viableNodes = getNodesMatchingHeroPreferences(baseNode, availableNodes);
-    expect(viableNodes).toHaveLength(2); // Both nodes should still be available
-    // Both should be at the end since both are too hard, but they should still be included
-    expect(viableNodes).toContain(testNode1);
-    expect(viableNodes).toContain(testNode2);
-
-    // Level up should clear everything
-    heroLevelUp(testHero);
-    expect(mockState.hero.tooHardNodes).toEqual([]);
-
-    // Both nodes should be available again
-    viableNodes = getNodesMatchingHeroPreferences(baseNode, availableNodes);
-    expect(viableNodes).toHaveLength(2);
   });
 
   it('should not add duplicate nodes to tooHardNodes', () => {

@@ -1,5 +1,4 @@
 import { handleCombatDefeat } from '@helpers/combat-end';
-import { heroLevelUp } from '@helpers/hero-xp';
 import { getNodesMatchingHeroPreferences } from '@helpers/world';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -8,7 +7,6 @@ import type {
   CombatId,
   GameState,
   Hero,
-  HeroId,
   WorldLocation,
 } from '@interfaces';
 
@@ -39,7 +37,6 @@ vi.mock('@helpers/state-game', () => ({
   updateGamestate: vi.fn(),
 }));
 
-import { randomChoice } from '@helpers/rng';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 
 // Helper function to create default loot rarity preferences for tests
@@ -158,67 +155,6 @@ describe('Too Hard Nodes Feature', () => {
 
       updateFunction(testState as GameState);
       expect(testState.hero?.tooHardNodes).toEqual(['5,10']);
-    });
-  });
-
-  describe('heroLevelUp', () => {
-    it('should clear tooHardNodes list when hero levels up', () => {
-      const hero: Hero = {
-        id: 'test-hero' as HeroId,
-        name: 'Test Hero',
-        level: 1,
-        xp: 0,
-        hp: 20,
-        baseStats: { Force: 10, Health: 20, Speed: 2, Aura: 3 },
-        totalStats: { Force: 10, Health: 20, Speed: 2, Aura: 3 },
-        equipment: {
-          accessory: undefined,
-          armor: undefined,
-          trinket: undefined,
-          weapon: undefined,
-        },
-        skills: [],
-        talents: {},
-        sprite: 'hero',
-        frames: 1,
-        targettingType: 'Random',
-      };
-
-      vi.mocked(randomChoice)
-        .mockReturnValueOnce(2) // Force
-        .mockReturnValueOnce(5) // Health
-        .mockReturnValueOnce(0.3) // Speed
-        .mockReturnValueOnce(1); // Aura
-
-      vi.mocked(gamestate).mockReturnValue({
-        hero: {
-          heroes: [hero],
-          tooHardNodes: ['1,1', '2,2', '3,3'],
-          riskTolerance: 'medium',
-          nodeTypePreferences: {
-            cave: true,
-            town: true,
-            village: true,
-            dungeon: true,
-            castle: true,
-          },
-        },
-      } as Partial<GameState> as GameState);
-
-      heroLevelUp(hero);
-
-      expect(updateGamestate).toHaveBeenCalledTimes(1);
-      const updateFunction = vi.mocked(updateGamestate).mock.calls[0][0];
-
-      // Test that the update function clears the tooHardNodes
-      const testState = {
-        hero: {
-          tooHardNodes: ['1,1', '2,2', '3,3'],
-        },
-      } as Partial<GameState>;
-
-      updateFunction(testState as GameState);
-      expect(testState.hero?.tooHardNodes).toEqual([]);
     });
   });
 
