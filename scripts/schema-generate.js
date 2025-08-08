@@ -37,6 +37,75 @@ fs.ensureDirSync(schemasDir);
 
 console.log('Generating JSON schemas from TypeScript interfaces...');
 
+// Post-process schema to fix issues with branded types and StatBlocks
+function fixSchema(schema) {
+  if (!schema) return schema;
+  
+  // Recursively process the schema
+  function processSchema(obj) {
+    if (typeof obj !== 'object' || obj === null) return obj;
+    
+    if (Array.isArray(obj)) {
+      return obj.map(processSchema);
+    }
+    
+    const processed = {};
+    for (const [key, value] of Object.entries(obj)) {
+      let processedValue = processSchema(value);
+      
+      // Fix branded type IDs - convert complex allOf structures to simple strings for ID fields
+      if (key === 'id' || key.includes('Id') || key.endsWith('id')) {
+        if (processedValue && typeof processedValue === 'object' && processedValue.allOf) {
+          // Convert branded types to simple string type
+          processedValue = {
+            type: 'string',
+            title: key
+          };
+        }
+      }
+      
+      // Fix StatBlock objects to make all properties optional instead of required
+      if (key === 'baseStats' || key === 'damageScaling' || key === 'boostStats' || key === 'boostStatusEffectStats') {
+        if (processedValue && processedValue.properties && processedValue.required) {
+          // Make all StatBlock properties optional
+          delete processedValue.required;
+          processedValue.title = key;
+          // Add description to explain partial stat blocks are allowed
+          processedValue.description = 'Stat block - you can specify any combination of Force, Health, Speed, and Aura values';
+        }
+      }
+      
+      processed[key] = processedValue;
+    }
+    
+    // Remove certain properties from required arrays 
+    if (processed.required && Array.isArray(processed.required)) {
+      const fieldsToMakeOptional = [
+        // StatBlock fields should be optional in content
+        'baseStats', 'damageScaling', 'boostStats', 'boostStatusEffectStats',
+        // Skill properties that are filled in at import time
+        'enchantLevel', 'usesPerCombat', 'numTargets', 'techniques',
+        'statusEffectDurationBoost', 'statusEffectChanceBoost',
+        'disableUpgrades', 'unableToUpgrade'
+      ];
+      
+      // Filter out fields that should be optional
+      processed.required = processed.required.filter(field => 
+        !fieldsToMakeOptional.includes(field)
+      );
+      
+      // If no required fields left, remove the required array entirely
+      if (processed.required.length === 0) {
+        delete processed.required;
+      }
+    }
+    
+    return processed;
+  }
+  
+  return processSchema(schema);
+}
+
 // Settings for typescript-json-schema
 const settings = {
   required: true,
@@ -51,7 +120,9 @@ const settings = {
   aliasRef: false,
   topRef: false,
   defaultProps: false,
-  ignoreErrors: true        // Ignore TypeScript errors during schema generation
+  ignoreErrors: true,       // Ignore TypeScript errors during schema generation
+  excludePrivate: true,
+  rejectDateType: false
 };
 
 // Create a program from the actual interface files
@@ -110,9 +181,12 @@ const equipmentTypes = ['accessory', 'armor', 'trinket', 'weapon'];
 // Generate schemas for equipment types (all use the same interface)
 console.log('Generating equipment schema from EquipmentItemContent interface...');
 try {
-  const equipmentSchema = TJS.generateSchema(program, 'EquipmentItemContent', settings);
+  let equipmentSchema = TJS.generateSchema(program, 'EquipmentItemContent', settings);
   
   if (equipmentSchema) {
+    // Fix schema issues
+    equipmentSchema = fixSchema(equipmentSchema);
+    
     // Convert single item schema to array schema for YAML content files
     const arraySchema = {
       $schema: 'http://json-schema.org/draft-07/schema#',
@@ -137,7 +211,7 @@ try {
   } else {
     console.warn('Could not generate equipment schema from EquipmentItemContent');
   }
-} catch (error: any) {
+} catch (error) {
   console.error('Error generating equipment schema:', error?.message || 'Unknown error');
 }
 
@@ -146,12 +220,15 @@ for (const [contentType, typeName] of Object.entries(contentTypeMap)) {
   try {
     console.log(`Generating schema for ${contentType} from TypeScript type ${typeName}...`);
     
-    const schema = TJS.generateSchema(program, typeName, settings);
+    let schema = TJS.generateSchema(program, typeName, settings);
     
     if (!schema) {
       console.warn(`Could not generate schema for ${contentType} (${typeName})`);
       continue;
     }
+    
+    // Fix schema issues
+    schema = fixSchema(schema);
     
     // For single content items, wrap in array for YAML content files
     const arraySchema = {
@@ -166,7 +243,7 @@ for (const [contentType, typeName] of Object.entries(contentTypeMap)) {
     fs.writeJsonSync(schemaPath, arraySchema, { spaces: 2 });
     console.log(`✓ Generated schema: ${schemaPath}`);
     
-  } catch (error: any) {
+  } catch (error) {
     console.error(`Error generating schema for ${contentType}:`, error?.message || 'Unknown error');
     console.error(error.stack);
   }
