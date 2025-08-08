@@ -107,7 +107,7 @@ export function getNodesWithinRiskTolerance(
   let levelThreshold = 3;
   if (riskTolerance === 'medium') levelThreshold = 7;
   else if (riskTolerance === 'high') levelThreshold = 100;
-  
+
   // First filter out nodes that are too high level based on encounter level
   const viableNodes = nodes.filter((n) => {
     if (n.encounterLevel > heroLevel + levelThreshold) return false;
@@ -169,7 +169,10 @@ export function claimNode(node: WorldLocation): void {
       updateNodeData.currentlyClaimed = true;
       updateNodeData.guardianIds = [];
       updateNodeData.claimLootIds = [];
-      updateNodeData.unclaimTime = getRegisterTick(claimDuration);
+
+      if (updateNodeData.nodeType !== 'town') {
+        updateNodeData.unclaimTime = getRegisterTick(claimDuration);
+      }
 
       if (updateNodeData.nodeType) {
         state.world.claimedCounts[updateNodeData.nodeType]++;
