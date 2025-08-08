@@ -53,6 +53,10 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
   private travelVisualizationContainer?: Container;
   private resizeObserver?: ResizeObserver;
 
+  // Track dynamic sprites for proper cleanup
+  private playerIndicatorCleanup?: () => void;
+  private travelVisualizationCleanups: Array<() => void> = [];
+
   public nodeWidth = computed(() =>
     Math.min(gamestate().world.config.width, windowWidthTiles() + 1),
   );
@@ -105,6 +109,15 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
         this.updateTravelVisualization();
       }
     });
+
+    // Separate effect for player indicators to update when position changes without full map rebuild
+    effect(() => {
+      this.position(); // Watch position changes
+      this.camera(); // Watch camera changes for viewport calculations
+      if (this.app && this.playerIndicatorContainer) {
+        this.updatePlayerIndicators();
+      }
+    });
   }
 
   async ngOnInit() {
@@ -114,6 +127,12 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    // Clean up tracked dynamic sprites
+    if (this.playerIndicatorCleanup) {
+      this.playerIndicatorCleanup();
+    }
+    this.travelVisualizationCleanups.forEach((cleanup) => cleanup());
+
     this.resizeObserver?.disconnect();
     this.app?.destroy(true);
   }
@@ -191,6 +210,12 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
   private updateMap(mapData: MapTileData[][]) {
     if (!this.mapContainer || !this.playerIndicatorContainer) return;
 
+    // Clean up previous player indicator before clearing container
+    if (this.playerIndicatorCleanup) {
+      this.playerIndicatorCleanup();
+      this.playerIndicatorCleanup = undefined;
+    }
+
     this.mapContainer.removeChildren();
     this.playerIndicatorContainer.removeChildren();
     this.nodeSprites = {};
@@ -200,8 +225,6 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
         this.createNodeSprites(x, y, nodeData, tileSprite);
       });
     });
-
-    this.updatePlayerIndicators();
   }
 
   private createNodeSprites(
@@ -236,6 +259,12 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
   private updatePlayerIndicators() {
     if (!this.playerIndicatorContainer || !this.app) return;
 
+    // Clean up previous player indicator
+    if (this.playerIndicatorCleanup) {
+      this.playerIndicatorCleanup();
+      this.playerIndicatorCleanup = undefined;
+    }
+
     const camera = this.camera();
     const heroPosition = this.position();
 
@@ -249,20 +278,22 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       relativeY >= 0 &&
       relativeY < this.nodeHeight()
     ) {
-      createPlayerIndicator(
+      const playerIndicator = createPlayerIndicator(
         relativeX,
         relativeY,
         this.playerIndicatorContainer,
         this.app.ticker,
       );
+      this.playerIndicatorCleanup = playerIndicator.cleanup;
     }
   }
 
   private updateTravelVisualization() {
     if (!this.travelVisualizationContainer || !this.app) return;
 
-    // Clear previous travel visualization
-    this.travelVisualizationContainer.removeChildren();
+    // Clean up previous travel visualization sprites
+    this.travelVisualizationCleanups.forEach((cleanup) => cleanup());
+    this.travelVisualizationCleanups = [];
 
     const travelProgress = getTravelProgress();
     if (!travelProgress.isActive) return;
@@ -280,24 +311,26 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     const relativeInterpolatedY = interpolatedPosition.y - Math.floor(camera.y);
 
     // Draw travel line between source and destination using relative coordinates
-    createTravelLine(
+    const travelLine = createTravelLine(
       relativeFromX,
       relativeFromY,
       relativeToX,
       relativeToY,
       this.travelVisualizationContainer,
     );
+    this.travelVisualizationCleanups.push(travelLine.cleanup);
 
     // Show traveling hero sprite at interpolated position using relative coordinates
     const partyLeader = this.firstHero();
     if (partyLeader && this.heroTextures[partyLeader.sprite]) {
-      createTravelingHeroIndicator(
+      const travelingHero = createTravelingHeroIndicator(
         relativeInterpolatedX,
         relativeInterpolatedY,
         this.heroTextures[partyLeader.sprite],
         this.travelVisualizationContainer,
         this.app.ticker,
       );
+      this.travelVisualizationCleanups.push(travelingHero.cleanup);
     }
   }
 

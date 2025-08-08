@@ -166,14 +166,14 @@ export function createNodeSprites(
  * @param y Grid y position
  * @param container Container to add indicator to
  * @param ticker PIXI ticker for animation
- * @returns Graphics object with cleanup function
+ * @returns Object with graphics and cleanup function
  */
 export function createPlayerIndicator(
   x: number,
   y: number,
   container: Container,
   ticker: Ticker,
-): Graphics {
+): { graphics: Graphics; cleanup: () => void } {
   const pixelX = x * 64;
   const pixelY = y * 64;
 
@@ -195,7 +195,13 @@ export function createPlayerIndicator(
   ticker.add(animate);
   container.addChild(graphics);
 
-  return graphics;
+  const cleanup = () => {
+    ticker.remove(animate);
+    container.removeChild(graphics);
+    graphics.destroy();
+  };
+
+  return { graphics, cleanup };
 }
 
 /**
@@ -235,7 +241,7 @@ export function createClaimIndicator(
  * @param toX End grid x position
  * @param toY End grid y position
  * @param container Container to add line to
- * @returns Graphics object representing the travel line
+ * @returns Object with graphics and cleanup function
  */
 export function createTravelLine(
   fromX: number,
@@ -243,7 +249,7 @@ export function createTravelLine(
   toX: number,
   toY: number,
   container: Container,
-): Graphics {
+): { graphics: Graphics; cleanup: () => void } {
   const graphics = new Graphics();
 
   const fromPixelX = fromX * 64 + 32; // Center of tile
@@ -257,7 +263,13 @@ export function createTravelLine(
   graphics.stroke();
 
   container.addChild(graphics);
-  return graphics;
+
+  const cleanup = () => {
+    container.removeChild(graphics);
+    graphics.destroy();
+  };
+
+  return { graphics, cleanup };
 }
 
 /**
@@ -267,7 +279,7 @@ export function createTravelLine(
  * @param heroTexture Texture for the hero sprite
  * @param container Container to add sprite to
  * @param ticker PIXI ticker for animation
- * @returns Sprite object representing the traveling hero
+ * @returns Object with sprite and cleanup function
  */
 export function createTravelingHeroIndicator(
   x: number,
@@ -275,7 +287,7 @@ export function createTravelingHeroIndicator(
   heroTexture: Texture,
   container: Container,
   ticker: Ticker,
-): Sprite {
+): { sprite: Sprite; cleanup: () => void } {
   const pixelX = x * 64 + 16; // Offset to center the sprite
   const pixelY = y * 64 + 16; // Offset to center the sprite
 
@@ -296,5 +308,11 @@ export function createTravelingHeroIndicator(
   ticker.add(animate);
   container.addChild(sprite);
 
-  return sprite;
+  const cleanup = () => {
+    ticker.remove(animate);
+    container.removeChild(sprite);
+    sprite.destroy();
+  };
+
+  return { sprite, cleanup };
 }
