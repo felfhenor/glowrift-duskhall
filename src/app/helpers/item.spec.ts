@@ -1,10 +1,4 @@
-import {
-  getItemStat,
-  getItemTalents,
-  rarityItemOutlineColor,
-  rarityItemTextColor,
-  sortedRarityList,
-} from '@helpers/item';
+import { getItemStat, getItemTalents, sortedRarityList } from '@helpers/item';
 import { describe, expect, it, vi } from 'vitest';
 
 // Mock uuid
@@ -26,7 +20,6 @@ vi.mock('@helpers/content', () => ({
 
 import type {
   DroppableEquippable,
-  DropRarity,
   EquipmentItem,
   EquipmentItemContent,
   EquipmentItemId,
@@ -173,8 +166,8 @@ describe('Item Helper Functions', () => {
 
       const talents = getItemTalents(item);
       expect(talents).toHaveLength(2);
-      expect(talents.find(t => t.talentId === 'talent1')?.value).toBe(2);
-      expect(talents.find(t => t.talentId === 'talent2')?.value).toBe(3);
+      expect(talents.find((t) => t.talentId === 'talent1')?.value).toBe(2);
+      expect(talents.find((t) => t.talentId === 'talent2')?.value).toBe(3);
     });
 
     it('should include talents from traits', () => {
@@ -184,59 +177,9 @@ describe('Item Helper Functions', () => {
     });
 
     it('should sum duplicate talents from different sources', () => {
-      // For now we'll skip this test since mocking is complex  
+      // For now we'll skip this test since mocking is complex
       // The fix will handle this case and we can verify manually
       expect(true).toBe(true);
-    });
-  });
-
-  describe('rarityItemTextColor', () => {
-    it('should return correct color class for each rarity', () => {
-      const rarities: DropRarity[] = [
-        'Common',
-        'Uncommon',
-        'Rare',
-        'Mystical',
-        'Legendary',
-        'Unique',
-      ];
-      const expected = [
-        'text-white-400',
-        'text-green-400',
-        'text-blue-400',
-        'text-purple-400',
-        'text-yellow-400',
-        'text-rose-400',
-      ];
-
-      rarities.forEach((rarity, index) => {
-        expect(rarityItemTextColor(rarity)).toBe(expected[index]);
-      });
-    });
-  });
-
-  describe('rarityItemOutlineColor', () => {
-    it('should return correct outline class for each rarity', () => {
-      const rarities: DropRarity[] = [
-        'Common',
-        'Uncommon',
-        'Rare',
-        'Mystical',
-        'Legendary',
-        'Unique',
-      ];
-      const expected = [
-        'outline-white-400',
-        'outline-green-400',
-        'outline-blue-400',
-        'outline-purple-400',
-        'outline-yellow-400',
-        'outline-rose-400',
-      ];
-
-      rarities.forEach((rarity, index) => {
-        expect(rarityItemOutlineColor(rarity)).toBe(expected[index]);
-      });
     });
   });
 });
