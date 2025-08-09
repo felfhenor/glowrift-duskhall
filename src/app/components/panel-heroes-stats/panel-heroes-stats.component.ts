@@ -4,10 +4,16 @@ import { MarkerElementComponent } from '@components/marker-element/marker-elemen
 import { MarkerStatComponent } from '@components/marker-stat/marker-stat.component';
 import { heroElements, heroXpRequiredForLevelUp } from '@helpers';
 import type { Hero } from '@interfaces';
+import { TippyDirective } from '@ngneat/helipopper';
 
 @Component({
   selector: 'app-panel-heroes-stats',
-  imports: [CommonModule, MarkerStatComponent, MarkerElementComponent],
+  imports: [
+    CommonModule,
+    MarkerStatComponent,
+    MarkerElementComponent,
+    TippyDirective,
+  ],
   templateUrl: './panel-heroes-stats.component.html',
   styleUrl: './panel-heroes-stats.component.scss',
 })

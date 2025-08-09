@@ -18,6 +18,8 @@
   <div class="flex flex-col gap-1">
     <div>
       <app-marker-stat
+        tp="Health determines how much damage a hero can take before being defeated. It persists between exploration sessions."
+        tpPlacement="right"
         stat="Health"
         [value]="heroStatTotals.Health"
         [delta]="heroStatTotals.Health - hero().baseStats.Health"
@@ -26,6 +28,8 @@
 
     <div>
       <app-marker-stat
+        tp="Force determines how much damage most hero skills do."
+        tpPlacement="right"
         stat="Force"
         [value]="heroStatTotals.Force"
         [delta]="heroStatTotals.Force - hero().baseStats.Force"
@@ -34,6 +38,8 @@
 
     <div>
       <app-marker-stat
+        tp="Aura determines the defense this hero has against attacks. It can also determine healing, or damage, in some cases."
+        tpPlacement="right"
         stat="Aura"
         [value]="heroStatTotals.Aura"
         [delta]="heroStatTotals.Aura - hero().baseStats.Aura"
@@ -42,6 +48,8 @@
 
     <div>
       <app-marker-stat
+        tp="Speed determines how quickly this hero can act in combat."
+        tpPlacement="right"
         stat="Speed"
         [value]="heroStatTotals.Speed"
         [delta]="heroStatTotals.Speed - hero().baseStats.Speed"
@@ -52,6 +60,8 @@
   <div class="flex flex-col gap-1">
     <div>
       <app-marker-element
+        tp="Earth affinity determines how much damage a hero does with Earth skills."
+        tpPlacement="right"
         element="Earth"
         [value]="heroElementTotals.Earth"
       ></app-marker-element>
@@ -59,6 +69,8 @@
 
     <div>
       <app-marker-element
+        tp="Fire affinity determines how much damage a hero does with Fire skills."
+        tpPlacement="right"
         element="Fire"
         [value]="heroElementTotals.Fire"
       ></app-marker-element>
@@ -66,6 +78,8 @@
 
     <div>
       <app-marker-element
+        tp="Water affinity determines how much damage a hero does with Water skills."
+        tpPlacement="right"
         element="Water"
         [value]="heroElementTotals.Water"
       ></app-marker-element>
@@ -73,6 +87,8 @@
 
     <div>
       <app-marker-element
+        tp="Air affinity determines how much damage a hero does with Air skills."
+        tpPlacement="right"
         element="Air"
         [value]="heroElementTotals.Air"
       ></app-marker-element>
