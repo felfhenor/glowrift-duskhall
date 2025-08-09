@@ -2,6 +2,8 @@
   width: 64px;
   height: 64px;
 
+  contain: layout paint;
+  will-change: background-position;
   animation: bouncy-sprite calc(1ms * var(--frame-duration))
     steps(var(--frames)) infinite;
 
