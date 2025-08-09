@@ -2,7 +2,7 @@ import { getHighestLootRarity } from '@helpers/world';
 import type { WorldLocation } from '@interfaces';
 import type { DropRarity } from '@interfaces/droppable';
 import type { NodeSpriteData } from '@interfaces/sprite';
-import type { Container, Texture, Ticker } from 'pixi.js';
+import type { Container, Texture } from 'pixi.js';
 import { Graphics, Sprite, Text } from 'pixi.js';
 
 /**
@@ -165,14 +165,12 @@ export function createNodeSprites(
  * @param x Grid x position
  * @param y Grid y position
  * @param container Container to add indicator to
- * @param ticker PIXI ticker for animation
  * @returns Object with graphics and cleanup function
  */
 export function createPlayerAtLocationIndicator(
   x: number,
   y: number,
   container: Container,
-  ticker: Ticker,
 ): { graphics: Graphics; cleanup: () => void } {
   const pixelX = x * 64;
   const pixelY = y * 64;
@@ -184,19 +182,27 @@ export function createPlayerAtLocationIndicator(
 
   let alpha = 1;
   let direction = -1;
+  let animationId: number | null = null;
 
   const animate = () => {
-    alpha += direction * 0.03;
+    alpha += direction * 0.01;
     if (alpha <= 0.4) direction = 1;
     if (alpha >= 0.8) direction = -1;
     graphics.alpha = alpha;
+
+    // Schedule next frame during idle time
+    animationId = requestIdleCallback(animate);
   };
 
-  ticker.add(animate);
+  // Start animation
+  animationId = requestIdleCallback(animate);
   container.addChild(graphics);
 
   const cleanup = () => {
-    ticker.remove(animate);
+    if (animationId !== null) {
+      cancelIdleCallback(animationId);
+      animationId = null;
+    }
     container.removeChild(graphics);
     graphics.destroy();
   };
@@ -278,7 +284,6 @@ export function createTravelLine(
  * @param y Interpolated y position (can be fractional)
  * @param heroTexture Texture for the hero sprite
  * @param container Container to add sprite to
- * @param ticker PIXI ticker for animation
  * @returns Object with sprite and cleanup function
  */
 export function createTravelingHeroIndicator(
@@ -286,7 +291,6 @@ export function createTravelingHeroIndicator(
   y: number,
   heroTexture: Texture,
   container: Container,
-  ticker: Ticker,
 ): { sprite: Sprite; cleanup: () => void } {
   const pixelX = x * 64 + 16; // Offset to center the sprite
   const pixelY = y * 64 + 16; // Offset to center the sprite
@@ -300,16 +304,25 @@ export function createTravelingHeroIndicator(
 
   // Add a subtle bobbing animation
   let bobOffset = 0;
+  let animationId: number | null = null;
+
   const animate = () => {
     bobOffset += 0.2;
     sprite.y = pixelY + Math.sin(bobOffset) * 2;
+
+    // Schedule next frame during idle time
+    animationId = requestIdleCallback(animate);
   };
 
-  ticker.add(animate);
+  // Start animation
+  animationId = requestIdleCallback(animate);
   container.addChild(sprite);
 
   const cleanup = () => {
-    ticker.remove(animate);
+    if (animationId !== null) {
+      cancelIdleCallback(animationId);
+      animationId = null;
+    }
     container.removeChild(sprite);
     sprite.destroy();
   };

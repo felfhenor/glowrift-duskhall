@@ -282,7 +282,6 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
         relativeX,
         relativeY,
         this.playerIndicatorContainer,
-        this.app.ticker,
       );
       this.playerIndicatorCleanup = playerIndicator.cleanup;
     }
@@ -328,7 +327,6 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
         relativeInterpolatedY,
         this.heroTextures[partyLeader.sprite],
         this.travelVisualizationContainer,
-        this.app.ticker,
       );
       this.travelVisualizationCleanups.push(travelingHero.cleanup);
     }
