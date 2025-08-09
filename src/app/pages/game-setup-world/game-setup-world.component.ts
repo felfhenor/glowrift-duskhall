@@ -16,8 +16,9 @@ import {
   setWorldSeed,
   updateHeroData,
 } from '@helpers';
-import type { WorldConfigContent } from '@interfaces';
+import type { LocationType, WorldConfigContent } from '@interfaces';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { sum } from 'es-toolkit/compat';
 
 @Component({
   selector: 'app-game-setup-world',
@@ -54,6 +55,22 @@ export class GameSetupWorldComponent implements OnInit {
   public selectedWorldSize = signal<WorldConfigContent>(this.allWorldSizes[0]);
   public isGeneratingWorld = signal<boolean>(false);
   public worldSeed = signal<string | null>(null);
+
+  public nodeCounts = computed(() => {
+    const config = this.selectedWorldSize();
+    return {
+      min: sum(
+        Object.keys(config.nodeCount).map(
+          (key) => config.nodeCount[key as LocationType].min,
+        ),
+      ),
+      max: sum(
+        Object.keys(config.nodeCount).map(
+          (key) => config.nodeCount[key as LocationType].max,
+        ),
+      ),
+    };
+  });
 
   ngOnInit() {
     setDiscordStatus({

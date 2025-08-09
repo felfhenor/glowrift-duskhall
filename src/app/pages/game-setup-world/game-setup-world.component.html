@@ -3,6 +3,11 @@
     <div class="card bg-base-100">
       <div class="card-body items-center justify-between">
         <div class="card-title text-center flex flex-col">Heroes</div>
+
+        <div class="text-center flex flex-col italic">
+          Name the heroes in your party!
+        </div>
+
         <div class="card-actions pt-3 flex flex-row gap-2">
           <div class="flex flex-row justify-center gap-2 flex-wrap">
             @for (name of heroNames; track $index) {
@@ -43,9 +48,11 @@
     <div class="card bg-base-100">
       <div class="card-body items-center justify-between">
         <div class="card-title text-center flex flex-col">World Size</div>
-        <div class="flex flex-row justify-center gap-2">
-          Smaller worlds are less challenging than larger ones.
+
+        <div class="text-center flex flex-col italic">
+          Smaller worlds are less challenging than larger ones!
         </div>
+
         <div class="card-actions pt-3 flex flex-row gap-2 justify-center">
           @for (config of allWorldSizes; track $index) {
             <div class="min-w-[128px]">
@@ -71,6 +78,20 @@
             </div>
           }
         </div>
+
+        @if (selectedWorldSize(); as worldSize) {
+          <div class="mt-4 italic text-center flex flex-row gap-4">
+            <span>{{ worldSize.width }}x{{ worldSize.height }} tiles</span>
+
+            <span>Max Lv.{{ worldSize.maxLevel }}</span>
+
+            <span>
+              @let nodeCountValues = nodeCounts();
+
+              Node Count: {{ nodeCountValues.min }} - {{ nodeCountValues.max }}
+            </span>
+          </div>
+        }
       </div>
     </div>
   </div>
@@ -79,10 +100,14 @@
     <div class="card bg-base-100">
       <div class="card-body items-center justify-between">
         <div class="card-title text-center flex flex-col">World Seed</div>
-        <div class="flex flex-row justify-center gap-2">
+
+        <div
+          class="text-center flex flex-row justify-center gap-2 italic px-[15%]"
+        >
           The world seed is used to generate the world. You can use a custom
           seed or leave it empty to let the game generate one for you.
         </div>
+
         <input
           type="text"
           class="input input-bordered w-full"
