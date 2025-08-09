@@ -1,12 +1,19 @@
-import { Component, input, output } from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
 
 import { DecimalPipe } from '@angular/common';
 import { IconBlankSlotComponent } from '@components/icon-blank-slot/icon-blank-slot.component';
 import { IconItemComponent } from '@components/icon-item/icon-item.component';
-import { itemSalvage, itemSalvageValue, toggleItemFavorite } from '@helpers';
+import {
+  allHeroes,
+  equipItem,
+  itemSalvage,
+  itemSalvageValue,
+  toggleItemFavorite,
+} from '@helpers';
 import type {
   EquipmentItem,
   EquipmentItemId,
+  EquipmentSlot,
   Hero,
   ItemAction,
 } from '@interfaces';
@@ -33,6 +40,8 @@ export class InventoryGridItemComponent {
 
   public itemClicked = output<EquipmentItem>();
 
+  public allHeroes = computed(() => allHeroes());
+
   salvageValue(item: EquipmentItem) {
     return itemSalvageValue(item);
   }
@@ -47,5 +56,16 @@ export class InventoryGridItemComponent {
 
   compareWithItem(item: EquipmentItem) {
     return this.compareWithEquippedHero()?.equipment[item.__type];
+  }
+
+  heroEquippedItem(
+    hero: Hero,
+    itemSlot: EquipmentSlot,
+  ): EquipmentItem | undefined {
+    return hero.equipment[itemSlot];
+  }
+
+  equipItem(item: EquipmentItem, hero: Hero) {
+    equipItem(hero, item);
   }
 }

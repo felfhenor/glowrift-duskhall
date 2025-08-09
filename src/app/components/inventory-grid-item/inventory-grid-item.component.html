@@ -23,8 +23,8 @@
 
     <ng-template #contextMenu let-hide let-item="data">
       @if (actions.length > 0) {
-        <ul class="menu bg-base-200 rounded-box w-56 p-0">
-          <li class="menu-title">{{ item.name }}</li>
+        <ul class="menu bg-base-200 rounded-box w-56 p-0 min-w-[300px]">
+          <li class="menu-title">{{ item.name }} Lv.{{ item.dropLevel }}</li>
 
           <li>
             <a (click)="toggleFavorite(item); hide()">
@@ -38,6 +38,33 @@
                 Salvage for {{ salvageValue(item) | number }} Mana
               </a>
             </li>
+          }
+
+          @if (actions.includes('Equip')) {
+            @for (hero of allHeroes(); track $index) {
+              <li>
+                <details>
+                  <summary>{{ hero.name }}</summary>
+                  <ul>
+                    <li>
+                      <a (click)="equipItem(item, hero); hide()">
+                        @let eqItem = heroEquippedItem(hero, item.__type);
+
+                        @if (eqItem) {
+                          Equip [
+                          <span class="text-xs text-{{ eqItem.rarity }}">
+                            {{ eqItem.name }} Lv.{{ eqItem.dropLevel }}
+                          </span>
+                          ]
+                        } @else {
+                          Equip [empty]
+                        }
+                      </a>
+                    </li>
+                  </ul>
+                </details>
+              </li>
+            }
           }
         </ul>
       }

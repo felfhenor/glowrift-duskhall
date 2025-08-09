@@ -10,8 +10,8 @@
   <app-inventory-grid-container
     [(currentItemType)]="currentItemType"
     (currentItemTypeChange)="changeItemType($event)"
-    [allowedItemActions]="['Salvage']"
-    [allowedSkillActions]="['Salvage']"
+    [allowedItemActions]="['Salvage', 'Equip']"
+    [allowedSkillActions]="['Salvage', 'Equip']"
     [containerHeight]="500"
   ></app-inventory-grid-container>
 </app-card-page>

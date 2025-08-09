@@ -14,9 +14,9 @@ export type TownBuilding =
   | 'Alchemist'
   | 'Salvager';
 
-export type ItemAction = 'Salvage';
+export type ItemAction = 'Salvage' | 'Equip';
 
-export type SkillAction = 'Salvage';
+export type SkillAction = 'Salvage' | 'Equip';
 
 export type BlacksmithEnchant = HasRarity &
   HasDescription & {
