@@ -67,9 +67,9 @@ describe('Item Helper Functions', () => {
 
       const sorted = sortedRarityList(items);
       expect(sorted.map((i) => i.rarity)).toEqual([
-        'Unique',
         'Legendary',
         'Rare',
+        'Unique',
         'Common',
       ]);
     });
