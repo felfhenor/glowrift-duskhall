@@ -4,7 +4,7 @@ import {
   createClaimIndicatorTextures,
   createGameMapContainers,
   createNodeSprites,
-  createPlayerIndicator,
+  createPlayerAtLocationIndicator,
   createTravelingHeroIndicator,
   createTravelLine,
   gamestate,
@@ -278,7 +278,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       relativeY >= 0 &&
       relativeY < this.nodeHeight()
     ) {
-      const playerIndicator = createPlayerIndicator(
+      const playerIndicator = createPlayerAtLocationIndicator(
         relativeX,
         relativeY,
         this.playerIndicatorContainer,

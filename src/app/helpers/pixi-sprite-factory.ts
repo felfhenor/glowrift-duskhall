@@ -168,7 +168,7 @@ export function createNodeSprites(
  * @param ticker PIXI ticker for animation
  * @returns Object with graphics and cleanup function
  */
-export function createPlayerIndicator(
+export function createPlayerAtLocationIndicator(
   x: number,
   y: number,
   container: Container,
@@ -186,9 +186,9 @@ export function createPlayerIndicator(
   let direction = -1;
 
   const animate = () => {
-    alpha += direction * 0.01;
-    if (alpha <= 0.3) direction = 1;
-    if (alpha >= 1) direction = -1;
+    alpha += direction * 0.03;
+    if (alpha <= 0.4) direction = 1;
+    if (alpha >= 0.8) direction = -1;
     graphics.alpha = alpha;
   };
 
@@ -301,7 +301,7 @@ export function createTravelingHeroIndicator(
   // Add a subtle bobbing animation
   let bobOffset = 0;
   const animate = () => {
-    bobOffset += 0.1;
+    bobOffset += 0.2;
     sprite.y = pixelY + Math.sin(bobOffset) * 2;
   };
 

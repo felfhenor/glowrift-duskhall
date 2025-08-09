@@ -1,5 +1,5 @@
-import { Application, Container } from 'pixi.js';
 import type { PixiAppConfig } from '@interfaces/pixi-config';
+import { Application, Container } from 'pixi.js';
 
 /**
  * Initializes a pixijs with the specified configuration
@@ -19,6 +19,8 @@ export async function initializePixiApp(
     backgroundAlpha: config.backgroundAlpha ?? 0,
     antialias: config.antialias ?? false,
   });
+
+  app.ticker.maxFPS = 60;
 
   container.appendChild(app.canvas);
 
@@ -62,7 +64,11 @@ export function createGameMapContainers(app: Application): {
   app.stage.addChild(travelVisualizationContainer);
   app.stage.addChild(playerIndicatorContainer);
 
-  return { mapContainer, playerIndicatorContainer, travelVisualizationContainer };
+  return {
+    mapContainer,
+    playerIndicatorContainer,
+    travelVisualizationContainer,
+  };
 }
 
 /**
