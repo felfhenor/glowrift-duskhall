@@ -23,6 +23,7 @@ export function sortedRarityList<T extends DroppableEquippable>(
   items: T[],
 ): T[] {
   return sortBy(items, [
+    (i) => -i.dropLevel,
     (i) => {
       const rarityOrder: Record<DropRarity, number> = {
         Common: 0,
@@ -34,7 +35,6 @@ export function sortedRarityList<T extends DroppableEquippable>(
       };
       return rarityOrder[i.rarity] ?? 0;
     },
-    (i) => -i.dropLevel,
   ]);
 }
 
