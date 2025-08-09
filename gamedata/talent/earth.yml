@@ -3,6 +3,8 @@
   description: Boost the Force of Earthspike skills by +300%.
   sprite: '0022'
 
+  applyToAttributes: [DamagesTarget]
+
   applyToSkillIds:
     - Earthspike I
     - Earthspike II
@@ -15,6 +17,8 @@
   name: Strength of Earthspike II
   description: Boost the Force of Earthspike skills by +300%.
   sprite: '0022'
+
+  applyToAttributes: [DamagesTarget]
 
   requireTalentId: Strength of Earthspike I
 
@@ -30,6 +34,8 @@
   name: Strength of Earthspike III
   description: Boost the Force of Earthspike skills by +300%.
   sprite: '0022'
+
+  applyToAttributes: [DamagesTarget]
 
   requireTalentId: Strength of Earthspike II
 
@@ -120,6 +126,7 @@
   description: Boost the Force of Earth spells by +30%.
   sprite: '0027'
 
+  applyToAttributes: [DamagesTarget]
   applyToElements: [Earth]
 
   boostStats:
@@ -132,6 +139,7 @@
 
   requireTalentId: Tectonic Force I
 
+  applyToAttributes: [DamagesTarget]
   applyToElements: [Earth]
 
   boostStats:
@@ -144,6 +152,7 @@
 
   requireTalentId: Tectonic Force II
 
+  applyToAttributes: [DamagesTarget]
   applyToElements: [Earth]
 
   boostStats:
