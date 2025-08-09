@@ -63,6 +63,12 @@ export class PanelTownComponent {
       level: computed(() => getBuildingLevel('Salvager')),
     },
     {
+      name: 'Blacksmith',
+      link: 'Blacksmith',
+      showIf: computed(() => true),
+      level: computed(() => getBuildingLevel('Blacksmith')),
+    },
+    {
       name: 'Alchemist',
       link: 'Alchemist',
       showIf: computed(() => true),
@@ -73,12 +79,6 @@ export class PanelTownComponent {
       link: 'Academy',
       showIf: computed(() => true),
       level: computed(() => getBuildingLevel('Academy')),
-    },
-    {
-      name: 'Blacksmith',
-      link: 'Blacksmith',
-      showIf: computed(() => true),
-      level: computed(() => getBuildingLevel('Blacksmith')),
     },
     {
       name: 'Festivals',
