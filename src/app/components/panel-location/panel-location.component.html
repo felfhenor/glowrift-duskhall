@@ -37,24 +37,23 @@
   </div>
 
   <div class="h-full flex flex-row">
-    <div class="h-full flex flex-1 flex-col gap-2 justify-between">
+    <div class="h-full flex flex-2 flex-col gap-2 justify-between">
       <div>
-        <div class="mt-1 text-lg">Guardians</div>
+        <div class="my-1 text-lg">Guardians ({{ guardians().length }})</div>
 
-        <div class="w-full grid grid-cols-3 gap-2">
+        <div class="w-full grid grid-cols-7 max-w-[486px] gap-1">
           @for (guardian of guardians(); track $index) {
-            <div>
-              <app-location-guardian-display
-                [guardian]="guardian"
-              ></app-location-guardian-display>
-            </div>
+            <app-location-guardian-display
+              class="w-[68px] h-[68px]"
+              [guardian]="guardian"
+            ></app-location-guardian-display>
           } @empty {
             <div class="col-span-3">None</div>
           }
         </div>
       </div>
 
-      <div class="flex flex-col gap-2">
+      <div class="flex flex-col gap-2 mt-2">
         @if (isAtThisNode()) {
           <div class="flex gap-2 items-center">
             <app-icon name="gameSevenPointedStar" size="1.5em"></app-icon>
@@ -87,11 +86,11 @@
       </div>
     </div>
 
-    <div class="h-full flex flex-1 flex-col gap-2">
+    <div class="h-full flex flex-2 flex-col gap-2">
       <div>
-        <div class="mt-1 text-lg">Loot</div>
+        <div class="my-1 text-lg">Loot ({{ loot().length }})</div>
 
-        <div class="w-full grid grid-cols-3 gap-2">
+        <div class="w-full grid grid-cols-7 max-w-[486px] gap-1">
           @for (item of loot(); track $index) {
             <div>
               <app-location-loot-display
@@ -133,10 +132,6 @@
       } @empty {
         None
       }
-    </div>
-
-    <div class="h-full flex flex-1 flex-col gap-2">
-      <div></div>
     </div>
   </div>
 </app-card-page>
