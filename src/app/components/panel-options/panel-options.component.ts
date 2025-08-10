@@ -22,7 +22,7 @@ import type { OptionsTab, OptionsTabLink } from '@interfaces';
     IconComponent,
   ],
   templateUrl: './panel-options.component.html',
-  styleUrl: './panel-options.component.css',
+  styleUrl: './panel-options.component.scss',
 })
 export class PanelOptionsComponent extends OptionsBaseComponent {
   public activeTab = computed(() => options()['optionsTab']);

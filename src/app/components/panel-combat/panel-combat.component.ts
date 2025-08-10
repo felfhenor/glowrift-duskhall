@@ -25,7 +25,7 @@ import type { CombatTab, CombatTabLink } from '@interfaces';
     PanelCombatClaimsComponent,
   ],
   templateUrl: './panel-combat.component.html',
-  styleUrl: './panel-combat.component.css',
+  styleUrl: './panel-combat.component.scss',
 })
 export class PanelCombatComponent extends OptionsBaseComponent {
   public activeTab = computed(() => options()['combatTab']);

@@ -12,7 +12,7 @@ import type {
   selector: 'app-stats-item-compare',
   imports: [StatsItemComponent],
   templateUrl: './stats-item-compare.component.html',
-  styleUrl: './stats-item-compare.component.css',
+  styleUrl: './stats-item-compare.component.scss',
 })
 export class StatsItemCompareComponent {
   public item = input.required<EquipmentItemContent>();

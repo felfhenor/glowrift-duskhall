@@ -36,7 +36,7 @@ import type { EquipmentItem, EquipmentSkill, EquipmentSlot } from '@interfaces';
     InventoryGridContainerComponent,
   ],
   templateUrl: './panel-heroes.component.html',
-  styleUrl: './panel-heroes.component.css',
+  styleUrl: './panel-heroes.component.scss',
 })
 export class PanelHeroesComponent {
   public allHeroes = computed(() => gamestate().hero.heroes);

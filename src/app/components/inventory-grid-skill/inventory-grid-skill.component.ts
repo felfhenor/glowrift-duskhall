@@ -22,7 +22,7 @@ import { RepeatPipe } from 'ngxtension/repeat-pipe';
   selector: 'app-inventory-grid-skill',
   imports: [TippyDirective, DecimalPipe, IconSkillComponent, RepeatPipe],
   templateUrl: './inventory-grid-skill.component.html',
-  styleUrl: './inventory-grid-skill.component.css',
+  styleUrl: './inventory-grid-skill.component.scss',
 })
 export class InventoryGridSkillComponent {
   public skills = input.required<EquipmentSkill[]>();

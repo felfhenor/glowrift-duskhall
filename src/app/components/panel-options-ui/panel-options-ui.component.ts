@@ -8,7 +8,7 @@ import type { ToggleableCategory } from '@interfaces';
   selector: 'app-panel-options-ui',
   imports: [FormsModule, TitleCasePipe],
   templateUrl: './panel-options-ui.component.html',
-  styleUrl: './panel-options-ui.component.css',
+  styleUrl: './panel-options-ui.component.scss',
 })
 export class PanelOptionsUIComponent extends OptionsBaseComponent {
   public currentTheme = signal<string>(this.getOption('uiTheme') as string);

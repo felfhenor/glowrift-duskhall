@@ -23,7 +23,7 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
     AnalyticsClickDirective,
   ],
   templateUrl: './panel-options-savefile.component.html',
-  styleUrl: './panel-options-savefile.component.css',
+  styleUrl: './panel-options-savefile.component.scss',
 })
 export class PanelOptionsSavefileComponent {
   private router = inject(Router);

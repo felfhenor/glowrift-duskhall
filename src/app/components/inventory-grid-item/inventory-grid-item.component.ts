@@ -28,7 +28,7 @@ import { TippyDirective } from '@ngneat/helipopper';
     IconBlankSlotComponent,
   ],
   templateUrl: './inventory-grid-item.component.html',
-  styleUrl: './inventory-grid-item.component.css',
+  styleUrl: './inventory-grid-item.component.scss',
 })
 export class InventoryGridItemComponent {
   public items = input.required<(EquipmentItem | undefined)[]>();

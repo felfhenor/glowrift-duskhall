@@ -7,7 +7,7 @@ import { type EquipmentSkill } from '@interfaces';
   selector: 'app-stats-skill-compare',
   imports: [StatsSkillComponent],
   templateUrl: './stats-skill-compare.component.html',
-  styleUrl: './stats-skill-compare.component.css',
+  styleUrl: './stats-skill-compare.component.scss',
 })
 export class StatsSkillCompareComponent {
   public skill = input.required<EquipmentSkill>();

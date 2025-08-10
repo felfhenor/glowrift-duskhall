@@ -1,7 +1,7 @@
 import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
-import type { GameElement, Icon } from '@interfaces';
 import { IconComponent } from '@components/icon/icon.component';
+import type { GameElement, Icon } from '@interfaces';
 
 const icons: Record<GameElement, Icon> = {
   Fire: 'gameSmallFire',
@@ -21,7 +21,7 @@ const colors: Record<GameElement, string> = {
   selector: 'app-icon-element',
   imports: [IconComponent, NgClass],
   templateUrl: './icon-element.component.html',
-  styleUrl: './icon-element.component.css',
+  styleUrl: './icon-element.component.scss',
 })
 export class IconElementComponent {
   public element = input.required<GameElement>();

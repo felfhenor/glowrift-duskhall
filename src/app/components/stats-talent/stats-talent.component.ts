@@ -5,7 +5,7 @@ import type { TalentContent } from '@interfaces';
 @Component({
   selector: 'app-stats-talent',
   templateUrl: './stats-talent.component.html',
-  styleUrl: './stats-talent.component.css',
+  styleUrl: './stats-talent.component.scss',
   imports: [ContentNameComponent],
 })
 export class StatsTalentComponent {

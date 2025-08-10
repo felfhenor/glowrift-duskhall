@@ -32,7 +32,7 @@ import { RepeatPipe } from 'ngxtension/repeat-pipe';
     InventoryGridContainerComponent,
   ],
   templateUrl: './panel-town-alchemist.component.html',
-  styleUrl: './panel-town-alchemist.component.css',
+  styleUrl: './panel-town-alchemist.component.scss',
 })
 export class PanelTownAlchemistComponent {
   public selectedSkills = signal<EquipmentSkill[]>([]);
@@ -83,8 +83,9 @@ export class PanelTownAlchemistComponent {
     // Get all skills, sorted by rarity/level, excluding favorited skills
     const allSkills = sortedRarityList<EquipmentSkill>(
       gamestate().inventory.skills.filter(
-        (skill) => !this.disabledSkillIds().includes(skill.id) && !skill.isFavorite
-      )
+        (skill) =>
+          !this.disabledSkillIds().includes(skill.id) && !skill.isFavorite,
+      ),
     );
 
     // Take the worst skills (last in the sorted list)

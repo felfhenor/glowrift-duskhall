@@ -10,7 +10,7 @@ import { MetaService } from '@services/meta.service';
   imports: [NgIconComponent, TippyDirective],
   providers: [provideIcons({ tablerPackage })],
   templateUrl: './modal-changelog.component.html',
-  styleUrl: './modal-changelog.component.css',
+  styleUrl: './modal-changelog.component.scss',
 })
 export class ModalChangelogComponent {
   private meta = inject(MetaService);

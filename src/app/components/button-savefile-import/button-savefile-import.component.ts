@@ -8,7 +8,7 @@ import type { GameState } from '@interfaces';
   selector: 'app-button-savefile-import',
   imports: [AnalyticsClickDirective],
   templateUrl: './button-savefile-import.component.html',
-  styleUrl: './button-savefile-import.component.css',
+  styleUrl: './button-savefile-import.component.scss',
 })
 export class ButtonSavefileImportComponent {
   private router = inject(Router);

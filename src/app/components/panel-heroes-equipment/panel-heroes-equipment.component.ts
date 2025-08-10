@@ -1,15 +1,15 @@
 import { TitleCasePipe } from '@angular/common';
 import type { Signal } from '@angular/core';
 import { Component, computed, input, output } from '@angular/core';
-import type { EquipmentItem, EquipmentSlot, Hero } from '@interfaces';
 import { IconBlankSlotComponent } from '@components/icon-blank-slot/icon-blank-slot.component';
 import { IconItemComponent } from '@components/icon-item/icon-item.component';
+import type { EquipmentItem, EquipmentSlot, Hero } from '@interfaces';
 
 @Component({
   selector: 'app-panel-heroes-equipment',
   imports: [IconItemComponent, TitleCasePipe, IconBlankSlotComponent],
   templateUrl: './panel-heroes-equipment.component.html',
-  styleUrl: './panel-heroes-equipment.component.css',
+  styleUrl: './panel-heroes-equipment.component.scss',
 })
 export class PanelHeroesEquipmentComponent {
   public hero = input.required<Hero>();

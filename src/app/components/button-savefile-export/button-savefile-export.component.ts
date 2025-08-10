@@ -6,7 +6,7 @@ import { gamestate } from '@helpers';
   selector: 'app-button-savefile-export',
   imports: [AnalyticsClickDirective],
   templateUrl: './button-savefile-export.component.html',
-  styleUrl: './button-savefile-export.component.css',
+  styleUrl: './button-savefile-export.component.scss',
 })
 export class ButtonSavefileExportComponent {
   exportSavefile() {

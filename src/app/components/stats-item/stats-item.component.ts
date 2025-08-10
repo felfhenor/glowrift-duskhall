@@ -28,7 +28,7 @@ import {
     MarkerTraitComponent,
   ],
   templateUrl: './stats-item.component.html',
-  styleUrl: './stats-item.component.css',
+  styleUrl: './stats-item.component.scss',
 })
 export class StatsItemComponent {
   public item = input.required<EquipmentItemContent | EquipmentItem>();

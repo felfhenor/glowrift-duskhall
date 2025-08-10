@@ -21,7 +21,7 @@ const colors: Record<GameStat, string> = {
   selector: 'app-icon-stat',
   imports: [IconComponent, NgClass],
   templateUrl: './icon-stat.component.html',
-  styleUrl: './icon-stat.component.css',
+  styleUrl: './icon-stat.component.scss',
 })
 export class IconStatComponent {
   public stat = input.required<GameStat>();

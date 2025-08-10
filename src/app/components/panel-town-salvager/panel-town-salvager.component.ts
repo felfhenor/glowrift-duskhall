@@ -32,7 +32,7 @@ import { RepeatPipe } from 'ngxtension/repeat-pipe';
     InventoryGridContainerComponent,
   ],
   templateUrl: './panel-town-salvager.component.html',
-  styleUrl: './panel-town-salvager.component.css',
+  styleUrl: './panel-town-salvager.component.scss',
 })
 export class PanelTownSalvagerComponent {
   public selectedItems = signal<EquipmentItem[]>([]);
@@ -86,8 +86,8 @@ export class PanelTownSalvagerComponent {
         (item) =>
           ['accessory', 'armor', 'trinket', 'weapon'].includes(item.__type) &&
           !this.disabledItemIds().includes(item.id) &&
-          !item.isFavorite
-      )
+          !item.isFavorite,
+      ),
     );
 
     // Take the worst items (last in the sorted list)

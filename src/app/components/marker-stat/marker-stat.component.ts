@@ -7,7 +7,7 @@ import type { GameStat } from '@interfaces';
   selector: 'app-marker-stat',
   imports: [DecimalPipe, TitleCasePipe, IconStatComponent],
   templateUrl: './marker-stat.component.html',
-  styleUrl: './marker-stat.component.css',
+  styleUrl: './marker-stat.component.scss',
 })
 export class MarkerStatComponent {
   public stat = input.required<GameStat>();

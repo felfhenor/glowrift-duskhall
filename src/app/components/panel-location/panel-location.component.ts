@@ -12,6 +12,7 @@ import { LocationLootDisplayComponent } from '@components/location-loot-display/
 import { MarkerLocationClaimComponent } from '@components/marker-location-claim/marker-location-claim.component';
 import { MarkerLocationTraitComponent } from '@components/marker-location-trait/marker-location-trait.component';
 import {
+  areAllHeroesDead,
   createGuardianForLocation,
   gamestate,
   getCurrencyClaimsForNode,
@@ -23,7 +24,6 @@ import {
   totalTicksElapsed,
   travelTimeFromCurrentLocationTo,
   travelToNode,
-  areAllHeroesDead,
 } from '@helpers';
 import type { TraitLocationContent } from '@interfaces';
 import {
@@ -52,7 +52,7 @@ import { sortBy } from 'es-toolkit/compat';
     MarkerLocationTraitComponent,
   ],
   templateUrl: './panel-location.component.html',
-  styleUrl: './panel-location.component.css',
+  styleUrl: './panel-location.component.scss',
 })
 export class PanelLocationComponent {
   public location = input.required<WorldLocation>();
@@ -84,7 +84,10 @@ export class PanelLocationComponent {
   public isAtThisNode = computed(() => isAtNode(this.location()));
 
   public canTravelToThisNode = computed(
-    () => !this.isAtThisNode() && !this.isTravelingToThisNode() && !areAllHeroesDead(),
+    () =>
+      !this.isAtThisNode() &&
+      !this.isTravelingToThisNode() &&
+      !areAllHeroesDead(),
   );
 
   public nodeLostTime = computed(

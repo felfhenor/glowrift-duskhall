@@ -1,12 +1,11 @@
-import type {
-  ApplicationConfig } from '@angular/core';
+import type { ApplicationConfig } from '@angular/core';
 import {
   APP_INITIALIZER,
   ENVIRONMENT_INITIALIZER,
   ErrorHandler,
   importProvidersFrom,
   inject,
-  provideZoneChangeDetection,
+  provideZonelessChangeDetection,
 } from '@angular/core';
 import {
   provideRouter,
@@ -41,7 +40,7 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(),
-    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideZonelessChangeDetection(),
     provideRouter(
       routes,
       withComponentInputBinding(),

@@ -7,7 +7,7 @@ import type { GameElement } from '@interfaces';
   selector: 'app-marker-element',
   imports: [DecimalPipe, TitleCasePipe, IconElementComponent],
   templateUrl: './marker-element.component.html',
-  styleUrl: './marker-element.component.css',
+  styleUrl: './marker-element.component.scss',
 })
 export class MarkerElementComponent {
   public element = input.required<GameElement>();

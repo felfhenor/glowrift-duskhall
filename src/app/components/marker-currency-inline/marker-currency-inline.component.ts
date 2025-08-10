@@ -7,7 +7,7 @@ import { GameCurrencyPipe } from '@pipes/game-currency.pipe';
   selector: 'app-marker-currency-inline',
   imports: [GameCurrencyPipe, IconItemComponent],
   templateUrl: './marker-currency-inline.component.html',
-  styleUrl: './marker-currency-inline.component.css',
+  styleUrl: './marker-currency-inline.component.scss',
 })
 export class MarkerCurrencyInlineComponent {
   public currency = input.required<GameCurrency>();

@@ -5,7 +5,7 @@ import type { WorldLocation } from '@interfaces';
   selector: 'app-marker-location-claim',
   imports: [],
   templateUrl: './marker-location-claim.component.html',
-  styleUrl: './marker-location-claim.component.css',
+  styleUrl: './marker-location-claim.component.scss',
 })
 export class MarkerLocationClaimComponent {
   public location = input.required<WorldLocation>();

@@ -1,13 +1,13 @@
 import { Component, computed, input } from '@angular/core';
+import { MarkerCurrencyComponent } from '@components/marker-currency/marker-currency.component';
 import { gamestate } from '@helpers';
 import type { GameCurrency } from '@interfaces';
-import { MarkerCurrencyComponent } from '@components/marker-currency/marker-currency.component';
 
 @Component({
   selector: 'app-marker-currency-current',
   imports: [MarkerCurrencyComponent],
   templateUrl: './marker-currency-current.component.html',
-  styleUrl: './marker-currency-current.component.css',
+  styleUrl: './marker-currency-current.component.scss',
 })
 export class MarkerCurrencyCurrentComponent {
   public currency = input.required<GameCurrency>();
