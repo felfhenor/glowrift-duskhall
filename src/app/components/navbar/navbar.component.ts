@@ -1,8 +1,8 @@
+import type { OnDestroy, OnInit } from '@angular/core';
 import { Component, computed, inject, viewChild } from '@angular/core';
-import type { OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { TippyDirective } from '@ngneat/helipopper';
-import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { IconComponent } from '@components/icon/icon.component';
+import { MarkerCurrencyCurrentComponent } from '@components/marker-currency-current/marker-currency-current.component';
 import { RequireSetupDirective } from '@directives/require-setup.directive';
 import { SFXDirective } from '@directives/sfx.directive';
 import {
@@ -20,11 +20,11 @@ import {
   showTownMenu,
 } from '@helpers';
 import type { GameCurrency, Icon } from '@interfaces';
+import { TippyDirective } from '@ngneat/helipopper';
+import { HotkeysService } from '@ngneat/hotkeys';
 import { MetaService } from '@services/meta.service';
 import type { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
-import { IconComponent } from '@components/icon/icon.component';
-import { MarkerCurrencyCurrentComponent } from '@components/marker-currency-current/marker-currency-current.component';
-import { HotkeysService } from '@ngneat/hotkeys';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 @Component({
   selector: 'app-navbar',
@@ -41,9 +41,12 @@ import { HotkeysService } from '@ngneat/hotkeys';
   styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent implements OnInit, OnDestroy {
-  public leaveSwal = viewChild<SwalComponent>('leaveSwal');
+  private hotkeys = inject(HotkeysService);
+
   public meta = inject(MetaService);
   public router = inject(Router);
+
+  public leaveSwal = viewChild<SwalComponent>('leaveSwal');
 
   public isPaused = computed(() => getOption('gameloopPaused'));
   public currentStatus = computed(() => globalStatusText());
@@ -153,10 +156,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     setOption('gameloopPaused', !this.isPaused());
   }
 
-  //KEYBOARD SHORTCUTS HERE!
-  private hotkeys = inject(HotkeysService);
-  constructor() {}
-
   ngOnInit() {
     // Menu toggles
     this.hotkeys.addShortcut({ keys: '1' }).subscribe(() => this.toggleTown());
@@ -187,6 +186,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.leaveSwal()?.fire();
     });
   }
+
   ngOnDestroy() {
     this.hotkeys.removeShortcuts([
       '1',

@@ -41,7 +41,7 @@
       <li class="action-button" appRequireSetup>
         <button
           class="btn btn-xs btn-info"
-          [tp]="isPaused() ? 'Resume Game' : 'Pause Game'"
+          [tp]="isPaused() ? 'Resume Game [SPACE]' : 'Pause Game [SPACE]'"
           (click)="togglePause()"
         >
           <app-icon
@@ -56,7 +56,7 @@
         <li class="action-button" appRequireSetup>
           <button
             class="btn btn-xs btn-accent"
-            [tp]="panel.name"
+            [tp]="panel.name + ' [' + ($index + 1) + ']'"
             (click)="panel.clickCb()"
             appSfx="ui-click"
             [sfxOffset]="$index"
@@ -68,7 +68,11 @@
       }
 
       <li class="action-button">
-        <a class="btn btn-xs btn-warning" [swal]="leaveSwal" [tp]="'Go Back'">
+        <a
+          class="btn btn-xs btn-warning"
+          [swal]="leaveSwal"
+          [tp]="'Go Back [Q]'"
+        >
           <app-icon name="gameExitDoor" size="2em" color="#000"></app-icon>
         </a>
       </li>
