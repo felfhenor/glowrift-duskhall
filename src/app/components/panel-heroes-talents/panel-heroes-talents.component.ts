@@ -7,15 +7,21 @@ import {
   getEntry,
   getOption,
   heroRemainingTalentPoints,
+  respecHeroTalents,
   setOption,
 } from '@helpers';
 import type { TalentTreeContent } from '@interfaces';
 import { type GameElement, type Hero } from '@interfaces';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { intersection } from 'es-toolkit/compat';
 
 @Component({
   selector: 'app-panel-heroes-talents',
-  imports: [IconElementComponent, PanelHeroesTalentsTreeComponent],
+  imports: [
+    IconElementComponent,
+    PanelHeroesTalentsTreeComponent,
+    SweetAlert2Module,
+  ],
   templateUrl: './panel-heroes-talents.component.html',
   styleUrl: './panel-heroes-talents.component.scss',
 })
@@ -72,5 +78,9 @@ export class PanelHeroesTalentsComponent {
 
   public changeElement(element: GameElement): void {
     setOption('selectedTalentTreeElement', element);
+  }
+
+  public respecHero(): void {
+    respecHeroTalents(this.hero());
   }
 }

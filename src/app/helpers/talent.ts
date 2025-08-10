@@ -1,6 +1,7 @@
 import { getEntry } from '@helpers/content';
 import { getDefaultCombatStats } from '@helpers/defaults';
 import { getDroppableEquippableBaseId } from '@helpers/droppable';
+import { updateHeroData } from '@helpers/hero';
 import type { CombatantCombatStats } from '@interfaces/combat';
 import type {
   EquipmentSkill,
@@ -20,6 +21,12 @@ export function allHeroTalents(hero: Hero): TalentContent[] {
     .filter(([, level]) => level > 0)
     .map(([talentId]) => getEntry<TalentContent>(talentId))
     .filter((talent): talent is TalentContent => !!talent);
+}
+
+export function respecHeroTalents(hero: Hero): void {
+  updateHeroData(hero.id, {
+    talents: {},
+  });
 }
 
 export function allTalentIdsInTalentTree(

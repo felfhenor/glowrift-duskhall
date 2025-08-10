@@ -1,7 +1,9 @@
 <h3 class="text-lg flex flex-row items-center justify-between">
   <span>Talents ({{ pointsAvailable() }} points remaining)</span>
 
-  <div class="join mt-2">
+  <button class="btn btn-warning" [swal]="respecSwal">Re-spec</button>
+
+  <div class="join">
     @for (type of allTalents(); track type.element) {
       <button
         class="btn btn-neutral btn-active join-item"
@@ -21,3 +23,15 @@
     [element]="currentElement()"
   ></app-panel-heroes-talents-tree>
 </div>
+
+<swal
+  #respecSwal
+  title="Reset {{ hero().name }}'s talents?"
+  text="This will refund all talent points spent on {{
+    hero().name
+  }}. You can reassign them afterwards."
+  icon="question"
+  confirmButtonText="Yes, reset talents"
+  cancelButtonText="No, keep them"
+  (confirm)="respecHero()"
+></swal>
