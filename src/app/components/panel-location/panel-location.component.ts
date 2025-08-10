@@ -1,6 +1,7 @@
 import { DecimalPipe, TitleCasePipe } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 import { AtlasImageComponent } from '@components/atlas-image/atlas-image.component';
+import { ButtonCloseComponent } from '@components/button-close/button-close.component';
 import { CardPageComponent } from '@components/card-page/card-page.component';
 import { CountdownComponent } from '@components/countdown/countdown.component';
 import { IconItemComponent } from '@components/icon-currency/icon-currency.component';
@@ -50,6 +51,7 @@ import { sortBy } from 'es-toolkit/compat';
     IconItemComponent,
     IconElementComponent,
     MarkerLocationTraitComponent,
+    ButtonCloseComponent,
   ],
   templateUrl: './panel-location.component.html',
   styleUrl: './panel-location.component.scss',

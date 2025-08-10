@@ -1,8 +1,8 @@
 import { TitleCasePipe } from '@angular/common';
 import { Component, computed, signal } from '@angular/core';
+import { ButtonCloseComponent } from '@components/button-close/button-close.component';
 import { CardPageComponent } from '@components/card-page/card-page.component';
 import { IconHeroComponent } from '@components/icon-hero/icon-hero.component';
-import { IconComponent } from '@components/icon/icon.component';
 import { InventoryGridContainerComponent } from '@components/inventory-grid-container/inventory-grid-container.component';
 import { PanelHeroesEquipmentComponent } from '@components/panel-heroes-equipment/panel-heroes-equipment.component';
 import { PanelHeroesSkillsComponent } from '@components/panel-heroes-skills/panel-heroes-skills.component';
@@ -25,7 +25,6 @@ import type { EquipmentItem, EquipmentSkill, EquipmentSlot } from '@interfaces';
   selector: 'app-panel-heroes',
   imports: [
     CardPageComponent,
-    IconComponent,
     PanelHeroesStatsComponent,
     IconHeroComponent,
     PanelHeroesEquipmentComponent,
@@ -34,6 +33,7 @@ import type { EquipmentItem, EquipmentSkill, EquipmentSlot } from '@interfaces';
     PanelHeroesTalentsComponent,
     PanelHeroesTargettingComponent,
     InventoryGridContainerComponent,
+    ButtonCloseComponent,
   ],
   templateUrl: './panel-heroes.component.html',
   styleUrl: './panel-heroes.component.scss',

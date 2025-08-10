@@ -1,7 +1,7 @@
 import { Component, computed } from '@angular/core';
+import { ButtonCloseComponent } from '@components/button-close/button-close.component';
 import { CardPageComponent } from '@components/card-page/card-page.component';
 import { ConnectButtonsComponent } from '@components/connect-buttons/connect-buttons.component';
-import { IconComponent } from '@components/icon/icon.component';
 import { PanelOptionsDebugComponent } from '@components/panel-options-debug/panel-options-debug.component';
 import { PanelOptionsSavefileComponent } from '@components/panel-options-savefile/panel-options-savefile.component';
 import { PanelOptionsUIComponent } from '@components/panel-options-ui/panel-options-ui.component';
@@ -19,7 +19,7 @@ import type { OptionsTab, OptionsTabLink } from '@interfaces';
     PanelOptionsDebugComponent,
     PanelOptionsSavefileComponent,
     PanelOptionsUIComponent,
-    IconComponent,
+    ButtonCloseComponent,
   ],
   templateUrl: './panel-options.component.html',
   styleUrl: './panel-options.component.scss',

@@ -1,11 +1,11 @@
 import { Component, computed } from '@angular/core';
 import { CardPageComponent } from '@components/card-page/card-page.component';
-import { IconComponent } from '@components/icon/icon.component';
 import { PanelCombatClaimsComponent } from '@components/panel-combat-claims/panel-combat-claims.component';
 import { PanelCombatCombatlogComponent } from '@components/panel-combat-combatlog/panel-combat-combatlog.component';
 import { PanelCombatPreferencesComponent } from '@components/panel-combat-preferences/panel-combat-preferences.component';
 import { OptionsBaseComponent } from '@components/panel-options/option-base-page.component';
 
+import { ButtonCloseComponent } from '@components/button-close/button-close.component';
 import {
   currentCombat,
   handleCombatFlee,
@@ -19,10 +19,10 @@ import type { CombatTab, CombatTabLink } from '@interfaces';
   selector: 'app-panel-combat',
   imports: [
     CardPageComponent,
-    IconComponent,
     PanelCombatPreferencesComponent,
     PanelCombatCombatlogComponent,
     PanelCombatClaimsComponent,
+    ButtonCloseComponent,
   ],
   templateUrl: './panel-combat.component.html',
   styleUrl: './panel-combat.component.scss',

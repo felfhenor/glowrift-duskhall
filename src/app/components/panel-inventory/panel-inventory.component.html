@@ -2,9 +2,7 @@
   <span header>Inventory</span>
 
   <div pageactions>
-    <button class="ml-8 btn btn-clear" (click)="closeMenu()">
-      <app-icon name="tablerX"></app-icon>
-    </button>
+    <app-button-close (close)="closeMenu()"></app-button-close>
   </div>
 
   <app-inventory-grid-container

@@ -1,7 +1,7 @@
 import type { Signal } from '@angular/core';
 import { Component, computed } from '@angular/core';
+import { ButtonCloseComponent } from '@components/button-close/button-close.component';
 import { CardPageComponent } from '@components/card-page/card-page.component';
-import { IconComponent } from '@components/icon/icon.component';
 import { PanelTownAcademyComponent } from '@components/panel-town-academy/panel-town-academy.component';
 import { PanelTownAlchemistComponent } from '@components/panel-town-alchemist/panel-town-alchemist.component';
 import { PanelTownBlacksmithComponent } from '@components/panel-town-blacksmith/panel-town-blacksmith.component';
@@ -18,7 +18,7 @@ import { TeleportOutletDirective } from '@ngneat/overview';
   selector: 'app-panel-town',
   imports: [
     CardPageComponent,
-    IconComponent,
+    ButtonCloseComponent,
     AnalyticsClickDirective,
     PanelTownMarketComponent,
     PanelTownBlacksmithComponent,

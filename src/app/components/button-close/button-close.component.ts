@@ -1,14 +1,13 @@
 import { Component, output } from '@angular/core';
-import { NgIconComponent, provideIcons } from '@ng-icons/core';
-import { tablerX } from '@ng-icons/tabler-icons';
+import { IconComponent } from '@components/icon/icon.component';
 
 @Component({
   selector: 'app-button-close',
-  imports: [NgIconComponent],
-  providers: [provideIcons({ tablerX })],
+  imports: [IconComponent],
+  providers: [],
   templateUrl: './button-close.component.html',
   styleUrl: './button-close.component.scss',
 })
 export class ButtonCloseComponent {
-  public click = output<void>();
+  public close = output<void>();
 }
