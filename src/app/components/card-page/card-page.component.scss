@@ -1,1 +1,90 @@
+.card-page-container {
+  &.size-sub {
+    position: absolute;
+    top: 50vh;
+  }
 
+  transform-origin: top center;
+
+  // Full scale at larger resolutions (1600px+ width)
+  @media (min-width: 1600px) {
+    transform: scale(1);
+  }
+
+  // Scale down to 0.9 at medium-large resolutions (1400px-1599px)
+  @media (max-width: 1599px) and (min-width: 1400px) {
+    transform: scale(0.95);
+  }
+
+  // Scale down to 0.85 at medium resolutions (1366px-1399px)
+  @media (max-width: 1399px) and (min-width: 1366px) {
+    transform: scale(0.9);
+
+    &.size-sub {
+      top: 45vh;
+    }
+  }
+
+  // Scale down to 0.8 at smaller resolutions (1200px-1365px)
+  @media (max-width: 1365px) and (min-width: 1200px) {
+    transform: scale(0.85);
+
+    &.size-sub {
+      top: 45vh;
+    }
+  }
+
+  // Scale down to 0.75 at very small resolutions (<1200px)
+  @media (max-width: 1199px) {
+    transform: scale(0.8);
+
+    &.size-sub {
+      top: 45vh;
+    }
+  }
+}
+
+.page-card {
+  min-width: 1500px;
+  max-width: 1500px;
+
+  @media (max-width: 1599px) {
+    min-width: min(1400px, 95vw);
+    max-width: min(1400px, 95vw);
+  }
+
+  @media (max-width: 1399px) {
+    min-width: min(1300px, 93vw);
+    max-width: min(1300px, 92vw);
+  }
+
+  @media (max-width: 1365px) {
+    min-width: min(1200px, 90vw);
+    max-width: min(1200px, 90vw);
+  }
+
+  @media (max-width: 1199px) {
+    min-width: min(1100px, 88vw);
+    max-width: min(1100px, 88vw);
+  }
+}
+
+@media (max-width: 1365px) {
+  .card-content {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+}
+
+@media (max-width: 768px) {
+  .card-page-container {
+    .page-card {
+      margin: 0.5rem auto;
+    }
+
+    .card-content {
+      max-height: calc(100vh - 120px);
+      overflow-y: auto;
+    }
+  }
+}

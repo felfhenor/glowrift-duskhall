@@ -1,0 +1,48 @@
+.panel-container-responsive {
+  @media (max-width: 1599px) {
+    padding: 1.75rem;
+  }
+
+  @media (max-width: 1399px) {
+    padding: 1.5rem;
+  }
+
+  @media (max-width: 1365px) {
+    padding: 1.25rem;
+  }
+
+  @media (max-width: 1199px) {
+    padding: 1rem;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.75rem;
+  }
+}
+
+@media (max-width: 1365px) {
+  .card-body {
+    padding: 1.25rem;
+  }
+
+  .btn {
+    font-size: 0.9rem;
+    padding: 0.375rem 0.75rem;
+  }
+}
+
+@media (max-width: 1199px) {
+  .card-body {
+    padding: 1rem;
+  }
+
+  .btn {
+    font-size: 0.85rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .table td,
+  .table th {
+    padding: 0.5rem;
+  }
+}

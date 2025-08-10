@@ -1,12 +1,18 @@
 <h3 class="text-lg flex flex-row items-center justify-between">
-  <span>Talents ({{ pointsAvailable() }} points remaining)</span>
+  <div>
+    Talents
+    <br />
+    <span class="text-xs italic">
+      ({{ pointsAvailable() }} points remaining)
+    </span>
+  </div>
 
-  <button class="btn btn-warning" [swal]="respecSwal">Re-spec</button>
+  <button class="btn btn-warning btn-sm" [swal]="respecSwal">Re-spec</button>
 
   <div class="join">
     @for (type of allTalents(); track type.element) {
       <button
-        class="btn btn-neutral btn-active join-item"
+        class="btn btn-neutral btn-sm btn-active join-item"
         [class.btn-outline]="currentElement() !== type.element"
         (click)="changeElement(type.element)"
       >

@@ -4,6 +4,7 @@ import { Component } from "@angular/core";
     selector: 'app-panel-container',
     imports: [],
     templateUrl: './panel-container.component.html',
+    styleUrl: './panel-container.component.scss',
 })
 export class PanelContainerComponent {
     

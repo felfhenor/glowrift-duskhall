@@ -15,20 +15,52 @@
 
 .page-card {
   @apply overflow-hidden;
+}
 
-  /*
-  height: calc(100vh - 64px - 36px);
-
-  .card-content {
-    height: calc(100vh - 64px - 36px - 32px - 64px);
-    @apply overflow-x-hidden overflow-y-auto;
+.game-container {
+  @media (max-width: 1399px) {
+    .panel-layer {
+      padding: 1rem !important;
+    }
   }
 
-  .inner-card-content {
-    height: calc(100vh - 64px - 36px - 32px - 64px - 16px);
-    @apply overflow-x-hidden overflow-y-auto;
+  @media (max-width: 1199px) {
+    .panel-layer {
+      padding: 0.75rem !important;
+    }
   }
-  */
+
+  .panel-layer {
+    transform-origin: top center;
+
+    @media (max-width: 1599px) and (min-width: 1400px) {
+      transform: scale(0.95);
+    }
+
+    @media (max-width: 1399px) and (min-width: 1366px) {
+      transform: scale(0.9);
+    }
+
+    @media (max-width: 1365px) and (min-width: 1200px) {
+      transform: scale(0.85);
+    }
+
+    @media (max-width: 1199px) {
+      transform: scale(0.8);
+    }
+  }
+}
+
+@media (max-width: 1365px) {
+  .card-page-container {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 1199px) {
+  .card-page-container {
+    font-size: 0.9rem;
+  }
 }
 
 .has-help {
