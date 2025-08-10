@@ -48,10 +48,13 @@ export async function loadGameMapTextures(
 }> {
   const [terrainTextures, objectTextures] = await Promise.all([
     loadTexturesFromAtlas(
-      'art/spritesheets/world-terrain.png',
+      'art/spritesheets/world-terrain.webp',
       terrainAtlasData,
     ),
-    loadTexturesFromAtlas('art/spritesheets/world-object.png', objectAtlasData),
+    loadTexturesFromAtlas(
+      'art/spritesheets/world-object.webp',
+      objectAtlasData,
+    ),
   ]);
 
   return { terrainTextures, objectTextures };
