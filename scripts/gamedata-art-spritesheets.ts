@@ -5,6 +5,8 @@ const path = require('path');
 const spritesmith = require('spritesmith');
 const { Jimp } = require('jimp');
 const { maxBy, uniqBy } = require('lodash');
+const imagemin = require('imagemin');
+const webp = require('imagemin-webp');
 
 const assetsToCopy: string[] = [];
 
@@ -147,5 +149,19 @@ const copy = async () => {
   }
 };
 
+const compressImages = async () => {
+  await imagemin([`./public/art/spritesheets/*.png`], {
+    destination: `./public/art/spritesheets/`,
+    plugins: [
+      webp({
+        lossless: true,
+      }),
+    ],
+  });
+
+  console.log('Done compressing images.');
+};
+
 build();
 copy();
+compressImages();

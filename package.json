@@ -106,6 +106,8 @@
     "eslint-plugin-typescript-paths": "^0.0.33",
     "fs-extra": "^11.3.1",
     "git-describe": "^4.1.1",
+    "imagemin": "^7.0.1",
+    "imagemin-webp": "^6.1.0",
     "js-yaml": "^4.1.0",
     "jsdom": "^26.1.0",
     "ngxtension-plugin": "^5.0.0",

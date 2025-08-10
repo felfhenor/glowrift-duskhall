@@ -17,7 +17,7 @@ export class AtlasImageComponent {
   public cssClass = input<string>('');
 
   public assetUrl = computed(
-    () => `art/spritesheets/${this.spritesheet()}.png`,
+    () => `art/spritesheets/${this.spritesheet()}.webp`,
   );
   public assetPath = computed(
     () => `gameassets/${this.spritesheet()}/${this.assetName()}.png`,

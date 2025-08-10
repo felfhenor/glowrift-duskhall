@@ -66,7 +66,7 @@ export class ContentService {
 
     spritesheetsToLoad.forEach((sheet, idx) => {
       const img = new Image();
-      img.src = `art/spritesheets/${sheet}.png`;
+      img.src = `art/spritesheets/${sheet}.webp`;
       this.artSignals[idx].set(false);
       img.onload = async () => {
         artImageHash[sheet] = img;

@@ -195,7 +195,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
         '@helpers/pixi-texture-loader'
       );
       this.heroTextures = await loadTexturesFromAtlas(
-        'art/spritesheets/hero.png',
+        'art/spritesheets/hero.webp',
         artAtlases['hero'],
       );
 

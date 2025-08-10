@@ -26,7 +26,7 @@ export class AtlasAnimationComponent {
   );
 
   public assetUrl = computed(
-    () => `art/spritesheets/${this.spritesheet()}.png`,
+    () => `art/spritesheets/${this.spritesheet()}.webp`,
   );
   public assetFrames = computed(() => this.frames());
   public assetOffsetY = computed(() => this.specificAsset().y / 64);
