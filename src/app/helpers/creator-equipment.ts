@@ -10,7 +10,6 @@ import type {
   EquipmentItemContent,
   EquipmentItemId,
 } from '@interfaces';
-import { cloneDeep } from 'es-toolkit/compat';
 
 export function allItemDefinitions(): EquipmentItemContent[] {
   return [
@@ -33,11 +32,11 @@ export function pickRandomItemDefinitionBasedOnRarity(
   const chosenItemDefinition = getEntry<EquipmentItemContent>(chosenItem.id);
   if (!chosenItemDefinition) throw new Error('Could not generate an item.');
 
-  return cloneDeep(chosenItemDefinition);
+  return structuredClone(chosenItemDefinition);
 }
 
 export function createItem(def: EquipmentItemContent): EquipmentItem {
-  const defClone = cloneDeep(def);
+  const defClone = structuredClone(def);
   cleanupDroppableDefinition(defClone);
 
   const item: EquipmentItem = {

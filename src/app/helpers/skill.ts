@@ -19,7 +19,7 @@ import type { StatusEffectContent } from '@interfaces/content-statuseffect';
 import type { GameElement } from '@interfaces/element';
 import type { Hero } from '@interfaces/hero';
 import type { GameStat } from '@interfaces/stat';
-import { cloneDeep, intersection, sortBy, uniq } from 'es-toolkit/compat';
+import { intersection, sortBy, uniq } from 'es-toolkit/compat';
 
 export function getSkillEnchantLevel(skill: EquipmentSkill): number {
   return skill.enchantLevel + (skill.mods?.enchantLevel ?? 0);
@@ -106,9 +106,11 @@ export function makeSkillForHero(
   skillData: EquipmentSkill,
 ): EquipmentSkill {
   const talents = allHeroTalents(hero);
-  const skill = cloneDeep(skillData);
+  const skill = structuredClone(skillData);
 
-  const addedTechniques = cloneDeep(talentAddedTechniques(talents, skill));
+  const addedTechniques = structuredClone(
+    talentAddedTechniques(talents, skill),
+  );
 
   skill.techniques = [...skill.techniques, ...addedTechniques].map((t) => {
     t.targets += talentTargetCountBoost(talents, skill);
@@ -122,7 +124,7 @@ export function makeSkillForHero(
       );
     });
 
-    const addedStatusEffects = cloneDeep(
+    const addedStatusEffects = structuredClone(
       talentTechniqueAddedStatusEffects(talents, skill, t),
     );
 

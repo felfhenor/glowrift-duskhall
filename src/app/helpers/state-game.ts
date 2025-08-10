@@ -12,7 +12,6 @@ import {
 import { uuid } from '@helpers/rng';
 import { localStorageSignal } from '@helpers/signal';
 import { type GameId, type GameState } from '@interfaces';
-import { cloneDeep } from 'es-toolkit/compat';
 
 export function blankGameState(): GameState {
   return {
@@ -109,12 +108,12 @@ export function resetGameState(): void {
 }
 
 export function setGameState(state: GameState): void {
-  _gamestate.set(cloneDeep(state));
+  _gamestate.set(structuredClone(state));
 }
 
 export function updateGamestate(func: (state: GameState) => GameState): void {
   if (uncommittedGamestate) {
-    uncommittedGamestate = func(cloneDeep(uncommittedGamestate));
+    uncommittedGamestate = func(structuredClone(uncommittedGamestate));
     return;
   }
 
@@ -127,7 +126,7 @@ export function myGameId(): GameId {
 }
 
 export function beginGameStateCommits(): void {
-  uncommittedGamestate = cloneDeep(__backingGamestate());
+  uncommittedGamestate = structuredClone(__backingGamestate());
 }
 
 export function endGameStateCommits(): void {

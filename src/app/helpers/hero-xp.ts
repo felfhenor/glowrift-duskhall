@@ -4,7 +4,7 @@ import { randomChoice, seededrng } from '@helpers/rng';
 import { updateGamestate } from '@helpers/state-game';
 import { clearNodesTooHardForHeroes } from '@helpers/world';
 import type { Hero, StatBlock } from '@interfaces';
-import { clamp, cloneDeep } from 'es-toolkit/compat';
+import { clamp } from 'es-toolkit/compat';
 
 export function heroXpRequiredForLevelUp(level: number): number {
   return 10 * (level + 1) ** 2;
@@ -51,7 +51,7 @@ export function allHeroesGainXp(xp: number): void {
   });
 
   updateGamestate((state) => {
-    state.hero.heroes = cloneDeep(heroes);
+    state.hero.heroes = structuredClone(heroes);
     return state;
   });
 }

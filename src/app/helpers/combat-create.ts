@@ -20,7 +20,6 @@ import type {
   TalentId,
   WorldLocation,
 } from '@interfaces';
-import { cloneDeep } from 'es-toolkit/compat';
 
 export function generateCombatForLocation(location: WorldLocation): Combat {
   const heroes: Combatant[] = allHeroes().map((h) => ({
@@ -30,15 +29,15 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
 
     targettingType: h.targettingType,
 
-    baseStats: cloneDeep(h.baseStats),
+    baseStats: structuredClone(h.baseStats),
     statBoosts: getDefaultStats(),
-    totalStats: cloneDeep(h.totalStats),
+    totalStats: structuredClone(h.totalStats),
     hp: h.hp,
     level: h.level,
     sprite: h.sprite,
     frames: h.frames,
     skillIds: ['Attack' as EquipmentSkillId, ...heroEquipmentSkills(h)],
-    skillRefs: cloneDeep(
+    skillRefs: structuredClone(
       h.skills.filter(Boolean).map((s) => makeSkillForHero(h, s!)),
     ) as EquipmentSkill[],
 
@@ -69,9 +68,9 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
 
       targettingType: g.targettingType,
 
-      baseStats: cloneDeep(g.stats),
+      baseStats: structuredClone(g.stats),
       statBoosts: getDefaultStats(),
-      totalStats: cloneDeep(g.stats),
+      totalStats: structuredClone(g.stats),
       hp: g.stats.Health,
       level: location.encounterLevel,
       sprite: g.sprite,
@@ -87,7 +86,7 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
         },
         {} as Record<TalentId, number>,
       ),
-      combatStats: cloneDeep(g.combatStats),
+      combatStats: structuredClone(g.combatStats),
 
       affinity: {
         ...getDefaultAffinities(),

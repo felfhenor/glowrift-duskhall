@@ -9,7 +9,7 @@ import type {
   LocationType,
   WorldPosition,
 } from '@interfaces';
-import { cloneDeep, meanBy } from 'es-toolkit/compat';
+import { meanBy } from 'es-toolkit/compat';
 
 export function allHeroes(): Hero[] {
   return gamestate().hero.heroes;
@@ -129,7 +129,7 @@ export function allHeroesHeal(amount: number): void {
   });
 
   updateGamestate((state) => {
-    state.hero.heroes = cloneDeep(heroes);
+    state.hero.heroes = structuredClone(heroes);
     return state;
   });
 }

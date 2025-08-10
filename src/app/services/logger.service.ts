@@ -11,7 +11,6 @@ import {
   versionInfoToSemver,
   warn,
 } from '@helpers';
-import { cloneDeep } from 'es-toolkit/compat';
 import Rollbar from 'rollbar';
 
 @Injectable({
@@ -37,7 +36,7 @@ export class LoggerService {
 
   init() {
     if (environment.rollbar.accessToken) {
-      const rollbarConfig = cloneDeep(environment.rollbar);
+      const rollbarConfig = structuredClone(environment.rollbar);
 
       const realVersion = localVersion();
       if (realVersion) {

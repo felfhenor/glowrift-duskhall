@@ -6,7 +6,6 @@ import type {
   EquipmentSkillContent,
   EquipmentSkillId,
 } from '@interfaces';
-import { cloneDeep } from 'es-toolkit/compat';
 
 export function allSkillDefinitions(): EquipmentSkillContent[] {
   return getEntriesByType<EquipmentSkillContent>('skill');
@@ -24,11 +23,11 @@ export function pickRandomSkillDefinitionBasedOnRarity(
   const chosenItemDefinition = getEntry<EquipmentSkillContent>(chosenItem.id);
   if (!chosenItemDefinition) throw new Error('Could not generate a skill.');
 
-  return cloneDeep(chosenItemDefinition);
+  return structuredClone(chosenItemDefinition);
 }
 
 export function createSkill(def: EquipmentSkillContent): EquipmentSkill {
-  const defClone = cloneDeep(def);
+  const defClone = structuredClone(def);
   cleanupDroppableDefinition(defClone);
 
   return {

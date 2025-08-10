@@ -22,7 +22,7 @@ import type { DropRarity } from '@interfaces/droppable';
 import type { GameElement } from '@interfaces/element';
 import type { GameStat } from '@interfaces/stat';
 import type { BlacksmithEnchant } from '@interfaces/town';
-import { cloneDeep, sumBy } from 'es-toolkit/compat';
+import { sumBy } from 'es-toolkit/compat';
 
 export function blacksmithRerollItemTraitCost(item: EquipmentItem): number {
   if (item.traitIds.length === 0) return 1000;
@@ -313,7 +313,7 @@ export function blacksmithEnchantItem(
     const updateItem = state.inventory.items.find((i) => i.id === item.id);
     if (!updateItem) return state;
 
-    updateItem.mods = cloneDeep(item.mods);
+    updateItem.mods = structuredClone(item.mods);
 
     return state;
   });

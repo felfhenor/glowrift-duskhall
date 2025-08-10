@@ -13,7 +13,7 @@ import type {
 } from '@interfaces/content-statuseffect';
 import type { GameStat } from '@interfaces/stat';
 import type { AcademyEnchant } from '@interfaces/town';
-import { cloneDeep, uniq } from 'es-toolkit/compat';
+import { uniq } from 'es-toolkit/compat';
 
 export function academyCanEnchantSkill(item: EquipmentSkill): boolean {
   return getSkillEnchantLevel(item) < getBuildingLevel('Academy');
@@ -263,7 +263,7 @@ export function academyEnchantSkill(
     const updateSkill = state.inventory.skills.find((i) => i.id === skill.id);
     if (!updateSkill) return state;
 
-    updateSkill.mods = cloneDeep(skill.mods);
+    updateSkill.mods = structuredClone(skill.mods);
 
     return state;
   });
