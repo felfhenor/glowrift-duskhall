@@ -1,7 +1,6 @@
 import { effect, inject, Injectable, signal } from '@angular/core';
 import {
   canRunGameloop,
-  doGameloop,
   gamestate,
   getOption,
   isCatchingUp,
@@ -11,6 +10,7 @@ import {
   migrateOptionsState,
 } from '@helpers';
 import { ContentService } from '@services/content.service';
+import { GameloopWorkerService } from '@services/gameloop-worker.service';
 import { LoggerService } from '@services/logger.service';
 import { interval } from 'rxjs';
 
@@ -20,6 +20,7 @@ import { interval } from 'rxjs';
 export class GamestateService {
   private logger = inject(LoggerService);
   private contentService = inject(ContentService);
+  private workerService = inject(GameloopWorkerService);
 
   public hasLoaded = signal<boolean>(false);
 
@@ -54,10 +55,11 @@ export class GamestateService {
   private doGameloop() {
     let lastRunTime = 0;
 
-    function runLoop(numTicks: number) {
+    const runLoop = (numTicks: number) => {
       lastRunTime = Date.now();
-      doGameloop(numTicks);
-    }
+
+      this.workerService.runGameloop(numTicks);
+    };
 
     runLoop(1);
 
