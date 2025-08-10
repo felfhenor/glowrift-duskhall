@@ -46,14 +46,14 @@
     "@ng-icons/core": "^29.6.1",
     "@ng-icons/game-icons": "^29.9.0",
     "@ng-icons/tabler-icons": "^29.8.0",
-    "@ng-select/ng-select": "^14.9.0",
+    "@ng-select/ng-select": "^20.1.0",
     "@ngneat/helipopper": "^9.2.1",
     "@ngneat/hotkeys": "^4.1.0",
     "@ngneat/overview": "^6.1.2",
     "@ngxpert/hot-toast": "^3.0.2",
     "@pixi/graphics": "^7.4.3",
     "@pixi/sprite": "^7.4.3",
-    "@sweetalert2/ngx-sweetalert2": "^12.4.0",
+    "@sweetalert2/ngx-sweetalert2": "^13.0.0",
     "@sweetalert2/theme-dark": "^5.0.18",
     "@tailwindcss/postcss": "^4.1.7",
     "cardinal-direction": "^1.1.1",
@@ -65,7 +65,7 @@
     "logger-timer": "^1.0.7",
     "marked": "^15.0.0",
     "mustache": "^4.2.0",
-    "ngx-drag-drop": "^19.0.0",
+    "ngx-drag-drop": "^20.0.1",
     "ngxtension": "^5.0.0",
     "pixi.js": "^8.10.1",
     "rollbar": "^2.26.4",
@@ -127,12 +127,8 @@
       "@ngneat/overview": "6.1.2"
     },
     "@sweetalert2/ngx-sweetalert2": {
-      "@angular/common": "19",
-      "@angular/core": "19"
-    },
-    "ngx-webstorage": {
-      "@angular/common": "19",
-      "@angular/core": "19"
+      "@angular/common": "20",
+      "@angular/core": "20"
     }
   }
 }
