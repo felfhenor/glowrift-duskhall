@@ -85,4 +85,5 @@ export * from './travel-visualization';
 export * from './ui';
 export * from './version';
 export * from './world';
+export * from './world-change-notifications';
 export * from './worldgen';

@@ -1,6 +1,7 @@
 import type { ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { Component, computed, effect, inject, viewChild } from '@angular/core';
 import {
+  clearWorldNodeChanges,
   createClaimIndicatorTextures,
   createGameMapContainers,
   createNodeSprites,
@@ -8,24 +9,24 @@ import {
   createTravelingHeroIndicator,
   createTravelLine,
   gamestate,
-  generateMapGrid,
   getOption,
+  getSpriteForPosition,
   getSpriteFromNodeType,
   getTravelProgress,
+  getWorldNodeChanges,
   initializePixiApp,
   isTraveling,
   loadGameMapTextures,
   setupMapDragging,
   setupResponsiveCanvas,
   showLocationMenu,
-  windowHeightTiles,
-  windowWidthTiles,
 } from '@helpers';
 import type { MapTileData, WorldLocation } from '@interfaces';
 import type { NodeSpriteData } from '@interfaces/sprite';
 import type { LoadedTextures } from '@interfaces/texture';
 import { ContentService } from '@services/content.service';
 import { LoggerService } from '@services/logger.service';
+import { MapStateService } from '@services/map-state.service';
 import type { Application, Container, Texture } from 'pixi.js';
 
 @Component({
@@ -40,6 +41,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
 
   private contentService = inject(ContentService);
   private loggerService = inject(LoggerService);
+  private mapStateService = inject(MapStateService);
 
   private app?: Application;
   private mapContainer?: Container;
@@ -57,47 +59,47 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
   private playerIndicatorCleanup?: () => void;
   private travelVisualizationCleanups: Array<() => void> = [];
 
-  public nodeWidth = computed(() =>
-    Math.min(gamestate().world.config.width, windowWidthTiles() + 1),
-  );
+  // Use map state service instead of local computed values
+  public nodeWidth = computed(() => this.mapStateService.nodeWidth());
+  public nodeHeight = computed(() => this.mapStateService.nodeHeight());
+  public camera = computed(() => this.mapStateService.camera());
+  public map = computed(() => this.mapStateService.map());
 
-  public nodeHeight = computed(() =>
-    Math.min(gamestate().world.config.height, windowHeightTiles() + 1),
-  );
-
-  public camera = computed(() => gamestate().camera);
-
+  // Local computed properties for component functionality
   public debugMapNodePositions = computed(() =>
     getOption('debugMapNodePositions'),
   );
-
   public firstHero = computed(() => gamestate().hero.heroes[0]);
-
   public position = computed(() => gamestate().hero.position);
-
-  public map = computed(() => {
-    const camera = this.camera();
-    const width = this.nodeWidth();
-    const height = this.nodeHeight();
-    const world = gamestate().world;
-
-    return generateMapGrid(
-      camera.x,
-      camera.y,
-      width,
-      height,
-      world.config.width,
-      world.config.height,
-    );
-  });
 
   constructor() {
     effect(() => {
       const mapData = this.map();
       // debugMapNodePositions is tracked automatically by the effect
       this.debugMapNodePositions();
+
       if (this.app && this.mapContainer) {
         this.updateMap(mapData.tiles);
+      }
+    });
+
+    // Effect for surgical node updates - watch for world node changes
+    effect(() => {
+      const changes = getWorldNodeChanges();
+
+      if (changes.length > 0 && this.app && this.mapContainer) {
+        this.loggerService.debug(
+          'GameMapPixi',
+          `Processing ${changes.length} surgical node updates`,
+        );
+
+        // Process each change and update specific nodes
+        changes.forEach((change) => {
+          this.updateSingleNode(change.worldX, change.worldY, change.node);
+        });
+
+        // Clear the changes after processing
+        clearWorldNodeChanges();
       }
     });
 
@@ -105,6 +107,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     effect(() => {
       this.camera(); // Watch camera changes
       isTraveling(); // Watch travel state changes
+
       if (this.app && this.travelVisualizationContainer) {
         this.updateTravelVisualization();
       }
@@ -114,6 +117,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     effect(() => {
       this.position(); // Watch position changes
       this.camera(); // Watch camera changes for viewport calculations
+
       if (this.app && this.playerIndicatorContainer) {
         this.updatePlayerIndicators();
       }
@@ -225,6 +229,70 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
         this.createNodeSprites(x, y, nodeData, tileSprite);
       });
     });
+  }
+
+  private updateSingleNode(
+    worldX: number,
+    worldY: number,
+    updatedNode: WorldLocation,
+  ) {
+    if (!this.mapContainer) return;
+
+    const camera = this.camera();
+    const relativeX = worldX - Math.floor(camera.x);
+    const relativeY = worldY - Math.floor(camera.y);
+
+    // Check if the node is within the current viewport
+    if (
+      relativeX >= 0 &&
+      relativeX < this.nodeWidth() &&
+      relativeY >= 0 &&
+      relativeY < this.nodeHeight()
+    ) {
+      const nodeKey = `${relativeX}-${relativeY}`;
+
+      // Remove existing sprite if it exists
+      const existingSprite = this.nodeSprites[nodeKey];
+      if (existingSprite) {
+        this.loggerService.debug(
+          'GameMapPixi',
+          `Removing existing sprite for node ${worldX},${worldY}`,
+        );
+
+        // Remove and destroy all sprite components
+        if (existingSprite.terrain) {
+          this.mapContainer.removeChild(existingSprite.terrain);
+          existingSprite.terrain.destroy();
+        }
+        if (existingSprite.object) {
+          this.mapContainer.removeChild(existingSprite.object);
+          existingSprite.object.destroy();
+        }
+        if (existingSprite.claimIndicator) {
+          this.mapContainer.removeChild(existingSprite.claimIndicator);
+          existingSprite.claimIndicator.destroy();
+        }
+        if (existingSprite.debugText) {
+          this.mapContainer.removeChild(existingSprite.debugText);
+          existingSprite.debugText.destroy();
+        }
+        if (existingSprite.levelIndicator) {
+          this.mapContainer.removeChild(existingSprite.levelIndicator);
+          existingSprite.levelIndicator.destroy();
+        }
+
+        delete this.nodeSprites[nodeKey];
+      }
+
+      // Create new sprite with updated data
+      this.loggerService.debug(
+        'GameMapPixi',
+        `Creating updated sprite for node ${worldX},${worldY}`,
+      );
+      // Get the correct tile sprite for this world position
+      const tileSprite = getSpriteForPosition(worldX, worldY);
+      this.createNodeSprites(relativeX, relativeY, updatedNode, tileSprite);
+    }
   }
 
   private createNodeSprites(

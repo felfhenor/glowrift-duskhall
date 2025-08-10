@@ -13,6 +13,10 @@ import { notify } from '@helpers/notify';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { addTimerAndAction, getRegisterTick } from '@helpers/timer';
 import { distanceBetweenNodes } from '@helpers/travel';
+import {
+  notifyNodeClaimed,
+  notifyNodeUnclaimed,
+} from '@helpers/world-change-notifications';
 import { getGuardiansForLocation, getLootForLocation } from '@helpers/worldgen';
 import type {
   DropRarity,
@@ -236,6 +240,9 @@ export function claimNode(node: WorldLocation): void {
       if (updateNodeData.nodeType) {
         state.world.claimedCounts[updateNodeData.nodeType]++;
       }
+
+      // Notify about the node change for surgical map updates
+      notifyNodeClaimed(updateNodeData);
     }
 
     return state;
@@ -269,6 +276,9 @@ export function unclaimNode(node: WorldLocation): void {
       if (updateNodeData.nodeType) {
         state.world.claimedCounts[updateNodeData.nodeType]--;
       }
+
+      // Notify about the node change for surgical map updates
+      notifyNodeUnclaimed(updateNodeData);
     }
 
     return state;

@@ -1,6 +1,6 @@
 import { getSpriteForPosition } from '@helpers/sprite';
 import { getWorldNode } from '@helpers/world';
-import type { MapGridData, MapTileData } from '@interfaces/ui';
+import type { MapGridData, MapTileData } from '@interfaces';
 
 /**
  * Generates map grid data for the current camera view

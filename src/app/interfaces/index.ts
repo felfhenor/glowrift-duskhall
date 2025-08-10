@@ -27,6 +27,5 @@ export * from './texture';
 export * from './timer';
 export * from './town';
 export * from './traits';
-export * from './ui';
 export * from './world';
 export * from './worldconfig';
