@@ -60,7 +60,7 @@ export function pickRandomFestivalBasedOnRarity(): string | undefined {
 
 export function maybeStartNewFestival(): void {
   const ticksSinceLastFestival = gamestate().festival.ticksWithoutFestivalStart;
-  const adjustedTicks = Math.floor(ticksSinceLastFestival / 100);
+  const adjustedTicks = Math.floor(ticksSinceLastFestival / 1000);
   const shouldStartFestival = succeedsChance(adjustedTicks);
 
   if (shouldStartFestival) {
