@@ -2,7 +2,7 @@
   <span header>Heroes</span>
 
   <div pageactions>
-    <app-button-close (close)="closeMenu()"></app-button-close>
+    <app-button-close (click)="closeMenu()"></app-button-close>
   </div>
 
   <div class="flex flex-row h-full">
@@ -73,7 +73,7 @@
     <span header>Choose {{ equipType | titlecase }}</span>
 
     <div pageactions>
-      <app-button-close (close)="closeEquipment()"></app-button-close>
+      <app-button-close (click)="closeEquipment()"></app-button-close>
     </div>
 
     <app-inventory-grid-container
@@ -91,7 +91,7 @@
     <span header>Choose Spell</span>
 
     <div pageactions>
-      <app-button-close (close)="closeSkills()"></app-button-close>
+      <app-button-close (click)="closeSkills()"></app-button-close>
     </div>
 
     <app-inventory-grid-container
