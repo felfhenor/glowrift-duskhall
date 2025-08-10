@@ -1,4 +1,4 @@
-## 0.0.1 (2025-08-10)
+# [0.1.0](https://github.com/felfhenor/glowrift-duskhall/compare/d1caa904fc60439543b6866269c9076f4cc91ea3...v0.1.0) (2025-08-10)
 
 
 ### Bug Fixes
