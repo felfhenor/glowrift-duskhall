@@ -15,15 +15,16 @@ import {
 } from '@angular/router';
 
 import { provideHttpClient } from '@angular/common/http';
-import {
-  popperVariation,
-  provideTippyConfig,
-  tooltipVariation,
-  withContextMenuVariation,
-} from '@ngneat/helipopper';
 import { provideHotToastConfig } from '@ngxpert/hot-toast';
 
 import { provideNgIconsConfig } from '@ng-icons/core';
+import {
+  popperVariation,
+  provideTippyConfig,
+  provideTippyLoader,
+  tooltipVariation,
+  withContextMenuVariation,
+} from '@ngneat/helipopper/config';
 import { routes } from '@routes/app.routes';
 import { AnalyticsService } from '@services/analytics.service';
 import { APIService } from '@services/api.service';
@@ -72,6 +73,7 @@ export const appConfig: ApplicationConfig = {
       stacking: 'vertical',
       visibleToasts: 10,
     }),
+    provideTippyLoader(() => import('tippy.js')),
     provideTippyConfig({
       defaultVariation: 'tooltip',
       variations: {
