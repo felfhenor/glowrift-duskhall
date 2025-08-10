@@ -162,6 +162,10 @@ const compressImages = async () => {
   console.log('Done compressing images.');
 };
 
-build();
-copy();
-compressImages();
+const doBuild = async () => {
+  await build();
+  await copy();
+  await compressImages();
+};
+
+doBuild();
