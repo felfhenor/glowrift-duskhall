@@ -113,7 +113,7 @@ export function setGameState(state: GameState): void {
 
 export function updateGamestate(func: (state: GameState) => GameState): void {
   if (uncommittedGamestate) {
-    uncommittedGamestate = func(structuredClone(uncommittedGamestate));
+    uncommittedGamestate = func(uncommittedGamestate);
     return;
   }
 
