@@ -59,6 +59,7 @@ export const appConfig: ApplicationConfig = {
         provideSwal: () =>
           import('sweetalert2/dist/sweetalert2.js').then(({ default: swal }) =>
             swal.mixin({
+              theme: 'dark',
               reverseButtons: true,
               showCancelButton: true,
               focusCancel: true,
