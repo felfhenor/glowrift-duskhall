@@ -2,7 +2,7 @@ import { getFestivalExplorationTickMultiplier } from '@helpers/festival-explorat
 import { notify } from '@helpers/notify';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { locationTraitExplorationMultiplier } from '@helpers/trait-location-exploration';
-import type { WorldLocation, WorldPosition } from '@interfaces';
+import type { Hero, WorldLocation, WorldPosition } from '@interfaces';
 
 export function isTraveling() {
   return gamestate().hero.travel.ticksLeft > 0;
@@ -31,9 +31,22 @@ export function travelTimeFromCurrentLocationTo(node: WorldLocation): number {
   const travelTimeModification = Math.floor(
     baseTravelTime * travelTimeMultiplier,
   );
+
+  const heroSpeeds: number[] = [];
+
+  gamestate().hero.heroes.forEach((thisHero: Hero) => {
+    heroSpeeds.push(thisHero.totalStats.Speed);
+  });
+
+  const averageHeroSpeed =
+    heroSpeeds.reduce((totalSpeed, speed) => totalSpeed + speed, 0) /
+    heroSpeeds.length;
+
+  const heroSpeedTravelTimeReductionVar = 1 + averageHeroSpeed / 100;
+
   const totalTravelTime = baseTravelTime + travelTimeModification;
 
-  return totalTravelTime;
+  return Math.round(totalTravelTime / heroSpeedTravelTimeReductionVar);
 }
 
 export function travelToNode(node: WorldLocation): void {
