@@ -16,3 +16,59 @@
   onTick:
     - type: TakeDamage
       combatMessage: '**{{ combatant.name }}** is burning for {{ damage }} damage ({{ combatant.hp }}/{{ combatant.totalStats.Health }} HP remaining).'
+
+- id: 7c1fd40c-b787-43a3-9ab1-7f61909fae90
+  name: Scorched
+
+  type: Debuff
+  elements: [Fire]
+
+  trigger: TurnEnd
+
+  onApply:
+    - type: SendMessage
+      combatMessage: '**{{ combatant.name }}** is scorched!'
+
+    - type: AddCombatStatElement
+      element: Fire
+      combatStat: healingIgnorePercent
+      value: 50
+
+    - type: AddCombatStatElement
+      element: Earth
+      combatStat: healingIgnorePercent
+      value: 50
+
+    - type: AddCombatStatElement
+      element: Water
+      combatStat: healingIgnorePercent
+      value: 50
+
+    - type: AddCombatStatElement
+      element: Air
+      combatStat: healingIgnorePercent
+      value: 50
+
+  onUnapply:
+    - type: SendMessage
+      combatMessage: '**{{ combatant.name }}** is no longer trembling!'
+
+    - type: TakeCombatStatElement
+      element: Fire
+      combatStat: healingIgnorePercent
+      value: 50
+
+    - type: TakeCombatStatElement
+      element: Earth
+      combatStat: healingIgnorePercent
+      value: 50
+
+    - type: TakeCombatStatElement
+      element: Water
+      combatStat: healingIgnorePercent
+      value: 50
+
+    - type: TakeCombatStatElement
+      element: Air
+      combatStat: healingIgnorePercent
+      value: 50

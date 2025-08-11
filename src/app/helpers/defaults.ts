@@ -194,6 +194,7 @@ export function defaultCombatStats(): CombatantCombatStats {
     missChance: defaultAffinities(),
     debuffIgnoreChance: defaultAffinities(),
     damageReflectPercent: defaultAffinities(),
+    healingIgnorePercent: defaultAffinities(),
     reviveChance: 0,
   };
 }

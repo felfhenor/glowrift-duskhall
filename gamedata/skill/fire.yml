@@ -225,3 +225,35 @@
           duration: 10
 
       combatMessage: '**{{ combatant.name }}** cast **{{ skill.name }}** on **{{ target.name }}**.'
+
+- id: 8c55ddd0-dc84-4b1e-aa11-e7a721e35b63
+  name: Broil
+
+  sprite: '0155'
+  frames: 8
+
+  rarity: Rare
+  dropLevel: 33
+
+  usesPerCombat: 1
+
+  techniques:
+    - elements: [Fire]
+      attributes: [DamagesTarget, AllowPlink, BypassDefense]
+      targets: 1
+      targetType: Enemies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+      damageScaling:
+        Force: 3
+
+      statusEffects:
+        - statusEffectId: Burning
+          chance: 50
+          duration: 3
+
+        - statusEffectId: Scorched
+          chance: 50
+          duration: 3
+
+      combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'

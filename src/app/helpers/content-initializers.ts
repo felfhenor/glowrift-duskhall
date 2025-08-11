@@ -116,6 +116,9 @@ function ensureCombatStats(
     missChance: ensureAffinities(combatStats.missChance),
     debuffIgnoreChance: ensureAffinities(combatStats.debuffIgnoreChance),
     damageReflectPercent: ensureAffinities(combatStats.damageReflectPercent),
+    healingIgnorePercent: ensureAffinities(
+      combatStats.healingIgnorePercent ?? {},
+    ),
     reviveChance: combatStats.reviveChance ?? 0,
   };
 }

@@ -1,5 +1,6 @@
 import { combatantIsDead } from '@helpers/combat-end';
 import { combatFormatMessage, combatMessageLog } from '@helpers/combat-log';
+import { combatSkillAverageValueByElements } from '@helpers/combat-stats';
 import {
   combatApplyStatusEffectToTarget,
   combatCreateStatusEffect,
@@ -125,6 +126,14 @@ export function combatApplySkillToTarget(
         effectiveDamage,
         target.totalStats.Health - target.hp,
       );
+
+      const reduction = combatSkillAverageValueByElements(
+        target,
+        technique.elements,
+        'healingIgnorePercent',
+      );
+      effectiveDamage *= 1 - reduction;
+
       effectiveDamage = -Math.abs(effectiveDamage);
     }
 
@@ -164,9 +173,10 @@ export function combatApplySkillToTarget(
     templateData.damage = effectiveDamage;
     templateData.absdamage = Math.abs(effectiveDamage);
 
-    const damageReflectPercent = meanBy(
+    const damageReflectPercent = combatSkillAverageValueByElements(
+      target,
       technique.elements,
-      (el) => target.combatStats.damageReflectPercent[el],
+      'damageReflectPercent',
     );
     if (effectiveDamage > 0 && damageReflectPercent > 0) {
       retaliationDamage = Math.floor(

@@ -3,6 +3,7 @@ import { skillElements } from '@helpers/skill';
 import type { Combatant, CombatantCombatStats } from '@interfaces/combat';
 import type { EquipmentSkill } from '@interfaces/content-skill';
 import type { ElementBlock, GameElement } from '@interfaces/element';
+import { meanBy } from 'es-toolkit/compat';
 
 export function combatElementsSucceedsElementCombatStatChance(
   elements: GameElement[],
@@ -23,5 +24,16 @@ export function combatSkillSucceedsElementCombatStatChance(
     skillElements(skill),
     combatant,
     stat,
+  );
+}
+
+export function combatSkillAverageValueByElements(
+  combatant: Combatant,
+  elements: GameElement[],
+  stat: keyof CombatantCombatStats,
+): number {
+  return meanBy(
+    elements,
+    (el) => (combatant.combatStats[stat] as ElementBlock)[el],
   );
 }

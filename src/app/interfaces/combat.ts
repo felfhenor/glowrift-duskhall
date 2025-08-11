@@ -35,6 +35,7 @@ export type CombatantCombatStats = {
   missChance: ElementBlock;
   debuffIgnoreChance: ElementBlock;
   damageReflectPercent: ElementBlock;
+  healingIgnorePercent: ElementBlock;
   reviveChance: number;
 };
 
