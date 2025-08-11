@@ -13,7 +13,7 @@
 
   techniques:
     - elements: [Earth]
-      attributes: [DamagesTarget, AllowPlink]
+      attributes: [DamagesTarget, AllowPlink, BypassDefense]
       targets: 1
       targetType: Enemies
       targetBehaviors:
@@ -38,7 +38,7 @@
 
   techniques:
     - elements: [Earth]
-      attributes: [DamagesTarget, AllowPlink]
+      attributes: [DamagesTarget, AllowPlink, BypassDefense]
       targets: 1
       targetType: Enemies
       targetBehaviors:
@@ -63,7 +63,7 @@
 
   techniques:
     - elements: [Earth]
-      attributes: [DamagesTarget, AllowPlink]
+      attributes: [DamagesTarget, AllowPlink, BypassDefense]
       targets: 1
       targetType: Enemies
       targetBehaviors:
@@ -176,7 +176,7 @@
 
   techniques:
     - elements: [Earth]
-      attributes: [DamagesTarget, AllowPlink]
+      attributes: [DamagesTarget, AllowPlink, BypassDefense]
       targets: 1
       targetType: Enemies
       targetBehaviors:
@@ -205,7 +205,7 @@
 
   techniques:
     - elements: [Earth]
-      attributes: [DamagesTarget, AllowPlink]
+      attributes: [DamagesTarget, AllowPlink, BypassDefense]
       targets: 1
       targetType: Enemies
       targetBehaviors:
@@ -234,7 +234,7 @@
 
   techniques:
     - elements: [Earth]
-      attributes: [DamagesTarget, AllowPlink]
+      attributes: [DamagesTarget, AllowPlink, BypassDefense]
       targets: 1
       targetType: Enemies
       targetBehaviors:

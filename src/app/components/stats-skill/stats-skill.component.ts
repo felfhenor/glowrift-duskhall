@@ -95,6 +95,7 @@ export class StatsSkillComponent {
       return {
         targetType: t.targetType,
         totalTargets: baseTargets,
+        attributes: t.attributes,
         statString,
         statusString,
       };
