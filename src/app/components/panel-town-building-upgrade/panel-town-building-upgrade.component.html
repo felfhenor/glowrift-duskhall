@@ -66,6 +66,7 @@
         <button
           class="btn btn-primary btn-block"
           [class.btn-disabled]="!canUpgrade()"
+          appAnalyticsClick="Game:Town:UpgradeBuilding:{{ building() }}"
           (click)="upgrade()"
         >
           Upgrade

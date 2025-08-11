@@ -7,7 +7,13 @@
     </span>
   </div>
 
-  <button class="btn btn-warning btn-sm" [swal]="respecSwal">Re-spec</button>
+  <button
+    class="btn btn-warning btn-sm"
+    [swal]="respecSwal"
+    appAnalyticsClick="Game:Hero:Respec"
+  >
+    Re-spec
+  </button>
 
   <div class="join">
     @for (type of allTalents(); track type.element) {

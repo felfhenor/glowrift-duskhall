@@ -2,6 +2,7 @@ import type { Signal } from '@angular/core';
 import { Component, computed, input } from '@angular/core';
 import { IconElementComponent } from '@components/icon-element/icon-element.component';
 import { PanelHeroesTalentsTreeComponent } from '@components/panel-heroes-talents-tree/panel-heroes-talents-tree.component';
+import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
 import {
   allTalentIdsInTalentTree,
   getEntry,
@@ -21,6 +22,7 @@ import { intersection } from 'es-toolkit/compat';
     IconElementComponent,
     PanelHeroesTalentsTreeComponent,
     SweetAlert2Module,
+    AnalyticsClickDirective,
   ],
   templateUrl: './panel-heroes-talents.component.html',
   styleUrl: './panel-heroes-talents.component.scss',

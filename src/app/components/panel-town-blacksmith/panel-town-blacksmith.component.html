@@ -39,6 +39,9 @@
               class="btn btn-block btn-info list-col-grow"
               [disabled]="!canRerollItemTrait()"
               (click)="rerollTrait(chosen)"
+              appAnalyticsClick="Game:Town:Blacksmith:RerollTrait:{{
+                chosen.name
+              }}"
             >
               Reroll Trait
 
@@ -59,6 +62,9 @@
                 class="btn btn-block h-[60px] btn-neutral list-col-grow flex flex-col"
                 [disabled]="!path.canEnchant"
                 (click)="enchantItem(chosen, path.path)"
+                appAnalyticsClick="Game:Town:Blacksmith:Enchant:{{
+                  chosen.name
+                }}"
               >
                 {{ path.path.description }}
 

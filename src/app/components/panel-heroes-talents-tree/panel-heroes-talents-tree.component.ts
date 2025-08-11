@@ -1,6 +1,7 @@
 import type { Signal } from '@angular/core';
 import { Component, computed, input } from '@angular/core';
 import { IconTalentComponent } from '@components/icon-talent/icon-talent.component';
+import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
 import {
   canHeroBuyTalent,
   getEntry,
@@ -39,7 +40,7 @@ type TalentTreeHeroDefinition = TalentTreeContent & {
 
 @Component({
   selector: 'app-panel-heroes-talents-tree',
-  imports: [IconTalentComponent, SweetAlert2Module],
+  imports: [IconTalentComponent, SweetAlert2Module, AnalyticsClickDirective],
   templateUrl: './panel-heroes-talents-tree.component.html',
   styleUrl: './panel-heroes-talents-tree.component.scss',
 })

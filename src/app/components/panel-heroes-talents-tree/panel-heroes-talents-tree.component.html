@@ -14,6 +14,7 @@
           [class.cursor-pointer]="talent.canPurchase && !talent.isLearned"
           [class.cursor-disabled]="!talent.canPurchase"
           (click)="tryLearnTalent(learnSwal, talent)"
+          appAnalyticsClick="Game:Hero:LearnTalent:{{ talent.talentData.name }}"
         ></app-icon-talent>
 
         <swal

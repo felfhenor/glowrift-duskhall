@@ -1,16 +1,20 @@
 import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { PanelTownBuildingUpgradeComponent } from '@components/panel-town-building-upgrade/panel-town-building-upgrade.component';
+import { SelectorCurrencyComponent } from '@components/selector-currency/selector-currency.component';
 import {
   gainCurrency,
   hasCurrency,
   loseCurrency,
   notifySuccess,
+  sendDesignEvent,
   townMarketBonus,
 } from '@helpers';
-import { calculateCurrencyConversionInputAmount, calculateCurrencyConversionOutputAmount } from '@helpers/currency-conversion';
+import {
+  calculateCurrencyConversionInputAmount,
+  calculateCurrencyConversionOutputAmount,
+} from '@helpers/currency-conversion';
 import type { CurrencyContent } from '@interfaces';
-import { PanelTownBuildingUpgradeComponent } from '@components/panel-town-building-upgrade/panel-town-building-upgrade.component';
-import { SelectorCurrencyComponent } from '@components/selector-currency/selector-currency.component';
 
 @Component({
   selector: 'app-panel-town-market',
@@ -56,7 +60,11 @@ export class PanelTownMarketComponent {
 
     this.inputAmount.set(Math.floor(this.inputAmount()));
     this.outputAmount.set(
-      calculateCurrencyConversionOutputAmount(input, output, this.inputAmount())
+      calculateCurrencyConversionOutputAmount(
+        input,
+        output,
+        this.inputAmount(),
+      ),
     );
   }
 
@@ -68,7 +76,11 @@ export class PanelTownMarketComponent {
 
     this.outputAmount.set(Math.floor(this.outputAmount()));
     this.inputAmount.set(
-      calculateCurrencyConversionInputAmount(input, output, this.outputAmount())
+      calculateCurrencyConversionInputAmount(
+        input,
+        output,
+        this.outputAmount(),
+      ),
     );
   }
 
@@ -84,6 +96,15 @@ export class PanelTownMarketComponent {
 
     loseCurrency(input.name, this.inputAmount());
     gainCurrency(output.name, outputTotal);
+
+    sendDesignEvent(
+      `Game:Town:Market:TradeCurrency:${input.name}`,
+      this.inputAmount(),
+    );
+    sendDesignEvent(
+      `Game:Town:Market:GainCurrency:${output.name}`,
+      outputTotal,
+    );
 
     notifySuccess(
       `Traded ${this.inputAmount()} ${input.name} for ${outputTotal} ${output.name} (+${outputBonusPercent * 100}% bonus)!`,

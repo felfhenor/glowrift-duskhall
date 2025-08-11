@@ -2,6 +2,7 @@ import { DecimalPipe } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 import { IconItemComponent } from '@components/icon-currency/icon-currency.component';
 import { IconLocationComponent } from '@components/icon-location/icon-location.component';
+import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
 import {
   buildingMaxLevel,
   buildingUpgradeCost,
@@ -16,7 +17,12 @@ import type { GameCurrency, LocationType, TownBuilding } from '@interfaces';
 
 @Component({
   selector: 'app-panel-town-building-upgrade',
-  imports: [IconLocationComponent, IconItemComponent, DecimalPipe],
+  imports: [
+    IconLocationComponent,
+    IconItemComponent,
+    DecimalPipe,
+    AnalyticsClickDirective,
+  ],
   templateUrl: './panel-town-building-upgrade.component.html',
   styleUrl: './panel-town-building-upgrade.component.scss',
 })

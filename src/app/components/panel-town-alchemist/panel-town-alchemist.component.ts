@@ -11,6 +11,7 @@ import {
   multiSkillSalvageCurrencyGain,
   notifySuccess,
   salvageSkills,
+  sendDesignEvent,
 } from '@helpers';
 import { sortedRarityList } from '@helpers/item';
 import { gamestate } from '@helpers/state-game';
@@ -70,6 +71,10 @@ export class PanelTownAlchemistComponent {
   }
 
   breakItems() {
+    this.selectedSkills().forEach((item) =>
+      sendDesignEvent(`Game:Town:Alchemist:Break:${item.name}`),
+    );
+
     salvageSkills(this.selectedSkills());
     notifySuccess(`You salvaged ${this.selectedSkills().length} spells!`);
 

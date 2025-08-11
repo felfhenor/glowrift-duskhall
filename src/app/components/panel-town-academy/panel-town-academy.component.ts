@@ -5,6 +5,7 @@ import { InventoryGridContainerComponent } from '@components/inventory-grid-cont
 import { MarkerCurrencyInlineComponent } from '@components/marker-currency-inline/marker-currency-inline.component';
 import { PanelTownBuildingUpgradeComponent } from '@components/panel-town-building-upgrade/panel-town-building-upgrade.component';
 import { StatsSkillComponent } from '@components/stats-skill/stats-skill.component';
+import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
 import { hasCurrencies } from '@helpers/currency';
 import { getSkillById } from '@helpers/skill';
 import {
@@ -27,6 +28,7 @@ import { TeleportDirective } from '@ngneat/overview';
     StatsSkillComponent,
     TeleportDirective,
     MarkerCurrencyInlineComponent,
+    AnalyticsClickDirective,
   ],
   templateUrl: './panel-town-academy.component.html',
   styleUrl: './panel-town-academy.component.scss',

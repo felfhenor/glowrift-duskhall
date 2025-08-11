@@ -1,4 +1,5 @@
 import { skillSalvageValue } from '@helpers/action-skill';
+import { sendDesignEvent } from '@helpers/analytics';
 import { gainCurrency } from '@helpers/currency';
 import { updateHeroData } from '@helpers/hero';
 import { recalculateStats } from '@helpers/hero-stats';
@@ -16,7 +17,7 @@ export function addSkillToInventory(item: EquipmentSkill): void {
 
   updateGamestate((state) => {
     const currentSkills = [...state.inventory.skills];
-    
+
     // If we're at capacity, remove the worst existing skill first
     if (currentSkills.length >= maxSkillInventorySize()) {
       const sortedSkills = sortedRarityList(currentSkills);
@@ -26,7 +27,7 @@ export function addSkillToInventory(item: EquipmentSkill): void {
       }
       state.inventory.skills = sortedSkills;
     }
-    
+
     // Now add the new skill and sort
     state.inventory.skills.push(item);
     state.inventory.skills = sortedRarityList(state.inventory.skills);
@@ -70,6 +71,8 @@ export function equipSkill(
 
   removeSkillFromInventory(item);
   recalculateStats(hero.id);
+
+  sendDesignEvent(`Game:Hero:EquipSkill:${item.name}`);
 }
 
 export function unequipSkill(

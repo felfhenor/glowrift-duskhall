@@ -11,6 +11,7 @@ import {
   multiItemSalvageCurrencyGain,
   notifySuccess,
   salvageItems,
+  sendDesignEvent,
 } from '@helpers';
 import { sortedRarityList } from '@helpers/item';
 import { gamestate } from '@helpers/state-game';
@@ -70,6 +71,10 @@ export class PanelTownSalvagerComponent {
   }
 
   breakItems() {
+    this.selectedItems().forEach((item) =>
+      sendDesignEvent(`Game:Town:Salvager:Break:${item.name}`),
+    );
+
     salvageItems(this.selectedItems());
     notifySuccess(`You salvaged ${this.selectedItems().length} items!`);
 

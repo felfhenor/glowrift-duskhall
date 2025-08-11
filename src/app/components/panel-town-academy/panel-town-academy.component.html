@@ -37,6 +37,7 @@
                 class="btn btn-block h-[60px] btn-neutral list-col-grow flex flex-col"
                 [disabled]="!path.canEnchant"
                 (click)="enchantSkill(chosen, path.path)"
+                appAnalyticsClick="Game:Town:Academy:Enchant:{{ chosen.name }}"
               >
                 {{ path.path.description }}
 

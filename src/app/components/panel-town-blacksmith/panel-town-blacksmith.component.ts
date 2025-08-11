@@ -5,6 +5,7 @@ import { InventoryGridContainerComponent } from '@components/inventory-grid-cont
 import { MarkerCurrencyInlineComponent } from '@components/marker-currency-inline/marker-currency-inline.component';
 import { PanelTownBuildingUpgradeComponent } from '@components/panel-town-building-upgrade/panel-town-building-upgrade.component';
 import { StatsItemComponent } from '@components/stats-item/stats-item.component';
+import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
 import { hasCurrencies, hasCurrency } from '@helpers/currency';
 import { getItemById } from '@helpers/item';
 import {
@@ -29,6 +30,7 @@ import { TeleportDirective } from '@ngneat/overview';
     StatsItemComponent,
     BlankSlateComponent,
     MarkerCurrencyInlineComponent,
+    AnalyticsClickDirective,
   ],
   templateUrl: './panel-town-blacksmith.component.html',
   styleUrl: './panel-town-blacksmith.component.scss',

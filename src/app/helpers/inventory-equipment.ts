@@ -1,9 +1,10 @@
 import { itemSalvageValue } from '@helpers/action-equipment';
+import { sendDesignEvent } from '@helpers/analytics';
 import { gainCurrency } from '@helpers/currency';
-import { notifyError } from '@helpers/notify';
 import { updateHeroData } from '@helpers/hero';
 import { recalculateStats } from '@helpers/hero-stats';
 import { sortedRarityList } from '@helpers/item';
+import { notifyError } from '@helpers/notify';
 import { updateGamestate } from '@helpers/state-game';
 import type { EquipmentItem, EquipmentSlot, Hero } from '@interfaces';
 import { groupBy, sumBy } from 'es-toolkit/compat';
@@ -20,19 +21,16 @@ export function addItemToInventory(item: EquipmentItem): void {
   const lostItems: EquipmentItem[] = [];
 
   updateGamestate((state) => {
-    const itemGroups = groupBy(
-      state.inventory.items,
-      (i) => i.__type,
-    );
-    
+    const itemGroups = groupBy(state.inventory.items, (i) => i.__type);
+
     // Get the group for the new item's type
     const itemType = item.__type;
     const items = itemGroups[itemType] || [];
-    
+
     // If we're at capacity for this item type, find a non-favorited item to remove
     if (items.length >= maxItemInventorySize()) {
       const sortedItems = sortedRarityList(items);
-      
+
       // Find the worst non-favorited item
       let worstItemIndex = -1;
       for (let i = sortedItems.length - 1; i >= 0; i--) {
@@ -41,7 +39,7 @@ export function addItemToInventory(item: EquipmentItem): void {
           break;
         }
       }
-      
+
       // If no non-favorited items found, reject the new item
       if (worstItemIndex === -1) {
         // Auto-salvage the new item and show error
@@ -50,17 +48,17 @@ export function addItemToInventory(item: EquipmentItem): void {
         notifyError('Could not add item to inventory as there is no space');
         return state; // Don't add the item to inventory
       }
-      
+
       // Remove the worst non-favorited item
       const worstItem = sortedItems.splice(worstItemIndex, 1)[0];
       lostItems.push(worstItem);
       itemGroups[itemType] = sortedItems;
     }
-    
+
     // Now add the new item
     itemGroups[itemType] = itemGroups[itemType] || [];
     itemGroups[itemType].push(item);
-    
+
     // Sort all groups
     Object.keys(itemGroups).forEach((type) => {
       itemGroups[type] = sortedRarityList(itemGroups[type]);
@@ -103,6 +101,8 @@ export function equipItem(hero: Hero, item: EquipmentItem): void {
   removeItemFromInventory(item);
 
   recalculateStats(hero.id);
+
+  sendDesignEvent(`Game:Hero:EquipItem:${item.name}`);
 }
 
 export function unequipItem(hero: Hero, item: EquipmentItem): void {
