@@ -162,6 +162,8 @@
   description: Boost Speed of Swiftness given by this hero by +50%.
   sprite: '0016'
 
+  requireTalentId: Wind Walker I
+
   applyToAllSkills: true
   applyToStatusEffectIds:
     - Swiftness
