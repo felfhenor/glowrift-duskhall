@@ -5,15 +5,21 @@
 >
   <div class="card bg-base-100 shadow-xl my-4 page-card">
     <div class="card-body h-full">
-      <h1 class="card-title justify-between">
-        <ng-content select="[header]"></ng-content>
+      <h1 class="card-title flex justify-between relative">
+        <div
+          class="absolute flex justify-center w-full text-xl pointer-events-none"
+        >
+          <ng-content select="[header]"></ng-content>
+        </div>
+
+        <div></div>
 
         <div>
           <ng-content select="[pageactions]"></ng-content>
         </div>
       </h1>
 
-      <div class="card-content h-full mt-3">
+      <div class="card-content h-full">
         <ng-content></ng-content>
       </div>
     </div>

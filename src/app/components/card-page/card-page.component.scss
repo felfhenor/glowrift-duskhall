@@ -1,3 +1,5 @@
+@reference 'tailwindcss';
+
 .card-page-container {
   &.size-sub {
     position: absolute;
@@ -87,4 +89,8 @@
       overflow-y: auto;
     }
   }
+}
+
+::ng-deep .tabs.tabs-boxed {
+  @apply justify-center;
 }

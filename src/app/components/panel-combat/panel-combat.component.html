@@ -4,26 +4,26 @@
   <span header>Combat</span>
 
   <div pageactions>
+    @if (canFlee()) {
+      <button class="btn btn-warning mr-4" (click)="fleeFromCombat()">
+        Flee
+      </button>
+    }
+
     <app-button-close (click)="closeMenu()"></app-button-close>
   </div>
 
-  <div class="flex justify-between items-center">
-    <div role="tablist" class="tabs tabs-boxed">
-      @for (tab of tabs; track $index) {
-        <button
-          role="tab"
-          class="tab"
-          [class.tab-active]="currentTab === tab.link"
-          (click)="changeActiveTab(tab.link)"
-          (keydown)="changeActiveTab(tab.link)"
-        >
-          {{ tab.name }}
-        </button>
-      }
-    </div>
-
-    @if (canFlee()) {
-      <button class="btn btn-warning" (click)="fleeFromCombat()">Flee</button>
+  <div role="tablist" class="tabs tabs-boxed">
+    @for (tab of tabs; track $index) {
+      <button
+        role="tab"
+        class="tab"
+        [class.tab-active]="currentTab === tab.link"
+        (click)="changeActiveTab(tab.link)"
+        (keydown)="changeActiveTab(tab.link)"
+      >
+        {{ tab.name }}
+      </button>
     }
   </div>
 

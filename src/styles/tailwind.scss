@@ -1,8 +1,38 @@
 @plugin "daisyui" {
-  themes: light, dark --default --prefersdark, cupcake, synthwave, halloween,
-    forest, black, luxury, dracula, business, night, coffee, sunset, dim, light,
-    cupcake, bumblebee, emerald, corporate, retro, cyberpunk, valentine, garden,
-    lofi, pastel, fantasy, wireframe, cmyk, autumn, acid, lemonade, winter, nord;
+  themes:
+    light,
+    dark --default --prefersdark,
+    cupcake,
+    synthwave,
+    halloween,
+    forest,
+    black,
+    luxury,
+    dracula,
+    business,
+    night,
+    coffee,
+    sunset,
+    dim,
+    light,
+    cupcake,
+    bumblebee,
+    emerald,
+    corporate,
+    retro,
+    cyberpunk,
+    valentine,
+    garden,
+    lofi,
+    pastel,
+    fantasy,
+    wireframe,
+    cmyk,
+    autumn,
+    acid,
+    lemonade,
+    winter,
+    nord;
 }
 
 .navbar {
