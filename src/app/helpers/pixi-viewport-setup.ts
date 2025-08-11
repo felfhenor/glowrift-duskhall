@@ -22,35 +22,39 @@ export function pixiViewportCreate(config: ViewportConfig): {
     minZoom = 0.25,
   } = config;
 
-  // Create the viewport with proper screen dimensions
+  // Create the viewport with proper screen dimensions matching the canvas
   const viewport = new Viewport({
-    screenWidth: app.screen.width,
-    screenHeight: app.screen.height,
+    screenWidth: app.canvas.width,
+    screenHeight: app.canvas.height,
     worldWidth: worldWidth * tileSize,
     worldHeight: worldHeight * tileSize,
     events: app.renderer.events,
+    interaction: app.renderer.events,
   });
 
   // Add the viewport to the app stage
   app.stage.addChild(viewport);
 
-  // Enable dragging with boundaries to prevent dragging beyond world bounds
+  // Configure viewport plugins in the correct order and chain them
   viewport
-    .drag()
-    .clamp({ 
-      direction: 'all' 
-    });
-
-  // Enable zooming with mouse wheel
-  viewport
+    .drag({
+      wheel: false, // Disable wheel on drag to prevent conflicts
+      mouseButtons: 'left'
+    })
     .wheel({
       smooth: 3,
       interrupt: false,
-      center: undefined, // Center on mouse position
     })
     .clampZoom({
       minScale: minZoom,
       maxScale: maxZoom,
+    })
+    .clamp({
+      left: 0,
+      right: worldWidth * tileSize,
+      top: 0,
+      bottom: worldHeight * tileSize,
+      direction: 'all',
     });
 
   // Create containers for different layers
@@ -82,6 +86,7 @@ export function pixiViewportResponsiveSetup(
   container: HTMLElement,
 ): ResizeObserver {
   const resizeObserver = new ResizeObserver(() => {
+    // Update viewport to match container dimensions exactly
     viewport.resize(container.clientWidth, container.clientHeight);
   });
 
