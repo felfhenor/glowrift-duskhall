@@ -143,9 +143,12 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
   }
 
   private async initPixi() {
-    this.app = await pixiAppInitialize(this.pixiContainer()?.nativeElement, {
-      width: this.pixiContainer()?.nativeElement.clientWidth,
-      height: this.pixiContainer()?.nativeElement.clientHeight,
+    const container = this.pixiContainer()?.nativeElement;
+    if (!container) return;
+
+    this.app = await pixiAppInitialize(container, {
+      width: container.clientWidth,
+      height: container.clientHeight,
       backgroundAlpha: 0,
       antialias: false,
     });
@@ -170,7 +173,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
 
     this.resizeObserver = pixiViewportResponsiveSetup(
       this.viewport,
-      this.pixiContainer()?.nativeElement,
+      container,
     );
   }
 

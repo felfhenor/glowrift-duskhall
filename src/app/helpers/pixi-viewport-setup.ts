@@ -22,7 +22,7 @@ export function pixiViewportCreate(config: ViewportConfig): {
     minZoom = 0.25,
   } = config;
 
-  // Create the viewport
+  // Create the viewport with proper screen dimensions
   const viewport = new Viewport({
     screenWidth: app.screen.width,
     screenHeight: app.screen.height,
@@ -34,14 +34,19 @@ export function pixiViewportCreate(config: ViewportConfig): {
   // Add the viewport to the app stage
   app.stage.addChild(viewport);
 
-  // Enable dragging
-  viewport.drag();
+  // Enable dragging with boundaries to prevent dragging beyond world bounds
+  viewport
+    .drag()
+    .clamp({ 
+      direction: 'all' 
+    });
 
   // Enable zooming with mouse wheel
   viewport
     .wheel({
       smooth: 3,
       interrupt: false,
+      center: undefined, // Center on mouse position
     })
     .clampZoom({
       minScale: minZoom,
