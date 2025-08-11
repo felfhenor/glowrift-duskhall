@@ -4,6 +4,7 @@ import {
   mergeCurrencyClaims,
 } from '@helpers/currency';
 import { getDefaultWorldNode } from '@helpers/defaults';
+import { updateDiscordStatus } from '@helpers/discord';
 import {
   gainDroppableItem,
   makeDroppableIntoRealItem,
@@ -247,6 +248,8 @@ export function claimNode(node: WorldLocation): void {
 
     return state;
   });
+
+  updateDiscordStatus();
 }
 
 export function unclaimNode(node: WorldLocation): void {
@@ -283,6 +286,8 @@ export function unclaimNode(node: WorldLocation): void {
 
     return state;
   });
+
+  updateDiscordStatus();
 }
 
 export function getClaimedNodeTypeCount(type: LocationType): number {

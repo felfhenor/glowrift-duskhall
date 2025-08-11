@@ -1,6 +1,8 @@
+import type { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from '@components/navbar/navbar.component';
+import { updateDiscordStatus } from '@helpers/discord';
 
 @Component({
   selector: 'app-game',
@@ -8,4 +10,8 @@ import { NavbarComponent } from '@components/navbar/navbar.component';
   templateUrl: './game.component.html',
   styleUrl: './game.component.scss',
 })
-export class GameComponent {}
+export class GameComponent implements OnInit {
+  ngOnInit() {
+    updateDiscordStatus();
+  }
+}

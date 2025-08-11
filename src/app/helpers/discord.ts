@@ -1,4 +1,6 @@
+import { gamestate } from '@helpers/state-game';
 import type { DiscordPresenceOpts } from '@interfaces';
+import { sum } from 'es-toolkit/compat';
 
 export function isInElectron() {
   return navigator.userAgent.toLowerCase().includes(' electron/');
@@ -15,4 +17,19 @@ export function setDiscordStatus(status: DiscordPresenceOpts) {
     ...status,
     details: discordMainStatus || status.details,
   };
+}
+
+export function updateDiscordStatus() {
+  if (!isInElectron()) return;
+
+  const { nodeCounts, claimedCounts } = gamestate().world;
+
+  const totalNodes = sum(Object.values(nodeCounts));
+  const totalClaimed = sum(Object.values(claimedCounts));
+  const percent = Math.floor((totalClaimed / totalNodes) * 100);
+
+  setDiscordStatus({
+    state: 'In game',
+    details: `Conquering the world (${totalClaimed}/${totalNodes} | ${percent}%)`,
+  });
 }
