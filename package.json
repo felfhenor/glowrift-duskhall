@@ -96,7 +96,7 @@
     "autoprefixer": "^10.4.21",
     "chokidar": "4.0.3",
     "concurrently": "^9.2.0",
-    "conventional-changelog": "^7.1.1",
+    "conventional-changelog": "^6.0.0",
     "conventional-changelog-cli": "^5.0.0",
     "cpy-cli": "^5.0.0",
     "daisyui": "^5.0.50",
