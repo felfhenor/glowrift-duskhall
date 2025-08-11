@@ -66,7 +66,7 @@ export function getCombatantBaseStatDamageForTechnique(
 
 export function getDeadlockPreventionDamageMultiplier(rounds: number): number {
   const multiplierTiers = Math.floor(rounds / 25);
-  return 1 + (0.25 * multiplierTiers);
+  return 1 + 0.25 * multiplierTiers;
 }
 
 export function combatantTakeDamage(combatant: Combatant, damage: number) {
@@ -112,7 +112,7 @@ export function applySkillToTarget(
         ? baseTargetDefense
         : meanBy(
             technique.elements,
-            (el) => baseTargetDefense * target.resistance[el],
+            (el) => baseTargetDefense * (1 - target.resistance[el]),
           );
 
     let effectiveDamage = baseDamage;
@@ -147,10 +147,13 @@ export function applySkillToTarget(
     // Apply deadlock prevention damage multiplier (only for damage, not healing)
     let deadlockPreventionMultiplier = 1;
     if (effectiveDamage > 0) {
-      deadlockPreventionMultiplier = getDeadlockPreventionDamageMultiplier(combat.rounds);
+      deadlockPreventionMultiplier = getDeadlockPreventionDamageMultiplier(
+        combat.rounds,
+      );
     }
 
-    effectiveDamage *= damageMultiplierFromFestivals * deadlockPreventionMultiplier;
+    effectiveDamage *=
+      damageMultiplierFromFestivals * deadlockPreventionMultiplier;
     effectiveDamage = Math.floor(effectiveDamage);
 
     combatantTakeDamage(target, effectiveDamage);
