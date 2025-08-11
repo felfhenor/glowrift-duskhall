@@ -1,18 +1,15 @@
-import { getFestivalExplorationTickMultiplier } from '@helpers/festival-exploration';
+import { exploringUpdateGlobalStatusText } from '@helpers/explore';
+import { festivalExplorationTickMultiplier } from '@helpers/festival-exploration';
+import { error } from '@helpers/logging';
+import { distanceBetweenNodes } from '@helpers/math';
 import { notify } from '@helpers/notify';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { locationTraitExplorationMultiplier } from '@helpers/trait-location-exploration';
+import { worldGetNearestTown } from '@helpers/world';
 import type { WorldLocation, WorldPosition } from '@interfaces';
 
 export function isTraveling() {
   return gamestate().hero.travel.ticksLeft > 0;
-}
-
-export function distanceBetweenNodes(
-  a: WorldPosition,
-  b: WorldPosition,
-): number {
-  return Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2);
 }
 
 export function travelTimeBetweenNodes(
@@ -25,7 +22,7 @@ export function travelTimeBetweenNodes(
 export function travelTimeFromCurrentLocationTo(node: WorldLocation): number {
   const currentLocation = gamestate().hero.position;
   const travelTimeMultiplier =
-    getFestivalExplorationTickMultiplier() +
+    festivalExplorationTickMultiplier() +
     locationTraitExplorationMultiplier(node);
   const baseTravelTime = travelTimeBetweenNodes(currentLocation, node);
   const travelTimeModification = Math.floor(
@@ -50,11 +47,24 @@ export function travelToNode(node: WorldLocation): void {
   });
 }
 
-export function isAtNode(node: WorldLocation): boolean {
+export function travelIsAtNode(node: WorldLocation): boolean {
   const currentLocation = gamestate().hero.position;
   return currentLocation.nodeId === node.id;
 }
 
 export function isTravelingToNode(node: WorldLocation): boolean {
   return gamestate().hero.travel.nodeId === node.id;
+}
+
+export function travelHome(): void {
+  const currentPosition = gamestate().hero.position;
+  const nearestTown = worldGetNearestTown(currentPosition);
+
+  if (!nearestTown) {
+    error('No towns found in the world.');
+    return;
+  }
+
+  exploringUpdateGlobalStatusText('Returning to nearest town...');
+  travelToNode(nearestTown);
 }

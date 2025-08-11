@@ -1,7 +1,7 @@
 import { getEntry } from '@helpers/content';
-import { getDefaultCombatStats } from '@helpers/defaults';
-import { getDroppableEquippableBaseId } from '@helpers/droppable';
-import { updateHeroData } from '@helpers/hero';
+import { defaultCombatStats } from '@helpers/defaults';
+import { droppableGetBaseId } from '@helpers/droppable';
+import { heroUpdateData } from '@helpers/hero';
 import type { CombatantCombatStats } from '@interfaces/combat';
 import type {
   EquipmentSkill,
@@ -16,20 +16,20 @@ import type { Hero } from '@interfaces/hero';
 import type { GameStat, StatBlock } from '@interfaces/stat';
 import { intersection, isNumber, isObject, sum, uniq } from 'es-toolkit/compat';
 
-export function allHeroTalents(hero: Hero): TalentContent[] {
+export function talentsForHero(hero: Hero): TalentContent[] {
   return Object.entries(hero.talents)
     .filter(([, level]) => level > 0)
     .map(([talentId]) => getEntry<TalentContent>(talentId))
     .filter((talent): talent is TalentContent => !!talent);
 }
 
-export function respecHeroTalents(hero: Hero): void {
-  updateHeroData(hero.id, {
+export function talentRespec(hero: Hero): void {
+  heroUpdateData(hero.id, {
     talents: {},
   });
 }
 
-export function allTalentIdsInTalentTree(
+export function talentIdsInTalentTree(
   talentTree: TalentTreeContent,
 ): TalentId[] {
   return talentTree.talents.flatMap((m) =>
@@ -37,10 +37,10 @@ export function allTalentIdsInTalentTree(
   );
 }
 
-export function combineTalentsIntoCombatStats(
+export function talentCombineIntoCombatStats(
   talents: TalentContent[],
 ): CombatantCombatStats {
-  const defaults = getDefaultCombatStats();
+  const defaults = defaultCombatStats();
 
   talents.forEach((tal) => {
     Object.keys(tal.combatStats).forEach((keyRef) => {
@@ -70,7 +70,7 @@ export function talentsForSkill(
   talents: TalentContent[],
   skill: EquipmentSkill,
 ): TalentContent[] {
-  const skillContentId = getDroppableEquippableBaseId(skill);
+  const skillContentId = droppableGetBaseId(skill);
   const skillElements = uniq(skill.techniques.flatMap((t) => t.elements));
   const skillAttributes = uniq(skill.techniques.flatMap((t) => t.attributes));
   const skillStatusEffects = uniq(

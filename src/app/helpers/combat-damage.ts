@@ -1,19 +1,19 @@
-import { isDead } from '@helpers/combat-end';
-import { formatCombatMessage, logCombatMessage } from '@helpers/combat-log';
+import { combatantIsDead } from '@helpers/combat-end';
+import { combatFormatMessage, combatMessageLog } from '@helpers/combat-log';
 import {
-  applyStatusEffectToTarget,
-  createStatusEffect,
+  combatApplyStatusEffectToTarget,
+  combatCreateStatusEffect,
 } from '@helpers/combat-statuseffects';
 import { getEntry } from '@helpers/content';
 import {
-  getCombatIncomingAttributeMultiplier,
-  getCombatOutgoingAttributeMultiplier,
+  festivalGetCombatIncomingAttributeMultiplier,
+  festivalGetCombatOutgoingAttributeMultiplier,
 } from '@helpers/festival-combat';
-import { succeedsChance } from '@helpers/rng';
+import { rngSucceedsChance } from '@helpers/rng';
 import {
-  getSkillTechniqueDamageScalingStat,
-  getSkillTechniqueStatusEffectChance,
-  getSkillTechniqueStatusEffectDuration,
+  skillTechniqueDamageScalingStat,
+  skillTechniqueStatusEffectChance,
+  skillTechniqueStatusEffectDuration,
 } from '@helpers/skill';
 import type {
   Combat,
@@ -27,14 +27,14 @@ import type {
 } from '@interfaces';
 import { clamp, meanBy, sum, sumBy } from 'es-toolkit/compat';
 
-export function techniqueHasAttribute(
+function techniqueHasAttribute(
   technique: EquipmentSkillContentTechnique,
   attribute: EquipmentSkillAttribute,
 ): boolean {
   return technique.attributes?.includes(attribute);
 }
 
-export function getCombatantBaseStatDamageForTechnique(
+function getCombatantBaseStatDamageForTechnique(
   combat: Combat,
   combatant: Combatant,
   skill: EquipmentSkill,
@@ -44,7 +44,7 @@ export function getCombatantBaseStatDamageForTechnique(
   const baseCheckMultiplier = technique.damageScaling[stat] ?? 0;
   if (baseCheckMultiplier === 0) return 0;
 
-  const baseMultiplier = getSkillTechniqueDamageScalingStat(
+  const baseMultiplier = skillTechniqueDamageScalingStat(
     skill,
     technique,
     stat,
@@ -64,16 +64,19 @@ export function getCombatantBaseStatDamageForTechnique(
   return baseStatWithoutMultiplier + multipliedStat;
 }
 
-export function getDeadlockPreventionDamageMultiplier(rounds: number): number {
+function getDeadlockPreventionDamageMultiplier(rounds: number): number {
   const multiplierTiers = Math.floor(rounds / 25);
   return 1 + 0.25 * multiplierTiers;
 }
 
-export function combatantTakeDamage(combatant: Combatant, damage: number) {
+export function combatCombatantTakeDamage(
+  combatant: Combatant,
+  damage: number,
+) {
   combatant.hp = clamp(combatant.hp - damage, 0, combatant.totalStats.Health);
 }
 
-export function applySkillToTarget(
+export function combatApplySkillToTarget(
   combat: Combat,
   combatant: Combatant,
   target: Combatant,
@@ -136,12 +139,12 @@ export function applySkillToTarget(
     let damageMultiplierFromFestivals = 1;
     if (combatant.isEnemy && !target.isEnemy && effectiveDamage > 0) {
       damageMultiplierFromFestivals =
-        1 + getCombatIncomingAttributeMultiplier('damage');
+        1 + festivalGetCombatIncomingAttributeMultiplier('damage');
     }
 
     if (!combatant.isEnemy && target.isEnemy && effectiveDamage > 0) {
       damageMultiplierFromFestivals =
-        1 + getCombatOutgoingAttributeMultiplier('damage');
+        1 + festivalGetCombatOutgoingAttributeMultiplier('damage');
     }
 
     // Apply deadlock prevention damage multiplier (only for damage, not healing)
@@ -156,7 +159,7 @@ export function applySkillToTarget(
       damageMultiplierFromFestivals * deadlockPreventionMultiplier;
     effectiveDamage = Math.floor(effectiveDamage);
 
-    combatantTakeDamage(target, effectiveDamage);
+    combatCombatantTakeDamage(target, effectiveDamage);
 
     templateData.damage = effectiveDamage;
     templateData.absdamage = Math.abs(effectiveDamage);
@@ -173,14 +176,14 @@ export function applySkillToTarget(
   }
 
   if (technique.combatMessage) {
-    const message = formatCombatMessage(technique.combatMessage, templateData);
-    logCombatMessage(combat, message, combatant);
+    const message = combatFormatMessage(technique.combatMessage, templateData);
+    combatMessageLog(combat, message, combatant);
   }
 
   if (retaliationDamage > 0) {
-    combatantTakeDamage(combatant, retaliationDamage);
+    combatCombatantTakeDamage(combatant, retaliationDamage);
 
-    logCombatMessage(
+    combatMessageLog(
       combat,
       `**${combatant.name}** took ${retaliationDamage} damage in retaliation (${combatant.hp}/${combatant.totalStats.Health} HP remaining)!`,
       combatant,
@@ -191,26 +194,26 @@ export function applySkillToTarget(
     const effectContent = getEntry<StatusEffectContent>(effData.statusEffectId);
     if (!effectContent) return;
 
-    const totalChance = getSkillTechniqueStatusEffectChance(skill, effData);
+    const totalChance = skillTechniqueStatusEffectChance(skill, effData);
 
-    if (!succeedsChance(totalChance)) return;
+    if (!rngSucceedsChance(totalChance)) return;
 
-    const statusEffect = createStatusEffect(
+    const statusEffect = combatCreateStatusEffect(
       effectContent,
       skill,
       combatant,
       target,
       {
-        duration: getSkillTechniqueStatusEffectDuration(skill, effData),
+        duration: skillTechniqueStatusEffectDuration(skill, effData),
       },
       capturedCreatorStats,
     );
 
-    applyStatusEffectToTarget(combat, target, statusEffect);
+    combatApplyStatusEffectToTarget(combat, target, statusEffect);
   });
 
-  if (isDead(target)) {
-    logCombatMessage(
+  if (combatantIsDead(target)) {
+    combatMessageLog(
       combat,
       `**${target.name}** has been defeated!`,
       combatant,

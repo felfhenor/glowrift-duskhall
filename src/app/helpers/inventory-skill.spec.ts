@@ -1,18 +1,21 @@
-import { addSkillToInventory, maxSkillInventorySize } from '@helpers/inventory-skill';
+import {
+  skillInventoryAdd,
+  skillInventoryMaxSize,
+} from '@helpers/inventory-skill';
 import type { EquipmentSkill, GameState } from '@interfaces';
-import { describe, expect, it, beforeEach, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock dependencies
 vi.mock('@helpers/rng', () => ({
-  uuid: vi.fn(() => 'mock-uuid'),
+  rngUuid: vi.fn(() => 'mock-uuid'),
 }));
 
 vi.mock('@helpers/currency', () => ({
-  gainCurrency: vi.fn(),
+  currencyGain: vi.fn(),
 }));
 
 vi.mock('@helpers/action-skill', () => ({
-  skillSalvageValue: vi.fn(() => 10),
+  actionSkillSalvageValue: vi.fn(() => 10),
 }));
 
 // Mock state management
@@ -42,7 +45,13 @@ describe('Inventory Skill Management', () => {
       id: `skill-${rarity}-${dropLevel}-${Math.random()}`,
       name: `Test ${rarity} Skill`,
       __type: 'skill',
-      rarity: rarity as 'Common' | 'Uncommon' | 'Rare' | 'Mystical' | 'Legendary' | 'Unique',
+      rarity: rarity as
+        | 'Common'
+        | 'Uncommon'
+        | 'Rare'
+        | 'Mystical'
+        | 'Legendary'
+        | 'Unique',
       dropLevel,
       sprite: '',
       baseStats: {},
@@ -60,8 +69,8 @@ describe('Inventory Skill Management', () => {
   describe('addSkillToInventory when inventory has space', () => {
     it('should add skill to empty inventory', () => {
       const skill = createTestSkill('Common', 1);
-      addSkillToInventory(skill);
-      
+      skillInventoryAdd(skill);
+
       const inventory = mockGameState.inventory.skills;
       expect(inventory).toHaveLength(1);
       expect(inventory[0].id).toBe(skill.id);
@@ -70,59 +79,63 @@ describe('Inventory Skill Management', () => {
     it('should add multiple skills to inventory', () => {
       const skill1 = createTestSkill('Common', 1);
       const skill2 = createTestSkill('Rare', 2);
-      
-      addSkillToInventory(skill1);
-      addSkillToInventory(skill2);
-      
+
+      skillInventoryAdd(skill1);
+      skillInventoryAdd(skill2);
+
       const inventory = mockGameState.inventory.skills;
       expect(inventory).toHaveLength(2);
-      expect(inventory.map(s => s.rarity)).toEqual(['Rare', 'Common']); // Sorted by rarity
+      expect(inventory.map((s) => s.rarity)).toEqual(['Rare', 'Common']); // Sorted by rarity
     });
   });
 
   describe('addSkillToInventory when inventory is full', () => {
     beforeEach(() => {
       // Fill inventory to capacity
-      const maxSize = maxSkillInventorySize();
+      const maxSize = skillInventoryMaxSize();
       for (let i = 0; i < maxSize; i++) {
         const skill = createTestSkill('Common', 1);
-        addSkillToInventory(skill);
+        skillInventoryAdd(skill);
       }
     });
 
     it('should have exactly max skills after filling', () => {
       const inventory = mockGameState.inventory.skills;
-      expect(inventory).toHaveLength(maxSkillInventorySize());
+      expect(inventory).toHaveLength(skillInventoryMaxSize());
     });
 
     it('should keep new skill and remove worst existing skill when new skill is better', () => {
       const newBetterSkill = createTestSkill('Legendary', 10);
-      
-      addSkillToInventory(newBetterSkill);
-      
+
+      skillInventoryAdd(newBetterSkill);
+
       const finalInventory = mockGameState.inventory.skills;
-      expect(finalInventory).toHaveLength(maxSkillInventorySize());
-      expect(finalInventory.some(s => s.id === newBetterSkill.id)).toBe(true);
-      
+      expect(finalInventory).toHaveLength(skillInventoryMaxSize());
+      expect(finalInventory.some((s) => s.id === newBetterSkill.id)).toBe(true);
+
       // The worst skill should be removed
-      expect(finalInventory.filter(s => s.id !== newBetterSkill.id)).toHaveLength(maxSkillInventorySize() - 1);
+      expect(
+        finalInventory.filter((s) => s.id !== newBetterSkill.id),
+      ).toHaveLength(skillInventoryMaxSize() - 1);
     });
 
     it('should keep new skill and remove worst existing skill even when new skill is worse [CURRENT BUG]', () => {
       const initialInventory = [...mockGameState.inventory.skills];
       const worstExistingSkill = initialInventory[initialInventory.length - 1];
       const newWorseSkill = createTestSkill('Common', 0); // Worse than existing skills
-      
-      addSkillToInventory(newWorseSkill);
-      
+
+      skillInventoryAdd(newWorseSkill);
+
       const finalInventory = mockGameState.inventory.skills;
-      expect(finalInventory).toHaveLength(maxSkillInventorySize());
-      
+      expect(finalInventory).toHaveLength(skillInventoryMaxSize());
+
       // The new skill should be kept (this is the bug we're fixing)
-      expect(finalInventory.some(s => s.id === newWorseSkill.id)).toBe(true);
-      
+      expect(finalInventory.some((s) => s.id === newWorseSkill.id)).toBe(true);
+
       // The previously worst skill should be removed
-      expect(finalInventory.some(s => s.id === worstExistingSkill.id)).toBe(false);
+      expect(finalInventory.some((s) => s.id === worstExistingSkill.id)).toBe(
+        false,
+      );
     });
   });
 });

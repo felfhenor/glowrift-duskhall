@@ -1,8 +1,15 @@
 import type { OnInit } from '@angular/core';
-import { Component, computed, effect, input, model, output } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  input,
+  model,
+  output,
+} from '@angular/core';
 import { InventoryGridItemComponent } from '@components/inventory-grid-item/inventory-grid-item.component';
 import { InventoryGridSkillComponent } from '@components/inventory-grid-skill/inventory-grid-skill.component';
-import { sortedRarityList } from '@helpers/item';
+import { droppableSortedRarityList } from '@helpers/droppable';
 import { gamestate } from '@helpers/state-game';
 import type {
   EquipmentItem,
@@ -93,7 +100,7 @@ export class InventoryGridContainerComponent implements OnInit {
   }
 
   public items = computed(() =>
-    sortedRarityList<EquipmentItem>(
+    droppableSortedRarityList<EquipmentItem>(
       gamestate().inventory.items.filter(
         (i: EquipmentItem) => i.__type === this.currentItemType(),
       ),
@@ -101,7 +108,7 @@ export class InventoryGridContainerComponent implements OnInit {
   );
 
   public skills = computed(() =>
-    sortedRarityList<EquipmentSkill>(gamestate().inventory.skills),
+    droppableSortedRarityList<EquipmentSkill>(gamestate().inventory.skills),
   );
 
   constructor() {
@@ -109,9 +116,9 @@ export class InventoryGridContainerComponent implements OnInit {
     effect(() => {
       const visibleTypes = this.visibleItemTypes();
       const currentType = this.currentItemType();
-      
+
       // If current type is not in the visible types, reset to first visible type
-      if (currentType && !visibleTypes.some(vt => vt.type === currentType)) {
+      if (currentType && !visibleTypes.some((vt) => vt.type === currentType)) {
         this.currentItemType.set(visibleTypes[0]?.type);
       }
     });

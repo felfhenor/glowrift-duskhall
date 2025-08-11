@@ -1,27 +1,20 @@
 import {
-  calculateCameraBounds,
-  processCameraDrag,
-  updateCameraPosition,
+  cameraCalculateBounds,
+  cameraPositionUpdate,
+  cameraProcessDrag,
 } from '@helpers/camera-controller';
 import { gamestate } from '@helpers/index';
-import { resetContainerPositions } from '@helpers/pixi-app-setup';
+import { pixiGameMapContainersPositionReset } from '@helpers/pixi-app-setup';
 import type { DragState } from '@interfaces/camera';
-import type { Application, Container, FederatedPointerEvent } from 'pixi.js';
-
-export interface DragHandlerConfig {
-  app: Application;
-  containers: Container[];
-  viewportWidth: number;
-  viewportHeight: number;
-  tileSize?: number;
-}
+import type { DragHandlerConfig } from '@interfaces/pixi-config';
+import type { FederatedPointerEvent } from 'pixi.js';
 
 /**
  * Sets up mouse dragging for camera movement
  * @param config Drag handler configuration
  * @returns Drag state object
  */
-export function setupMapDragging(config: DragHandlerConfig): DragState {
+export function mapDragSetup(config: DragHandlerConfig): DragState {
   const {
     app,
     containers,
@@ -58,28 +51,28 @@ export function setupMapDragging(config: DragHandlerConfig): DragState {
 
     const currentCamera = gamestate().camera;
     const world = gamestate().world;
-    const bounds = calculateCameraBounds(
+    const bounds = cameraCalculateBounds(
       world.config.width,
       world.config.height,
       viewportWidth,
       viewportHeight,
     );
 
-    const result = processCameraDrag(
+    const result = cameraProcessDrag(
       dragState.accumulatedDrag,
       currentCamera,
       bounds,
       tileSize,
     );
 
-    updateCameraPosition(result.newCamera);
+    cameraPositionUpdate(result.newCamera);
     dragState.accumulatedDrag = result.remainingDrag;
     dragState.lastPointerPosition = currentPosition;
   });
 
   const handlePointerEnd = () => {
     dragState.isDragging = false;
-    resetContainerPositions(...containers);
+    pixiGameMapContainersPositionReset(...containers);
     app.stage.cursor = 'grab';
   };
 

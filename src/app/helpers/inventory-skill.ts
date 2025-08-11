@@ -1,26 +1,30 @@
-import { skillSalvageValue } from '@helpers/action-skill';
-import { sendDesignEvent } from '@helpers/analytics';
-import { gainCurrency } from '@helpers/currency';
-import { updateHeroData } from '@helpers/hero';
-import { recalculateStats } from '@helpers/hero-stats';
-import { sortedRarityList } from '@helpers/item';
+import { actionSkillSalvageValue } from '@helpers/action-skill';
+import { analyticsSendDesignEvent } from '@helpers/analytics';
+import { currencyGain } from '@helpers/currency';
+import { droppableSortedRarityList } from '@helpers/droppable';
+import { heroUpdateData } from '@helpers/hero';
+import { heroRecalculateStats } from '@helpers/hero-stats';
 import { updateGamestate } from '@helpers/state-game';
 import type { EquipmentSkill, Hero } from '@interfaces';
 import { sumBy } from 'es-toolkit/compat';
 
-export function maxSkillInventorySize(): number {
+export function skillInventoryMaxSize(): number {
   return 100;
 }
 
-export function addSkillToInventory(item: EquipmentSkill): void {
+export function skillHeroMax(): number {
+  return 3;
+}
+
+export function skillInventoryAdd(item: EquipmentSkill): void {
   const lostSkills: EquipmentSkill[] = [];
 
   updateGamestate((state) => {
     const currentSkills = [...state.inventory.skills];
 
     // If we're at capacity, remove the worst existing skill first
-    if (currentSkills.length >= maxSkillInventorySize()) {
-      const sortedSkills = sortedRarityList(currentSkills);
+    if (currentSkills.length >= skillInventoryMaxSize()) {
+      const sortedSkills = droppableSortedRarityList(currentSkills);
       const worstSkill = sortedSkills.pop();
       if (worstSkill) {
         lostSkills.push(worstSkill);
@@ -30,16 +34,16 @@ export function addSkillToInventory(item: EquipmentSkill): void {
 
     // Now add the new skill and sort
     state.inventory.skills.push(item);
-    state.inventory.skills = sortedRarityList(state.inventory.skills);
+    state.inventory.skills = droppableSortedRarityList(state.inventory.skills);
 
     return state;
   });
 
-  const value = sumBy(lostSkills, (s) => skillSalvageValue(s));
-  gainCurrency('Mana', value);
+  const value = sumBy(lostSkills, (s) => actionSkillSalvageValue(s));
+  currencyGain('Mana', value);
 }
 
-export function removeSkillFromInventory(item: EquipmentSkill): void {
+export function skillInventoryRemove(item: EquipmentSkill): void {
   updateGamestate((state) => {
     state.inventory.skills = state.inventory.skills.filter(
       (i) => i.id !== item.id,
@@ -48,11 +52,7 @@ export function removeSkillFromInventory(item: EquipmentSkill): void {
   });
 }
 
-export function maxSkillsForHero(): number {
-  return 3;
-}
-
-export function equipSkill(
+export function skillEquip(
   hero: Hero,
   item: EquipmentSkill,
   slot: number,
@@ -60,22 +60,22 @@ export function equipSkill(
   const heroSkills = hero.skills;
   const existingItem = heroSkills[slot];
   if (existingItem) {
-    unequipSkill(hero, existingItem, slot);
+    skillUnequip(hero, existingItem, slot);
   }
 
   hero.skills[slot] = item;
 
-  updateHeroData(hero.id, {
+  heroUpdateData(hero.id, {
     skills: heroSkills,
   });
 
-  removeSkillFromInventory(item);
-  recalculateStats(hero.id);
+  skillInventoryRemove(item);
+  heroRecalculateStats(hero.id);
 
-  sendDesignEvent(`Game:Hero:EquipSkill:${item.name}`);
+  analyticsSendDesignEvent(`Game:Hero:EquipSkill:${item.name}`);
 }
 
-export function unequipSkill(
+export function skillUnequip(
   hero: Hero,
   item: EquipmentSkill,
   slot: number,
@@ -83,10 +83,10 @@ export function unequipSkill(
   const heroSkills = hero.skills;
   heroSkills[slot] = undefined;
 
-  updateHeroData(hero.id, {
+  heroUpdateData(hero.id, {
     skills: heroSkills,
   });
 
-  addSkillToInventory(item);
-  recalculateStats(hero.id);
+  skillInventoryAdd(item);
+  heroRecalculateStats(hero.id);
 }

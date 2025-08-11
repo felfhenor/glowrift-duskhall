@@ -1,6 +1,11 @@
+import { favoriteToggleItem, favoriteToggleSkill } from '@helpers/favorites';
+import type {
+  EquipmentItem,
+  EquipmentItemId,
+  EquipmentSkill,
+  EquipmentSkillId,
+} from '@interfaces';
 import { describe, expect, it } from 'vitest';
-import { toggleItemFavorite, toggleSkillFavorite } from '@helpers/favorites';
-import type { EquipmentItem, EquipmentSkill, EquipmentItemId, EquipmentSkillId } from '@interfaces';
 
 describe('Favorites Helper', () => {
   it('should toggle item favorite status from false to true', () => {
@@ -10,7 +15,7 @@ describe('Favorites Helper', () => {
       isFavorite: false,
     } as EquipmentItem;
 
-    toggleItemFavorite(mockItem);
+    favoriteToggleItem(mockItem);
     expect(mockItem.isFavorite).toBe(true);
   });
 
@@ -21,7 +26,7 @@ describe('Favorites Helper', () => {
       isFavorite: true,
     } as EquipmentItem;
 
-    toggleItemFavorite(mockItem);
+    favoriteToggleItem(mockItem);
     expect(mockItem.isFavorite).toBe(false);
   });
 
@@ -32,7 +37,7 @@ describe('Favorites Helper', () => {
       isFavorite: false,
     } as EquipmentSkill;
 
-    toggleSkillFavorite(mockSkill);
+    favoriteToggleSkill(mockSkill);
     expect(mockSkill.isFavorite).toBe(true);
   });
 
@@ -43,7 +48,7 @@ describe('Favorites Helper', () => {
       isFavorite: true,
     } as EquipmentSkill;
 
-    toggleSkillFavorite(mockSkill);
+    favoriteToggleSkill(mockSkill);
     expect(mockSkill.isFavorite).toBe(false);
   });
 });

@@ -1,6 +1,6 @@
-import { indexToSprite } from '@helpers/sprite';
+import { spriteGetFromIndex } from '@helpers/sprite';
 import { gamestate, updateGamestate } from '@helpers/state-game';
-import { getCurrentWorldNode, getWorldNode } from '@helpers/world';
+import { worldNodeGet, worldNodeGetCurrent } from '@helpers/world';
 import type {
   DropRarity,
   Hero,
@@ -15,7 +15,7 @@ export function allHeroes(): Hero[] {
   return gamestate().hero.heroes;
 }
 
-export function updateHeroData(heroId: HeroId, heroData: Partial<Hero>): void {
+export function heroUpdateData(heroId: HeroId, heroData: Partial<Hero>): void {
   updateGamestate((state) => {
     const hero = state.hero.heroes.find((f) => f.id === heroId);
     if (!hero) {
@@ -27,7 +27,7 @@ export function updateHeroData(heroId: HeroId, heroData: Partial<Hero>): void {
   });
 }
 
-export function pickSpriteForHeroName(heroName: string): string {
+export function heroPickSpriteByName(heroName: string): string {
   if (heroName === 'Ignatius') return '0004';
   if (heroName === 'Aquara') return '0000';
   if (heroName === 'Terrus') return '0060';
@@ -38,10 +38,10 @@ export function pickSpriteForHeroName(heroName: string): string {
     0,
   );
   const spriteIndex = 4 * (nameHash % 27);
-  return indexToSprite(spriteIndex);
+  return spriteGetFromIndex(spriteIndex);
 }
 
-export function getHeroPosition(): WorldPosition {
+export function heroPositionGet(): WorldPosition {
   const hero = gamestate().hero;
   return {
     x: hero.position.x,
@@ -49,8 +49,8 @@ export function getHeroPosition(): WorldPosition {
   };
 }
 
-export function setHeroPosition(x: number, y: number): void {
-  const node = getWorldNode(x, y);
+export function heroPositionSet(x: number, y: number): void {
+  const node = worldNodeGet(x, y);
 
   updateGamestate((state) => {
     state.hero.position.nodeId = node?.id ?? '';
@@ -60,14 +60,14 @@ export function setHeroPosition(x: number, y: number): void {
   });
 }
 
-export function setHeroRiskTolerance(riskTolerance: HeroRiskTolerance): void {
+export function heroSetRiskTolerance(riskTolerance: HeroRiskTolerance): void {
   updateGamestate((state) => {
     state.hero.riskTolerance = riskTolerance;
     return state;
   });
 }
 
-export function setNodeTypePreference(
+export function heroSetNodeTypePreference(
   nodeType: LocationType,
   enabled: boolean,
 ): void {
@@ -77,11 +77,11 @@ export function setNodeTypePreference(
   });
 }
 
-export function getNodeTypePreferences(): Record<LocationType, boolean> {
+export function heroNodeTypePreferences(): Record<LocationType, boolean> {
   return gamestate().hero.nodeTypePreferences;
 }
 
-export function setLootRarityPreference(
+export function heroSetLootRarityPreference(
   rarity: DropRarity,
   enabled: boolean,
 ): void {
@@ -91,21 +91,21 @@ export function setLootRarityPreference(
   });
 }
 
-export function getLootRarityPreferences(): Record<DropRarity, boolean> {
+export function heroLootPreferences(): Record<DropRarity, boolean> {
   return gamestate().hero.lootRarityPreferences;
 }
 
-export function getHero(heroId: HeroId): Hero | undefined {
+export function heroGet(heroId: HeroId): Hero | undefined {
   return allHeroes().find((h) => h.id === heroId);
 }
 
-export function areAllHeroesDead(): boolean {
+export function heroAreAllDead(): boolean {
   const heroes = allHeroes();
   return heroes.every((hero) => hero.hp <= 0);
 }
 
-export function areHeroesRecoveringInTown(): boolean {
-  if (getCurrentWorldNode()?.nodeType !== 'town') return false;
+export function heroRecoveringInTown(): boolean {
+  if (worldNodeGetCurrent()?.nodeType !== 'town') return false;
 
   const heroes = allHeroes();
   return heroes.some((hero) => hero.hp < hero.totalStats.Health);
@@ -119,7 +119,7 @@ export function heroRecoveryPercent(): string {
   ).toFixed(0);
 }
 
-export function allHeroesHeal(amount: number): void {
+export function heroHealAll(amount: number): void {
   const heroes = allHeroes();
   heroes.forEach((hero) => {
     const maxHealth = hero.totalStats.Health;

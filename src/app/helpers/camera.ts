@@ -1,9 +1,9 @@
-import { getHeroPosition } from '@helpers/hero';
+import { heroPositionGet } from '@helpers/hero';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { windowHeightTiles, windowWidthTiles } from '@helpers/ui';
 import { clamp } from 'es-toolkit/compat';
 
-export function setCameraPosition(x: number, y: number) {
+export function cameraPositionSet(x: number, y: number) {
   const worldWidth = gamestate().world.config.width;
   const worldHeight = gamestate().world.config.height;
 
@@ -19,15 +19,15 @@ export function setCameraPosition(x: number, y: number) {
   });
 }
 
-export function centerCameraOn(x: number, y: number): void {
+export function cameraCenterOn(x: number, y: number): void {
   const tileWidth = windowWidthTiles();
   const tileHeight = windowHeightTiles();
 
-  setCameraPosition(x - tileWidth / 2, y - tileHeight / 2);
+  cameraPositionSet(x - tileWidth / 2, y - tileHeight / 2);
 }
 
-export function focusCameraOnPlayer() {
-  const { x, y } = getHeroPosition();
+export function cameraCenterOnPlayer() {
+  const { x, y } = heroPositionGet();
 
-  centerCameraOn(x, y);
+  cameraCenterOn(x, y);
 }

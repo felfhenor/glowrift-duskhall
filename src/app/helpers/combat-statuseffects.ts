@@ -1,7 +1,7 @@
-import { allCombatantTalents } from '@helpers/combat';
-import { combatantTakeDamage } from '@helpers/combat-damage';
-import { formatCombatMessage, logCombatMessage } from '@helpers/combat-log';
-import { elementsSucceedsElementCombatStatChance } from '@helpers/combat-stats';
+import { combatAllCombatantTalents } from '@helpers/combat';
+import { combatCombatantTakeDamage } from '@helpers/combat-damage';
+import { combatFormatMessage, combatMessageLog } from '@helpers/combat-log';
+import { combatElementsSucceedsElementCombatStatChance } from '@helpers/combat-stats';
 import { talentStatusEffectStatBoost } from '@helpers/talent';
 import type {
   Combat,
@@ -27,11 +27,11 @@ import type { ElementBlock, GameElement } from '@interfaces/element';
 import type { GameStat, StatBlock } from '@interfaces/stat';
 import { isNumber, isObject } from 'es-toolkit/compat';
 
-export function canTakeTurn(combatant: Combatant): boolean {
+export function combatCanTakeTurn(combatant: Combatant): boolean {
   return !combatant.statusEffectData.isFrozen;
 }
 
-export function statusEffectDamage(effect: StatusEffect): number {
+function statusEffectDamage(effect: StatusEffect): number {
   const statBlock = effect.useTargetStats
     ? effect.targetStats
     : effect.creatorStats;
@@ -44,7 +44,7 @@ export function statusEffectDamage(effect: StatusEffect): number {
   );
 }
 
-export function handleCombatantStatusEffects(
+export function combatHandleCombatantStatusEffects(
   combat: Combat,
   combatant: Combatant,
   trigger: StatusEffectTrigger,
@@ -55,12 +55,12 @@ export function handleCombatantStatusEffects(
   if (triggeredEffects.length === 0) return;
 
   triggeredEffects.forEach((eff) => {
-    triggerTickStatusEffect(combat, combatant, eff);
+    combatTriggerTickStatusEffect(combat, combatant, eff);
 
     eff.duration--;
 
     if (eff.duration <= 0) {
-      triggerUnapplyStatusEffect(combat, combatant, eff);
+      combatTriggerUnapplyStatusEffect(combat, combatant, eff);
     }
   });
 
@@ -69,7 +69,7 @@ export function handleCombatantStatusEffects(
   );
 }
 
-export function createStatusEffect(
+export function combatCreateStatusEffect(
   content: StatusEffectContent,
   skill: EquipmentSkill,
   creator: Combatant,
@@ -77,8 +77,8 @@ export function createStatusEffect(
   opts: Partial<StatusEffect>,
   capturedCreatorStats?: StatBlock,
 ): StatusEffect {
-  const creatorTalents = allCombatantTalents(creator);
-  const targetTalents = allCombatantTalents(target);
+  const creatorTalents = combatAllCombatantTalents(creator);
+  const targetTalents = combatAllCombatantTalents(target);
 
   // Use captured stats if provided, otherwise use current stats
   const baseCreatorStats = capturedCreatorStats || creator.totalStats;
@@ -126,7 +126,7 @@ export function createStatusEffect(
   };
 }
 
-export function applyStatusEffectToTarget(
+export function combatApplyStatusEffectToTarget(
   combat: Combat,
   combatant: Combatant,
   statusEffect: StatusEffect,
@@ -136,14 +136,14 @@ export function applyStatusEffectToTarget(
   );
   if (existingEffect) return;
 
-  const shouldIgnoreDebuff = elementsSucceedsElementCombatStatChance(
+  const shouldIgnoreDebuff = combatElementsSucceedsElementCombatStatChance(
     statusEffect.elements,
     combatant,
     'debuffIgnoreChance',
   );
 
   if (statusEffect.effectType === 'Debuff' && shouldIgnoreDebuff) {
-    logCombatMessage(
+    combatMessageLog(
       combat,
       `**${statusEffect.name}** is shrugged off by **${combatant.name}**!`,
       combatant,
@@ -152,10 +152,10 @@ export function applyStatusEffectToTarget(
   }
 
   combatant.statusEffects.push(statusEffect);
-  triggerApplyStatusEffect(combat, combatant, statusEffect);
+  combatTriggerApplyStatusEffect(combat, combatant, statusEffect);
 }
 
-export function applyStatDeltaToCombatant(
+function combatApplyStatDeltaToCombatant(
   combatant: Combatant,
   stat: GameStat,
   value: number,
@@ -164,7 +164,7 @@ export function applyStatDeltaToCombatant(
   combatant.totalStats[stat] += value;
 }
 
-export function applyCombatStatElementDeltaToCombatant(
+function combatApplyCombatStatElementDeltaToCombatant(
   combatant: Combatant,
   stat: keyof CombatantCombatStats,
   element: GameElement,
@@ -176,7 +176,7 @@ export function applyCombatStatElementDeltaToCombatant(
   (combatant.combatStats[stat] as ElementBlock)[element] += value;
 }
 
-export function applyCombatStatNumberDeltaToCombatant(
+function combatApplyCombatStatNumberDeltaToCombatant(
   combatant: Combatant,
   stat: keyof CombatantCombatStats,
   value: number,
@@ -187,7 +187,7 @@ export function applyCombatStatNumberDeltaToCombatant(
   (combatant.combatStats[stat] as number) += value;
 }
 
-export function handleStatusEffectBehaviors(
+function combatHandleStatusEffectBehaviors(
   combat: Combat,
   combatant: Combatant,
   effect: StatusEffect,
@@ -212,14 +212,14 @@ export function handleStatusEffectBehaviors(
       const healing = statusEffectDamage(effect);
       templateData.healing = healing;
 
-      combatantTakeDamage(combatant, -healing);
+      combatCombatantTakeDamage(combatant, -healing);
     },
     TakeDamage: () => {
       const damage = statusEffectDamage(effect);
       templateData.damage = damage;
       templateData.absdamage = Math.abs(damage);
 
-      combatantTakeDamage(combatant, damage);
+      combatCombatantTakeDamage(combatant, damage);
     },
     AddDamageToStat: () => {
       const behaviorData = behavior as StatusEffectBehaviorAddStat;
@@ -227,7 +227,11 @@ export function handleStatusEffectBehaviors(
       const damage = statusEffectDamage(effect);
       templateData.damage = damage;
 
-      applyStatDeltaToCombatant(combatant, behaviorData.modifyStat, damage);
+      combatApplyStatDeltaToCombatant(
+        combatant,
+        behaviorData.modifyStat,
+        damage,
+      );
     },
     TakeDamageFromStat: () => {
       const behaviorData = behavior as StatusEffectBehaviorTakeStat;
@@ -235,12 +239,16 @@ export function handleStatusEffectBehaviors(
       const damage = statusEffectDamage(effect);
       templateData.damage = damage;
 
-      applyStatDeltaToCombatant(combatant, behaviorData.modifyStat, -damage);
+      combatApplyStatDeltaToCombatant(
+        combatant,
+        behaviorData.modifyStat,
+        -damage,
+      );
     },
     AddCombatStatElement: () => {
       const behaviorData = behavior as StatusEffectAddCombatStatElement;
 
-      applyCombatStatElementDeltaToCombatant(
+      combatApplyCombatStatElementDeltaToCombatant(
         combatant,
         behaviorData.combatStat,
         behaviorData.element,
@@ -250,7 +258,7 @@ export function handleStatusEffectBehaviors(
     TakeCombatStatElement: () => {
       const behaviorData = behavior as StatusEffectTakeCombatStatElement;
 
-      applyCombatStatElementDeltaToCombatant(
+      combatApplyCombatStatElementDeltaToCombatant(
         combatant,
         behaviorData.combatStat,
         behaviorData.element,
@@ -260,7 +268,7 @@ export function handleStatusEffectBehaviors(
     AddCombatStatNumber: () => {
       const behaviorData = behavior as StatusEffectAddCombatStatNumber;
 
-      applyCombatStatNumberDeltaToCombatant(
+      combatApplyCombatStatNumberDeltaToCombatant(
         combatant,
         behaviorData.combatStat,
         behaviorData.value,
@@ -269,7 +277,7 @@ export function handleStatusEffectBehaviors(
     TakeCombatStatNumber: () => {
       const behaviorData = behavior as StatusEffectTakeCombatStatNumber;
 
-      applyCombatStatNumberDeltaToCombatant(
+      combatApplyCombatStatNumberDeltaToCombatant(
         combatant,
         behaviorData.combatStat,
         -behaviorData.value,
@@ -280,48 +288,54 @@ export function handleStatusEffectBehaviors(
   behaviorTypes[behavior.type]();
 
   if (!suppressMessages && behavior.combatMessage) {
-    const message = formatCombatMessage(behavior.combatMessage, templateData);
-    logCombatMessage(combat, message, combatant);
+    const message = combatFormatMessage(behavior.combatMessage, templateData);
+    combatMessageLog(combat, message, combatant);
   }
 }
 
-export function triggerApplyStatusEffect(
+function combatTriggerApplyStatusEffect(
   combat: Combat,
   combatant: Combatant,
   statusEffect: StatusEffect,
 ): void {
   statusEffect.onApply.forEach((beh) =>
-    handleStatusEffectBehaviors(combat, combatant, statusEffect, beh),
+    combatHandleStatusEffectBehaviors(combat, combatant, statusEffect, beh),
   );
 }
 
-export function triggerTickStatusEffect(
+function combatTriggerTickStatusEffect(
   combat: Combat,
   combatant: Combatant,
   statusEffect: StatusEffect,
 ): void {
   statusEffect.onTick.forEach((beh) =>
-    handleStatusEffectBehaviors(combat, combatant, statusEffect, beh),
+    combatHandleStatusEffectBehaviors(combat, combatant, statusEffect, beh),
   );
 }
 
-export function triggerUnapplyStatusEffect(
+function combatTriggerUnapplyStatusEffect(
   combat: Combat,
   combatant: Combatant,
   statusEffect: StatusEffect,
 ): void {
   statusEffect.onUnapply.forEach((beh) =>
-    handleStatusEffectBehaviors(combat, combatant, statusEffect, beh),
+    combatHandleStatusEffectBehaviors(combat, combatant, statusEffect, beh),
   );
 }
 
-export function unapplyAllStatusEffects(
+export function combatUnapplyAllStatusEffects(
   combat: Combat,
   combatant: Combatant,
 ): void {
   combatant.statusEffects.forEach((statusEffect) => {
     statusEffect.onUnapply.forEach((beh) =>
-      handleStatusEffectBehaviors(combat, combatant, statusEffect, beh, true),
+      combatHandleStatusEffectBehaviors(
+        combat,
+        combatant,
+        statusEffect,
+        beh,
+        true,
+      ),
     );
   });
 }

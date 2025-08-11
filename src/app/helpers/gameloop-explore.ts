@@ -1,35 +1,39 @@
-import { currentCombat, doCombatIteration, resetCombat } from '@helpers/combat';
-import { generateCombatForLocation } from '@helpers/combat-create';
-import { currentCombatHasGuardiansAlive } from '@helpers/combat-end';
-import { updateExploringAndGlobalStatusText } from '@helpers/explore';
+import {
+  combatDoCombatIteration,
+  combatReset,
+  currentCombat,
+} from '@helpers/combat';
+import { combatGenerateForLocation } from '@helpers/combat-create';
+import { combatHasGuardiansAlive } from '@helpers/combat-end';
+import { exploringUpdateGlobalStatusText } from '@helpers/explore';
 import { updateGamestate } from '@helpers/state-game';
 import { isTraveling } from '@helpers/travel';
-import { gainNodeRewards, getCurrentWorldNode } from '@helpers/world';
+import { worldNodeGetCurrent, worldNodeRewardsGain } from '@helpers/world';
 
-export function exploreGameloop(numTicks: number): void {
+export function gameloopExplore(numTicks: number): void {
   if (isTraveling()) return;
 
-  const node = getCurrentWorldNode();
+  const node = worldNodeGetCurrent();
   if (!node) return;
   if (node.currentlyClaimed) return;
 
   if (currentCombat()?.locationName !== node.name) {
-    resetCombat();
+    combatReset();
   }
 
   // generate a combat, move to next tick
   if (!currentCombat()) {
     // claim a node if there are no guardians to defend it
     if (node.guardianIds.length === 0) {
-      gainNodeRewards(node);
+      worldNodeRewardsGain(node);
       return;
     }
 
-    updateExploringAndGlobalStatusText(
+    exploringUpdateGlobalStatusText(
       `Exploring ${node.name}... engaging in combat.`,
     );
     updateGamestate((state) => {
-      state.hero.combat = generateCombatForLocation(node);
+      state.hero.combat = combatGenerateForLocation(node);
       return state;
     });
 
@@ -37,13 +41,13 @@ export function exploreGameloop(numTicks: number): void {
   }
 
   // if we have guardians alive, we're doing combat
-  if (currentCombatHasGuardiansAlive()) {
-    updateExploringAndGlobalStatusText(
+  if (combatHasGuardiansAlive()) {
+    exploringUpdateGlobalStatusText(
       `Exploring ${node.name}... fighting ${node.guardianIds.length} guardian(s).`,
     );
 
     for (let i = 0; i < numTicks; i++) {
-      doCombatIteration();
+      combatDoCombatIteration();
     }
     return;
   }

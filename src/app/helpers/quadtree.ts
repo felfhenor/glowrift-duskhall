@@ -2,18 +2,8 @@
  * A spatial data structure for efficient 2D position queries.
  * Used to optimize world generation by replacing linear searches with O(log n) spatial queries.
  */
-export interface QuadtreePoint {
-  x: number;
-  y: number;
-  taken: boolean;
-}
 
-export interface QuadtreeBounds {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-}
+import type { QuadtreeBounds, QuadtreePoint } from '@interfaces/world';
 
 export class Quadtree {
   private readonly MAX_POINTS = 10;

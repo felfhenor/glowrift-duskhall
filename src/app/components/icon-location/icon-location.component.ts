@@ -1,7 +1,7 @@
 import { Component, computed, input } from '@angular/core';
-import { getSpriteFromNodeType } from '@helpers';
-import type { LocationType } from '@interfaces';
 import { AtlasImageComponent } from '@components/atlas-image/atlas-image.component';
+import { spriteGetFromNodeType } from '@helpers';
+import type { LocationType } from '@interfaces';
 
 @Component({
   selector: 'app-icon-location',
@@ -11,5 +11,5 @@ import { AtlasImageComponent } from '@components/atlas-image/atlas-image.compone
 })
 export class IconLocationComponent {
   public type = input.required<LocationType>();
-  public sprite = computed(() => getSpriteFromNodeType(this.type()));
+  public sprite = computed(() => spriteGetFromNodeType(this.type()));
 }

@@ -4,14 +4,14 @@ import { IconItemComponent } from '@components/icon-currency/icon-currency.compo
 import { IconLocationComponent } from '@components/icon-location/icon-location.component';
 import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
 import {
-  buildingMaxLevel,
-  buildingUpgradeCost,
-  canUpgradeBuildingLevel,
+  currencyHasAmount,
   gamestate,
-  getBuildingLevel,
-  hasClaimedNodeCount,
-  hasCurrency,
-  upgradeBuildingLevel,
+  townBuildingLevel,
+  townBuildingMaxLevel,
+  townBuildingUpgradeCost,
+  townCanUpgradeBuildingLevel,
+  townUpgradeBuildingLevel,
+  worldNodeHasClaimedCount,
 } from '@helpers';
 import type { GameCurrency, LocationType, TownBuilding } from '@interfaces';
 
@@ -29,16 +29,19 @@ import type { GameCurrency, LocationType, TownBuilding } from '@interfaces';
 export class PanelTownBuildingUpgradeComponent {
   public building = input.required<TownBuilding>();
 
-  public nextLevel = computed(() => getBuildingLevel(this.building()) + 1);
+  public nextLevel = computed(() => townBuildingLevel(this.building()) + 1);
 
-  public canUpgrade = computed(() => canUpgradeBuildingLevel(this.building()));
+  public canUpgrade = computed(() =>
+    townCanUpgradeBuildingLevel(this.building()),
+  );
   public upgradeRequirements = computed(() =>
-    buildingUpgradeCost(this.building()),
+    townBuildingUpgradeCost(this.building()),
   );
 
   public isMaxLevel = computed(
     () =>
-      buildingMaxLevel(this.building()) <= getBuildingLevel(this.building()),
+      townBuildingMaxLevel(this.building()) <=
+      townBuildingLevel(this.building()),
   );
 
   public liberationRequirements = computed(() => {
@@ -65,14 +68,14 @@ export class PanelTownBuildingUpgradeComponent {
   public currentCurrencies = computed(() => gamestate().currency.currencies);
 
   public hasNodeClaim(type: LocationType, num: number) {
-    return hasClaimedNodeCount(type, num);
+    return worldNodeHasClaimedCount(type, num);
   }
 
   public hasCurrency(type: GameCurrency, num: number) {
-    return hasCurrency(type, num);
+    return currencyHasAmount(type, num);
   }
 
   public upgrade() {
-    upgradeBuildingLevel(this.building());
+    townUpgradeBuildingLevel(this.building());
   }
 }

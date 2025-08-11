@@ -1,9 +1,9 @@
 import { getEntriesByType, getEntry } from '@helpers/content';
-import { cleanupDroppableDefinition } from '@helpers/droppable';
-import { randomChoiceByRarity, seededrng, uuid } from '@helpers/rng';
+import { droppableCleanup } from '@helpers/droppable';
+import { rngChoiceRarity, rngSeeded, rngUuid } from '@helpers/rng';
 import {
-  addTraitToEquipment,
-  canAddTraitToEquipment,
+  traitAddToEquipment,
+  traitCanAddToEquipment,
 } from '@helpers/trait-equipment';
 import type {
   EquipmentItem,
@@ -11,7 +11,7 @@ import type {
   EquipmentItemId,
 } from '@interfaces';
 
-export function allItemDefinitions(): EquipmentItemContent[] {
+export function equipmentAllDefinitions(): EquipmentItemContent[] {
   return [
     ...getEntriesByType<EquipmentItemContent>('accessory'),
     ...getEntriesByType<EquipmentItemContent>('armor'),
@@ -20,13 +20,13 @@ export function allItemDefinitions(): EquipmentItemContent[] {
   ].filter((i) => !i.preventDrop);
 }
 
-export function pickRandomItemDefinitionBasedOnRarity(
-  definitions = allItemDefinitions(),
-  rng = seededrng(uuid()),
+export function equipmentPickRandomDefinitionByRarity(
+  definitions = equipmentAllDefinitions(),
+  rng = rngSeeded(rngUuid()),
 ): EquipmentItemContent {
   const allItems = definitions;
 
-  const chosenItem = randomChoiceByRarity(allItems, rng);
+  const chosenItem = rngChoiceRarity(allItems, rng);
   if (!chosenItem) throw new Error('Could not generate an item.');
 
   const chosenItemDefinition = getEntry<EquipmentItemContent>(chosenItem.id);
@@ -35,19 +35,19 @@ export function pickRandomItemDefinitionBasedOnRarity(
   return structuredClone(chosenItemDefinition);
 }
 
-export function createItem(def: EquipmentItemContent): EquipmentItem {
+export function equipmentCreate(def: EquipmentItemContent): EquipmentItem {
   const defClone = structuredClone(def);
-  cleanupDroppableDefinition(defClone);
+  droppableCleanup(defClone);
 
   const item: EquipmentItem = {
     ...defClone,
-    id: `${defClone.id}|${uuid()}` as EquipmentItemId,
+    id: `${defClone.id}|${rngUuid()}` as EquipmentItemId,
     mods: {},
     traitIds: defClone.traitIds ?? [],
   };
 
-  if (canAddTraitToEquipment()) {
-    addTraitToEquipment(item);
+  if (traitCanAddToEquipment()) {
+    traitAddToEquipment(item);
   }
 
   return item;

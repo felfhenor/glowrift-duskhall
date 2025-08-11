@@ -1,17 +1,17 @@
 import { Component, computed, signal, viewChild } from '@angular/core';
-import type { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
-import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
-import {
-  buyItem,
-  gamestate,
-  hasCurrency,
-  itemBuyValue,
-  notifyError,
-} from '@helpers';
-import type { EquipmentItem } from '@interfaces';
 import { CountdownComponent } from '@components/countdown/countdown.component';
 import { InventoryGridItemComponent } from '@components/inventory-grid-item/inventory-grid-item.component';
 import { PanelTownBuildingUpgradeComponent } from '@components/panel-town-building-upgrade/panel-town-building-upgrade.component';
+import {
+  actionItemBuyValue,
+  currencyHasAmount,
+  gamestate,
+  merchantBuy,
+  notifyError,
+} from '@helpers';
+import type { EquipmentItem } from '@interfaces';
+import type { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 @Component({
   selector: 'app-panel-town-merchant',
@@ -32,7 +32,7 @@ export class PanelTownMerchantComponent {
 
   public purchasingItem = signal<EquipmentItem | undefined>(undefined);
   public purchaseCost = computed(() =>
-    this.purchasingItem() ? itemBuyValue(this.purchasingItem()!) : 0,
+    this.purchasingItem() ? actionItemBuyValue(this.purchasingItem()!) : 0,
   );
 
   public buySwal = viewChild<SwalComponent>('buySwal');
@@ -49,12 +49,12 @@ export class PanelTownMerchantComponent {
 
   public buyCurrentItem(): void {
     if (!this.purchasingItem()) return;
-    if (!hasCurrency('Mana', this.purchaseCost())) {
+    if (!currencyHasAmount('Mana', this.purchaseCost())) {
       notifyError(`You do not have enough Mana to buy this item.`);
       return;
     }
 
-    buyItem(this.shopItems().indexOf(this.purchasingItem()!));
+    merchantBuy(this.shopItems().indexOf(this.purchasingItem()!));
 
     this.purchasingItem.set(undefined);
   }

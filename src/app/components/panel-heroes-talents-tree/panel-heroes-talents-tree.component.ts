@@ -3,8 +3,8 @@ import { Component, computed, input } from '@angular/core';
 import { IconTalentComponent } from '@components/icon-talent/icon-talent.component';
 import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
 import {
-  canHeroBuyTalent,
   getEntry,
+  heroCanBuyTalent,
   heroHasTalent,
   heroSpendTalentPoint,
   heroTalentsInvestedInTree,
@@ -65,7 +65,7 @@ export class PanelHeroesTalentsTreeComponent {
           ...talentNode,
           talentData,
           isLearned: heroHasTalent(this.hero(), talentData.id),
-          canPurchase: canHeroBuyTalent(
+          canPurchase: heroCanBuyTalent(
             this.hero(),
             talentData,
             level.level,

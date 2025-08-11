@@ -1,36 +1,33 @@
-import { gainCurrency } from '@helpers/currency';
-import { removeItemFromInventory } from '@helpers/inventory-equipment';
-import { getBuildingLevel } from '@helpers/town';
+import { currencyGainMultiple } from '@helpers/currency';
+import { itemInventoryRemove } from '@helpers/inventory-equipment';
+import { townBuildingLevel } from '@helpers/town';
 import type { GameCurrency } from '@interfaces/content-currency';
 import type { EquipmentItem } from '@interfaces/content-equipment';
 
-export function maxSalvagerItems() {
-  return Math.floor(Math.min(15, 3 + getBuildingLevel('Salvager') / 3));
+export function salvagerItemsMax() {
+  return Math.floor(Math.min(15, 3 + townBuildingLevel('Salvager') / 3));
 }
 
-export function salvageItems(items: EquipmentItem[]): void {
+export function salvagerSalvageItems(items: EquipmentItem[]): void {
   items.forEach((item) => {
-    salvageItem(item);
+    salvagerSalvageItem(item);
   });
 }
 
-export function salvageItem(item: EquipmentItem): void {
-  removeItemFromInventory(item);
+export function salvagerSalvageItem(item: EquipmentItem): void {
+  itemInventoryRemove(item);
 
-  const currencyGain = itemSalvageCurrencyGain(item);
-  Object.entries(currencyGain).forEach(([curr, amount]) => {
-    const currency = curr as GameCurrency;
-    gainCurrency(currency, amount);
-  });
+  const currenciesGain = salvagerItemSalvageCurrencyGain(item);
+  currencyGainMultiple(currenciesGain);
 }
 
-export function multiItemSalvageCurrencyGain(
+export function salvagerMultiItemSalvageCurrencyGain(
   items: EquipmentItem[],
 ): Partial<Record<GameCurrency, number>> {
   const result: Partial<Record<GameCurrency, number>> = {};
 
   items.forEach((item) => {
-    const currencies = itemSalvageCurrencyGain(item);
+    const currencies = salvagerItemSalvageCurrencyGain(item);
     Object.entries(currencies).forEach(([curr, amount]) => {
       const currency = curr as GameCurrency;
 
@@ -45,7 +42,7 @@ export function multiItemSalvageCurrencyGain(
   return result;
 }
 
-export function itemSalvageCurrencyGain(
+export function salvagerItemSalvageCurrencyGain(
   item: EquipmentItem,
 ): Partial<Record<GameCurrency, number>> {
   const currency: GameCurrency = `${item.rarity} Dust`;

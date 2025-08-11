@@ -1,7 +1,10 @@
 import { gamestate, updateGamestate } from '@helpers/state-game';
-import { generateMerchantItems, resetTownMerchantTicks } from '@helpers/town-merchant';
+import {
+  merchantGenerateItems,
+  merchantResetTicks,
+} from '@helpers/town-merchant';
 
-export function townMerchantGameloop(numTicks: number): void {
+export function gameloopTownMerchant(numTicks: number): void {
   updateGamestate((state) => {
     state.town.merchant.ticksUntilRefresh -= numTicks;
     return state;
@@ -9,7 +12,7 @@ export function townMerchantGameloop(numTicks: number): void {
 
   const ticksLeft = gamestate().town.merchant.ticksUntilRefresh;
   if (ticksLeft <= 0) {
-    generateMerchantItems();
-    resetTownMerchantTicks();
+    merchantGenerateItems();
+    merchantResetTicks();
   }
 }

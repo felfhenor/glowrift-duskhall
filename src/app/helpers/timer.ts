@@ -1,22 +1,22 @@
-import type { Timer, TimerAction, TimerUnclaimVillage } from '@interfaces';
 import { gamestate, updateGamestate } from '@helpers/state-game';
-import { getWorldNode, unclaimNode } from '@helpers/world';
+import { worldNodeGet, worldNodeUnclaim } from '@helpers/world';
+import type { Timer, TimerAction, TimerUnclaimVillage } from '@interfaces';
 
-export function totalTicksElapsed(): number {
+export function timerTicksElapsed(): number {
   return gamestate().actionClock.numTicks;
 }
 
-export function getRegisterTick(ticksAway: number): number {
-  return totalTicksElapsed() + ticksAway;
+export function timerGetRegisterTick(ticksAway: number): number {
+  return timerTicksElapsed() + ticksAway;
 }
 
-export function getTickActions(ticks: number): Timer[] {
+export function timerGetTickActions(ticks: number): Timer[] {
   return gamestate().actionClock.timers[ticks] ?? [];
 }
 
-export function addTimerAndAction(timerAction: Timer, ticksAway: number) {
-  const registerTick = getRegisterTick(ticksAway);
-  const actions = getTickActions(registerTick);
+export function timerActionAdd(timerAction: Timer, ticksAway: number) {
+  const registerTick = timerGetRegisterTick(ticksAway);
+  const actions = timerGetTickActions(registerTick);
 
   updateGamestate((state) => {
     state.actionClock.timers[registerTick] = [...actions, timerAction];
@@ -24,9 +24,9 @@ export function addTimerAndAction(timerAction: Timer, ticksAway: number) {
   });
 }
 
-export function doTimerActions(actions: Timer[], atTime: number): void {
+export function timerActionDo(actions: Timer[], atTime: number): void {
   actions.forEach((action) => {
-    doTimerAction(action);
+    timerActionDoSingular(action);
   });
 
   updateGamestate((state) => {
@@ -35,7 +35,7 @@ export function doTimerActions(actions: Timer[], atTime: number): void {
   });
 }
 
-export function doTimerAction(action: Timer) {
+function timerActionDoSingular(action: Timer) {
   const actions: Record<TimerAction, (action: Timer) => void> = {
     UnclaimVillage: timerUnclaimVillage,
   };
@@ -44,8 +44,8 @@ export function doTimerAction(action: Timer) {
 }
 
 export function timerUnclaimVillage(action: TimerUnclaimVillage): void {
-  const node = getWorldNode(action.location.x, action.location.y);
+  const node = worldNodeGet(action.location.x, action.location.y);
   if (!node) return;
 
-  unclaimNode(node);
+  worldNodeUnclaim(node);
 }

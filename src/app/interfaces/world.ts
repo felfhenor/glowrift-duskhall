@@ -3,6 +3,19 @@ import type { GameElement } from '@interfaces/element';
 import type { Identifiable } from '@interfaces/identifiable';
 import type { LocationType } from '@interfaces/worldconfig';
 
+export interface QuadtreePoint {
+  x: number;
+  y: number;
+  taken: boolean;
+}
+
+export interface QuadtreeBounds {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
 export interface WorldPosition {
   x: number;
   y: number;

@@ -7,21 +7,21 @@ const worldNodeChanges = signal<WorldNodeChangeEvent[]>([]);
 /**
  * Gets the current list of world node changes
  */
-export function getWorldNodeChanges() {
+export function worldGetNodeChanges() {
   return worldNodeChanges();
 }
 
 /**
  * Clears all world node changes (call after processing them)
  */
-export function clearWorldNodeChanges() {
+export function worldClearNodeChanges() {
   worldNodeChanges.set([]);
 }
 
 /**
  * Notifies that a node has been claimed
  */
-export function notifyNodeClaimed(node: WorldLocation): void {
+export function worldNotifyClaim(node: WorldLocation): void {
   const currentChanges = worldNodeChanges();
   worldNodeChanges.set([
     ...currentChanges,
@@ -38,7 +38,7 @@ export function notifyNodeClaimed(node: WorldLocation): void {
 /**
  * Notifies that a node has been unclaimed
  */
-export function notifyNodeUnclaimed(node: WorldLocation): void {
+export function worldNotifyUnclaimed(node: WorldLocation): void {
   const currentChanges = worldNodeChanges();
   worldNodeChanges.set([
     ...currentChanges,
@@ -55,7 +55,7 @@ export function notifyNodeUnclaimed(node: WorldLocation): void {
 /**
  * Notifies that a node has been updated in some other way
  */
-export function notifyNodeUpdated(node: WorldLocation): void {
+export function worldNotifyUpdated(node: WorldLocation): void {
   const currentChanges = worldNodeChanges();
   worldNodeChanges.set([
     ...currentChanges,

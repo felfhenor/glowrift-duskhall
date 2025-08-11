@@ -1,27 +1,27 @@
-import type { EquipmentItem, EquipmentItemContent } from '@interfaces';
-import { gainCurrency } from '@helpers/currency';
-import { removeItemFromInventory } from '@helpers/inventory-equipment';
-import { getItemStat } from '@helpers/item';
+import { currencyGain } from '@helpers/currency';
+import { itemInventoryRemove } from '@helpers/inventory-equipment';
+import { itemStat } from '@helpers/item';
 import { notifySuccess } from '@helpers/notify';
+import type { EquipmentItem, EquipmentItemContent } from '@interfaces';
 
-export function itemSalvageValue(item: EquipmentItemContent): number {
+export function actionItemSalvageValue(item: EquipmentItemContent): number {
   return (
-    getItemStat(item, 'Aura') * 4 +
-    getItemStat(item, 'Force') * 6 +
-    getItemStat(item, 'Health') * 2 +
-    getItemStat(item, 'Speed') * 10
+    itemStat(item, 'Aura') * 4 +
+    itemStat(item, 'Force') * 6 +
+    itemStat(item, 'Health') * 2 +
+    itemStat(item, 'Speed') * 10
   );
 }
 
-export function itemSalvage(item: EquipmentItem): void {
-  const manaGained = itemSalvageValue(item);
+export function actionItemSalvage(item: EquipmentItem): void {
+  const manaGained = actionItemSalvageValue(item);
 
-  removeItemFromInventory(item);
-  gainCurrency('Mana', manaGained);
+  itemInventoryRemove(item);
+  currencyGain('Mana', manaGained);
 
   notifySuccess(`Salvaged ${item.name} for ${manaGained} mana!`);
 }
 
-export function itemBuyValue(item: EquipmentItemContent): number {
-  return itemSalvageValue(item) * 10;
+export function actionItemBuyValue(item: EquipmentItemContent): number {
+  return actionItemSalvageValue(item) * 10;
 }

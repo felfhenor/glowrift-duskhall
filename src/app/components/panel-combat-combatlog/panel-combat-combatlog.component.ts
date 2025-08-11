@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, computed } from '@angular/core';
 import { IconSpriteCombatComponent } from '@components/icon-combat-sprite/icon-combat-sprite.component';
 import { combatLog } from '@helpers';
-import { getHealthColor } from '@helpers/combat-log';
+import { combatLogHealthColor } from '@helpers/combat-log';
 import { marked } from 'marked';
 
 @Component({
@@ -27,7 +27,7 @@ export class PanelCombatCombatlogComponent {
       return text.replace(regex, (match, currentHp, maxHp) => {
         const current = parseInt(currentHp);
         const max = parseInt(maxHp);
-        const colorClass = getHealthColor(current, max);
+        const colorClass = combatLogHealthColor(current, max);
         return `<span class="${colorClass}">${match}</span>`;
       });
     };

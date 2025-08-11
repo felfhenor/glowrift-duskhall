@@ -1,5 +1,5 @@
-import type { CameraBounds, CameraState } from '@interfaces/camera';
 import { gamestate, updateGamestate } from '@helpers/index';
+import type { CameraBounds, CameraState } from '@interfaces/camera';
 
 /**
  * Calculates camera bounds based on world and viewport dimensions
@@ -9,7 +9,7 @@ import { gamestate, updateGamestate } from '@helpers/index';
  * @param viewportHeight Viewport height in tiles
  * @returns Camera bounds
  */
-export function calculateCameraBounds(
+export function cameraCalculateBounds(
   worldWidth: number,
   worldHeight: number,
   viewportWidth: number,
@@ -27,7 +27,7 @@ export function calculateCameraBounds(
  * @param bounds Camera bounds
  * @returns Clamped camera position
  */
-export function clampCameraPosition(
+export function cameraClampPosition(
   camera: CameraState,
   bounds: CameraBounds,
 ): CameraState {
@@ -45,7 +45,7 @@ export function clampCameraPosition(
  * @param tileSize Size of each tile in pixels
  * @returns Updated camera position and remaining drag
  */
-export function processCameraDrag(
+export function cameraProcessDrag(
   dragDelta: { x: number; y: number },
   currentCamera: CameraState,
   bounds: CameraBounds,
@@ -88,7 +88,7 @@ export function processCameraDrag(
  * Updates the game state camera position
  * @param newCamera New camera position
  */
-export function updateCameraPosition(newCamera: CameraState): void {
+export function cameraPositionUpdate(newCamera: CameraState): void {
   const currentCamera = gamestate().camera;
 
   if (newCamera.x !== currentCamera.x || newCamera.y !== currentCamera.y) {

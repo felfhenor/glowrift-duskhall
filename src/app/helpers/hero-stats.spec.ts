@@ -1,9 +1,9 @@
 import {
   heroBaseStat,
   heroEquipmentStat,
+  heroRecalculateStats,
   heroStats,
   heroTotalStat,
-  recalculateStats,
 } from '@helpers/hero-stats';
 import type {
   EquipmentBlock,
@@ -16,16 +16,16 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock dependencies
 vi.mock('@helpers/hero', () => ({
-  updateHeroData: vi.fn(),
-  getHero: vi.fn(),
+  heroUpdateData: vi.fn(),
+  heroGet: vi.fn(),
 }));
 
 vi.mock('@helpers/item', () => ({
-  getItemStat: vi.fn(),
+  itemStat: vi.fn(),
 }));
 
-import { getHero, updateHeroData } from '@helpers/hero';
-import { getItemStat } from '@helpers/item';
+import { heroGet, heroUpdateData } from '@helpers/hero';
+import { itemStat } from '@helpers/item';
 
 describe('Hero Stats Functions', () => {
   let testHero: Hero;
@@ -72,7 +72,7 @@ describe('Hero Stats Functions', () => {
 
   describe('heroEquipmentStat', () => {
     it('should return sum of equipment stats', () => {
-      vi.mocked(getItemStat)
+      vi.mocked(itemStat)
         .mockReturnValueOnce(5) // weapon
         .mockReturnValueOnce(3); // armor
 
@@ -109,7 +109,7 @@ describe('Hero Stats Functions', () => {
 
   describe('heroTotalStat', () => {
     it('should return sum of base and equipment stats', () => {
-      vi.mocked(getItemStat).mockReturnValue(5);
+      vi.mocked(itemStat).mockReturnValue(5);
 
       testHero.equipment = {
         weapon: {
@@ -131,7 +131,7 @@ describe('Hero Stats Functions', () => {
 
   describe('heroStats', () => {
     it('should return complete stat block with totals', () => {
-      vi.mocked(getItemStat).mockReturnValue(2);
+      vi.mocked(itemStat).mockReturnValue(2);
 
       testHero.equipment = {
         weapon: {
@@ -166,12 +166,12 @@ describe('Hero Stats Functions', () => {
 
   describe('recalculateStats', () => {
     it('should update hero stats and HP', () => {
-      vi.mocked(getHero).mockReturnValue(testHero);
-      vi.mocked(getItemStat).mockReturnValue(2);
+      vi.mocked(heroGet).mockReturnValue(testHero);
+      vi.mocked(itemStat).mockReturnValue(2);
 
-      recalculateStats(testHero.id);
+      heroRecalculateStats(testHero.id);
 
-      expect(updateHeroData).toHaveBeenCalledWith(testHero.id, {
+      expect(heroUpdateData).toHaveBeenCalledWith(testHero.id, {
         totalStats: {
           Force: 10,
           Health: 20,
@@ -183,11 +183,11 @@ describe('Hero Stats Functions', () => {
     });
 
     it('should do nothing if hero is not found', () => {
-      vi.mocked(getHero).mockReturnValue(undefined);
+      vi.mocked(heroGet).mockReturnValue(undefined);
 
-      recalculateStats('non-existent' as HeroId);
+      heroRecalculateStats('non-existent' as HeroId);
 
-      expect(updateHeroData).not.toHaveBeenCalled();
+      expect(heroUpdateData).not.toHaveBeenCalled();
     });
   });
 });

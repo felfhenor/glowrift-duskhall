@@ -1,5 +1,5 @@
-import { getSpriteForPosition } from '@helpers/sprite';
-import { getWorldNode } from '@helpers/world';
+import { spriteGetForPosition } from '@helpers/sprite';
+import { worldNodeGet } from '@helpers/world';
 import type { MapGridData, MapTileData } from '@interfaces';
 
 /**
@@ -12,7 +12,7 @@ import type { MapGridData, MapTileData } from '@interfaces';
  * @param worldHeight World height in tiles
  * @returns Generated map grid data
  */
-export function generateMapGrid(
+export function mapGridGenerate(
   cameraX: number,
   cameraY: number,
   viewportWidth: number,
@@ -28,8 +28,8 @@ export function generateMapGrid(
     const tileRow: MapTileData[] = [];
 
     for (let x = 0; x < width; x++) {
-      const worldNode = getWorldNode(x + cameraX, y + cameraY);
-      const tileSprite = getSpriteForPosition(x + cameraX, y + cameraY);
+      const worldNode = worldNodeGet(x + cameraX, y + cameraY);
+      const tileSprite = spriteGetForPosition(x + cameraX, y + cameraY);
 
       tileRow.push({
         x,

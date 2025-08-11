@@ -7,13 +7,13 @@ import { InventoryGridContainerComponent } from '@components/inventory-grid-cont
 import { MarkerCurrencyComponent } from '@components/marker-currency/marker-currency.component';
 import { PanelTownBuildingUpgradeComponent } from '@components/panel-town-building-upgrade/panel-town-building-upgrade.component';
 import {
-  maxSalvagerItems,
-  multiItemSalvageCurrencyGain,
+  analyticsSendDesignEvent,
+  droppableSortedRarityList,
   notifySuccess,
-  salvageItems,
-  sendDesignEvent,
+  salvagerItemsMax,
+  salvagerMultiItemSalvageCurrencyGain,
+  salvagerSalvageItems,
 } from '@helpers';
-import { sortedRarityList } from '@helpers/item';
 import { gamestate } from '@helpers/state-game';
 import type { EquipmentItem, GameCurrency } from '@interfaces';
 import { TeleportDirective } from '@ngneat/overview';
@@ -42,7 +42,7 @@ export class PanelTownSalvagerComponent {
     this.selectedItems().map((i) => i.id),
   );
 
-  public maxSlots = computed(() => maxSalvagerItems());
+  public maxSlots = computed(() => salvagerItemsMax());
 
   public hasAnyItems = computed(
     () => this.selectedItems().filter(Boolean).length > 0,
@@ -50,10 +50,9 @@ export class PanelTownSalvagerComponent {
 
   public earnings = computed(
     () =>
-      Object.entries(multiItemSalvageCurrencyGain(this.selectedItems())) as [
-        GameCurrency,
-        number,
-      ][],
+      Object.entries(
+        salvagerMultiItemSalvageCurrencyGain(this.selectedItems()),
+      ) as [GameCurrency, number][],
   );
 
   chooseItem(item: EquipmentItem) {
@@ -72,10 +71,10 @@ export class PanelTownSalvagerComponent {
 
   breakItems() {
     this.selectedItems().forEach((item) =>
-      sendDesignEvent(`Game:Town:Salvager:Break:${item.name}`),
+      analyticsSendDesignEvent(`Game:Town:Salvager:Break:${item.name}`),
     );
 
-    salvageItems(this.selectedItems());
+    salvagerSalvageItems(this.selectedItems());
     notifySuccess(`You salvaged ${this.selectedItems().length} items!`);
 
     this.selectedItems.set([]);
@@ -86,7 +85,7 @@ export class PanelTownSalvagerComponent {
     if (availableSlots <= 0) return;
 
     // Get all equipment items, sorted by rarity/level, excluding favorited items
-    const allItems = sortedRarityList<EquipmentItem>(
+    const allItems = droppableSortedRarityList<EquipmentItem>(
       gamestate().inventory.items.filter(
         (item) =>
           ['accessory', 'armor', 'trinket', 'weapon'].includes(item.__type) &&

@@ -5,12 +5,12 @@ import { MarkerStatComponent } from '@components/marker-stat/marker-stat.compone
 import { MarkerTraitComponent } from '@components/marker-trait/marker-trait.component';
 import {
   getEntry,
-  getItemElementMultiplier,
-  getItemEnchantLevel,
-  getItemSkills,
-  getItemStat,
-  getItemTalents,
-  getItemTraits,
+  itemElementMultiplier,
+  itemEnchantLevel,
+  itemSkills,
+  itemStat,
+  itemTalents,
+  itemTraits,
 } from '@helpers';
 import type { ElementBlock, GameElement, TalentContent } from '@interfaces';
 import {
@@ -37,17 +37,15 @@ export class StatsItemComponent {
   public allowHorizontalCollapseOfStatBlocks = input<boolean>(false);
 
   public enchantLevel = computed(() =>
-    getItemEnchantLevel(this.item() as EquipmentItem),
+    itemEnchantLevel(this.item() as EquipmentItem),
   );
 
-  public itemAura = computed(() => getItemStat(this.item(), 'Aura'));
-  public itemForce = computed(() => getItemStat(this.item(), 'Force'));
-  public itemHealth = computed(() => getItemStat(this.item(), 'Health'));
-  public itemSpeed = computed(() => getItemStat(this.item(), 'Speed'));
+  public itemAura = computed(() => itemStat(this.item(), 'Aura'));
+  public itemForce = computed(() => itemStat(this.item(), 'Force'));
+  public itemHealth = computed(() => itemStat(this.item(), 'Health'));
+  public itemSpeed = computed(() => itemStat(this.item(), 'Speed'));
 
-  public itemTraits = computed(() =>
-    getItemTraits(this.item() as EquipmentItem),
-  );
+  public itemTraits = computed(() => itemTraits(this.item() as EquipmentItem));
 
   public hasStats = computed(
     () =>
@@ -59,19 +57,19 @@ export class StatsItemComponent {
   );
 
   public talents = computed(() =>
-    getItemTalents(this.item() as EquipmentItem).map((t) => ({
+    itemTalents(this.item() as EquipmentItem).map((t) => ({
       ...t,
       name: getEntry<TalentContent>(t.talentId)?.name ?? t.talentId,
     })),
   );
 
-  public skills = computed(() => getItemSkills(this.item() as EquipmentItem));
+  public skills = computed(() => itemSkills(this.item() as EquipmentItem));
 
   public elementBoosts = computed(() =>
     (['Earth', 'Fire', 'Water', 'Air'] as GameElement[])
       .map((el) => ({
         element: el,
-        multiplier: getItemElementMultiplier(this.item(), el),
+        multiplier: itemElementMultiplier(this.item(), el),
       }))
       .filter((e) => e.multiplier !== 0),
   );

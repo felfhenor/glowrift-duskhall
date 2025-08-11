@@ -1,35 +1,32 @@
+import { currencyGainMultiple } from '@helpers/currency';
+import { skillInventoryRemove } from '@helpers/inventory-skill';
+import { townBuildingLevel } from '@helpers/town';
 import type { EquipmentSkill, GameCurrency } from '@interfaces';
-import { gainCurrency } from '@helpers/currency';
-import { removeSkillFromInventory } from '@helpers/inventory-skill';
-import { getBuildingLevel } from '@helpers/town';
 
-export function maxAlchemistSkills() {
-  return Math.floor(Math.min(15, 3 + getBuildingLevel('Alchemist') / 3));
+export function alchemistSkillsMax() {
+  return Math.floor(Math.min(15, 3 + townBuildingLevel('Alchemist') / 3));
 }
 
-export function salvageSkills(items: EquipmentSkill[]): void {
+export function alchemistSalvageSkills(items: EquipmentSkill[]): void {
   items.forEach((item) => {
-    salvageSkill(item);
+    alchemistSalvageSkill(item);
   });
 }
 
-export function salvageSkill(skill: EquipmentSkill): void {
-  removeSkillFromInventory(skill);
+export function alchemistSalvageSkill(skill: EquipmentSkill): void {
+  skillInventoryRemove(skill);
 
-  const currencyGain = skillSalvageCurrencyGain(skill);
-  Object.entries(currencyGain).forEach(([curr, amount]) => {
-    const currency = curr as GameCurrency;
-    gainCurrency(currency, amount);
-  });
+  const currenciesGain = alchemistSkillSalvageCurrencyGain(skill);
+  currencyGainMultiple(currenciesGain);
 }
 
-export function multiSkillSalvageCurrencyGain(
+export function alchemistMultiSkillSalvageCurrencyGain(
   skills: EquipmentSkill[],
 ): Partial<Record<GameCurrency, number>> {
   const result: Partial<Record<GameCurrency, number>> = {};
 
   skills.forEach((skill) => {
-    const currencies = skillSalvageCurrencyGain(skill);
+    const currencies = alchemistSkillSalvageCurrencyGain(skill);
     Object.entries(currencies).forEach(([curr, amount]) => {
       const currency = curr as GameCurrency;
 
@@ -44,7 +41,7 @@ export function multiSkillSalvageCurrencyGain(
   return result;
 }
 
-export function skillSalvageCurrencyGain(
+export function alchemistSkillSalvageCurrencyGain(
   skill: EquipmentSkill,
 ): Partial<Record<GameCurrency, number>> {
   const currencies: Partial<Record<GameCurrency, number>> = {};

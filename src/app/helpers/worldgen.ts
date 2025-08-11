@@ -4,28 +4,26 @@ import type { Signal } from '@angular/core';
 import { signal } from '@angular/core';
 import { getEntriesByType, getEntry } from '@helpers/content';
 import {
-  allItemDefinitions,
-  pickRandomItemDefinitionBasedOnRarity,
+  equipmentAllDefinitions,
+  equipmentPickRandomDefinitionByRarity,
 } from '@helpers/creator-equipment';
 import {
-  allSkillDefinitions,
-  pickRandomSkillDefinitionBasedOnRarity,
+  skillAllDefinitions,
+  skillPickRandomDefinitionByRarity,
 } from '@helpers/creator-skill';
+import { defaultNodeCountBlock, defaultWorldNode } from '@helpers/defaults';
+import { guardianCreateForLocation } from '@helpers/guardian';
+import { angleBetweenPoints, distanceBetweenNodes } from '@helpers/math';
+import { Quadtree } from '@helpers/quadtree';
 import {
-  getDefaultNodeCountBlock,
-  getDefaultWorldNode,
-} from '@helpers/defaults';
-import { createGuardianForLocation } from '@helpers/guardian';
-import { Quadtree, type QuadtreePoint } from '@helpers/quadtree';
-import {
-  gamerng,
-  randomChoice,
-  randomChoiceByRarity,
-  randomIdentifiableChoice,
-  randomNumberRange,
-  seededrng,
-  succeedsChance,
-  uuid,
+  rngChoice,
+  rngChoiceIdentifiable,
+  rngChoiceRarity,
+  rngGame,
+  rngNumberRange,
+  rngSeeded,
+  rngSucceedsChance,
+  rngUuid,
 } from '@helpers/rng';
 import { gamestate } from '@helpers/state-game';
 import {
@@ -33,8 +31,11 @@ import {
   locationTraitGuardianCountModifier,
   locationTraitLootCountModifier,
 } from '@helpers/trait-location-worldgen';
-import { distanceBetweenNodes } from '@helpers/travel';
-import type { DropRarity, TraitLocationContent } from '@interfaces';
+import type {
+  DropRarity,
+  QuadtreePoint,
+  TraitLocationContent,
+} from '@interfaces';
 import {
   type DroppableEquippable,
   type GameElement,
@@ -83,29 +84,13 @@ function fillEmptySpaceWithEmptyNodes(
       if (nodes[`${x},${y}`]) continue;
 
       nodes[`${x},${y}`] = {
-        ...getDefaultWorldNode(x, y),
+        ...defaultWorldNode(x, y),
       };
     }
   }
 }
 
-export function getAngleBetweenPoints(
-  center: WorldPosition,
-  check: WorldPosition,
-): number {
-  function rad2deg(radians: number) {
-    return (radians * 180) / Math.PI;
-  }
-
-  let angle = rad2deg(Math.atan2(check.y - center.y, check.x - center.x));
-  if (angle < 0) {
-    angle += 360;
-  }
-
-  return angle;
-}
-
-export function getElementsForCardinalDirection(
+export function elementsForCardinalDirection(
   dir: Compass.CardinalDirection,
 ): Array<{ element: GameElement; multiplier: number }> {
   const FULL = 1;
@@ -204,10 +189,10 @@ function addTraitsToLocations(nodes: Record<string, WorldLocation>, rng: PRNG) {
   Object.values(nodes).forEach((node) => {
     if (!node.nodeType) return;
 
-    if (!succeedsChance(30)) return;
+    if (!rngSucceedsChance(30)) return;
 
     const traits = getEntriesByType<TraitLocationContent>('traitlocation');
-    const chosenTrait = randomChoiceByRarity(traits, rng);
+    const chosenTrait = rngChoiceRarity(traits, rng);
     if (chosenTrait) {
       node.traitIds = [chosenTrait.id];
     }
@@ -232,12 +217,12 @@ function addElementsToWorld(
     if (node.elements.length > 0) return;
 
     const cardinality = Compass.cardinalFromDegree(
-      getAngleBetweenPoints(centerPosition, node),
+      angleBetweenPoints(centerPosition, node),
       Compass.CardinalSubset.Intercardinal,
     );
 
     // sometimes we lie to typescript because other people have bad typings
-    const elements = getElementsForCardinalDirection(
+    const elements = elementsForCardinalDirection(
       Compass.CardinalDirection[
         cardinality as unknown as number
       ] as unknown as Compass.CardinalDirection,
@@ -369,21 +354,17 @@ function addCornerNodes(
           { rarity: 'Mystical', type: 'castle' },
         ];
 
-        const chosenNode = randomChoiceByRarity(nodeTypesWithRarities, rng);
+        const chosenNode = rngChoiceRarity(nodeTypesWithRarities, rng);
         const nodeType = chosenNode!.type;
 
         // Pick random empty position in this corner
-        const positionIndex = randomNumberRange(
-          0,
-          emptyPositions.length - 1,
-          rng,
-        );
+        const positionIndex = rngNumberRange(0, emptyPositions.length - 1, rng);
         const position = emptyPositions.splice(positionIndex, 1)[0];
 
         // Create the node
         const cornerNode: WorldLocation = {
-          ...getDefaultWorldNode(),
-          id: uuid(),
+          ...defaultWorldNode(),
+          id: rngUuid(),
           x: position.x,
           y: position.y,
           nodeType,
@@ -406,12 +387,12 @@ function cleanUpEmptyNodes(nodes: Record<string, WorldLocation>): void {
   });
 }
 
-export async function generateWorld(
+export async function worldgenGenerateWorld(
   config: WorldConfigContent,
 ): Promise<GameStateWorld & { didFinish?: boolean }> {
   setWorldGenStatus('Initializing world generation...');
 
-  const rng = gamerng();
+  const rng = rngGame();
 
   const nodes: Record<string, WorldLocation> = {};
   const nodeList: WorldLocation[] = [];
@@ -434,8 +415,8 @@ export async function generateWorld(
   };
 
   const firstTown: WorldLocation = {
-    ...getDefaultWorldNode(),
-    id: uuid(),
+    ...defaultWorldNode(),
+    id: rngUuid(),
     x: Math.floor(config.width / 2),
     y: Math.floor(config.height / 2),
     nodeType: 'town',
@@ -490,7 +471,7 @@ export async function generateWorld(
 
     if (freeNodes.length === 0) return { x: -1, y: -1 };
 
-    const chosenNode = randomChoice<QuadtreePoint>(freeNodes, rng);
+    const chosenNode = rngChoice<QuadtreePoint>(freeNodes, rng);
     return { x: chosenNode.x, y: chosenNode.y };
   };
 
@@ -502,7 +483,7 @@ export async function generateWorld(
   };
 
   setWorldGenStatus('Generating world...');
-  const counts: Record<LocationType, number> = getDefaultNodeCountBlock();
+  const counts: Record<LocationType, number> = defaultNodeCountBlock();
   counts.town++;
 
   const minCavesNearStart = [
@@ -530,7 +511,7 @@ export async function generateWorld(
   // set up starter caves
   const starterCaves: WorldGenNode[] = minCavesNearStart.flatMap(
     (caveConfig) => {
-      const nodeCount = randomNumberRange(
+      const nodeCount = rngNumberRange(
         caveConfig.minNodes,
         caveConfig.maxNodes,
         rng,
@@ -540,8 +521,8 @@ export async function generateWorld(
         .fill(undefined)
         .map((_, i) => {
           const node: WorldLocation = {
-            ...getDefaultWorldNode(),
-            id: uuid(),
+            ...defaultWorldNode(),
+            id: rngUuid(),
             x: -1,
             y: -1,
             nodeType: 'cave',
@@ -566,7 +547,7 @@ export async function generateWorld(
   // set up non-starter nodes
   const chosenConfigs = Object.keys(config.nodeCount).map((key) => {
     const count = config.nodeCount[key as LocationType];
-    const nodeCount = randomNumberRange(count.min, count.max, rng);
+    const nodeCount = rngNumberRange(count.min, count.max, rng);
 
     return { nodeType: key as LocationType, nodeCount };
   });
@@ -581,8 +562,8 @@ export async function generateWorld(
         .fill(nodeType)
         .map((nodeType, i) => {
           const node: WorldLocation = {
-            ...getDefaultWorldNode(),
-            id: uuid(),
+            ...defaultWorldNode(),
+            id: rngUuid(),
             x: -1,
             y: -1,
             nodeType,
@@ -670,36 +651,36 @@ export async function generateWorld(
       y: firstTown.y,
     },
     nodeCounts: counts,
-    claimedCounts: getDefaultNodeCountBlock(),
+    claimedCounts: defaultNodeCountBlock(),
   };
 }
 
 function populateLocationWithLoot(location: WorldLocation): void {
   if (location.currentlyClaimed) return;
 
-  location.claimLootIds = getLootForLocation(location).map((i) => i.id);
+  location.claimLootIds = worldgenLootForLocation(location).map((i) => i.id);
 }
 
-export function getLootForLocation(
+export function worldgenLootForLocation(
   location: WorldLocation,
 ): DroppableEquippable[] {
-  const allValidItemDefinitions = allItemDefinitions().filter(
+  const allValidItemDefinitions = equipmentAllDefinitions().filter(
     (d) => d.dropLevel <= location.encounterLevel,
   );
 
-  const allValidSkillDefinitions = allSkillDefinitions().filter(
+  const allValidSkillDefinitions = skillAllDefinitions().filter(
     (d) => d.dropLevel <= location.encounterLevel,
   );
 
-  const rng = seededrng(
+  const rng = rngSeeded(
     `$${gamestate().gameId}-${location.id}-${location.claimCount}`,
   );
   const numLoot = numLootForLocation(location);
   return Array.from({ length: numLoot }, () => {
-    return randomChoice(
+    return rngChoice(
       [
-        pickRandomItemDefinitionBasedOnRarity(allValidItemDefinitions, rng),
-        pickRandomSkillDefinitionBasedOnRarity(allValidSkillDefinitions, rng),
+        equipmentPickRandomDefinitionByRarity(allValidItemDefinitions, rng),
+        skillPickRandomDefinitionByRarity(allValidSkillDefinitions, rng),
       ],
       rng,
     );
@@ -726,19 +707,19 @@ function populateLocationWithGuardians(
 ): void {
   if (location.currentlyClaimed) return;
 
-  location.guardianIds = getGuardiansForLocation(
+  location.guardianIds = worldgenGuardiansForLocation(
     location,
     worldCenter,
     maxDistance,
   ).map((i) => i.id);
 }
 
-export function getGuardiansForLocation(
+export function worldgenGuardiansForLocation(
   location: WorldLocation,
   worldCenter?: WorldPosition,
   maxDistance?: number,
 ): Guardian[] {
-  const rng = seededrng(
+  const rng = rngSeeded(
     `$${gamestate().gameId}-${location.id}-${location.claimCount}`,
   );
 
@@ -752,14 +733,14 @@ export function getGuardiansForLocation(
     maxDistance,
   );
   const guardians = Array.from({ length: numGuardians }, () => {
-    const randomGuardianDataId = randomIdentifiableChoice<GuardianContent>(
+    const randomGuardianDataId = rngChoiceIdentifiable<GuardianContent>(
       validGuardians,
       rng,
     );
     const randomGuardianData = getEntry<GuardianContent>(randomGuardianDataId);
     if (!randomGuardianData) return undefined;
 
-    return createGuardianForLocation(location, randomGuardianData);
+    return guardianCreateForLocation(location, randomGuardianData);
   }).filter(Boolean) as Guardian[];
 
   return guardians;

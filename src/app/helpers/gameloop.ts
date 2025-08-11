@@ -1,13 +1,13 @@
 import { LoggerTimer } from 'logger-timer';
 
 import { computed } from '@angular/core';
-import { autoTravelGameloop } from '@helpers/gameloop-autotravel';
-import { currencyGameloop } from '@helpers/gameloop-currency';
-import { exploreGameloop } from '@helpers/gameloop-explore';
-import { festivalGameloop } from '@helpers/gameloop-festival';
+import { gameloopAutoTravel } from '@helpers/gameloop-autotravel';
+import { gameloopCurrency } from '@helpers/gameloop-currency';
+import { gameloopExplore } from '@helpers/gameloop-explore';
+import { gameloopFestival } from '@helpers/gameloop-festival';
 import { gameloopTimers } from '@helpers/gameloop-timers';
-import { townGameloop } from '@helpers/gameloop-town';
-import { travelGameloop } from '@helpers/gameloop-travel';
+import { gameloopTown } from '@helpers/gameloop-town';
+import { gameloopTravel } from '@helpers/gameloop-travel';
 import { debug } from '@helpers/logging';
 import { isSetup } from '@helpers/setup';
 import {
@@ -17,25 +17,22 @@ import {
   updateGamestate,
 } from '@helpers/state-game';
 import { getOption, setOption } from '@helpers/state-options';
-import {
-  areAllNodesClaimed,
-  hasWonForFirstTime,
-  winGame,
-} from '@helpers/world';
+import { victoryClaim, victoryHasWonForFirstTime } from '@helpers/victory';
+import { worldNodeAreAllClaimed } from '@helpers/world';
 
 export const isGameloopPaused = computed(() => getOption('gameloopPaused'));
 
-export function canRunGameloop(): boolean {
+export function gameloopShouldRun(): boolean {
   return window.location.toString().includes('/game');
 }
 
-export function doGameloop(totalTicks: number): void {
+export function gameloop(totalTicks: number): void {
   if (!isSetup()) return;
   if (!isGameStateReady()) return;
   if (isGameloopPaused()) return;
 
-  if (areAllNodesClaimed() && !hasWonForFirstTime()) {
-    winGame();
+  if (worldNodeAreAllClaimed() && !victoryHasWonForFirstTime()) {
+    victoryClaim();
     setOption('gameloopPaused', true);
     return;
   }
@@ -52,27 +49,27 @@ export function doGameloop(totalTicks: number): void {
   timer.startTimer('gameloop');
 
   timer.startTimer('gameloop-autotravel');
-  autoTravelGameloop();
+  gameloopAutoTravel();
   timer.stopTimer('gameloop-autotravel');
 
   timer.startTimer('gameloop-currency');
-  currencyGameloop(numTicks);
+  gameloopCurrency(numTicks);
   timer.stopTimer('gameloop-currency');
 
   timer.startTimer('gameloop-town');
-  townGameloop(numTicks);
+  gameloopTown(numTicks);
   timer.stopTimer('gameloop-town');
 
   timer.startTimer('gameloop-travel');
-  travelGameloop(numTicks);
+  gameloopTravel(numTicks);
   timer.stopTimer('gameloop-travel');
 
   timer.startTimer('gameloop-explore');
-  exploreGameloop(numTicks);
+  gameloopExplore(numTicks);
   timer.stopTimer('gameloop-explore');
 
   timer.startTimer('gameloop-festival');
-  festivalGameloop(numTicks);
+  gameloopFestival(numTicks);
   timer.stopTimer('gameloop-festival');
 
   timer.startTimer('gameloop-timers');

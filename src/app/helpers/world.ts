@@ -1,24 +1,24 @@
 import { getEntry } from '@helpers/content';
 import {
-  getCurrencyClaimsForNode,
-  mergeCurrencyClaims,
+  currencyClaimsGetForNode,
+  currencyClaimsMerge,
 } from '@helpers/currency';
-import { getDefaultWorldNode } from '@helpers/defaults';
-import { updateDiscordStatus } from '@helpers/discord';
-import {
-  gainDroppableItem,
-  makeDroppableIntoRealItem,
-} from '@helpers/droppable';
-import { addItemElement, isEquipment } from '@helpers/item';
+import { defaultWorldNode } from '@helpers/defaults';
+import { discordUpdateStatus } from '@helpers/discord';
+import { droppableGain, droppableMakeReal } from '@helpers/droppable';
+import { itemElementAdd, itemIsEquipment } from '@helpers/item';
+import { distanceBetweenNodes } from '@helpers/math';
 import { notify } from '@helpers/notify';
 import { gamestate, updateGamestate } from '@helpers/state-game';
-import { addTimerAndAction, getRegisterTick } from '@helpers/timer';
-import { distanceBetweenNodes } from '@helpers/travel';
+import { timerActionAdd, timerGetRegisterTick } from '@helpers/timer';
 import {
-  notifyNodeClaimed,
-  notifyNodeUnclaimed,
+  worldNotifyClaim,
+  worldNotifyUnclaimed,
 } from '@helpers/world-change-notifications';
-import { getGuardiansForLocation, getLootForLocation } from '@helpers/worldgen';
+import {
+  worldgenGuardiansForLocation,
+  worldgenLootForLocation,
+} from '@helpers/worldgen';
 import type {
   DropRarity,
   DroppableEquippable,
@@ -49,7 +49,7 @@ const RARITY_PRIORITY: Record<DropRarity, number> = {
  * @param location World location with loot IDs
  * @returns Highest rarity found, or null if no loot items
  */
-export function getHighestLootRarity(
+export function worldNodeGetHighestLootRarity(
   location: WorldLocation,
 ): DropRarity | null {
   if (!location.claimLootIds.length) return null;
@@ -97,39 +97,39 @@ export function setWorld(world: GameStateWorld): void {
   });
 }
 
-export function getWorldNode(
+export function worldNodeGet(
   x: number,
   y: number,
   state = gamestate(),
 ): WorldLocation {
-  return state.world.nodes[`${x},${y}`] ?? getDefaultWorldNode(x, y);
+  return state.world.nodes[`${x},${y}`] ?? defaultWorldNode(x, y);
 }
 
-export function getCurrentWorldNode(
+export function worldNodeGetCurrent(
   state = gamestate(),
 ): WorldLocation | undefined {
   const currentPosition = state.hero.position;
-  return getWorldNode(currentPosition.x, currentPosition.y);
+  return worldNodeGet(currentPosition.x, currentPosition.y);
 }
 
-export function getAllNodes(): WorldLocation[] {
+export function worldNodeGetAll(): WorldLocation[] {
   return Object.values(gamestate().world.nodes);
 }
 
-export function getAllNodesInOrderOfCloseness(
+export function worldNodeGetInOrderOfCloseness(
   node: WorldLocation,
 ): WorldLocation[] {
-  const nodes = getAllNodes();
+  const nodes = worldNodeGetAll();
   return sortBy(nodes, (n) => distanceBetweenNodes(node, n)).filter(
     (n) => n.nodeType && n.id !== node.id,
   );
 }
 
-export function getNearestTown(position: {
+export function worldGetNearestTown(position: {
   x: number;
   y: number;
 }): WorldLocation | undefined {
-  const allNodes = getAllNodes();
+  const allNodes = worldNodeGetAll();
   const towns = allNodes.filter(
     (node) => node.nodeType === 'town' && node.currentlyClaimed,
   );
@@ -138,16 +138,16 @@ export function getNearestTown(position: {
   return sortBy(towns, (town) => distanceBetweenNodes(position, town))[0];
 }
 
-export function getClosestUnclaimedClaimableNode(
+export function worldGetClosestUnclaimedClaimableNode(
   node: WorldLocation,
-  nodes = getAllNodesInOrderOfCloseness(node),
+  nodes = worldNodeGetInOrderOfCloseness(node),
 ): WorldLocation {
   return nodes.filter((n) => !n.currentlyClaimed)[0];
 }
 
-export function getNodesMatchingHeroPreferences(
+export function worldGetNodesMatchingPreferences(
   node: WorldLocation,
-  nodes = getAllNodesInOrderOfCloseness(node),
+  nodes = worldNodeGetInOrderOfCloseness(node),
 ): WorldLocation[] {
   const riskTolerance = gamestate().hero.riskTolerance;
   const heroLevel = gamestate().hero.heroes[0].level;
@@ -165,14 +165,14 @@ export function getNodesMatchingHeroPreferences(
     if (!locationTypePreferences[n.nodeType!]) return false;
 
     // Check if the node has loot that matches our rarity preferences
-    const highestRarity = getHighestLootRarity(n);
+    const highestRarity = worldNodeGetHighestLootRarity(n);
     if (highestRarity && !lootRarityPreferences[highestRarity]) return false;
 
     return true;
   });
 
   const sortedByRarity = sortBy(viableNodes, (n) => {
-    const highestRarity = getHighestLootRarity(n);
+    const highestRarity = worldNodeGetHighestLootRarity(n);
     return isNumber(highestRarity) ? RARITY_PRIORITY[highestRarity] : -1;
   });
 
@@ -183,38 +183,38 @@ export function getNodesMatchingHeroPreferences(
   });
 }
 
-export function getClaimedNodes(): WorldLocation[] {
-  return getAllNodes().filter((n) => n.currentlyClaimed);
+export function worldGetClaimedNodes(): WorldLocation[] {
+  return worldNodeGetAll().filter((n) => n.currentlyClaimed);
 }
 
-export function gainNodeRewards(node: WorldLocation): void {
+export function worldNodeRewardsGain(node: WorldLocation): void {
   notify(`You have claimed ${node.name}!`, 'LocationClaim');
 
   node.claimLootIds.forEach((lootDefId) => {
     const lootDef = getEntry<DroppableEquippable>(lootDefId);
     if (!lootDef) return;
 
-    const created = makeDroppableIntoRealItem(lootDef);
+    const created = droppableMakeReal(lootDef);
 
-    if (isEquipment(created)) {
+    if (itemIsEquipment(created)) {
       node.elements.forEach((el) => {
-        addItemElement(created, el);
+        itemElementAdd(created, el);
       });
     }
 
-    gainDroppableItem(created);
+    droppableGain(created);
   });
 
-  claimNode(node);
+  worldNodeClaim(node);
 }
 
-export function claimNode(node: WorldLocation): void {
-  const claims = getCurrencyClaimsForNode(node);
-  mergeCurrencyClaims(claims);
+export function worldNodeClaim(node: WorldLocation): void {
+  const claims = currencyClaimsGetForNode(node);
+  currencyClaimsMerge(claims);
 
   const claimDuration = (100 - node.encounterLevel) * 25;
   if (node.nodeType !== 'town') {
-    addTimerAndAction(
+    timerActionAdd(
       {
         location: {
           x: node.x,
@@ -227,7 +227,7 @@ export function claimNode(node: WorldLocation): void {
   }
 
   updateGamestate((state) => {
-    const updateNodeData = getWorldNode(node.x, node.y, state);
+    const updateNodeData = worldNodeGet(node.x, node.y, state);
     if (updateNodeData) {
       updateNodeData.claimCount++;
       updateNodeData.currentlyClaimed = true;
@@ -235,7 +235,7 @@ export function claimNode(node: WorldLocation): void {
       updateNodeData.claimLootIds = [];
 
       if (updateNodeData.nodeType !== 'town') {
-        updateNodeData.unclaimTime = getRegisterTick(claimDuration);
+        updateNodeData.unclaimTime = timerGetRegisterTick(claimDuration);
       }
 
       if (updateNodeData.nodeType) {
@@ -243,17 +243,17 @@ export function claimNode(node: WorldLocation): void {
       }
 
       // Notify about the node change for surgical map updates
-      notifyNodeClaimed(updateNodeData);
+      worldNotifyClaim(updateNodeData);
     }
 
     return state;
   });
 
-  updateDiscordStatus();
+  discordUpdateStatus();
 }
 
-export function unclaimNode(node: WorldLocation): void {
-  const claims = getCurrencyClaimsForNode(node);
+export function worldNodeUnclaim(node: WorldLocation): void {
+  const claims = currencyClaimsGetForNode(node);
   Object.keys(claims).forEach(
     (currencyKey) =>
       (claims[currencyKey as GameCurrency] =
@@ -262,16 +262,16 @@ export function unclaimNode(node: WorldLocation): void {
 
   notify(`${node.name} was lost!`, 'LocationClaim');
 
-  mergeCurrencyClaims(claims);
+  currencyClaimsMerge(claims);
 
   updateGamestate((state) => {
-    const updateNodeData = getWorldNode(node.x, node.y, state);
+    const updateNodeData = worldNodeGet(node.x, node.y, state);
     if (updateNodeData) {
       updateNodeData.currentlyClaimed = false;
-      updateNodeData.guardianIds = getGuardiansForLocation(updateNodeData).map(
-        (i) => i.id,
-      );
-      updateNodeData.claimLootIds = getLootForLocation(updateNodeData).map(
+      updateNodeData.guardianIds = worldgenGuardiansForLocation(
+        updateNodeData,
+      ).map((i) => i.id);
+      updateNodeData.claimLootIds = worldgenLootForLocation(updateNodeData).map(
         (i) => i.id,
       );
       updateNodeData.unclaimTime = 0;
@@ -281,32 +281,27 @@ export function unclaimNode(node: WorldLocation): void {
       }
 
       // Notify about the node change for surgical map updates
-      notifyNodeUnclaimed(updateNodeData);
+      worldNotifyUnclaimed(updateNodeData);
     }
 
     return state;
   });
 
-  updateDiscordStatus();
+  discordUpdateStatus();
 }
 
-export function getClaimedNodeTypeCount(type: LocationType): number {
+export function worldNodeGetClaimedByType(type: LocationType): number {
   return gamestate().world.claimedCounts[type] ?? 0;
 }
 
-export function hasClaimedNodeCount(
+export function worldNodeHasClaimedCount(
   type: LocationType,
   needed: number,
 ): boolean {
-  return getClaimedNodeTypeCount(type) >= needed;
+  return worldNodeGetClaimedByType(type) >= needed;
 }
 
-export function hasWonForFirstTime(): boolean {
-  const { hasDismissedWinNotification, hasWon } = gamestate().meta;
-  return hasWon && hasDismissedWinNotification;
-}
-
-export function areAllNodesClaimed(): boolean {
+export function worldNodeAreAllClaimed(): boolean {
   const { nodeCounts, claimedCounts } = gamestate().world;
 
   return Object.keys(nodeCounts).every(
@@ -315,29 +310,14 @@ export function areAllNodesClaimed(): boolean {
   );
 }
 
-export function dismissWinGameDialog(): void {
-  updateGamestate((state) => {
-    state.meta.hasDismissedWinNotification = true;
-    return state;
-  });
-}
-
-export function winGame(): void {
-  updateGamestate((state) => {
-    state.meta.hasWon = true;
-    state.meta.wonAtTick = state.actionClock.numTicks;
-    return state;
-  });
-}
-
-export function clearNodesTooHardForHeroes(): void {
+export function worldNodeTooHardClear(): void {
   updateGamestate((state) => {
     state.hero.tooHardNodes = [];
     return state;
   });
 }
 
-export function addTooHardNode(nodeId: string): void {
+export function worldNodeAddTooHard(nodeId: string): void {
   updateGamestate((state) => {
     if (!state.hero.tooHardNodes.includes(nodeId)) {
       state.hero.tooHardNodes.push(nodeId);

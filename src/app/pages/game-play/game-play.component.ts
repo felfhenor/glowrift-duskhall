@@ -11,7 +11,6 @@ import { PanelOptionsComponent } from '@components/panel-options/panel-options.c
 import { PanelTownComponent } from '@components/panel-town/panel-town.component';
 
 import {
-  dismissWinGameDialog,
   gamestate,
   isCatchingUp,
   showCombatMenu,
@@ -20,6 +19,7 @@ import {
   showLocationMenu,
   showOptionsMenu,
   showTownMenu,
+  victoryDismissWinDialog,
 } from '@helpers';
 
 @Component({
@@ -54,6 +54,6 @@ export class GamePlayComponent {
   public winTicks = computed(() => gamestate().meta.wonAtTick);
 
   continuePlayingPostWin() {
-    dismissWinGameDialog();
+    victoryDismissWinDialog();
   }
 }

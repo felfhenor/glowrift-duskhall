@@ -8,7 +8,7 @@ import {
   blankGameState,
   gamestate,
   setGameState,
-  totalTicksElapsed,
+  timerTicksElapsed,
 } from '@helpers';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
@@ -29,7 +29,7 @@ export class PanelOptionsSavefileComponent {
   private router = inject(Router);
 
   public startedAt = computed(() => gamestate().meta.createdAt);
-  public numTicks = computed(() => totalTicksElapsed());
+  public numTicks = computed(() => timerTicksElapsed());
   public wonAtTick = computed(() => gamestate().meta.wonAtTick);
 
   async deleteSavefile() {

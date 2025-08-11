@@ -7,7 +7,7 @@ import { Assets, Rectangle, Texture } from 'pixi.js';
  * @param atlasData Atlas data containing sprite coordinates
  * @returns Object containing loaded textures keyed by sprite name
  */
-export async function loadTexturesFromAtlas(
+export async function pixiTextureAtlasLoad(
   spritesheetPath: string,
   atlasData: TextureAtlas,
 ): Promise<LoadedTextures> {
@@ -39,7 +39,7 @@ export async function loadTexturesFromAtlas(
  * @param objectAtlasData Atlas data for object sprites
  * @returns Object containing both terrain and object textures
  */
-export async function loadGameMapTextures(
+export async function pixiTextureGameMapLoad(
   terrainAtlasData: TextureAtlas,
   objectAtlasData: TextureAtlas,
 ): Promise<{
@@ -47,14 +47,11 @@ export async function loadGameMapTextures(
   objectTextures: LoadedTextures;
 }> {
   const [terrainTextures, objectTextures] = await Promise.all([
-    loadTexturesFromAtlas(
+    pixiTextureAtlasLoad(
       'art/spritesheets/world-terrain.webp',
       terrainAtlasData,
     ),
-    loadTexturesFromAtlas(
-      'art/spritesheets/world-object.webp',
-      objectAtlasData,
-    ),
+    pixiTextureAtlasLoad('art/spritesheets/world-object.webp', objectAtlasData),
   ]);
 
   return { terrainTextures, objectTextures };
@@ -67,7 +64,7 @@ export async function loadGameMapTextures(
  * @param size Size of the icon in pixels
  * @returns PIXI Texture
  */
-export function createIconTexture(
+export function pixiTexdtureClaimCreate(
   iconText: string,
   color: string = '#ffffff',
   size: number = 20,
@@ -95,12 +92,12 @@ export function createIconTexture(
  * Creates check and X textures for claim indicators
  * @returns Object with check and X textures
  */
-export function createClaimIndicatorTextures(): {
+export function pixiIconTextureClaimCreate(): {
   checkTexture: Texture;
   xTexture: Texture;
 } {
   return {
-    checkTexture: createIconTexture('✓', '#16a34a', 20),
-    xTexture: createIconTexture('✗', '#dc2626', 20),
+    checkTexture: pixiTexdtureClaimCreate('✓', '#16a34a', 20),
+    xTexture: pixiTexdtureClaimCreate('✗', '#dc2626', 20),
   };
 }

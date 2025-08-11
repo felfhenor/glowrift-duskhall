@@ -5,7 +5,7 @@ import type {
   WorldLocation,
 } from '@interfaces';
 
-export function createGuardianForLocation(
+export function guardianCreateForLocation(
   location: WorldLocation,
   guardianData: GuardianContent,
 ): Guardian {

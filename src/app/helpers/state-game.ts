@@ -1,15 +1,15 @@
 import type { Signal } from '@angular/core';
 import { signal } from '@angular/core';
 import {
-  getDefaultCurrencyBlock,
-  getDefaultHero,
-  getDefaultLootRarityPreferences,
-  getDefaultNodeCountBlock,
-  getDefaultNodeTypePreferences,
-  getDefaultPosition,
-  getDefaultWorldConfig,
+  defaultCurrencyBlock,
+  defaultHero,
+  defaultLootRarityPreferences,
+  defaultNodeCountBlock,
+  defaultNodeTypePreferences,
+  defaultPosition,
+  defaultWorldConfig,
 } from '@helpers/defaults';
-import { uuid } from '@helpers/rng';
+import { rngUuid } from '@helpers/rng';
 import { localStorageSignal } from '@helpers/signal';
 import { type GameId, type GameState } from '@interfaces';
 
@@ -24,33 +24,33 @@ export function blankGameState(): GameState {
       hasWon: false,
       wonAtTick: 0,
     },
-    gameId: uuid() as GameId,
+    gameId: rngUuid() as GameId,
     world: {
-      config: getDefaultWorldConfig(),
+      config: defaultWorldConfig(),
       nodes: {},
-      homeBase: getDefaultPosition(),
-      nodeCounts: getDefaultNodeCountBlock(),
-      claimedCounts: getDefaultNodeCountBlock(),
+      homeBase: defaultPosition(),
+      nodeCounts: defaultNodeCountBlock(),
+      claimedCounts: defaultNodeCountBlock(),
     },
-    camera: getDefaultPosition(),
+    camera: defaultPosition(),
     hero: {
       respawnTicks: 0,
       riskTolerance: 'medium',
-      nodeTypePreferences: getDefaultNodeTypePreferences(),
-      lootRarityPreferences: getDefaultLootRarityPreferences(),
+      nodeTypePreferences: defaultNodeTypePreferences(),
+      lootRarityPreferences: defaultLootRarityPreferences(),
       heroes: [
-        getDefaultHero({ name: 'Ignatius', sprite: '0004' }),
-        getDefaultHero({ name: 'Aquara', sprite: '0000' }),
-        getDefaultHero({ name: 'Zephyra', sprite: '0036' }),
-        getDefaultHero({ name: 'Terrus', sprite: '0060' }),
+        defaultHero({ name: 'Ignatius', sprite: '0004' }),
+        defaultHero({ name: 'Aquara', sprite: '0000' }),
+        defaultHero({ name: 'Zephyra', sprite: '0036' }),
+        defaultHero({ name: 'Terrus', sprite: '0060' }),
       ],
       position: {
         nodeId: '',
-        ...getDefaultPosition(),
+        ...defaultPosition(),
       },
       travel: {
         nodeId: '',
-        ...getDefaultPosition(),
+        ...defaultPosition(),
         ticksLeft: 0,
       },
       location: {
@@ -64,8 +64,8 @@ export function blankGameState(): GameState {
       skills: [],
     },
     currency: {
-      currencyPerTickEarnings: getDefaultCurrencyBlock(),
-      currencies: getDefaultCurrencyBlock(),
+      currencyPerTickEarnings: defaultCurrencyBlock(),
+      currencies: defaultCurrencyBlock(),
     },
     actionClock: {
       numTicks: 0,

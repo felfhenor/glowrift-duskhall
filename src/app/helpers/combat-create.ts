@@ -1,13 +1,13 @@
 import { getEntry } from '@helpers/content';
-import { getDefaultAffinities, getDefaultStats } from '@helpers/defaults';
-import { createGuardianForLocation } from '@helpers/guardian';
+import { defaultAffinities, defaultStats } from '@helpers/defaults';
+import { guardianCreateForLocation } from '@helpers/guardian';
 import { allHeroes } from '@helpers/hero';
 import { heroEquipmentSkills } from '@helpers/hero-skills';
 import { heroElements } from '@helpers/hero-stats';
-import { getFullHeroTalentHash } from '@helpers/hero-talent';
-import { uuid } from '@helpers/rng';
-import { makeSkillForHero } from '@helpers/skill';
-import { allHeroTalents, combineTalentsIntoCombatStats } from '@helpers/talent';
+import { heroFullTalentHash } from '@helpers/hero-talent';
+import { rngUuid } from '@helpers/rng';
+import { skillCreateForHero } from '@helpers/skill';
+import { talentCombineIntoCombatStats, talentsForHero } from '@helpers/talent';
 import { locationTraitCombatElementPercentageModifier } from '@helpers/trait-location-combat';
 import type {
   Combat,
@@ -21,7 +21,7 @@ import type {
   WorldLocation,
 } from '@interfaces';
 
-export function generateCombatForLocation(location: WorldLocation): Combat {
+export function combatGenerateForLocation(location: WorldLocation): Combat {
   const heroes: Combatant[] = allHeroes().map((h) => ({
     id: h.id,
     name: h.name,
@@ -30,7 +30,7 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
     targettingType: h.targettingType,
 
     baseStats: structuredClone(h.baseStats),
-    statBoosts: getDefaultStats(),
+    statBoosts: defaultStats(),
     totalStats: structuredClone(h.totalStats),
     hp: h.hp,
     level: h.level,
@@ -38,18 +38,18 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
     frames: h.frames,
     skillIds: ['Attack' as EquipmentSkillId, ...heroEquipmentSkills(h)],
     skillRefs: structuredClone(
-      h.skills.filter(Boolean).map((s) => makeSkillForHero(h, s!)),
+      h.skills.filter(Boolean).map((s) => skillCreateForHero(h, s!)),
     ) as EquipmentSkill[],
 
-    talents: getFullHeroTalentHash(h),
-    combatStats: combineTalentsIntoCombatStats(allHeroTalents(h)),
+    talents: heroFullTalentHash(h),
+    combatStats: talentCombineIntoCombatStats(talentsForHero(h)),
 
     affinity: {
       ...heroElements(h),
     },
 
     resistance: {
-      ...getDefaultAffinities(),
+      ...defaultAffinities(),
     },
 
     skillUses: {},
@@ -60,7 +60,7 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
   const guardians: Combatant[] = location.guardianIds
     .map((g) => getEntry<Guardian>(g)!)
     .filter(Boolean)
-    .map((g) => createGuardianForLocation(location, g))
+    .map((g) => guardianCreateForLocation(location, g))
     .map((g, i) => ({
       id: g.id,
       name: `${g.name} Lv.${location.encounterLevel} [${String.fromCharCode(i + 65)}]`,
@@ -69,7 +69,7 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
       targettingType: g.targettingType,
 
       baseStats: structuredClone(g.stats),
-      statBoosts: getDefaultStats(),
+      statBoosts: defaultStats(),
       totalStats: structuredClone(g.stats),
       hp: g.stats.Health,
       level: location.encounterLevel,
@@ -89,12 +89,12 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
       combatStats: structuredClone(g.combatStats),
 
       affinity: {
-        ...getDefaultAffinities(),
+        ...defaultAffinities(),
         ...g.affinity,
       },
 
       resistance: {
-        ...getDefaultAffinities(),
+        ...defaultAffinities(),
         ...g.resistance,
       },
 
@@ -111,7 +111,7 @@ export function generateCombatForLocation(location: WorldLocation): Combat {
   };
 
   return {
-    id: uuid() as CombatId,
+    id: rngUuid() as CombatId,
     locationName: location.name,
     locationPosition: {
       x: location.x,

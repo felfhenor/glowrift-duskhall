@@ -6,6 +6,6 @@ const analyticsEvent = new Subject<{
 }>();
 export const analyticsEvent$ = analyticsEvent.asObservable();
 
-export function sendDesignEvent(event: string, value = 1): void {
+export function analyticsSendDesignEvent(event: string, value = 1): void {
   analyticsEvent.next({ event, value });
 }

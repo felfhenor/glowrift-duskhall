@@ -1,4 +1,4 @@
-import { uuid } from '@helpers/rng';
+import { rngUuid } from '@helpers/rng';
 import type {
   CombatantCombatStats,
   CurrencyBlock,
@@ -13,7 +13,7 @@ import type {
   WorldPosition,
 } from '@interfaces';
 
-export function getDefaultWorldConfig(): WorldConfigContent {
+export function defaultWorldConfig(): WorldConfigContent {
   return {
     width: 50,
     height: 50,
@@ -46,7 +46,7 @@ export function getDefaultWorldConfig(): WorldConfigContent {
   };
 }
 
-export function getDefaultStats(): StatBlock {
+export function defaultStats(): StatBlock {
   return {
     Aura: 0,
     Force: 0,
@@ -55,7 +55,7 @@ export function getDefaultStats(): StatBlock {
   };
 }
 
-export function getDefaultAffinities(): ElementBlock {
+export function defaultAffinities(): ElementBlock {
   return {
     Air: 0,
     Earth: 0,
@@ -64,9 +64,9 @@ export function getDefaultAffinities(): ElementBlock {
   };
 }
 
-export function getDefaultHero(props: Partial<Hero> = {}): Hero {
+export function defaultHero(props: Partial<Hero> = {}): Hero {
   return {
-    id: uuid() as HeroId,
+    id: rngUuid() as HeroId,
     name: '',
     sprite: '',
     frames: 4,
@@ -102,11 +102,11 @@ export function getDefaultHero(props: Partial<Hero> = {}): Hero {
   };
 }
 
-export function getDefaultPosition(): WorldPosition {
+export function defaultPosition(): WorldPosition {
   return { x: 0, y: 0 };
 }
 
-export function getDefaultCurrencyBlock(): CurrencyBlock {
+export function defaultCurrencyBlock(): CurrencyBlock {
   return {
     'Fire Sliver': 0,
     'Fire Shard': 0,
@@ -135,7 +135,7 @@ export function getDefaultCurrencyBlock(): CurrencyBlock {
   };
 }
 
-export function getDefaultNodeCountBlock(): Record<LocationType, number> {
+export function defaultNodeCountBlock(): Record<LocationType, number> {
   return {
     castle: 0,
     cave: 0,
@@ -145,7 +145,7 @@ export function getDefaultNodeCountBlock(): Record<LocationType, number> {
   };
 }
 
-export function getDefaultNodeTypePreferences(): Record<LocationType, boolean> {
+export function defaultNodeTypePreferences(): Record<LocationType, boolean> {
   return {
     castle: true,
     cave: true,
@@ -155,7 +155,7 @@ export function getDefaultNodeTypePreferences(): Record<LocationType, boolean> {
   };
 }
 
-export function getDefaultLootRarityPreferences(): Record<DropRarity, boolean> {
+export function defaultLootRarityPreferences(): Record<DropRarity, boolean> {
   return {
     Common: true,
     Uncommon: true,
@@ -166,9 +166,9 @@ export function getDefaultLootRarityPreferences(): Record<DropRarity, boolean> {
   };
 }
 
-export function getDefaultWorldNode(x = -1, y = -1): WorldLocation {
+export function defaultWorldNode(x = -1, y = -1): WorldLocation {
   return {
-    id: uuid(),
+    id: rngUuid(),
     elements: [],
     name: '',
     nodeType: undefined,
@@ -184,16 +184,16 @@ export function getDefaultWorldNode(x = -1, y = -1): WorldLocation {
   };
 }
 
-export function getDefaultCombatStats(): CombatantCombatStats {
+export function defaultCombatStats(): CombatantCombatStats {
   return {
-    repeatActionChance: getDefaultAffinities(),
-    skillStrikeAgainChance: getDefaultAffinities(),
-    skillAdditionalUseChance: getDefaultAffinities(),
-    skillAdditionalUseCount: getDefaultAffinities(),
-    redirectionChance: getDefaultAffinities(),
-    missChance: getDefaultAffinities(),
-    debuffIgnoreChance: getDefaultAffinities(),
-    damageReflectPercent: getDefaultAffinities(),
+    repeatActionChance: defaultAffinities(),
+    skillStrikeAgainChance: defaultAffinities(),
+    skillAdditionalUseChance: defaultAffinities(),
+    skillAdditionalUseCount: defaultAffinities(),
+    redirectionChance: defaultAffinities(),
+    missChance: defaultAffinities(),
+    debuffIgnoreChance: defaultAffinities(),
+    damageReflectPercent: defaultAffinities(),
     reviveChance: 0,
   };
 }

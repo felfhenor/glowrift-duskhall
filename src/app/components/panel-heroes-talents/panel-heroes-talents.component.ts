@@ -4,12 +4,12 @@ import { IconElementComponent } from '@components/icon-element/icon-element.comp
 import { PanelHeroesTalentsTreeComponent } from '@components/panel-heroes-talents-tree/panel-heroes-talents-tree.component';
 import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
 import {
-  allTalentIdsInTalentTree,
   getEntry,
   getOption,
   heroRemainingTalentPoints,
-  respecHeroTalents,
   setOption,
+  talentIdsInTalentTree,
+  talentRespec,
 } from '@helpers';
 import type { TalentTreeContent } from '@interfaces';
 import { type GameElement, type Hero } from '@interfaces';
@@ -44,7 +44,7 @@ export class PanelHeroesTalentsComponent {
         element: 'Earth',
         amount: intersection(
           Object.keys(this.hero().talents),
-          allTalentIdsInTalentTree(
+          talentIdsInTalentTree(
             getEntry<TalentTreeContent>('Earth Talent Tree')!,
           ),
         ).length,
@@ -53,7 +53,7 @@ export class PanelHeroesTalentsComponent {
         element: 'Fire',
         amount: intersection(
           Object.keys(this.hero().talents),
-          allTalentIdsInTalentTree(
+          talentIdsInTalentTree(
             getEntry<TalentTreeContent>('Fire Talent Tree')!,
           ),
         ).length,
@@ -62,7 +62,7 @@ export class PanelHeroesTalentsComponent {
         element: 'Water',
         amount: intersection(
           Object.keys(this.hero().talents),
-          allTalentIdsInTalentTree(
+          talentIdsInTalentTree(
             getEntry<TalentTreeContent>('Water Talent Tree')!,
           ),
         ).length,
@@ -71,7 +71,7 @@ export class PanelHeroesTalentsComponent {
         element: 'Air',
         amount: intersection(
           Object.keys(this.hero().talents),
-          allTalentIdsInTalentTree(
+          talentIdsInTalentTree(
             getEntry<TalentTreeContent>('Air Talent Tree')!,
           ),
         ).length,
@@ -83,6 +83,6 @@ export class PanelHeroesTalentsComponent {
   }
 
   public respecHero(): void {
-    respecHeroTalents(this.hero());
+    talentRespec(this.hero());
   }
 }

@@ -1,23 +1,23 @@
-import { itemSalvageValue } from '@helpers/action-equipment';
-import { sendDesignEvent } from '@helpers/analytics';
-import { gainCurrency } from '@helpers/currency';
-import { updateHeroData } from '@helpers/hero';
-import { recalculateStats } from '@helpers/hero-stats';
-import { sortedRarityList } from '@helpers/item';
+import { actionItemSalvageValue } from '@helpers/action-equipment';
+import { analyticsSendDesignEvent } from '@helpers/analytics';
+import { currencyGain } from '@helpers/currency';
+import { droppableSortedRarityList } from '@helpers/droppable';
+import { heroUpdateData } from '@helpers/hero';
+import { heroRecalculateStats } from '@helpers/hero-stats';
 import { notifyError } from '@helpers/notify';
 import { updateGamestate } from '@helpers/state-game';
 import type { EquipmentItem, EquipmentSlot, Hero } from '@interfaces';
 import { groupBy, sumBy } from 'es-toolkit/compat';
 
-export function maxItemInventorySize(): number {
+export function itemInventoryMaxSize(): number {
   return 100;
 }
 
-export function getItemSlot(item: EquipmentItem): EquipmentSlot {
+export function itemSlotForItem(item: EquipmentItem): EquipmentSlot {
   return item.__type;
 }
 
-export function addItemToInventory(item: EquipmentItem): void {
+export function itemInventoryAdd(item: EquipmentItem): void {
   const lostItems: EquipmentItem[] = [];
 
   updateGamestate((state) => {
@@ -28,8 +28,8 @@ export function addItemToInventory(item: EquipmentItem): void {
     const items = itemGroups[itemType] || [];
 
     // If we're at capacity for this item type, find a non-favorited item to remove
-    if (items.length >= maxItemInventorySize()) {
-      const sortedItems = sortedRarityList(items);
+    if (items.length >= itemInventoryMaxSize()) {
+      const sortedItems = droppableSortedRarityList(items);
 
       // Find the worst non-favorited item
       let worstItemIndex = -1;
@@ -43,8 +43,8 @@ export function addItemToInventory(item: EquipmentItem): void {
       // If no non-favorited items found, reject the new item
       if (worstItemIndex === -1) {
         // Auto-salvage the new item and show error
-        const value = itemSalvageValue(item);
-        gainCurrency('Mana', value);
+        const value = actionItemSalvageValue(item);
+        currencyGain('Mana', value);
         notifyError('Could not add item to inventory as there is no space');
         return state; // Don't add the item to inventory
       }
@@ -61,7 +61,7 @@ export function addItemToInventory(item: EquipmentItem): void {
 
     // Sort all groups
     Object.keys(itemGroups).forEach((type) => {
-      itemGroups[type] = sortedRarityList(itemGroups[type]);
+      itemGroups[type] = droppableSortedRarityList(itemGroups[type]);
     });
 
     state.inventory.items = Object.values(itemGroups).flat();
@@ -70,13 +70,13 @@ export function addItemToInventory(item: EquipmentItem): void {
   });
 
   // Salvage any lost items for mana
-  const value = sumBy(lostItems, (s) => itemSalvageValue(s));
+  const value = sumBy(lostItems, (s) => actionItemSalvageValue(s));
   if (value > 0) {
-    gainCurrency('Mana', value);
+    currencyGain('Mana', value);
   }
 }
 
-export function removeItemFromInventory(item: EquipmentItem): void {
+export function itemInventoryRemove(item: EquipmentItem): void {
   updateGamestate((state) => {
     state.inventory.items = state.inventory.items.filter(
       (i) => i.id !== item.id,
@@ -85,34 +85,34 @@ export function removeItemFromInventory(item: EquipmentItem): void {
   });
 }
 
-export function equipItem(hero: Hero, item: EquipmentItem): void {
-  const existingItem = hero.equipment[getItemSlot(item)];
+export function itemEquip(hero: Hero, item: EquipmentItem): void {
+  const existingItem = hero.equipment[itemSlotForItem(item)];
   if (existingItem) {
-    unequipItem(hero, existingItem);
+    itemUnequip(hero, existingItem);
   }
 
-  updateHeroData(hero.id, {
+  heroUpdateData(hero.id, {
     equipment: {
       ...hero.equipment,
-      [getItemSlot(item)]: item,
+      [itemSlotForItem(item)]: item,
     },
   });
 
-  removeItemFromInventory(item);
+  itemInventoryRemove(item);
 
-  recalculateStats(hero.id);
+  heroRecalculateStats(hero.id);
 
-  sendDesignEvent(`Game:Hero:EquipItem:${item.name}`);
+  analyticsSendDesignEvent(`Game:Hero:EquipItem:${item.name}`);
 }
 
-export function unequipItem(hero: Hero, item: EquipmentItem): void {
-  updateHeroData(hero.id, {
+export function itemUnequip(hero: Hero, item: EquipmentItem): void {
+  heroUpdateData(hero.id, {
     equipment: {
       ...hero.equipment,
-      [getItemSlot(item)]: undefined,
+      [itemSlotForItem(item)]: undefined,
     },
   });
 
-  addItemToInventory(item);
-  recalculateStats(hero.id);
+  itemInventoryAdd(item);
+  heroRecalculateStats(hero.id);
 }

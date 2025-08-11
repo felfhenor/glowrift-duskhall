@@ -1,25 +1,25 @@
-import { focusCameraOnPlayer } from '@helpers/camera';
-import { resetCombatLog } from '@helpers/combat-log';
-import { setHeroPosition } from '@helpers/hero';
-import { finishSetup } from '@helpers/setup';
+import { cameraCenterOnPlayer } from '@helpers/camera';
+import { combatLogReset } from '@helpers/combat-log';
+import { heroPositionSet } from '@helpers/hero';
+import { setupFinish } from '@helpers/setup';
 import { gamestate, resetGameState } from '@helpers/state-game';
 import { setWorld } from '@helpers/world';
-import { generateWorld } from '@helpers/worldgen';
+import { worldgenGenerateWorld } from '@helpers/worldgen';
 
-export async function startGame(): Promise<void> {
+export async function gameStart(): Promise<void> {
   const config = gamestate().world.config;
-  const world = await generateWorld(config);
+  const world = await worldgenGenerateWorld(config);
   if (!world.didFinish) return;
 
   delete world.didFinish;
 
   setWorld(world);
-  setHeroPosition(config.width / 2, config.height / 2);
-  focusCameraOnPlayer();
-  finishSetup();
+  heroPositionSet(config.width / 2, config.height / 2);
+  cameraCenterOnPlayer();
+  setupFinish();
 }
 
-export function resetGame(): void {
+export function gameReset(): void {
   resetGameState();
-  resetCombatLog();
+  combatLogReset();
 }

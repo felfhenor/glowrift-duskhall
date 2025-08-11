@@ -6,8 +6,8 @@ import { MarkerCurrencyCurrentComponent } from '@components/marker-currency-curr
 import { RequireSetupDirective } from '@directives/require-setup.directive';
 import { SFXDirective } from '@directives/sfx.directive';
 import {
+  cameraCenterOnPlayer,
   closeAllMenus,
-  focusCameraOnPlayer,
   gamestate,
   getOption,
   globalStatusText,
@@ -149,7 +149,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   public focusCamera() {
-    focusCameraOnPlayer();
+    cameraCenterOnPlayer();
   }
 
   public togglePause() {

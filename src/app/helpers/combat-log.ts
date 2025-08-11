@@ -1,22 +1,22 @@
-import { uuid } from '@helpers/rng';
+import { rngUuid } from '@helpers/rng';
 import { localStorageSignal } from '@helpers/signal';
 import type { Combat, CombatLog, Combatant } from '@interfaces';
 import mustache from 'mustache';
 
 export const combatLog = localStorageSignal<CombatLog[]>('combatLog', []);
 
-export function formatCombatMessage(template: string, props: unknown): string {
+export function combatFormatMessage(template: string, props: unknown): string {
   return mustache.render(template, props);
 }
 
-export function logCombatMessage(
+export function combatMessageLog(
   combat: Combat,
   message: string,
   actor?: Combatant,
 ): void {
   const newLog: CombatLog = {
     combatId: combat.id,
-    messageId: uuid(),
+    messageId: rngUuid(),
     timestamp: Date.now(),
     locationName: combat.locationName,
     message,
@@ -26,11 +26,14 @@ export function logCombatMessage(
 
   combatLog.update((logs) => [newLog, ...logs].slice(0, 500));
 }
-export function resetCombatLog(): void {
+export function combatLogReset(): void {
   combatLog.set([]);
 }
 
-export function getHealthColor(health: number, totalHealth: number): string {
+export function combatLogHealthColor(
+  health: number,
+  totalHealth: number,
+): string {
   const healthPercentage = Math.round((100 * health) / totalHealth);
 
   if (healthPercentage >= 75) {

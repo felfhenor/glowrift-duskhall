@@ -4,22 +4,26 @@ import type { CurrencyContent } from '@interfaces';
  * Calculate lossy currency conversion output amount given input amount
  * Output is halved compared to normal conversion
  */
-export function calculateCurrencyConversionOutputAmount(
+export function currencyConversionOutputAmount(
   inputCurrency: CurrencyContent,
   outputCurrency: CurrencyContent,
-  inputAmount: number
+  inputAmount: number,
 ): number {
-  return Math.floor((inputCurrency.value / outputCurrency.value) * inputAmount / 2);
+  return Math.floor(
+    ((inputCurrency.value / outputCurrency.value) * inputAmount) / 2,
+  );
 }
 
 /**
  * Calculate required input amount for desired lossy currency conversion output
  * Input required is doubled compared to normal conversion
  */
-export function calculateCurrencyConversionInputAmount(
+export function currencyConversionInputAmount(
   inputCurrency: CurrencyContent,
   outputCurrency: CurrencyContent,
-  outputAmount: number
+  outputAmount: number,
 ): number {
-  return Math.floor(outputAmount * (outputCurrency.value / inputCurrency.value) * 2);
+  return Math.floor(
+    outputAmount * (outputCurrency.value / inputCurrency.value) * 2,
+  );
 }

@@ -1,20 +1,20 @@
 import { getEntriesByType, getEntry } from '@helpers/content';
 import {
-  hasCurrencies,
-  hasCurrency,
-  loseCurrencies,
-  loseCurrency,
+  currencyHasAmount,
+  currencyHasMultipleAmounts,
+  currencyLose,
+  currencyLoseMultiple,
 } from '@helpers/currency';
 import {
-  getDefaultAffinities,
-  getDefaultCurrencyBlock,
-  getDefaultStats,
+  defaultAffinities,
+  defaultCurrencyBlock,
+  defaultStats,
 } from '@helpers/defaults';
-import { getDroppableEquippableBaseId } from '@helpers/droppable';
-import { getItemEnchantLevel, getItemTalents } from '@helpers/item';
-import { randomChoiceByRarity, seededrng } from '@helpers/rng';
+import { droppableGetBaseId } from '@helpers/droppable';
+import { itemEnchantLevel, itemTalents } from '@helpers/item';
+import { rngChoiceRarity, rngSeeded } from '@helpers/rng';
 import { updateGamestate } from '@helpers/state-game';
-import { getBuildingLevel } from '@helpers/town';
+import { townBuildingLevel } from '@helpers/town';
 import type { EquipmentItem } from '@interfaces/content-equipment';
 import type { TalentContent } from '@interfaces/content-talent';
 import type { TraitEquipmentContent } from '@interfaces/content-trait-equipment';
@@ -44,9 +44,9 @@ export function blacksmithRerollItemTraitCost(item: EquipmentItem): number {
 
 export function blacksmithRerollItemTrait(item: EquipmentItem): void {
   const cost = blacksmithRerollItemTraitCost(item);
-  if (!hasCurrency('Mana', cost)) return;
+  if (!currencyHasAmount('Mana', cost)) return;
 
-  loseCurrency('Mana', cost);
+  currencyLose('Mana', cost);
 
   const allTraits = getEntriesByType<TraitEquipmentContent>('traitequipment');
 
@@ -55,20 +55,20 @@ export function blacksmithRerollItemTrait(item: EquipmentItem): void {
     if (!updateItem) return state;
 
     updateItem.mods ??= {};
-    updateItem.mods.traitIds = [randomChoiceByRarity(allTraits)!.id];
+    updateItem.mods.traitIds = [rngChoiceRarity(allTraits)!.id];
 
     return state;
   });
 }
 
 export function blacksmithCanEnchantItem(item: EquipmentItem): boolean {
-  return getItemEnchantLevel(item) < getBuildingLevel('Blacksmith');
+  return itemEnchantLevel(item) < townBuildingLevel('Blacksmith');
 }
 
 export function blacksmithNextItemEnchants(
   item: EquipmentItem,
 ): BlacksmithEnchant[] {
-  const level = getItemEnchantLevel(item);
+  const level = itemEnchantLevel(item);
 
   const adjustByLevel = (num: number) => (level + 1) * num;
 
@@ -77,12 +77,12 @@ export function blacksmithNextItemEnchants(
       description: `+5 Health`,
       rarity: 'Common',
       cost: {
-        ...getDefaultCurrencyBlock(),
+        ...defaultCurrencyBlock(),
         Mana: adjustByLevel(300),
         'Earth Sliver': adjustByLevel(100),
       },
       statBoosts: {
-        ...getDefaultStats(),
+        ...defaultStats(),
         Health: 5,
       },
     },
@@ -90,12 +90,12 @@ export function blacksmithNextItemEnchants(
       description: `+0.1 Force`,
       rarity: 'Common',
       cost: {
-        ...getDefaultCurrencyBlock(),
+        ...defaultCurrencyBlock(),
         Mana: adjustByLevel(500),
         'Fire Sliver': adjustByLevel(100),
       },
       statBoosts: {
-        ...getDefaultStats(),
+        ...defaultStats(),
         Force: 0.1,
       },
     },
@@ -103,12 +103,12 @@ export function blacksmithNextItemEnchants(
       description: `+0.1 Aura`,
       rarity: 'Common',
       cost: {
-        ...getDefaultCurrencyBlock(),
+        ...defaultCurrencyBlock(),
         Mana: adjustByLevel(500),
         'Water Sliver': adjustByLevel(100),
       },
       statBoosts: {
-        ...getDefaultStats(),
+        ...defaultStats(),
         Aura: 0.1,
       },
     },
@@ -116,12 +116,12 @@ export function blacksmithNextItemEnchants(
       description: `+0.1 Speed`,
       rarity: 'Uncommon',
       cost: {
-        ...getDefaultCurrencyBlock(),
+        ...defaultCurrencyBlock(),
         Mana: adjustByLevel(1000),
         'Air Sliver': adjustByLevel(100),
       },
       statBoosts: {
-        ...getDefaultStats(),
+        ...defaultStats(),
         Speed: 0.1,
       },
     },
@@ -129,14 +129,14 @@ export function blacksmithNextItemEnchants(
       description: `+0.1 Speed/Force/Aura`,
       rarity: 'Rare',
       cost: {
-        ...getDefaultCurrencyBlock(),
+        ...defaultCurrencyBlock(),
         Mana: adjustByLevel(1500),
         'Air Sliver': adjustByLevel(200),
         'Fire Sliver': adjustByLevel(200),
         'Water Sliver': adjustByLevel(200),
       },
       statBoosts: {
-        ...getDefaultStats(),
+        ...defaultStats(),
         Force: 0.1,
         Aura: 0.1,
         Speed: 0.1,
@@ -146,12 +146,12 @@ export function blacksmithNextItemEnchants(
       description: `+1% Fire`,
       rarity: 'Uncommon',
       cost: {
-        ...getDefaultCurrencyBlock(),
+        ...defaultCurrencyBlock(),
         Mana: adjustByLevel(100),
         'Fire Shard': adjustByLevel(50),
       },
       elementBoosts: {
-        ...getDefaultAffinities(),
+        ...defaultAffinities(),
         Fire: 0.01,
       },
     },
@@ -159,12 +159,12 @@ export function blacksmithNextItemEnchants(
       description: `+1% Water`,
       rarity: 'Uncommon',
       cost: {
-        ...getDefaultCurrencyBlock(),
+        ...defaultCurrencyBlock(),
         Mana: adjustByLevel(100),
         'Water Shard': adjustByLevel(50),
       },
       elementBoosts: {
-        ...getDefaultAffinities(),
+        ...defaultAffinities(),
         Water: 0.01,
       },
     },
@@ -172,12 +172,12 @@ export function blacksmithNextItemEnchants(
       description: `+1% Air`,
       rarity: 'Uncommon',
       cost: {
-        ...getDefaultCurrencyBlock(),
+        ...defaultCurrencyBlock(),
         Mana: adjustByLevel(100),
         'Air Shard': adjustByLevel(50),
       },
       elementBoosts: {
-        ...getDefaultAffinities(),
+        ...defaultAffinities(),
         Air: 0.01,
       },
     },
@@ -185,12 +185,12 @@ export function blacksmithNextItemEnchants(
       description: `+1% Earth`,
       rarity: 'Uncommon',
       cost: {
-        ...getDefaultCurrencyBlock(),
+        ...defaultCurrencyBlock(),
         Mana: adjustByLevel(100),
         'Earth Shard': adjustByLevel(50),
       },
       elementBoosts: {
-        ...getDefaultAffinities(),
+        ...defaultAffinities(),
         Earth: 0.01,
       },
     },
@@ -198,7 +198,7 @@ export function blacksmithNextItemEnchants(
       description: `+1% All Elements`,
       rarity: 'Rare',
       cost: {
-        ...getDefaultCurrencyBlock(),
+        ...defaultCurrencyBlock(),
         Mana: adjustByLevel(1500),
         'Air Crystal': adjustByLevel(1),
         'Fire Crystal': adjustByLevel(1),
@@ -206,7 +206,7 @@ export function blacksmithNextItemEnchants(
         'Earth Crystal': adjustByLevel(1),
       },
       elementBoosts: {
-        ...getDefaultAffinities(),
+        ...defaultAffinities(),
         Earth: 0.01,
         Fire: 0.01,
         Water: 0.01,
@@ -215,9 +215,9 @@ export function blacksmithNextItemEnchants(
     },
   ];
 
-  const itemTalents = getItemTalents(item);
-  if (itemTalents.length > 0) {
-    itemTalents.forEach((talent) => {
+  const itemTalentlist = itemTalents(item);
+  if (itemTalentlist.length > 0) {
+    itemTalentlist.forEach((talent) => {
       const talentData = getEntry<TalentContent>(talent.talentId);
       if (!talentData) return;
 
@@ -225,7 +225,7 @@ export function blacksmithNextItemEnchants(
         description: `+1 ${talentData.name}`,
         rarity: 'Rare',
         cost: {
-          ...getDefaultCurrencyBlock(),
+          ...defaultCurrencyBlock(),
           'Soul Essence': adjustByLevel(300),
         },
         talentBoosts: [talentData.id],
@@ -241,13 +241,13 @@ export function blacksmithNextItemEnchants(
     item.unableToUpgrade.every((k) => !path[k]),
   );
 
-  const seed = `${getDroppableEquippableBaseId(item)}-${level}`;
-  const rng = seededrng(seed);
+  const seed = `${droppableGetBaseId(item)}-${level}`;
+  const rng = rngSeeded(seed);
 
   return [
-    randomChoiceByRarity(filteredPaths, rng)!,
-    randomChoiceByRarity(filteredPaths, rng)!,
-    randomChoiceByRarity(filteredPaths, rng)!,
+    rngChoiceRarity(filteredPaths, rng)!,
+    rngChoiceRarity(filteredPaths, rng)!,
+    rngChoiceRarity(filteredPaths, rng)!,
   ];
 }
 
@@ -255,13 +255,13 @@ export function blacksmithEnchantItem(
   item: EquipmentItem,
   enchant: BlacksmithEnchant,
 ): void {
-  if (!hasCurrencies(enchant.cost)) return;
+  if (!currencyHasMultipleAmounts(enchant.cost)) return;
 
-  loseCurrencies(enchant.cost);
+  currencyLoseMultiple(enchant.cost);
 
   item.mods ??= {};
   item.mods.enchantLevel ??= 0;
-  item.mods.baseStats ??= getDefaultStats();
+  item.mods.baseStats ??= defaultStats();
   item.mods.elementMultipliers ??= [];
   item.mods.talentBoosts ??= [];
 

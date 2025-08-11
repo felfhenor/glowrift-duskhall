@@ -2,7 +2,7 @@ import type { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from '@components/navbar/navbar.component';
-import { updateDiscordStatus } from '@helpers/discord';
+import { discordUpdateStatus } from '@helpers/discord';
 
 @Component({
   selector: 'app-game',
@@ -12,6 +12,6 @@ import { updateDiscordStatus } from '@helpers/discord';
 })
 export class GameComponent implements OnInit {
   ngOnInit() {
-    updateDiscordStatus();
+    discordUpdateStatus();
   }
 }

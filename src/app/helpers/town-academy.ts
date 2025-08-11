@@ -1,11 +1,14 @@
 import { getEntry } from '@helpers/content';
-import { hasCurrencies, loseCurrencies } from '@helpers/currency';
-import { getDefaultCurrencyBlock, getDefaultStats } from '@helpers/defaults';
-import { getDroppableEquippableBaseId } from '@helpers/droppable';
-import { randomChoiceByRarity, seededrng } from '@helpers/rng';
-import { getSkillEnchantLevel } from '@helpers/skill';
+import {
+  currencyHasMultipleAmounts,
+  currencyLoseMultiple,
+} from '@helpers/currency';
+import { defaultCurrencyBlock, defaultStats } from '@helpers/defaults';
+import { droppableGetBaseId } from '@helpers/droppable';
+import { rngChoiceRarity, rngSeeded } from '@helpers/rng';
+import { skillEnchantLevel } from '@helpers/skill';
 import { updateGamestate } from '@helpers/state-game';
-import { getBuildingLevel } from '@helpers/town';
+import { townBuildingLevel } from '@helpers/town';
 import type { EquipmentSkill } from '@interfaces/content-skill';
 import type {
   StatusEffectContent,
@@ -16,14 +19,14 @@ import type { AcademyEnchant } from '@interfaces/town';
 import { uniq } from 'es-toolkit/compat';
 
 export function academyCanEnchantSkill(item: EquipmentSkill): boolean {
-  return getSkillEnchantLevel(item) < getBuildingLevel('Academy');
+  return skillEnchantLevel(item) < townBuildingLevel('Academy');
 }
 export function academyNextSkillEnchants(
   skill: EquipmentSkill,
 ): AcademyEnchant[] {
   if (skill.disableUpgrades) return [];
 
-  const level = getSkillEnchantLevel(skill);
+  const level = skillEnchantLevel(skill);
 
   const usableElements = uniq(skill.techniques.flatMap((t) => t.elements));
   const usableStats = uniq(
@@ -46,17 +49,17 @@ export function academyNextSkillEnchants(
       description: '+1 Combat Uses',
       rarity: 'Rare',
       cost: {
-        ...getDefaultCurrencyBlock(),
+        ...defaultCurrencyBlock(),
         'Soul Essence': adjustByLevel(100),
       },
-      damageScaling: getDefaultStats(),
+      damageScaling: defaultStats(),
       usesPerCombat: 1,
     },
     {
       description: '+2 Combat Uses',
       rarity: 'Mystical',
       cost: {
-        ...getDefaultCurrencyBlock(),
+        ...defaultCurrencyBlock(),
         'Soul Essence': adjustByLevel(300),
       },
       usesPerCombat: 2,
@@ -65,7 +68,7 @@ export function academyNextSkillEnchants(
       description: '+3 Combat Uses',
       rarity: 'Legendary',
       cost: {
-        ...getDefaultCurrencyBlock(),
+        ...defaultCurrencyBlock(),
         'Soul Essence': adjustByLevel(500),
       },
       usesPerCombat: 3,
@@ -74,7 +77,7 @@ export function academyNextSkillEnchants(
       description: '+1 Target',
       rarity: 'Uncommon',
       cost: {
-        ...getDefaultCurrencyBlock(),
+        ...defaultCurrencyBlock(),
         'Soul Essence': adjustByLevel(500),
       },
       numTargets: 1,
@@ -83,7 +86,7 @@ export function academyNextSkillEnchants(
       description: '+2 Targets',
       rarity: 'Mystical',
       cost: {
-        ...getDefaultCurrencyBlock(),
+        ...defaultCurrencyBlock(),
         'Soul Essence': adjustByLevel(1500),
       },
       numTargets: 2,
@@ -95,11 +98,11 @@ export function academyNextSkillEnchants(
       description: `+0.05 ${stat}`,
       rarity: 'Common',
       cost: {
-        ...getDefaultCurrencyBlock(),
+        ...defaultCurrencyBlock(),
         'Soul Essence': adjustByLevel(100),
       },
       damageScaling: {
-        ...getDefaultStats(),
+        ...defaultStats(),
         [stat]: 0.05,
       },
     });
@@ -108,11 +111,11 @@ export function academyNextSkillEnchants(
       description: `+0.10 ${stat}`,
       rarity: 'Rare',
       cost: {
-        ...getDefaultCurrencyBlock(),
+        ...defaultCurrencyBlock(),
         'Soul Essence': adjustByLevel(100),
       },
       damageScaling: {
-        ...getDefaultStats(),
+        ...defaultStats(),
         [stat]: 0.1,
       },
     });
@@ -126,7 +129,7 @@ export function academyNextSkillEnchants(
       description: `+1% ${statusEffect.name}`,
       rarity: 'Common',
       cost: {
-        ...getDefaultCurrencyBlock(),
+        ...defaultCurrencyBlock(),
         'Soul Essence': adjustByLevel(300),
       },
       statusEffectChanceBoost: {
@@ -138,7 +141,7 @@ export function academyNextSkillEnchants(
       description: `+2% ${statusEffect.name}`,
       rarity: 'Rare',
       cost: {
-        ...getDefaultCurrencyBlock(),
+        ...defaultCurrencyBlock(),
         'Soul Essence': adjustByLevel(500),
       },
       statusEffectChanceBoost: {
@@ -150,7 +153,7 @@ export function academyNextSkillEnchants(
       description: `+1 ${statusEffect.name} Turn`,
       rarity: 'Uncommon',
       cost: {
-        ...getDefaultCurrencyBlock(),
+        ...defaultCurrencyBlock(),
         'Soul Essence': adjustByLevel(500),
       },
       statusEffectDurationBoost: {
@@ -162,7 +165,7 @@ export function academyNextSkillEnchants(
       description: `+1%/Turn ${statusEffect.name}`,
       rarity: 'Rare',
       cost: {
-        ...getDefaultCurrencyBlock(),
+        ...defaultCurrencyBlock(),
         'Soul Essence': adjustByLevel(1500),
       },
       statusEffectChanceBoost: {
@@ -192,13 +195,13 @@ export function academyNextSkillEnchants(
     skill.unableToUpgrade.every((k) => !path[k]),
   );
 
-  const seed = `${getDroppableEquippableBaseId(skill)}-${level}`;
-  const rng = seededrng(seed);
+  const seed = `${droppableGetBaseId(skill)}-${level}`;
+  const rng = rngSeeded(seed);
 
   return [
-    randomChoiceByRarity(filteredPaths, rng)!,
-    randomChoiceByRarity(filteredPaths, rng)!,
-    randomChoiceByRarity(filteredPaths, rng)!,
+    rngChoiceRarity(filteredPaths, rng)!,
+    rngChoiceRarity(filteredPaths, rng)!,
+    rngChoiceRarity(filteredPaths, rng)!,
   ];
 }
 
@@ -206,15 +209,15 @@ export function academyEnchantSkill(
   skill: EquipmentSkill,
   enchant: AcademyEnchant,
 ): void {
-  if (!hasCurrencies(enchant.cost)) return;
+  if (!currencyHasMultipleAmounts(enchant.cost)) return;
 
-  loseCurrencies(enchant.cost);
+  currencyLoseMultiple(enchant.cost);
 
   skill.mods ??= {};
   skill.mods.enchantLevel ??= 0;
   skill.mods.numTargets ??= 0;
   skill.mods.usesPerCombat ??= 0;
-  skill.mods.damageScaling ??= getDefaultStats();
+  skill.mods.damageScaling ??= defaultStats();
   skill.mods.statusEffectChanceBoost ??= {};
   skill.mods.statusEffectDurationBoost ??= {};
 

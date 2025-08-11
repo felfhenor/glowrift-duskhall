@@ -1,4 +1,5 @@
 import type { WorldLocation } from '@interfaces/world';
+import type { Application, Container } from 'pixi.js';
 
 export interface MapTileData {
   x: number;
@@ -34,4 +35,12 @@ export interface MapState {
   height: number;
   cameraX: number;
   cameraY: number;
+}
+
+export interface DragHandlerConfig {
+  app: Application;
+  containers: Container[];
+  viewportWidth: number;
+  viewportHeight: number;
+  tileSize?: number;
 }

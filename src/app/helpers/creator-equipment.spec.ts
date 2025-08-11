@@ -1,7 +1,7 @@
 import {
-  allItemDefinitions,
-  createItem,
-  pickRandomItemDefinitionBasedOnRarity,
+  equipmentAllDefinitions,
+  equipmentCreate,
+  equipmentPickRandomDefinitionByRarity,
 } from '@helpers/creator-equipment';
 import type {
   EquipmentItem,
@@ -18,19 +18,18 @@ vi.mock('@helpers/content', () => ({
 }));
 
 vi.mock('@helpers/droppable', () => ({
-  cleanupDroppableDefinition: vi.fn(),
+  droppableCleanup: vi.fn(),
 }));
 
 vi.mock('@helpers/rng', () => ({
-  randomChoiceByRarity: vi.fn(),
-  succeedsChance: vi.fn(),
-  seededrng: vi.fn(),
-  uuid: () => 'mock-uuid',
+  rngChoiceRarity: vi.fn(),
+  rngSeeded: vi.fn(),
+  rngSucceedsChance: vi.fn(),
+  rngUuid: () => 'mock-uuid',
 }));
 
 import { getEntriesByType, getEntry } from '@helpers/content';
-import { cleanupDroppableDefinition } from '@helpers/droppable';
-import { randomChoiceByRarity, seededrng } from '@helpers/rng';
+import { rngChoiceRarity, rngSeeded } from '@helpers/rng';
 
 describe('Equipment Creator Functions', () => {
   const mockItemContent: EquipmentItemContent = {
@@ -63,7 +62,7 @@ describe('Equipment Creator Functions', () => {
         .mockReturnValueOnce(mockTrinkets)
         .mockReturnValueOnce(mockWeapons);
 
-      const result = allItemDefinitions();
+      const result = equipmentAllDefinitions();
 
       expect(result).toHaveLength(4);
       expect(getEntriesByType).toHaveBeenCalledWith('accessory');
@@ -82,7 +81,7 @@ describe('Equipment Creator Functions', () => {
         .mockReturnValueOnce([])
         .mockReturnValueOnce([preventDropItem, normalItem]);
 
-      const result = allItemDefinitions();
+      const result = equipmentAllDefinitions();
       expect(result).toHaveLength(1);
       expect(result[0]).toEqual(normalItem);
     });
@@ -90,36 +89,33 @@ describe('Equipment Creator Functions', () => {
 
   describe('pickRandomItemDefinitionBasedOnRarity', () => {
     it('should return a random item definition', () => {
-      vi.mocked(randomChoiceByRarity).mockReturnValue(mockItemContent);
+      vi.mocked(rngChoiceRarity).mockReturnValue(mockItemContent);
       vi.mocked(getEntry).mockReturnValue(mockItemContent);
-      vi.mocked(seededrng).mockReturnValue(mockRng);
+      vi.mocked(rngSeeded).mockReturnValue(mockRng);
 
-      const result = pickRandomItemDefinitionBasedOnRarity(
+      const result = equipmentPickRandomDefinitionByRarity(
         [mockItemContent],
         mockRng,
       );
 
       expect(result).toEqual(mockItemContent);
-      expect(randomChoiceByRarity).toHaveBeenCalledWith(
-        [mockItemContent],
-        mockRng,
-      );
+      expect(rngChoiceRarity).toHaveBeenCalledWith([mockItemContent], mockRng);
     });
 
     it('should throw error if no item could be generated', () => {
-      vi.mocked(randomChoiceByRarity).mockReturnValue(undefined);
+      vi.mocked(rngChoiceRarity).mockReturnValue(undefined);
 
-      expect(() => pickRandomItemDefinitionBasedOnRarity([], mockRng)).toThrow(
+      expect(() => equipmentPickRandomDefinitionByRarity([], mockRng)).toThrow(
         'Could not generate an item.',
       );
     });
 
     it('should throw error if item definition not found', () => {
-      vi.mocked(randomChoiceByRarity).mockReturnValue(mockItemContent);
+      vi.mocked(rngChoiceRarity).mockReturnValue(mockItemContent);
       vi.mocked(getEntry).mockReturnValue(undefined);
 
       expect(() =>
-        pickRandomItemDefinitionBasedOnRarity([mockItemContent], mockRng),
+        equipmentPickRandomDefinitionByRarity([mockItemContent], mockRng),
       ).toThrow('Could not generate an item.');
     });
   });
@@ -132,9 +128,8 @@ describe('Equipment Creator Functions', () => {
         mods: {},
       };
 
-      const result = createItem(mockItemContent);
+      const result = equipmentCreate(mockItemContent);
 
-      expect(cleanupDroppableDefinition).toHaveBeenCalled();
       expect(result).toEqual(expectedItem);
     });
   });

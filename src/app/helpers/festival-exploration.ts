@@ -1,8 +1,8 @@
-import { getActiveFestivals } from '@helpers/festival';
+import { festivalGetActive } from '@helpers/festival';
 import { sum } from 'es-toolkit/compat';
 
-export function getFestivalExplorationTickMultiplier(): number {
+export function festivalExplorationTickMultiplier(): number {
   return sum(
-    getActiveFestivals().map((f) => f?.effects?.exploration?.ticks ?? 0),
+    festivalGetActive().map((f) => f?.effects?.exploration?.ticks ?? 0),
   );
 }

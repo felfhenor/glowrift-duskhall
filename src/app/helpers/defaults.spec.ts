@@ -1,11 +1,11 @@
 import {
-  getDefaultAffinities,
-  getDefaultCurrencyBlock,
-  getDefaultHero,
-  getDefaultNodeCountBlock,
-  getDefaultPosition,
-  getDefaultStats,
-  getDefaultWorldNode,
+  defaultAffinities,
+  defaultCurrencyBlock,
+  defaultHero,
+  defaultNodeCountBlock,
+  defaultPosition,
+  defaultStats,
+  defaultWorldNode,
 } from '@helpers/defaults';
 import type {
   ElementBlock,
@@ -19,7 +19,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 // Mock uuid generator
 vi.mock('@helpers/rng', () => ({
-  uuid: () => 'mock-uuid',
+  rngUuid: () => 'mock-uuid',
 }));
 
 describe('Default Helpers', () => {
@@ -31,7 +31,7 @@ describe('Default Helpers', () => {
         Health: 0,
         Speed: 0,
       };
-      expect(getDefaultStats()).toEqual(expected);
+      expect(defaultStats()).toEqual(expected);
     });
   });
 
@@ -43,13 +43,13 @@ describe('Default Helpers', () => {
         Fire: 0,
         Water: 0,
       };
-      expect(getDefaultAffinities()).toEqual(expected);
+      expect(defaultAffinities()).toEqual(expected);
     });
   });
 
   describe('defaultHero', () => {
     it('should return default hero with base values', () => {
-      const hero = getDefaultHero();
+      const hero = defaultHero();
       const expectedStats: StatBlock = {
         Force: 5,
         Health: 10,
@@ -80,7 +80,7 @@ describe('Default Helpers', () => {
         level: 2,
       };
 
-      const hero = getDefaultHero(customProps);
+      const hero = defaultHero(customProps);
 
       expect(hero.name).toBe('TestHero');
       expect(hero.hp).toBe(20);
@@ -90,13 +90,13 @@ describe('Default Helpers', () => {
 
   describe('defaultPosition', () => {
     it('should return position with x and y as 0', () => {
-      expect(getDefaultPosition()).toEqual({ x: 0, y: 0 });
+      expect(defaultPosition()).toEqual({ x: 0, y: 0 });
     });
   });
 
   describe('defaultCurrencyBlock', () => {
     it('should return currency block with all currencies at 0', () => {
-      const currencies = getDefaultCurrencyBlock();
+      const currencies = defaultCurrencyBlock();
 
       // Check all currencies are present and set to 0
       Object.values(currencies).forEach((value) => {
@@ -122,14 +122,14 @@ describe('Default Helpers', () => {
         town: 0,
         village: 0,
       };
-      expect(getDefaultNodeCountBlock()).toEqual(expected);
+      expect(defaultNodeCountBlock()).toEqual(expected);
     });
   });
 });
 
 describe('defaultWorldNode', () => {
   it('should create default world node with default coordinates', () => {
-    const node = getDefaultWorldNode();
+    const node = defaultWorldNode();
     const expected: WorldLocation = {
       id: 'mock-uuid',
       elements: [],
@@ -152,7 +152,7 @@ describe('defaultWorldNode', () => {
   it('should create world node with provided coordinates', () => {
     const x = 5;
     const y = 10;
-    const node = getDefaultWorldNode(x, y);
+    const node = defaultWorldNode(x, y);
 
     expect(node.x).toBe(x);
     expect(node.y).toBe(y);

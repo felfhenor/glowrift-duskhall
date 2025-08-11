@@ -1,38 +1,38 @@
 import { isExploring } from '@helpers/explore';
 import {
-  areAllHeroesDead,
-  areHeroesRecoveringInTown,
+  heroAreAllDead,
+  heroRecoveringInTown,
   heroRecoveryPercent,
 } from '@helpers/hero';
 import { isTraveling, travelToNode } from '@helpers/travel';
 import { globalStatusText } from '@helpers/ui';
 import {
-  getAllNodesInOrderOfCloseness,
-  getClosestUnclaimedClaimableNode,
-  getCurrentWorldNode,
-  getNodesMatchingHeroPreferences,
+  worldGetClosestUnclaimedClaimableNode,
+  worldGetNodesMatchingPreferences,
+  worldNodeGetCurrent,
+  worldNodeGetInOrderOfCloseness,
 } from '@helpers/world';
 
-export function autoTravelGameloop(): void {
+export function gameloopAutoTravel(): void {
   if (isExploring()) return;
   if (isTraveling()) return;
-  if (areAllHeroesDead()) {
+  if (heroAreAllDead()) {
     globalStatusText.set('All heroes are defeated; cannot travel.');
     return;
   }
 
-  if (areHeroesRecoveringInTown()) {
+  if (heroRecoveringInTown()) {
     globalStatusText.set(
       `Heroes are recovering in town; cannot travel (${heroRecoveryPercent()}% recovered).`,
     );
     return;
   }
 
-  const currentNode = getCurrentWorldNode();
+  const currentNode = worldNodeGetCurrent();
   if (currentNode) {
-    const anyUnclaimedNode = getClosestUnclaimedClaimableNode(
+    const anyUnclaimedNode = worldGetClosestUnclaimedClaimableNode(
       currentNode,
-      getAllNodesInOrderOfCloseness(currentNode),
+      worldNodeGetInOrderOfCloseness(currentNode),
     );
     if (!anyUnclaimedNode) {
       globalStatusText.set('No unclaimed nodes available; idle.');
@@ -40,8 +40,8 @@ export function autoTravelGameloop(): void {
     }
 
     const nodesWithinRiskTolerance =
-      getNodesMatchingHeroPreferences(currentNode);
-    const nextNode = getClosestUnclaimedClaimableNode(
+      worldGetNodesMatchingPreferences(currentNode);
+    const nextNode = worldGetClosestUnclaimedClaimableNode(
       currentNode,
       nodesWithinRiskTolerance,
     );

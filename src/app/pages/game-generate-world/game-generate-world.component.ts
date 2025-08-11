@@ -1,7 +1,7 @@
 import type { AfterViewInit, OnDestroy } from '@angular/core';
 import { Component, computed, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { startGame } from '@helpers/game-init';
+import { gameStart } from '@helpers/game-init';
 import { isSetup } from '@helpers/setup';
 import {
   cancelWorldGeneration,
@@ -21,7 +21,7 @@ export class GameGenerateWorldComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     setTimeout(async () => {
-      await startGame();
+      await gameStart();
 
       if (isSetup()) {
         this.router.navigate(['/game']);

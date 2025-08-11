@@ -7,7 +7,7 @@ import { Application, Container } from 'pixi.js';
  * @param config pixijs configuration
  * @returns Initialized pixijs
  */
-export async function initializePixiApp(
+export async function pixiAppInitialize(
   container: HTMLElement,
   config: PixiAppConfig,
 ): Promise<Application> {
@@ -33,7 +33,7 @@ export async function initializePixiApp(
  * @param container HTML container element
  * @returns ResizeObserver instance
  */
-export function setupResponsiveCanvas(
+export function pixiResponsiveCanvasSetup(
   app: Application,
   container: HTMLElement,
 ): ResizeObserver {
@@ -51,7 +51,7 @@ export function setupResponsiveCanvas(
  * @param app pixijs application
  * @returns Map, player indicator, and travel visualization containers
  */
-export function createGameMapContainers(app: Application): {
+export function pixiGameMapContainersCreate(app: Application): {
   mapContainer: Container;
   playerIndicatorContainer: Container;
   travelVisualizationContainer: Container;
@@ -75,7 +75,9 @@ export function createGameMapContainers(app: Application): {
  * Resets container positions to origin
  * @param containers Containers to reset
  */
-export function resetContainerPositions(...containers: Container[]): void {
+export function pixiGameMapContainersPositionReset(
+  ...containers: Container[]
+): void {
   containers.forEach((container) => {
     if (!container) return;
 

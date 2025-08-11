@@ -1,7 +1,7 @@
 import {
-  allSkillDefinitions,
-  createSkill,
-  pickRandomSkillDefinitionBasedOnRarity,
+  skillAllDefinitions,
+  skillCreate,
+  skillPickRandomDefinitionByRarity,
 } from '@helpers/creator-skill';
 import type {
   EquipmentSkill,
@@ -18,19 +18,19 @@ vi.mock('@helpers/content', () => ({
 }));
 
 vi.mock('@helpers/droppable', () => ({
-  cleanupDroppableDefinition: vi.fn(),
+  droppableCleanup: vi.fn(),
 }));
 
 vi.mock('@helpers/rng', () => ({
-  randomIdentifiableChoice: vi.fn(),
-  randomChoiceByRarity: vi.fn(),
-  seededrng: vi.fn(),
-  uuid: () => 'mock-uuid',
+  rngChoiceIdentifiable: vi.fn(),
+  rngChoiceRarity: vi.fn(),
+  rngSeeded: vi.fn(),
+  rngUuid: () => 'mock-uuid',
 }));
 
 import { getEntriesByType, getEntry } from '@helpers/content';
-import { cleanupDroppableDefinition } from '@helpers/droppable';
-import { randomChoiceByRarity, seededrng } from '@helpers/rng';
+import { droppableCleanup } from '@helpers/droppable';
+import { rngChoiceRarity, rngSeeded } from '@helpers/rng';
 
 describe('Skill Creator Functions', () => {
   const mockSkillContent: EquipmentSkillContent = {
@@ -56,7 +56,7 @@ describe('Skill Creator Functions', () => {
       const mockSkills = [mockSkillContent];
       vi.mocked(getEntriesByType).mockReturnValue(mockSkills);
 
-      const result = allSkillDefinitions();
+      const result = skillAllDefinitions();
 
       expect(getEntriesByType).toHaveBeenCalledWith('skill');
       expect(result).toEqual(mockSkills);
@@ -66,36 +66,33 @@ describe('Skill Creator Functions', () => {
   describe('pickRandomSkillDefinition', () => {
     it('should return a random skill definition', () => {
       const mockDefinitions = [mockSkillContent];
-      vi.mocked(randomChoiceByRarity).mockReturnValue(mockSkillContent);
+      vi.mocked(rngChoiceRarity).mockReturnValue(mockSkillContent);
       vi.mocked(getEntry).mockReturnValue(mockSkillContent);
-      vi.mocked(seededrng).mockReturnValue(mockRng);
+      vi.mocked(rngSeeded).mockReturnValue(mockRng);
 
-      const result = pickRandomSkillDefinitionBasedOnRarity(
+      const result = skillPickRandomDefinitionByRarity(
         mockDefinitions,
         mockRng,
       );
 
       expect(result).toEqual(mockSkillContent);
-      expect(randomChoiceByRarity).toHaveBeenCalledWith(
-        mockDefinitions,
-        mockRng,
-      );
+      expect(rngChoiceRarity).toHaveBeenCalledWith(mockDefinitions, mockRng);
     });
 
     it('should throw error if no skill could be generated', () => {
-      vi.mocked(randomChoiceByRarity).mockReturnValue(undefined);
+      vi.mocked(rngChoiceRarity).mockReturnValue(undefined);
 
-      expect(() => pickRandomSkillDefinitionBasedOnRarity([], mockRng)).toThrow(
+      expect(() => skillPickRandomDefinitionByRarity([], mockRng)).toThrow(
         'Could not generate a skill.',
       );
     });
 
     it('should throw error if skill definition not found', () => {
-      vi.mocked(randomChoiceByRarity).mockReturnValue(mockSkillContent);
+      vi.mocked(rngChoiceRarity).mockReturnValue(mockSkillContent);
       vi.mocked(getEntry).mockReturnValue(undefined);
 
       expect(() =>
-        pickRandomSkillDefinitionBasedOnRarity([mockSkillContent], mockRng),
+        skillPickRandomDefinitionByRarity([mockSkillContent], mockRng),
       ).toThrow('Could not generate a skill.');
     });
 
@@ -105,18 +102,15 @@ describe('Skill Creator Functions', () => {
         preventDrop: true,
       };
 
-      vi.mocked(randomChoiceByRarity).mockReturnValue(mockSkillContent);
+      vi.mocked(rngChoiceRarity).mockReturnValue(mockSkillContent);
       vi.mocked(getEntry).mockReturnValue(mockSkillContent);
 
-      pickRandomSkillDefinitionBasedOnRarity(
+      skillPickRandomDefinitionByRarity(
         [preventDropSkill, mockSkillContent],
         mockRng,
       );
 
-      expect(randomChoiceByRarity).toHaveBeenCalledWith(
-        [mockSkillContent],
-        mockRng,
-      );
+      expect(rngChoiceRarity).toHaveBeenCalledWith([mockSkillContent], mockRng);
     });
   });
 
@@ -128,9 +122,9 @@ describe('Skill Creator Functions', () => {
         mods: {},
       };
 
-      const result = createSkill(mockSkillContent);
+      const result = skillCreate(mockSkillContent);
 
-      expect(cleanupDroppableDefinition).toHaveBeenCalled();
+      expect(droppableCleanup).toHaveBeenCalled();
       expect(result).toEqual(expectedSkill);
     });
   });

@@ -1,7 +1,7 @@
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import {
   gamestate,
-  generateMapGrid,
+  mapGridGenerate,
   windowHeightTiles,
   windowWidthTiles,
 } from '@helpers';
@@ -44,7 +44,7 @@ export class MapStateService {
         `Regenerating map grid - camera: ${camera.x},${camera.y}`,
       );
 
-      const newMapData = generateMapGrid(
+      const newMapData = mapGridGenerate(
         camera.x,
         camera.y,
         width,

@@ -1,7 +1,8 @@
 import {
-  canHeroBuyTalent,
+  heroCanBuyTalent,
   heroTalentsInvestedInTree,
 } from '@helpers/hero-talent';
+import { talentIdsInTalentTree } from '@helpers/talent';
 import type {
   Hero,
   HeroId,
@@ -19,14 +20,12 @@ vi.mock('@helpers/content', () => ({
 }));
 
 vi.mock('@helpers/hero', () => ({
-  updateHeroData: vi.fn(),
+  heroUpdateData: vi.fn(),
 }));
 
 vi.mock('@helpers/talent', () => ({
-  allTalentIdsInTalentTree: vi.fn(),
+  talentIdsInTalentTree: vi.fn(),
 }));
-
-import { allTalentIdsInTalentTree } from '@helpers/talent';
 
 describe('Talent Investment Requirements', () => {
   let testHero: Hero;
@@ -75,7 +74,7 @@ describe('Talent Investment Requirements', () => {
         talents: [],
       };
 
-      vi.mocked(allTalentIdsInTalentTree).mockReturnValue([
+      vi.mocked(talentIdsInTalentTree).mockReturnValue([
         'fire-talent-1' as TalentId,
         'fire-talent-2' as TalentId,
       ]);
@@ -86,10 +85,10 @@ describe('Talent Investment Requirements', () => {
     });
 
     it('should only count talents from the specified tree', () => {
-      vi.mocked(allTalentIdsInTalentTree).mockReturnValue([
+      vi.mocked(talentIdsInTalentTree).mockReturnValue([
         'air-talent-1' as TalentId,
       ]);
-      
+
       expect(heroTalentsInvestedInTree(testHero, fireTalentTree)).toBe(1); // only air-talent-1
     });
   });
@@ -128,26 +127,32 @@ describe('Talent Investment Requirements', () => {
         talents: [],
       };
 
-      vi.mocked(allTalentIdsInTalentTree).mockReturnValue([
+      vi.mocked(talentIdsInTalentTree).mockReturnValue([
         'fire-talent-1' as TalentId,
         'fire-talent-2' as TalentId,
       ]);
     });
 
     it('should allow purchase when investment requirement is met', () => {
-      expect(canHeroBuyTalent(testHero, testTalent, 5, fireTalentTree, 3)).toBe(true); // has 3 invested, needs 3
+      expect(heroCanBuyTalent(testHero, testTalent, 5, fireTalentTree, 3)).toBe(
+        true,
+      ); // has 3 invested, needs 3
     });
 
     it('should block purchase when investment requirement is not met', () => {
-      expect(canHeroBuyTalent(testHero, testTalent, 5, fireTalentTree, 5)).toBe(false); // has 3 invested, needs 5
+      expect(heroCanBuyTalent(testHero, testTalent, 5, fireTalentTree, 5)).toBe(
+        false,
+      ); // has 3 invested, needs 5
     });
 
     it('should work with no investment requirement', () => {
-      expect(canHeroBuyTalent(testHero, testTalent, 5, fireTalentTree)).toBe(true);
+      expect(heroCanBuyTalent(testHero, testTalent, 5, fireTalentTree)).toBe(
+        true,
+      );
     });
 
     it('should work without talent tree parameter (backward compatibility)', () => {
-      expect(canHeroBuyTalent(testHero, testTalent, 5)).toBe(true);
+      expect(heroCanBuyTalent(testHero, testTalent, 5)).toBe(true);
     });
   });
 });

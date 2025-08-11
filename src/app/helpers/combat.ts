@@ -1,24 +1,24 @@
 import {
-  applySkillToTarget,
-  combatantTakeDamage,
+  combatApplySkillToTarget,
+  combatCombatantTakeDamage,
 } from '@helpers/combat-damage';
 import {
-  checkCombatOver,
-  handleCombatDefeat,
+  combatantIsDead,
+  combatCheckIfOver,
+  combatHandleDefeat,
   isCombatOver,
-  isDead,
 } from '@helpers/combat-end';
-import { logCombatMessage } from '@helpers/combat-log';
+import { combatMessageLog } from '@helpers/combat-log';
 import {
-  canTakeTurn,
-  handleCombatantStatusEffects,
-  unapplyAllStatusEffects,
+  combatCanTakeTurn,
+  combatHandleCombatantStatusEffects,
+  combatUnapplyAllStatusEffects,
 } from '@helpers/combat-statuseffects';
 import {
-  availableSkillsForCombatant,
-  getPossibleCombatantTargetsForSkill,
-  getPossibleCombatantTargetsForSkillTechnique,
-  getTargetsFromListBasedOnType,
+  combatAvailableSkillsForCombatant,
+  combatGetPossibleCombatantTargetsForSkill,
+  combatGetPossibleCombatantTargetsForSkillTechnique,
+  combatGetTargetsFromListBasedOnType,
 } from '@helpers/combat-targetting';
 import { getEntry } from '@helpers/content';
 import { gamestate, updateGamestate } from '@helpers/state-game';
@@ -27,9 +27,9 @@ import { notify } from '@helpers/notify';
 
 import { sample, sortBy, sumBy } from 'es-toolkit/compat';
 
-import { skillSucceedsElementCombatStatChance } from '@helpers/combat-stats';
-import { succeedsChance } from '@helpers/rng';
-import { getSkillTechniqueNumTargets, skillElements } from '@helpers/skill';
+import { combatSkillSucceedsElementCombatStatChance } from '@helpers/combat-stats';
+import { rngSucceedsChance } from '@helpers/rng';
+import { skillElements, skillTechniqueNumTargets } from '@helpers/skill';
 import { talentIgnoreConsumptionChance } from '@helpers/talent';
 import type {
   Combat,
@@ -53,7 +53,9 @@ function orderCombatantsBySpeed(combat: Combat): Combatant[] {
   );
 }
 
-export function allCombatantTalents(combatant: Combatant): TalentContent[] {
+export function combatAllCombatantTalents(
+  combatant: Combatant,
+): TalentContent[] {
   return Object.entries(combatant.talents)
     .filter(([, level]) => level > 0)
     .flatMap(([talentId, level]) =>
@@ -67,12 +69,12 @@ function combatantMarkSkillUse(
   skill: EquipmentSkill,
 ): void {
   const shouldIgnoreUseChance = talentIgnoreConsumptionChance(
-    allCombatantTalents(combatant),
+    combatAllCombatantTalents(combatant),
     skill,
   );
-  if (succeedsChance(shouldIgnoreUseChance)) return;
+  if (rngSucceedsChance(shouldIgnoreUseChance)) return;
 
-  const shouldApplyExtraUses = skillSucceedsElementCombatStatChance(
+  const shouldApplyExtraUses = combatSkillSucceedsElementCombatStatChance(
     skill,
     combatant,
     'skillAdditionalUseChance',
@@ -93,19 +95,19 @@ function combatantTakeTurn(
   combat: Combat,
   combatant: Combatant,
 ): CombatTurnResult {
-  if (isDead(combatant)) {
-    if (succeedsChance(combatant.combatStats.reviveChance)) {
-      logCombatMessage(
+  if (combatantIsDead(combatant)) {
+    if (rngSucceedsChance(combatant.combatStats.reviveChance)) {
+      combatMessageLog(
         combat,
         `**${combatant.name}** has sprung to life!`,
         combatant,
       );
 
-      combatantTakeDamage(combatant, -combatant.totalStats.Health);
+      combatCombatantTakeDamage(combatant, -combatant.totalStats.Health);
 
-      unapplyAllStatusEffects(combat, combatant);
+      combatUnapplyAllStatusEffects(combat, combatant);
     } else {
-      logCombatMessage(
+      combatMessageLog(
         combat,
         `**${combatant.name}** is dead, skipping turn.`,
         combatant,
@@ -114,15 +116,15 @@ function combatantTakeTurn(
     }
   }
 
-  handleCombatantStatusEffects(combat, combatant, 'TurnStart');
+  combatHandleCombatantStatusEffects(combat, combatant, 'TurnStart');
 
-  if (isDead(combatant)) {
-    logCombatMessage(combat, `**${combatant.name}** has died!`, combatant);
+  if (combatantIsDead(combatant)) {
+    combatMessageLog(combat, `**${combatant.name}** has died!`, combatant);
     return {};
   }
 
-  if (!canTakeTurn(combatant)) {
-    logCombatMessage(
+  if (!combatCanTakeTurn(combatant)) {
+    combatMessageLog(
       combat,
       `**${combatant.name}** lost their turn!`,
       combatant,
@@ -130,13 +132,15 @@ function combatantTakeTurn(
     return {};
   }
 
-  const skills = availableSkillsForCombatant(combatant).filter(
-    (s) => getPossibleCombatantTargetsForSkill(combat, combatant, s).length > 0,
+  const skills = combatAvailableSkillsForCombatant(combatant).filter(
+    (s) =>
+      combatGetPossibleCombatantTargetsForSkill(combat, combatant, s).length >
+      0,
   );
 
   const chosenSkill = sample(skills);
   if (!chosenSkill) {
-    logCombatMessage(
+    combatMessageLog(
       combat,
       `**${combatant.name}** has no skills available, skipping turn.`,
       combatant,
@@ -150,16 +154,16 @@ function combatantTakeTurn(
   const capturedCreatorStats = { ...combatant.totalStats };
 
   chosenSkill.techniques.forEach((tech) => {
-    const baseTargetList = getPossibleCombatantTargetsForSkillTechnique(
+    const baseTargetList = combatGetPossibleCombatantTargetsForSkillTechnique(
       combat,
       combatant,
       chosenSkill,
       tech,
     );
 
-    const numTargets = getSkillTechniqueNumTargets(chosenSkill, tech);
+    const numTargets = skillTechniqueNumTargets(chosenSkill, tech);
 
-    const targets = getTargetsFromListBasedOnType(
+    const targets = combatGetTargetsFromListBasedOnType(
       baseTargetList,
       combatant.targettingType,
       numTargets,
@@ -169,14 +173,14 @@ function combatantTakeTurn(
       // check for early termination of combat
       if (isCombatOver(combat)) return;
 
-      const shouldMiss = skillSucceedsElementCombatStatChance(
+      const shouldMiss = combatSkillSucceedsElementCombatStatChance(
         chosenSkill,
         combatant,
         'missChance',
       );
 
       if (shouldMiss) {
-        logCombatMessage(
+        combatMessageLog(
           combat,
           `**${chosenSkill.name}** misses **${target.name}**!`,
           combatant,
@@ -184,34 +188,48 @@ function combatantTakeTurn(
         return;
       }
 
-      applySkillToTarget(combat, combatant, target, chosenSkill, tech, capturedCreatorStats);
+      combatApplySkillToTarget(
+        combat,
+        combatant,
+        target,
+        chosenSkill,
+        tech,
+        capturedCreatorStats,
+      );
 
-      const shouldApplyAgain = skillSucceedsElementCombatStatChance(
+      const shouldApplyAgain = combatSkillSucceedsElementCombatStatChance(
         chosenSkill,
         combatant,
         'skillStrikeAgainChance',
       );
 
-      if (shouldApplyAgain && !isDead(target)) {
-        logCombatMessage(
+      if (shouldApplyAgain && !combatantIsDead(target)) {
+        combatMessageLog(
           combat,
           `**${chosenSkill.name}** strikes again!`,
           combatant,
         );
 
-        applySkillToTarget(combat, combatant, target, chosenSkill, tech, capturedCreatorStats);
+        combatApplySkillToTarget(
+          combat,
+          combatant,
+          target,
+          chosenSkill,
+          tech,
+          capturedCreatorStats,
+        );
       }
     });
   });
 
-  handleCombatantStatusEffects(combat, combatant, 'TurnEnd');
+  combatHandleCombatantStatusEffects(combat, combatant, 'TurnEnd');
 
-  if (isDead(combatant)) {
-    logCombatMessage(combat, `**${combatant.name}** has died!`, combatant);
+  if (combatantIsDead(combatant)) {
+    combatMessageLog(combat, `**${combatant.name}** has died!`, combatant);
     return {};
   }
 
-  const shouldGoAgain = skillSucceedsElementCombatStatChance(
+  const shouldGoAgain = combatSkillSucceedsElementCombatStatChance(
     chosenSkill,
     combatant,
     'repeatActionChance',
@@ -226,20 +244,20 @@ function combatantTakeTurn(
   return {};
 }
 
-export function doCombatIteration(): void {
+export function combatDoCombatIteration(): void {
   const combat = currentCombat();
   if (!combat) return;
 
-  if (checkCombatOver(combat)) return;
+  if (combatCheckIfOver(combat)) return;
 
-  logCombatMessage(combat, `_Combat round ${combat.rounds + 1}._`);
+  combatMessageLog(combat, `_Combat round ${combat.rounds + 1}._`);
 
   const turnOrder = orderCombatantsBySpeed(combat);
   turnOrder.forEach((char) => {
     const res = combatantTakeTurn(combat, char);
 
     if (res?.takeAnotherTurn) {
-      logCombatMessage(
+      combatMessageLog(
         combat,
         `**${char.name}** was blessed by the elements, and gets to go again!`,
         char,
@@ -251,39 +269,42 @@ export function doCombatIteration(): void {
   updateGamestate((state) => {
     const previousRounds = combat.rounds;
     combat.rounds++;
-    
+
     // Check if we've crossed into a new deadlock prevention tier
     const previousMultiplierTier = Math.floor(previousRounds / 25);
     const currentMultiplierTier = Math.floor(combat.rounds / 25);
-    
-    if (currentMultiplierTier > previousMultiplierTier && currentMultiplierTier > 0) {
+
+    if (
+      currentMultiplierTier > previousMultiplierTier &&
+      currentMultiplierTier > 0
+    ) {
       const damageIncreasePercent = currentMultiplierTier * 25;
-      logCombatMessage(
+      combatMessageLog(
         combat,
-        `Due to exhaustion, damage received is increased by ${damageIncreasePercent}% for all combatants.`
+        `Due to exhaustion, damage received is increased by ${damageIncreasePercent}% for all combatants.`,
       );
     }
-    
+
     state.hero.combat = combat;
     return state;
   });
 
-  checkCombatOver(combat);
+  combatCheckIfOver(combat);
 }
 
-export function handleCombatFlee(): void {
+export function combatHandleFlee(): void {
   const combat = currentCombat();
   if (!combat) {
     notify('You are not in combat!', 'Travel');
     return;
   }
 
-  logCombatMessage(combat, 'The heroes have fled!');
-  handleCombatDefeat(combat);
-  resetCombat();
+  combatMessageLog(combat, 'The heroes have fled!');
+  combatHandleDefeat(combat);
+  combatReset();
 }
 
-export function resetCombat(): void {
+export function combatReset(): void {
   updateGamestate((state) => {
     state.hero.combat = undefined;
     return state;

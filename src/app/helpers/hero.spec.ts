@@ -1,21 +1,23 @@
 import {
   allHeroes,
-  getHero,
-  getHeroPosition,
-  pickSpriteForHeroName,
-  setHeroPosition,
-  updateHeroData,
+  heroGet,
+  heroPickSpriteByName,
+  heroPositionGet,
+  heroPositionSet,
+  heroUpdateData,
 } from '@helpers/hero';
 import type { Hero, HeroId, WorldLocation, WorldPosition } from '@interfaces';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock dependencies
 vi.mock('@helpers/sprite', () => ({
-  indexToSprite: vi.fn((index: number) => index.toString().padStart(4, '0')),
+  spriteGetFromIndex: vi.fn((index: number) =>
+    index.toString().padStart(4, '0'),
+  ),
 }));
 
 vi.mock('@helpers/world', () => ({
-  getWorldNode: vi.fn(),
+  worldNodeGet: vi.fn(),
 }));
 
 vi.mock('@helpers/state-game', () => ({
@@ -26,7 +28,7 @@ vi.mock('@helpers/state-game', () => ({
 }));
 
 import { gamestate, updateGamestate } from '@helpers/state-game';
-import { getWorldNode } from '@helpers/world';
+import { worldNodeGet } from '@helpers/world';
 
 describe('Hero Helper Functions', () => {
   const mockHero: Hero = {
@@ -71,21 +73,21 @@ describe('Hero Helper Functions', () => {
       } as ReturnType<typeof gamestate>);
 
       expect(() =>
-        updateHeroData('non-existent' as HeroId, { level: 2 }),
+        heroUpdateData('non-existent' as HeroId, { level: 2 }),
       ).toThrow('Hero with ID non-existent not found');
     });
   });
 
   describe('pickSpriteForHeroName', () => {
     it('should return predefined sprites for specific heroes', () => {
-      expect(pickSpriteForHeroName('Ignatius')).toBe('0004');
-      expect(pickSpriteForHeroName('Aquara')).toBe('0000');
-      expect(pickSpriteForHeroName('Terrus')).toBe('0060');
-      expect(pickSpriteForHeroName('Zephyra')).toBe('0036');
+      expect(heroPickSpriteByName('Ignatius')).toBe('0004');
+      expect(heroPickSpriteByName('Aquara')).toBe('0000');
+      expect(heroPickSpriteByName('Terrus')).toBe('0060');
+      expect(heroPickSpriteByName('Zephyra')).toBe('0036');
     });
 
     it('should generate consistent sprite for other names', () => {
-      const sprite = pickSpriteForHeroName('TestHero');
+      const sprite = heroPickSpriteByName('TestHero');
       expect(sprite).toMatch(/^\d{4}$/);
     });
   });
@@ -97,25 +99,25 @@ describe('Hero Helper Functions', () => {
         hero: { position },
       } as ReturnType<typeof gamestate>);
 
-      expect(getHeroPosition()).toEqual(position);
+      expect(heroPositionGet()).toEqual(position);
     });
   });
 
   describe('setHeroPosition', () => {
     it('should update hero position', () => {
       const mockNode = { id: 'node-1' };
-      vi.mocked(getWorldNode).mockReturnValue(mockNode as WorldLocation);
+      vi.mocked(worldNodeGet).mockReturnValue(mockNode as WorldLocation);
 
-      setHeroPosition(10, 20);
+      heroPositionSet(10, 20);
 
       expect(updateGamestate).toHaveBeenCalled();
-      expect(getWorldNode).toHaveBeenCalledWith(10, 20);
+      expect(worldNodeGet).toHaveBeenCalledWith(10, 20);
     });
 
     it('should handle missing node', () => {
-      vi.mocked(getWorldNode).mockReturnValue(undefined);
+      vi.mocked(worldNodeGet).mockReturnValue(undefined);
 
-      setHeroPosition(10, 20);
+      heroPositionSet(10, 20);
 
       expect(updateGamestate).toHaveBeenCalled();
     });
@@ -127,7 +129,7 @@ describe('Hero Helper Functions', () => {
         hero: { heroes: [mockHero] },
       } as ReturnType<typeof gamestate>);
 
-      expect(getHero(mockHero.id)).toEqual(mockHero);
+      expect(heroGet(mockHero.id)).toEqual(mockHero);
     });
 
     it('should return undefined if hero not found', () => {
@@ -135,7 +137,7 @@ describe('Hero Helper Functions', () => {
         hero: { heroes: [] },
       } as ReturnType<typeof gamestate>);
 
-      expect(getHero('non-existent' as HeroId)).toBeUndefined();
+      expect(heroGet('non-existent' as HeroId)).toBeUndefined();
     });
   });
 });

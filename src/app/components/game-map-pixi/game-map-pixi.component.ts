@@ -1,25 +1,25 @@
 import type { ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { Component, computed, effect, inject, viewChild } from '@angular/core';
 import {
-  clearWorldNodeChanges,
-  createClaimIndicatorTextures,
-  createGameMapContainers,
-  createNodeSprites,
-  createPlayerAtLocationIndicator,
-  createTravelingHeroIndicator,
-  createTravelLine,
   gamestate,
   getOption,
-  getSpriteForPosition,
-  getSpriteFromNodeType,
-  getTravelProgress,
-  getWorldNodeChanges,
-  initializePixiApp,
   isTraveling,
-  loadGameMapTextures,
-  setupMapDragging,
-  setupResponsiveCanvas,
+  mapDragSetup,
+  pixiAppInitialize,
+  pixiGameMapContainersCreate,
+  pixiIconTextureClaimCreate,
+  pixiIndicatorHeroTravelCreate,
+  pixiIndicatorNodePlayerAtLocationCreate,
+  pixiIndicatorNodeSpriteCreate,
+  pixiIndicatorTravelLineCreate,
+  pixiResponsiveCanvasSetup,
+  pixiTextureGameMapLoad,
   showLocationMenu,
+  spriteGetForPosition,
+  spriteGetFromNodeType,
+  travelVisualizationProgress,
+  worldClearNodeChanges,
+  worldGetNodeChanges,
 } from '@helpers';
 import type { MapTileData, WorldLocation } from '@interfaces';
 import type { NodeSpriteData } from '@interfaces/sprite';
@@ -85,7 +85,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
 
     // Effect for surgical node updates - watch for world node changes
     effect(() => {
-      const changes = getWorldNodeChanges();
+      const changes = worldGetNodeChanges();
 
       if (changes.length > 0 && this.app && this.mapContainer) {
         this.loggerService.debug(
@@ -99,7 +99,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
         });
 
         // Clear the changes after processing
-        clearWorldNodeChanges();
+        worldClearNodeChanges();
       }
     });
 
@@ -142,20 +142,20 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
   }
 
   private async initPixi() {
-    this.app = await initializePixiApp(this.pixiContainer()?.nativeElement, {
+    this.app = await pixiAppInitialize(this.pixiContainer()?.nativeElement, {
       width: this.pixiContainer()?.nativeElement.clientWidth,
       height: this.pixiContainer()?.nativeElement.clientHeight,
       backgroundAlpha: 0,
       antialias: false,
     });
 
-    const containers = createGameMapContainers(this.app);
+    const containers = pixiGameMapContainersCreate(this.app);
     this.mapContainer = containers.mapContainer;
     this.playerIndicatorContainer = containers.playerIndicatorContainer;
     this.travelVisualizationContainer = containers.travelVisualizationContainer;
     this.mapContainer.cullable = true;
 
-    this.resizeObserver = setupResponsiveCanvas(
+    this.resizeObserver = pixiResponsiveCanvasSetup(
       this.app,
       this.pixiContainer()?.nativeElement,
     );
@@ -172,7 +172,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     )
       return;
 
-    setupMapDragging({
+    mapDragSetup({
       app: this.app,
       containers: [
         this.mapContainer,
@@ -187,7 +187,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
   private async loadTextures() {
     try {
       const artAtlases = this.contentService.artAtlases();
-      const textures = await loadGameMapTextures(
+      const textures = await pixiTextureGameMapLoad(
         artAtlases['world-terrain'],
         artAtlases['world-object'],
       );
@@ -195,7 +195,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       this.objectTextures = textures.objectTextures;
 
       // Load hero textures
-      const { loadTexturesFromAtlas } = await import(
+      const { pixiTextureAtlasLoad: loadTexturesFromAtlas } = await import(
         '@helpers/pixi-texture-loader'
       );
       this.heroTextures = await loadTexturesFromAtlas(
@@ -203,7 +203,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
         artAtlases['hero'],
       );
 
-      const claimTextures = createClaimIndicatorTextures();
+      const claimTextures = pixiIconTextureClaimCreate();
       this.checkTexture = claimTextures.checkTexture;
       this.xTexture = claimTextures.xTexture;
     } catch (error) {
@@ -290,7 +290,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
         `Creating updated sprite for node ${worldX},${worldY}`,
       );
       // Get the correct tile sprite for this world position
-      const tileSprite = getSpriteForPosition(worldX, worldY);
+      const tileSprite = spriteGetForPosition(worldX, worldY);
       this.createNodeSprites(relativeX, relativeY, updatedNode, tileSprite);
     }
   }
@@ -304,12 +304,12 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     if (!this.mapContainer) return;
 
     const nodeKey = `${x}-${y}`;
-    const spriteData = createNodeSprites(
+    const spriteData = pixiIndicatorNodeSpriteCreate(
       x,
       y,
       nodeData,
       tileSprite,
-      getSpriteFromNodeType(nodeData.nodeType),
+      spriteGetFromNodeType(nodeData.nodeType),
       this.terrainTextures,
       this.objectTextures,
       this.mapContainer,
@@ -346,7 +346,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       relativeY >= 0 &&
       relativeY < this.nodeHeight()
     ) {
-      const playerIndicator = createPlayerAtLocationIndicator(
+      const playerIndicator = pixiIndicatorNodePlayerAtLocationCreate(
         relativeX,
         relativeY,
         this.playerIndicatorContainer,
@@ -362,7 +362,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     this.travelVisualizationCleanups.forEach((cleanup) => cleanup());
     this.travelVisualizationCleanups = [];
 
-    const travelProgress = getTravelProgress();
+    const travelProgress = travelVisualizationProgress();
     if (!travelProgress.isActive) return;
 
     const { fromPosition, toPosition, interpolatedPosition } = travelProgress;
@@ -378,7 +378,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     const relativeInterpolatedY = interpolatedPosition.y - Math.floor(camera.y);
 
     // Draw travel line between source and destination using relative coordinates
-    const travelLine = createTravelLine(
+    const travelLine = pixiIndicatorTravelLineCreate(
       relativeFromX,
       relativeFromY,
       relativeToX,
@@ -390,7 +390,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     // Show traveling hero sprite at interpolated position using relative coordinates
     const partyLeader = this.firstHero();
     if (partyLeader && this.heroTextures[partyLeader.sprite]) {
-      const travelingHero = createTravelingHeroIndicator(
+      const travelingHero = pixiIndicatorHeroTravelCreate(
         relativeInterpolatedX,
         relativeInterpolatedY,
         this.heroTextures[partyLeader.sprite],

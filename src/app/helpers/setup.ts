@@ -1,13 +1,13 @@
 import { getEntry } from '@helpers/content';
 import {
-  getCurrencyClaimsForNode,
-  mergeCurrencyClaims,
+  currencyClaimsGetForNode,
+  currencyClaimsMerge,
 } from '@helpers/currency';
-import { makeDroppableIntoRealItem } from '@helpers/droppable';
+import { droppableMakeReal } from '@helpers/droppable';
 import { allHeroes } from '@helpers/hero';
-import { equipSkill } from '@helpers/inventory-skill';
+import { skillEquip } from '@helpers/inventory-skill';
 import { gamestate, updateGamestate } from '@helpers/state-game';
-import { getWorldNode } from '@helpers/world';
+import { worldNodeGet } from '@helpers/world';
 import type { EquipmentSkill } from '@interfaces/content-skill';
 
 export function isSetup(): boolean {
@@ -20,26 +20,26 @@ function giveHeroesDefaultItems(): void {
 
   allHeroes().forEach((hero, index) => {
     const skill = items[index];
-    const createdSkill = makeDroppableIntoRealItem(
+    const createdSkill = droppableMakeReal(
       getEntry<EquipmentSkill>(skill)!,
     ) as EquipmentSkill;
 
-    equipSkill(hero, createdSkill, 0);
+    skillEquip(hero, createdSkill, 0);
   });
 }
 
-export function finishSetup(): void {
+export function setupFinish(): void {
   updateGamestate((state) => {
     state.meta.isSetup = true;
     return state;
   });
 
   const homeBase = gamestate().world.homeBase;
-  const laflotte = getWorldNode(homeBase.x, homeBase.y);
+  const laflotte = worldNodeGet(homeBase.x, homeBase.y);
   if (!laflotte) return;
 
-  const claims = getCurrencyClaimsForNode(laflotte);
-  mergeCurrencyClaims(claims);
+  const claims = currencyClaimsGetForNode(laflotte);
+  currencyClaimsMerge(claims);
 
   giveHeroesDefaultItems();
 }

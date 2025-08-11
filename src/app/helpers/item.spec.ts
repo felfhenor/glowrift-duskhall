@@ -1,9 +1,9 @@
-import { getItemStat, getItemTalents, sortedRarityList } from '@helpers/item';
+import { itemStat, itemTalents } from '@helpers/item';
 import { describe, expect, it, vi } from 'vitest';
 
 // Mock uuid
 vi.mock('@helpers/rng', () => ({
-  uuid: vi.fn(() => 'mock-uuid'),
+  rngUuid: vi.fn(() => 'mock-uuid'),
 }));
 
 vi.mock('@helpers/signal', () => ({
@@ -14,10 +14,15 @@ vi.mock('@helpers/state-game', () => ({
   gamestate: vi.fn(),
 }));
 
+vi.mock('@helpers/state-options', () => ({
+  options: vi.fn(),
+}));
+
 vi.mock('@helpers/content', () => ({
   getEntry: vi.fn(),
 }));
 
+import { droppableSortedRarityList } from '@helpers/droppable';
 import type {
   DroppableEquippable,
   EquipmentItem,
@@ -65,7 +70,7 @@ describe('Item Helper Functions', () => {
         },
       ];
 
-      const sorted = sortedRarityList(items);
+      const sorted = droppableSortedRarityList(items);
       expect(sorted.map((i) => i.rarity)).toEqual([
         'Legendary',
         'Rare',
@@ -102,7 +107,7 @@ describe('Item Helper Functions', () => {
         },
       ];
 
-      const sorted = sortedRarityList(items);
+      const sorted = droppableSortedRarityList(items);
       expect(sorted.map((i) => i.dropLevel)).toEqual([3, 2, 1]);
     });
   });
@@ -122,7 +127,7 @@ describe('Item Helper Functions', () => {
         traitIds: [],
       };
 
-      expect(getItemStat(item, baseStat)).toBe(5);
+      expect(itemStat(item, baseStat)).toBe(5);
     });
 
     it('should return sum of base and mod stats when both present', () => {
@@ -140,7 +145,7 @@ describe('Item Helper Functions', () => {
         traitIds: [],
       };
 
-      expect(getItemStat(item, baseStat)).toBe(8);
+      expect(itemStat(item, baseStat)).toBe(8);
     });
   });
 
@@ -164,22 +169,10 @@ describe('Item Helper Functions', () => {
         skillIds: [],
       };
 
-      const talents = getItemTalents(item);
+      const talents = itemTalents(item);
       expect(talents).toHaveLength(2);
       expect(talents.find((t) => t.talentId === 'talent1')?.value).toBe(2);
       expect(talents.find((t) => t.talentId === 'talent2')?.value).toBe(3);
-    });
-
-    it('should include talents from traits', () => {
-      // For now we'll skip this test since mocking is complex
-      // The fix will handle this case and we can verify manually
-      expect(true).toBe(true);
-    });
-
-    it('should sum duplicate talents from different sources', () => {
-      // For now we'll skip this test since mocking is complex
-      // The fix will handle this case and we can verify manually
-      expect(true).toBe(true);
     });
   });
 });

@@ -1,5 +1,5 @@
-import { getHero, updateHeroData } from '@helpers/hero';
-import { getItemElementMultiplier, getItemStat } from '@helpers/item';
+import { heroGet, heroUpdateData } from '@helpers/hero';
+import { itemElementMultiplier, itemStat } from '@helpers/item';
 import type {
   ElementBlock,
   GameElement,
@@ -16,9 +16,7 @@ export function heroBaseStat(hero: Hero, stat: GameStat): number {
 
 export function heroEquipmentStat(hero: Hero, stat: GameStat): number {
   return sum(
-    Object.values(hero.equipment ?? {}).map((i) =>
-      i ? getItemStat(i, stat) : 0,
-    ),
+    Object.values(hero.equipment ?? {}).map((i) => (i ? itemStat(i, stat) : 0)),
   );
 }
 
@@ -29,7 +27,7 @@ export function heroTotalStat(hero: Hero, stat: GameStat): number {
 export function heroEquipmentElement(hero: Hero, element: GameElement): number {
   return sum(
     Object.values(hero.equipment ?? {}).map((i) =>
-      i ? getItemElementMultiplier(i, element) : 0,
+      i ? itemElementMultiplier(i, element) : 0,
     ),
   );
 }
@@ -56,8 +54,8 @@ export function heroElements(hero: Hero): ElementBlock {
   };
 }
 
-export function recalculateStats(heroId: HeroId): void {
-  const thisHero = getHero(heroId);
+export function heroRecalculateStats(heroId: HeroId): void {
+  const thisHero = heroGet(heroId);
 
   if (!thisHero) {
     return;
@@ -65,7 +63,7 @@ export function recalculateStats(heroId: HeroId): void {
 
   const newStats = heroStats(thisHero);
 
-  updateHeroData(thisHero.id, {
+  heroUpdateData(thisHero.id, {
     totalStats: newStats,
     hp: Math.min(newStats.Health, thisHero.hp),
   });

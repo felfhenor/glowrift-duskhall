@@ -1,52 +1,49 @@
-import { hasCurrency, loseCurrency } from '@helpers/currency';
-import {
-  getDefaultCurrencyBlock,
-  getDefaultNodeCountBlock,
-} from '@helpers/defaults';
+import { currencyHasAmount, currencyLose } from '@helpers/currency';
+import { defaultCurrencyBlock, defaultNodeCountBlock } from '@helpers/defaults';
 import { gamestate, updateGamestate } from '@helpers/state-game';
-import { hasClaimedNodeCount } from '@helpers/world';
+import { worldNodeHasClaimedCount } from '@helpers/world';
 import type { GameCurrency, LocationType, TownBuilding } from '@interfaces';
 
-export function getBuildingLevel(building: TownBuilding): number {
+export function townBuildingLevel(building: TownBuilding): number {
   return gamestate().town.buildingLevels[building] ?? 1;
 }
 
-export function buildingUpgradeCost(building: TownBuilding) {
+export function townBuildingUpgradeCost(building: TownBuilding) {
   const liberationCosts: Record<TownBuilding, Record<LocationType, number>> = {
     Academy: {
-      ...getDefaultNodeCountBlock(),
+      ...defaultNodeCountBlock(),
       dungeon: 1,
     },
 
     Alchemist: {
-      ...getDefaultNodeCountBlock(),
+      ...defaultNodeCountBlock(),
       dungeon: 1,
     },
 
     Blacksmith: {
-      ...getDefaultNodeCountBlock(),
+      ...defaultNodeCountBlock(),
       cave: 5,
     },
 
     Market: {
-      ...getDefaultNodeCountBlock(),
+      ...defaultNodeCountBlock(),
       town: 1,
     },
 
     Merchant: {
-      ...getDefaultNodeCountBlock(),
+      ...defaultNodeCountBlock(),
       village: 1,
     },
 
     Salvager: {
-      ...getDefaultNodeCountBlock(),
+      ...defaultNodeCountBlock(),
       dungeon: 1,
     },
   };
 
   const currencyCosts: Record<TownBuilding, Record<GameCurrency, number>> = {
     Academy: {
-      ...getDefaultCurrencyBlock(),
+      ...defaultCurrencyBlock(),
       Mana: 2500,
       'Fire Sliver': 100,
       'Water Sliver': 100,
@@ -55,37 +52,37 @@ export function buildingUpgradeCost(building: TownBuilding) {
     },
 
     Alchemist: {
-      ...getDefaultCurrencyBlock(),
+      ...defaultCurrencyBlock(),
       Mana: 1000,
       'Water Shard': 3,
     },
 
     Blacksmith: {
-      ...getDefaultCurrencyBlock(),
+      ...defaultCurrencyBlock(),
       Mana: 1000,
       'Soul Essence': 50,
     },
 
     Market: {
-      ...getDefaultCurrencyBlock(),
+      ...defaultCurrencyBlock(),
       Mana: 500,
       'Air Shard': 3,
     },
 
     Merchant: {
-      ...getDefaultCurrencyBlock(),
+      ...defaultCurrencyBlock(),
       Mana: 5000,
       'Fire Shard': 3,
     },
 
     Salvager: {
-      ...getDefaultCurrencyBlock(),
+      ...defaultCurrencyBlock(),
       Mana: 1000,
       'Earth Shard': 3,
     },
   };
 
-  const currentLevel = getBuildingLevel(building);
+  const currentLevel = townBuildingLevel(building);
 
   const costs = {
     liberation: liberationCosts[building],
@@ -103,7 +100,7 @@ export function buildingUpgradeCost(building: TownBuilding) {
   return costs;
 }
 
-export function buildingMaxLevel(building: TownBuilding) {
+export function townBuildingMaxLevel(building: TownBuilding) {
   const maxLevels: Record<TownBuilding, number> = {
     Academy: 99,
     Alchemist: 99,
@@ -116,11 +113,11 @@ export function buildingMaxLevel(building: TownBuilding) {
   return maxLevels[building] ?? 1;
 }
 
-export function canUpgradeBuildingLevel(building: TownBuilding): boolean {
-  const level = getBuildingLevel(building);
-  if (level >= buildingMaxLevel(building)) return false;
+export function townCanUpgradeBuildingLevel(building: TownBuilding): boolean {
+  const level = townBuildingLevel(building);
+  if (level >= townBuildingMaxLevel(building)) return false;
 
-  const { liberation, currency } = buildingUpgradeCost(building);
+  const { liberation, currency } = townBuildingUpgradeCost(building);
 
   let shouldUpgrade = true;
 
@@ -128,7 +125,7 @@ export function canUpgradeBuildingLevel(building: TownBuilding): boolean {
     const numRequired = liberation[libType as LocationType] ?? 0;
     if (numRequired <= 0) return;
 
-    if (!hasClaimedNodeCount(libType as LocationType, numRequired)) {
+    if (!worldNodeHasClaimedCount(libType as LocationType, numRequired)) {
       shouldUpgrade = false;
     }
   });
@@ -137,7 +134,7 @@ export function canUpgradeBuildingLevel(building: TownBuilding): boolean {
     const numRequired = currency[currType as GameCurrency] ?? 0;
     if (numRequired <= 0) return;
 
-    if (!hasCurrency(currType as GameCurrency, numRequired)) {
+    if (!currencyHasAmount(currType as GameCurrency, numRequired)) {
       shouldUpgrade = false;
     }
   });
@@ -145,10 +142,10 @@ export function canUpgradeBuildingLevel(building: TownBuilding): boolean {
   return shouldUpgrade;
 }
 
-export function upgradeBuildingLevel(building: TownBuilding): void {
-  const { currency } = buildingUpgradeCost(building);
+export function townUpgradeBuildingLevel(building: TownBuilding): void {
+  const { currency } = townBuildingUpgradeCost(building);
   Object.keys(currency).forEach((curr) => {
-    loseCurrency(curr as GameCurrency, currency[curr as GameCurrency] ?? 0);
+    currencyLose(curr as GameCurrency, currency[curr as GameCurrency] ?? 0);
   });
 
   updateGamestate((state) => {

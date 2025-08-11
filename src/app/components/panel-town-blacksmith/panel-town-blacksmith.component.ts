@@ -6,8 +6,11 @@ import { MarkerCurrencyInlineComponent } from '@components/marker-currency-inlin
 import { PanelTownBuildingUpgradeComponent } from '@components/panel-town-building-upgrade/panel-town-building-upgrade.component';
 import { StatsItemComponent } from '@components/stats-item/stats-item.component';
 import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
-import { hasCurrencies, hasCurrency } from '@helpers/currency';
-import { getItemById } from '@helpers/item';
+import {
+  currencyHasAmount,
+  currencyHasMultipleAmounts,
+} from '@helpers/currency';
+import { itemGetById } from '@helpers/item';
 import {
   blacksmithCanEnchantItem,
   blacksmithEnchantItem,
@@ -47,12 +50,13 @@ export class PanelTownBlacksmithComponent {
       costs: Object.keys(path.cost).filter(
         (c) => path.cost[c as GameCurrency] > 0,
       ) as GameCurrency[],
-      canEnchant: blacksmithCanEnchantItem(item) && hasCurrencies(path.cost),
+      canEnchant:
+        blacksmithCanEnchantItem(item) && currencyHasMultipleAmounts(path.cost),
     }));
   });
 
   public canRerollItemTrait = computed(() =>
-    hasCurrency('Mana', this.traitRerollCost()),
+    currencyHasAmount('Mana', this.traitRerollCost()),
   );
 
   public traitRerollCost = computed(() => {
@@ -65,12 +69,12 @@ export class PanelTownBlacksmithComponent {
   public enchantItem(item: EquipmentItem, enchant: BlacksmithEnchant) {
     blacksmithEnchantItem(item, enchant);
 
-    this.selectedItem.set(getItemById(item.id));
+    this.selectedItem.set(itemGetById(item.id));
   }
 
   public rerollTrait(item: EquipmentItem) {
     blacksmithRerollItemTrait(item);
 
-    this.selectedItem.set(getItemById(item.id));
+    this.selectedItem.set(itemGetById(item.id));
   }
 }

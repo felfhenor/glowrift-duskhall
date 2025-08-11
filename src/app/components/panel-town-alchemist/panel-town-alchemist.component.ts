@@ -7,13 +7,13 @@ import { InventoryGridContainerComponent } from '@components/inventory-grid-cont
 import { MarkerCurrencyComponent } from '@components/marker-currency/marker-currency.component';
 import { PanelTownBuildingUpgradeComponent } from '@components/panel-town-building-upgrade/panel-town-building-upgrade.component';
 import {
-  maxAlchemistSkills,
-  multiSkillSalvageCurrencyGain,
+  alchemistMultiSkillSalvageCurrencyGain,
+  alchemistSalvageSkills,
+  alchemistSkillsMax,
+  analyticsSendDesignEvent,
+  droppableSortedRarityList,
   notifySuccess,
-  salvageSkills,
-  sendDesignEvent,
 } from '@helpers';
-import { sortedRarityList } from '@helpers/item';
 import { gamestate } from '@helpers/state-game';
 import type { EquipmentSkill, GameCurrency } from '@interfaces';
 import { TeleportDirective } from '@ngneat/overview';
@@ -42,7 +42,7 @@ export class PanelTownAlchemistComponent {
     this.selectedSkills().map((i) => i.id),
   );
 
-  public maxSlots = computed(() => maxAlchemistSkills());
+  public maxSlots = computed(() => alchemistSkillsMax());
 
   public hasAnyItems = computed(
     () => this.selectedSkills().filter(Boolean).length > 0,
@@ -50,10 +50,9 @@ export class PanelTownAlchemistComponent {
 
   public earnings = computed(
     () =>
-      Object.entries(multiSkillSalvageCurrencyGain(this.selectedSkills())) as [
-        GameCurrency,
-        number,
-      ][],
+      Object.entries(
+        alchemistMultiSkillSalvageCurrencyGain(this.selectedSkills()),
+      ) as [GameCurrency, number][],
   );
 
   chooseItem(item: EquipmentSkill) {
@@ -72,10 +71,10 @@ export class PanelTownAlchemistComponent {
 
   breakItems() {
     this.selectedSkills().forEach((item) =>
-      sendDesignEvent(`Game:Town:Alchemist:Break:${item.name}`),
+      analyticsSendDesignEvent(`Game:Town:Alchemist:Break:${item.name}`),
     );
 
-    salvageSkills(this.selectedSkills());
+    alchemistSalvageSkills(this.selectedSkills());
     notifySuccess(`You salvaged ${this.selectedSkills().length} spells!`);
 
     this.selectedSkills.set([]);
@@ -86,7 +85,7 @@ export class PanelTownAlchemistComponent {
     if (availableSlots <= 0) return;
 
     // Get all skills, sorted by rarity/level, excluding favorited skills
-    const allSkills = sortedRarityList<EquipmentSkill>(
+    const allSkills = droppableSortedRarityList<EquipmentSkill>(
       gamestate().inventory.skills.filter(
         (skill) =>
           !this.disabledSkillIds().includes(skill.id) && !skill.isFavorite,

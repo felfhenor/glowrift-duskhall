@@ -1,14 +1,14 @@
-import { townMerchantGameloop } from '@helpers/gameloop-town-merchant';
-import { allHeroesHeal } from '@helpers/hero';
-import { allHeroesGainXp } from '@helpers/hero-xp';
-import { getCurrentWorldNode } from '@helpers/world';
+import { gameloopTownMerchant } from '@helpers/gameloop-town-merchant';
+import { heroHealAll } from '@helpers/hero';
+import { heroAllGainXp } from '@helpers/hero-xp';
+import { worldNodeGetCurrent } from '@helpers/world';
 
-export function townGameloop(numTicks: number): void {
-  townMerchantGameloop(numTicks);
+export function gameloopTown(numTicks: number): void {
+  gameloopTownMerchant(numTicks);
 
-  const currentNode = getCurrentWorldNode();
+  const currentNode = worldNodeGetCurrent();
   if (currentNode?.nodeType !== 'town') return;
 
-  allHeroesGainXp(numTicks);
-  allHeroesHeal(numTicks);
+  heroAllGainXp(numTicks);
+  heroHealAll(numTicks);
 }

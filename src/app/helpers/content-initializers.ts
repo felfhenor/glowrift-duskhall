@@ -1,4 +1,4 @@
-import { getDefaultAffinities, getDefaultStats } from '@helpers/defaults';
+import { defaultAffinities, defaultStats } from '@helpers/defaults';
 import type {
   CombatantCombatStats,
   ContentType,
@@ -48,13 +48,13 @@ const initializers: Record<ContentType, (entry: any) => any> = {
 };
 
 function ensureStats(statblock: Partial<StatBlock> = {}): Required<StatBlock> {
-  return Object.assign({}, getDefaultStats(), statblock);
+  return Object.assign({}, defaultStats(), statblock);
 }
 
 function ensureAffinities(
   elementblock: Partial<ElementBlock> = {},
 ): Required<ElementBlock> {
-  return Object.assign({}, getDefaultAffinities(), elementblock);
+  return Object.assign({}, defaultAffinities(), elementblock);
 }
 
 function ensureEquipmentElement(

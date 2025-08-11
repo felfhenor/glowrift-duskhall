@@ -1,7 +1,7 @@
 import {
-  getCurrency,
-  getCurrencyClaimsForNode,
-  hasCurrency,
+  currencyClaimsGetForNode,
+  currencyGet,
+  currencyHasAmount,
 } from '@helpers/currency';
 import type { CurrencyBlock, GameCurrency, WorldLocation } from '@interfaces';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -72,7 +72,7 @@ describe('Currency Helper Functions', () => {
         },
       } as ReturnType<typeof gamestate>);
 
-      expect(getCurrency('Mana')).toBe(100);
+      expect(currencyGet('Mana')).toBe(100);
     });
 
     it('should return 0 for undefined currency', () => {
@@ -82,7 +82,7 @@ describe('Currency Helper Functions', () => {
         },
       } as ReturnType<typeof gamestate>);
 
-      expect(getCurrency('Fire Sliver')).toBe(0);
+      expect(currencyGet('Fire Sliver')).toBe(0);
     });
   });
 
@@ -92,7 +92,7 @@ describe('Currency Helper Functions', () => {
         currency: { currencies: { Mana: 100 } as CurrencyBlock },
       } as ReturnType<typeof gamestate>);
 
-      expect(hasCurrency('Mana', 50)).toBe(true);
+      expect(currencyHasAmount('Mana', 50)).toBe(true);
     });
 
     it('should return false if currency amount is insufficient', () => {
@@ -100,7 +100,7 @@ describe('Currency Helper Functions', () => {
         currency: { currencies: { Mana: 30 } as CurrencyBlock },
       } as ReturnType<typeof gamestate>);
 
-      expect(hasCurrency('Mana', 50)).toBe(false);
+      expect(currencyHasAmount('Mana', 50)).toBe(false);
     });
   });
 
@@ -112,7 +112,7 @@ describe('Currency Helper Functions', () => {
         elements: [{ element: 'Fire', intensity: 100 }],
       } as WorldLocation;
 
-      const claims = getCurrencyClaimsForNode(node);
+      const claims = currencyClaimsGetForNode(node);
       expect(claims['Fire Sliver']).toBe(1);
     });
 
@@ -122,7 +122,7 @@ describe('Currency Helper Functions', () => {
         traitIds: [],
       } as WorldLocation;
 
-      const claims = getCurrencyClaimsForNode(node);
+      const claims = currencyClaimsGetForNode(node);
       expect(claims.Mana).toBe(2);
     });
 
@@ -132,7 +132,7 @@ describe('Currency Helper Functions', () => {
         traitIds: [],
       } as WorldLocation;
 
-      const claims = getCurrencyClaimsForNode(node);
+      const claims = currencyClaimsGetForNode(node);
       expect(claims.Mana).toBe(1);
     });
   });

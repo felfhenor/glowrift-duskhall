@@ -1,5 +1,5 @@
 import {
-  canHeroBuyTalent,
+  heroCanBuyTalent,
   heroHasTalent,
   heroRemainingTalentPoints,
   heroSpendTalentPoint,
@@ -22,15 +22,15 @@ vi.mock('@helpers/content', () => ({
 }));
 
 vi.mock('@helpers/hero', () => ({
-  updateHeroData: vi.fn(),
+  heroUpdateData: vi.fn(),
 }));
 
 vi.mock('@helpers/talent', () => ({
-  allTalentIdsInTalentTree: vi.fn(),
+  talentIdsInTalentTree: vi.fn(),
 }));
 
-import { updateHeroData } from '@helpers/hero';
-import { allTalentIdsInTalentTree } from '@helpers/talent';
+import { heroUpdateData } from '@helpers/hero';
+import { talentIdsInTalentTree } from '@helpers/talent';
 
 describe('Hero Talent Functions', () => {
   let testHero: Hero;
@@ -82,7 +82,7 @@ describe('Hero Talent Functions', () => {
   describe('heroSpendTalentPoint', () => {
     it('should increment existing talent level', () => {
       heroSpendTalentPoint(testHero, 'talent-1');
-      expect(updateHeroData).toHaveBeenCalledWith(testHero.id, {
+      expect(heroUpdateData).toHaveBeenCalledWith(testHero.id, {
         talents: {
           'talent-1': 2,
           'talent-2': 2,
@@ -92,7 +92,7 @@ describe('Hero Talent Functions', () => {
 
     it('should add new talent with level 1', () => {
       heroSpendTalentPoint(testHero, 'talent-3');
-      expect(updateHeroData).toHaveBeenCalledWith(testHero.id, {
+      expect(heroUpdateData).toHaveBeenCalledWith(testHero.id, {
         talents: {
           'talent-1': 1,
           'talent-2': 2,
@@ -131,7 +131,7 @@ describe('Hero Talent Functions', () => {
         ],
       };
 
-      vi.mocked(allTalentIdsInTalentTree).mockReturnValue([
+      vi.mocked(talentIdsInTalentTree).mockReturnValue([
         'talent-1' as TalentId,
         'talent-2' as TalentId,
         'talent-3' as TalentId,
@@ -187,41 +187,49 @@ describe('Hero Talent Functions', () => {
     beforeEach(() => {
       testTalentTree = {
         id: 'fire-tree' as TalentTreeId,
-        name: 'Fire Talent Tree', 
+        name: 'Fire Talent Tree',
         __type: 'talenttree',
         talents: [],
       };
 
-      vi.mocked(allTalentIdsInTalentTree).mockReturnValue([
+      vi.mocked(talentIdsInTalentTree).mockReturnValue([
         'talent-1' as TalentId,
         'talent-2' as TalentId,
       ]);
     });
 
     it('should return true when all conditions are met', () => {
-      expect(canHeroBuyTalent(testHero, testTalent, 5)).toBe(true);
+      expect(heroCanBuyTalent(testHero, testTalent, 5)).toBe(true);
     });
 
     it('should return true when investment requirement is met', () => {
-      expect(canHeroBuyTalent(testHero, testTalent, 5, testTalentTree, 2)).toBe(true); // hero has 3 invested, need 2
-      expect(canHeroBuyTalent(testHero, testTalent, 5, testTalentTree, 3)).toBe(true); // hero has 3 invested, need 3
+      expect(heroCanBuyTalent(testHero, testTalent, 5, testTalentTree, 2)).toBe(
+        true,
+      ); // hero has 3 invested, need 2
+      expect(heroCanBuyTalent(testHero, testTalent, 5, testTalentTree, 3)).toBe(
+        true,
+      ); // hero has 3 invested, need 3
     });
 
     it('should return false when investment requirement is not met', () => {
-      expect(canHeroBuyTalent(testHero, testTalent, 5, testTalentTree, 5)).toBe(false); // hero has 3 invested, need 5
+      expect(heroCanBuyTalent(testHero, testTalent, 5, testTalentTree, 5)).toBe(
+        false,
+      ); // hero has 3 invested, need 5
     });
 
     it('should work with no investment requirement', () => {
-      expect(canHeroBuyTalent(testHero, testTalent, 5, testTalentTree)).toBe(true); // no requirement specified
+      expect(heroCanBuyTalent(testHero, testTalent, 5, testTalentTree)).toBe(
+        true,
+      ); // no requirement specified
     });
 
     it('should return false for "Blank Talent"', () => {
       const blankTalent = { ...testTalent, name: 'Blank Talent' };
-      expect(canHeroBuyTalent(testHero, blankTalent, 5)).toBe(false);
+      expect(heroCanBuyTalent(testHero, blankTalent, 5)).toBe(false);
     });
 
     it('should return false when hero level is too low', () => {
-      expect(canHeroBuyTalent(testHero, testTalent, 11)).toBe(false);
+      expect(heroCanBuyTalent(testHero, testTalent, 11)).toBe(false);
     });
 
     it('should return false when hero has no remaining points', () => {
@@ -229,7 +237,7 @@ describe('Hero Talent Functions', () => {
         'talent-1': 3,
         'talent-2': 2,
       };
-      expect(canHeroBuyTalent(testHero, testTalent, 5)).toBe(false);
+      expect(heroCanBuyTalent(testHero, testTalent, 5)).toBe(false);
     });
 
     it('should return false when required talent is not learned', () => {
@@ -237,7 +245,7 @@ describe('Hero Talent Functions', () => {
         ...testTalent,
         requireTalentId: 'required-talent',
       };
-      expect(canHeroBuyTalent(testHero, talentWithRequirement, 5)).toBe(false);
+      expect(heroCanBuyTalent(testHero, talentWithRequirement, 5)).toBe(false);
     });
   });
 });

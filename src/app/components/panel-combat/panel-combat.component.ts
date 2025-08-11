@@ -7,8 +7,8 @@ import { OptionsBaseComponent } from '@components/panel-options/option-base-page
 
 import { ButtonCloseComponent } from '@components/button-close/button-close.component';
 import {
+  combatHandleFlee,
   currentCombat,
-  handleCombatFlee,
   isCombatOver,
   options,
   showCombatMenu,
@@ -53,6 +53,6 @@ export class PanelCombatComponent extends OptionsBaseComponent {
   }
 
   fleeFromCombat() {
-    handleCombatFlee();
+    combatHandleFlee();
   }
 }

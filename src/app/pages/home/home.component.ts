@@ -1,13 +1,13 @@
 import type { OnInit } from '@angular/core';
 import { Component, computed, inject, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import type { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
-import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { ConnectButtonsComponent } from '@components/connect-buttons/connect-buttons.component';
 import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
 import { SFXDirective } from '@directives/sfx.directive';
-import { isSetup, resetGame, setDiscordStatus } from '@helpers';
+import { discordSetStatus, gameReset, isSetup } from '@helpers';
 import { MetaService } from '@services/meta.service';
+import type { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 @Component({
   selector: 'app-home',
@@ -30,7 +30,7 @@ export class HomeComponent implements OnInit {
   public hasStartedGame = computed(() => isSetup());
 
   ngOnInit() {
-    setDiscordStatus({
+    discordSetStatus({
       state: 'In Main Menu',
     });
   }
@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit {
       if (!res) return;
 
       if (res.isConfirmed) {
-        resetGame();
+        gameReset();
         this.router.navigate(['/setup']);
       }
       return;

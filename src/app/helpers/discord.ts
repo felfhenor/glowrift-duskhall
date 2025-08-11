@@ -7,11 +7,11 @@ export function isInElectron() {
 }
 
 let discordMainStatus = '';
-export function setMainDiscordStatus(status: string) {
+export function discordSetMainStatus(status: string) {
   discordMainStatus = status;
 }
 
-export function setDiscordStatus(status: DiscordPresenceOpts) {
+export function discordSetStatus(status: DiscordPresenceOpts) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (window as any).discordRPCStatus = {
     ...status,
@@ -19,7 +19,7 @@ export function setDiscordStatus(status: DiscordPresenceOpts) {
   };
 }
 
-export function updateDiscordStatus() {
+export function discordUpdateStatus() {
   if (!isInElectron()) return;
 
   const { nodeCounts, claimedCounts } = gamestate().world;
@@ -28,7 +28,7 @@ export function updateDiscordStatus() {
   const totalClaimed = sum(Object.values(claimedCounts));
   const percent = Math.floor((totalClaimed / totalNodes) * 100);
 
-  setDiscordStatus({
+  discordSetStatus({
     state: 'In game',
     details: `Conquering the world (${totalClaimed}/${totalNodes} | ${percent}%)`,
   });

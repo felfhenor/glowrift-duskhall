@@ -1,7 +1,12 @@
 import { getEntry } from '@helpers/content';
-import { updateHeroData } from '@helpers/hero';
-import { allTalentIdsInTalentTree } from '@helpers/talent';
-import type { Hero, TalentContent, TalentId, TalentTreeContent } from '@interfaces';
+import { heroUpdateData } from '@helpers/hero';
+import { talentIdsInTalentTree } from '@helpers/talent';
+import type {
+  Hero,
+  TalentContent,
+  TalentId,
+  TalentTreeContent,
+} from '@interfaces';
 import { sum } from 'es-toolkit/compat';
 
 export function heroRemainingTalentPoints(hero: Hero): number {
@@ -9,7 +14,7 @@ export function heroRemainingTalentPoints(hero: Hero): number {
 }
 
 export function heroSpendTalentPoint(hero: Hero, talentId: string): void {
-  updateHeroData(hero.id, {
+  heroUpdateData(hero.id, {
     talents: {
       ...hero.talents,
       [talentId]: (hero.talents[talentId] ?? 0) + 1,
@@ -21,7 +26,7 @@ export function heroHasTalent(hero: Hero, talentId: string): boolean {
   return !!hero.talents[talentId];
 }
 
-export function allHeroEquipmentTalents(
+export function heroAllEquipmentTalents(
   hero: Hero,
 ): Array<{ talent: TalentContent; level: number }> {
   const equipment = Object.values(hero.equipment)
@@ -38,7 +43,7 @@ export function allHeroEquipmentTalents(
 
 export function heroEquipmentTalentLevel(hero: Hero, talentId: string): number {
   return sum(
-    allHeroEquipmentTalents(hero)
+    heroAllEquipmentTalents(hero)
       .filter((boost) => boost.talent.id === talentId)
       .map((boost) => boost.level),
   );
@@ -50,17 +55,17 @@ export function heroTotalTalentLevel(hero: Hero, talentId: string): number {
   );
 }
 
-export function heroTalentsInvestedInTree(hero: Hero, talentTree: TalentTreeContent): number {
-  const talentIdsInTree = allTalentIdsInTalentTree(talentTree);
-  return sum(
-    talentIdsInTree
-      .map(talentId => hero.talents[talentId] ?? 0)
-  );
+export function heroTalentsInvestedInTree(
+  hero: Hero,
+  talentTree: TalentTreeContent,
+): number {
+  const talentIdsInTree = talentIdsInTalentTree(talentTree);
+  return sum(talentIdsInTree.map((talentId) => hero.talents[talentId] ?? 0));
 }
 
-export function getFullHeroTalentHash(hero: Hero): Record<TalentId, number> {
+export function heroFullTalentHash(hero: Hero): Record<TalentId, number> {
   const baseLevels = Object.assign({}, hero.talents);
-  allHeroEquipmentTalents(hero).forEach((boost) => {
+  heroAllEquipmentTalents(hero).forEach((boost) => {
     baseLevels[boost.talent.id] =
       (baseLevels[boost.talent.id] ?? 0) + boost.level;
   });
@@ -68,16 +73,16 @@ export function getFullHeroTalentHash(hero: Hero): Record<TalentId, number> {
   return baseLevels;
 }
 
-export function canHeroBuyTalent(
+export function heroCanBuyTalent(
   hero: Hero,
   talent: TalentContent,
   requiredLevel: number,
   talentTree?: TalentTreeContent,
   requiredTalentsInvested?: number,
 ): boolean {
-  const meetsInvestmentRequirement = 
-    !requiredTalentsInvested || 
-    !talentTree || 
+  const meetsInvestmentRequirement =
+    !requiredTalentsInvested ||
+    !talentTree ||
     heroTalentsInvestedInTree(hero, talentTree) >= requiredTalentsInvested;
 
   return (

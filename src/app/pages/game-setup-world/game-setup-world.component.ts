@@ -7,14 +7,14 @@ import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
 import { SFXDirective } from '@directives/sfx.directive';
 import {
   closeAllMenus,
+  discordSetStatus,
+  gameReset,
   gamestate,
   getEntriesByType,
-  pickSpriteForHeroName,
-  resetGame,
-  setDiscordStatus,
+  heroPickSpriteByName,
+  heroUpdateData,
   setWorldConfig,
   setWorldSeed,
-  updateHeroData,
 } from '@helpers';
 import type { LocationType, WorldConfigContent } from '@interfaces';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
@@ -46,10 +46,10 @@ export class GameSetupWorldComponent implements OnInit {
   ];
 
   public readonly heroSprites = [
-    computed(() => pickSpriteForHeroName(this.heroNames[0]())),
-    computed(() => pickSpriteForHeroName(this.heroNames[1]())),
-    computed(() => pickSpriteForHeroName(this.heroNames[2]())),
-    computed(() => pickSpriteForHeroName(this.heroNames[3]())),
+    computed(() => heroPickSpriteByName(this.heroNames[0]())),
+    computed(() => heroPickSpriteByName(this.heroNames[1]())),
+    computed(() => heroPickSpriteByName(this.heroNames[2]())),
+    computed(() => heroPickSpriteByName(this.heroNames[3]())),
   ];
 
   public selectedWorldSize = signal<WorldConfigContent>(this.allWorldSizes[0]);
@@ -73,7 +73,7 @@ export class GameSetupWorldComponent implements OnInit {
   });
 
   ngOnInit() {
-    setDiscordStatus({
+    discordSetStatus({
       state: 'Starting a new game...',
     });
   }
@@ -81,13 +81,13 @@ export class GameSetupWorldComponent implements OnInit {
   public async createWorld() {
     closeAllMenus();
 
-    resetGame();
+    gameReset();
     setWorldSeed(this.worldSeed());
     setWorldConfig(this.selectedWorldSize());
 
     for (let h = 0; h < 4; h++) {
       const heroId = gamestate().hero.heroes[h].id;
-      updateHeroData(heroId, {
+      heroUpdateData(heroId, {
         name: this.heroNames[h](),
         sprite: this.heroSprites[h](),
       });

@@ -1,5 +1,5 @@
-import { getBuildingLevel } from '@helpers/town';
+import { townBuildingLevel } from '@helpers/town';
 
-export function townMarketBonus(): number {
-  return getBuildingLevel('Market') * 0.05;
+export function marketCurrencyBonus(): number {
+  return townBuildingLevel('Market') * 0.01;
 }

@@ -10,7 +10,12 @@ import { PanelTownMarketComponent } from '@components/panel-town-market/panel-to
 import { PanelTownMerchantComponent } from '@components/panel-town-merchant/panel-town-merchant.component';
 import { PanelTownSalvagerComponent } from '@components/panel-town-salvager/panel-town-salvager.component';
 import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
-import { getBuildingLevel, getOption, setOption, showTownMenu } from '@helpers';
+import {
+  getOption,
+  setOption,
+  showTownMenu,
+  townBuildingLevel,
+} from '@helpers';
 import type { TownTab } from '@interfaces';
 import { TeleportOutletDirective } from '@ngneat/overview';
 
@@ -48,37 +53,37 @@ export class PanelTownComponent {
       name: 'Market',
       link: 'Market',
       showIf: computed(() => true),
-      level: computed(() => getBuildingLevel('Market')),
+      level: computed(() => townBuildingLevel('Market')),
     },
     {
       name: 'Merchant',
       link: 'Merchant',
       showIf: computed(() => true),
-      level: computed(() => getBuildingLevel('Merchant')),
+      level: computed(() => townBuildingLevel('Merchant')),
     },
     {
       name: 'Salvager',
       link: 'Salvager',
       showIf: computed(() => true),
-      level: computed(() => getBuildingLevel('Salvager')),
+      level: computed(() => townBuildingLevel('Salvager')),
     },
     {
       name: 'Blacksmith',
       link: 'Blacksmith',
       showIf: computed(() => true),
-      level: computed(() => getBuildingLevel('Blacksmith')),
+      level: computed(() => townBuildingLevel('Blacksmith')),
     },
     {
       name: 'Alchemist',
       link: 'Alchemist',
       showIf: computed(() => true),
-      level: computed(() => getBuildingLevel('Alchemist')),
+      level: computed(() => townBuildingLevel('Alchemist')),
     },
     {
       name: 'Academy',
       link: 'Academy',
       showIf: computed(() => true),
-      level: computed(() => getBuildingLevel('Academy')),
+      level: computed(() => townBuildingLevel('Academy')),
     },
     {
       name: 'Festivals',

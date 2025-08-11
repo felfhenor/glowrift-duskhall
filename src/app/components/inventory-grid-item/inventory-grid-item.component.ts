@@ -4,11 +4,11 @@ import { DecimalPipe } from '@angular/common';
 import { IconBlankSlotComponent } from '@components/icon-blank-slot/icon-blank-slot.component';
 import { IconItemComponent } from '@components/icon-item/icon-item.component';
 import {
+  actionItemSalvage,
+  actionItemSalvageValue,
   allHeroes,
-  equipItem,
-  itemSalvage,
-  itemSalvageValue,
-  toggleItemFavorite,
+  favoriteToggleItem,
+  itemEquip,
 } from '@helpers';
 import type {
   EquipmentItem,
@@ -43,15 +43,15 @@ export class InventoryGridItemComponent {
   public allHeroes = computed(() => allHeroes());
 
   salvageValue(item: EquipmentItem) {
-    return itemSalvageValue(item);
+    return actionItemSalvageValue(item);
   }
 
   salvageItem(item: EquipmentItem) {
-    itemSalvage(item);
+    actionItemSalvage(item);
   }
 
   toggleFavorite(item: EquipmentItem) {
-    toggleItemFavorite(item);
+    favoriteToggleItem(item);
   }
 
   compareWithItem(item: EquipmentItem) {
@@ -66,6 +66,6 @@ export class InventoryGridItemComponent {
   }
 
   equipItem(item: EquipmentItem, hero: Hero) {
-    equipItem(hero, item);
+    itemEquip(hero, item);
   }
 }

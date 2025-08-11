@@ -3,9 +3,9 @@ import { Component, computed } from '@angular/core';
 import { IconLocationComponent } from '@components/icon-location/icon-location.component';
 import {
   gamestate,
-  setHeroRiskTolerance,
-  setLootRarityPreference,
-  setNodeTypePreference,
+  heroSetLootRarityPreference,
+  heroSetNodeTypePreference,
+  heroSetRiskTolerance,
 } from '@helpers';
 import type { DropRarity, HeroRiskTolerance, LocationType } from '@interfaces';
 import { TippyDirective } from '@ngneat/helipopper';
@@ -44,16 +44,16 @@ export class PanelCombatPreferencesComponent {
   ];
 
   changeRiskTolerance(risk: HeroRiskTolerance) {
-    setHeroRiskTolerance(risk);
+    heroSetRiskTolerance(risk);
   }
 
   toggleNodeType(nodeType: LocationType) {
     const current = this.nodeTypePreferences()[nodeType];
-    setNodeTypePreference(nodeType, !current);
+    heroSetNodeTypePreference(nodeType, !current);
   }
 
   toggleLootRarity(rarity: DropRarity) {
     const current = this.lootRarityPreferences()[rarity];
-    setLootRarityPreference(rarity, !current);
+    heroSetLootRarityPreference(rarity, !current);
   }
 }

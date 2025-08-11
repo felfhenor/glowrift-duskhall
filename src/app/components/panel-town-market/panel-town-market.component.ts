@@ -3,16 +3,16 @@ import { FormsModule } from '@angular/forms';
 import { PanelTownBuildingUpgradeComponent } from '@components/panel-town-building-upgrade/panel-town-building-upgrade.component';
 import { SelectorCurrencyComponent } from '@components/selector-currency/selector-currency.component';
 import {
-  gainCurrency,
-  hasCurrency,
-  loseCurrency,
+  analyticsSendDesignEvent,
+  currencyGain,
+  currencyHasAmount,
+  currencyLose,
+  marketCurrencyBonus,
   notifySuccess,
-  sendDesignEvent,
-  townMarketBonus,
 } from '@helpers';
 import {
-  calculateCurrencyConversionInputAmount,
-  calculateCurrencyConversionOutputAmount,
+  currencyConversionInputAmount,
+  currencyConversionOutputAmount,
 } from '@helpers/currency-conversion';
 import type { CurrencyContent } from '@interfaces';
 
@@ -39,7 +39,7 @@ export class PanelTownMarketComponent {
 
     if (!input || amount < 0) return false;
 
-    return hasCurrency(input.name, amount);
+    return currencyHasAmount(input.name, amount);
   });
 
   public canTrade = computed(() => {
@@ -60,11 +60,7 @@ export class PanelTownMarketComponent {
 
     this.inputAmount.set(Math.floor(this.inputAmount()));
     this.outputAmount.set(
-      calculateCurrencyConversionOutputAmount(
-        input,
-        output,
-        this.inputAmount(),
-      ),
+      currencyConversionOutputAmount(input, output, this.inputAmount()),
     );
   }
 
@@ -76,11 +72,7 @@ export class PanelTownMarketComponent {
 
     this.outputAmount.set(Math.floor(this.outputAmount()));
     this.inputAmount.set(
-      calculateCurrencyConversionInputAmount(
-        input,
-        output,
-        this.outputAmount(),
-      ),
+      currencyConversionInputAmount(input, output, this.outputAmount()),
     );
   }
 
@@ -90,18 +82,18 @@ export class PanelTownMarketComponent {
 
     if (!input || !output) return;
 
-    const outputBonusPercent = townMarketBonus();
+    const outputBonusPercent = marketCurrencyBonus();
     const outputBonusValue = outputBonusPercent * this.outputAmount();
     const outputTotal = this.outputAmount() + outputBonusValue;
 
-    loseCurrency(input.name, this.inputAmount());
-    gainCurrency(output.name, outputTotal);
+    currencyLose(input.name, this.inputAmount());
+    currencyGain(output.name, outputTotal);
 
-    sendDesignEvent(
+    analyticsSendDesignEvent(
       `Game:Town:Market:TradeCurrency:${input.name}`,
       this.inputAmount(),
     );
-    sendDesignEvent(
+    analyticsSendDesignEvent(
       `Game:Town:Market:GainCurrency:${output.name}`,
       outputTotal,
     );

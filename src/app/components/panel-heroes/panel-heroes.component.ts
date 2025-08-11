@@ -10,14 +10,14 @@ import { PanelHeroesStatsComponent } from '@components/panel-heroes-stats/panel-
 import { PanelHeroesTalentsComponent } from '@components/panel-heroes-talents/panel-heroes-talents.component';
 import { PanelHeroesTargettingComponent } from '@components/panel-heroes-targetting/panel-heroes-targetting.component';
 import {
-  equipItem,
-  equipSkill,
   gamestate,
   getOption,
+  itemEquip,
+  itemUnequip,
   setOption,
   showHeroesMenu,
-  unequipItem,
-  unequipSkill,
+  skillEquip,
+  skillUnequip,
 } from '@helpers';
 import type { EquipmentItem, EquipmentSkill, EquipmentSlot } from '@interfaces';
 
@@ -77,14 +77,14 @@ export class PanelHeroesComponent {
   }
 
   equipSkill(item: EquipmentSkill) {
-    equipSkill(this.activeHero(), item, this.skillSlot());
+    skillEquip(this.activeHero(), item, this.skillSlot());
   }
 
   unequipSkill(slot: number) {
     const skill = this.activeHero().skills[slot];
     if (!skill) return;
 
-    unequipSkill(this.activeHero(), skill, slot);
+    skillUnequip(this.activeHero(), skill, slot);
   }
 
   setEquipType(type: EquipmentSlot) {
@@ -98,13 +98,13 @@ export class PanelHeroesComponent {
   }
 
   equipItem(item: EquipmentItem) {
-    equipItem(this.activeHero(), item);
+    itemEquip(this.activeHero(), item);
   }
 
   unequipItem(itemSlot: EquipmentSlot) {
     const item = this.activeHero().equipment[itemSlot];
     if (!item) return;
 
-    unequipItem(this.activeHero(), item);
+    itemUnequip(this.activeHero(), item);
   }
 }

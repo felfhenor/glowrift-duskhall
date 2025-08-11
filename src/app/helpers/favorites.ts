@@ -1,9 +1,9 @@
 import type { EquipmentItem, EquipmentSkill } from '@interfaces';
 
-export function toggleItemFavorite(item: EquipmentItem): void {
+export function favoriteToggleItem(item: EquipmentItem): void {
   item.isFavorite = !item.isFavorite;
 }
 
-export function toggleSkillFavorite(skill: EquipmentSkill): void {
+export function favoriteToggleSkill(skill: EquipmentSkill): void {
   skill.isFavorite = !skill.isFavorite;
 }

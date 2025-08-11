@@ -1,7 +1,7 @@
 import { Component, computed } from '@angular/core';
-import { gamestate, getActiveFestivals } from '@helpers';
 import { BlankSlateComponent } from '@components/blank-slate/blank-slate.component';
 import { CountdownComponent } from '@components/countdown/countdown.component';
+import { festivalGetActive, gamestate } from '@helpers';
 
 @Component({
   selector: 'app-panel-town-festivals',
@@ -11,7 +11,7 @@ import { CountdownComponent } from '@components/countdown/countdown.component';
 })
 export class PanelTownFestivalsComponent {
   public allFestivals = computed(() =>
-    getActiveFestivals().map((festival) => ({
+    festivalGetActive().map((festival) => ({
       festival,
       timeLeft:
         gamestate().festival.festivals[festival.id] -

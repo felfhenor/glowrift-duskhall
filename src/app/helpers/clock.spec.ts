@@ -1,4 +1,4 @@
-import { getTickTimer, isExpired } from '@helpers/clock';
+import { clockGetTickTimer, clockIsTimerExpired } from '@helpers/clock';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock the gamestate dependency
@@ -20,9 +20,9 @@ describe('Clock Functions', () => {
         actionClock: { numTicks: mockNumTicks, timers: {} },
       } as ReturnType<typeof gamestate>);
 
-      expect(getTickTimer(5)).toBe(105);
-      expect(getTickTimer(0)).toBe(100);
-      expect(getTickTimer(-5)).toBe(95);
+      expect(clockGetTickTimer(5)).toBe(105);
+      expect(clockGetTickTimer(0)).toBe(100);
+      expect(clockGetTickTimer(-5)).toBe(95);
     });
   });
 
@@ -32,7 +32,7 @@ describe('Clock Functions', () => {
         actionClock: { numTicks: 50, timers: {} },
       } as ReturnType<typeof gamestate>);
 
-      expect(isExpired(49)).toBe(true);
+      expect(clockIsTimerExpired(49)).toBe(true);
     });
 
     it('should return true when current numTicks equals timer', () => {
@@ -40,7 +40,7 @@ describe('Clock Functions', () => {
         actionClock: { numTicks: 50, timers: {} },
       } as ReturnType<typeof gamestate>);
 
-      expect(isExpired(50)).toBe(true);
+      expect(clockIsTimerExpired(50)).toBe(true);
     });
 
     it('should return false when current numTicks is less than timer', () => {
@@ -48,7 +48,7 @@ describe('Clock Functions', () => {
         actionClock: { numTicks: 50, timers: {} },
       } as ReturnType<typeof gamestate>);
 
-      expect(isExpired(51)).toBe(false);
+      expect(clockIsTimerExpired(51)).toBe(false);
     });
   });
 });

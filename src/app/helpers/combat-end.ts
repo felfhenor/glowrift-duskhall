@@ -1,17 +1,21 @@
-import { currentCombat, resetCombat } from '@helpers/combat';
-import { logCombatMessage } from '@helpers/combat-log';
+import { combatReset, currentCombat } from '@helpers/combat';
+import { combatMessageLog } from '@helpers/combat-log';
 import { getEntry } from '@helpers/content';
-import { gainCurrency, updateCurrencyClaims } from '@helpers/currency';
-import { makeDroppableIntoRealItem } from '@helpers/droppable';
+import { currencyClaimsUpdate, currencyGain } from '@helpers/currency';
+import { droppableMakeReal } from '@helpers/droppable';
 import {
   exploreProgressPercent,
-  travelHome,
-  updateExploringAndGlobalStatusText,
+  exploringUpdateGlobalStatusText,
 } from '@helpers/explore';
-import { allHeroes, updateHeroData } from '@helpers/hero';
-import { allHeroesGainXp } from '@helpers/hero-xp';
+import { allHeroes, heroUpdateData } from '@helpers/hero';
+import { heroAllGainXp } from '@helpers/hero-xp';
 import { locationTraitCurrencySpecialModifier } from '@helpers/trait-location-currency';
-import { addTooHardNode, gainNodeRewards, getWorldNode } from '@helpers/world';
+import { travelHome } from '@helpers/travel';
+import {
+  worldNodeAddTooHard,
+  worldNodeGet,
+  worldNodeRewardsGain,
+} from '@helpers/world';
 import type {
   Combat,
   Combatant,
@@ -19,44 +23,44 @@ import type {
   HeroId,
 } from '@interfaces';
 
-export function currentCombatHasGuardiansAlive(): boolean {
+export function combatHasGuardiansAlive(): boolean {
   const combat = currentCombat();
   if (!combat) return false;
-  return combat.guardians.some((guardian) => !isDead(guardian));
+  return combat.guardians.some((guardian) => !combatantIsDead(guardian));
 }
 
-export function isDead(combatant: Combatant): boolean {
+export function combatantIsDead(combatant: Combatant): boolean {
   return combatant.hp <= 0;
 }
 
 function updateHeroHealthAfterCombat(combat: Combat): void {
   combat.heroes.forEach((combatant) => {
-    updateHeroData(combatant.id as HeroId, {
+    heroUpdateData(combatant.id as HeroId, {
       hp: combatant.hp,
     });
   });
 }
 
 export function isCombatOver(combat: Combat): boolean {
-  const allHeroesDead = combat.heroes.every((hero) => isDead(hero));
+  const allHeroesDead = combat.heroes.every((hero) => combatantIsDead(hero));
   const allGuardiansDead = combat.guardians.every((guardian) =>
-    isDead(guardian),
+    combatantIsDead(guardian),
   );
 
   return allHeroesDead || allGuardiansDead;
 }
 
-export function didHeroesWin(combat: Combat): boolean {
-  return combat.guardians.every((guardian) => isDead(guardian));
+function didHeroesWin(combat: Combat): boolean {
+  return combat.guardians.every((guardian) => combatantIsDead(guardian));
 }
 
-export function handleCombatVictory(combat: Combat): void {
-  logCombatMessage(combat, 'Heroes have won the combat!');
+function handleCombatVictory(combat: Combat): void {
+  combatMessageLog(combat, 'Heroes have won the combat!');
 
   // Update hero health after combat
   updateHeroHealthAfterCombat(combat);
 
-  const currentNode = getWorldNode(
+  const currentNode = worldNodeGet(
     combat.locationPosition.x,
     combat.locationPosition.y,
   );
@@ -65,72 +69,72 @@ export function handleCombatVictory(combat: Combat): void {
     const xpGainedForClaim =
       currentNode.encounterLevel * currentNode.guardianIds.length;
 
-    logCombatMessage(combat, `Heroes claimed **${currentNode.name}**!`);
-    updateExploringAndGlobalStatusText('');
+    combatMessageLog(combat, `Heroes claimed **${currentNode.name}**!`);
+    exploringUpdateGlobalStatusText('');
     exploreProgressPercent.set(0);
 
     allHeroes().forEach((hero) => {
-      logCombatMessage(
+      combatMessageLog(
         combat,
         `**${hero.name}** gained ${xpGainedForClaim} XP!`,
       );
     });
 
-    allHeroesGainXp(xpGainedForClaim);
+    heroAllGainXp(xpGainedForClaim);
 
     const soulEssenceGained =
       xpGainedForClaim +
       currentNode.guardianIds.length *
         locationTraitCurrencySpecialModifier(currentNode, 'Soul Essence');
-    gainCurrency('Soul Essence', soulEssenceGained);
-    logCombatMessage(combat, `You gained ${soulEssenceGained} Soul Essence!`);
+    currencyGain('Soul Essence', soulEssenceGained);
+    combatMessageLog(combat, `You gained ${soulEssenceGained} Soul Essence!`);
 
-    gainNodeRewards(currentNode);
+    worldNodeRewardsGain(currentNode);
 
     currentNode.claimLootIds.forEach((lootDefId) => {
       const lootDef = getEntry<DroppableEquippable>(lootDefId);
       if (!lootDef) return;
 
-      const created = makeDroppableIntoRealItem(lootDef);
-      logCombatMessage(
+      const created = droppableMakeReal(lootDef);
+      combatMessageLog(
         combat,
         `Heroes found \`rarity:${created.rarity}:${created.name}\`!`,
       );
     });
   }
 
-  resetCombat();
-  updateCurrencyClaims();
+  combatReset();
+  currencyClaimsUpdate();
 }
 
-export function handleCombatDefeat(combat: Combat): void {
-  logCombatMessage(combat, 'Heroes have lost the combat!');
-  logCombatMessage(combat, 'Heroes have been sent home for recovery!');
+export function combatHandleDefeat(combat: Combat): void {
+  combatMessageLog(combat, 'Heroes have lost the combat!');
+  combatMessageLog(combat, 'Heroes have been sent home for recovery!');
 
   // Update hero health after combat
   updateHeroHealthAfterCombat(combat);
 
   // Track this node as too hard for now
   const currentNodeId = `${combat.locationPosition.x},${combat.locationPosition.y}`;
-  addTooHardNode(currentNodeId);
+  worldNodeAddTooHard(currentNodeId);
 
   travelHome();
 }
 
-export function checkCombatOver(combat: Combat): boolean {
+export function combatCheckIfOver(combat: Combat): boolean {
   if (!isCombatOver(combat)) return false;
 
-  logCombatMessage(combat, 'Combat is over.');
+  combatMessageLog(combat, 'Combat is over.');
 
   if (didHeroesWin(combat)) {
     handleCombatVictory(combat);
   } else {
-    handleCombatDefeat(combat);
+    combatHandleDefeat(combat);
   }
 
-  resetCombat();
+  combatReset();
 
-  logCombatMessage(combat, '');
+  combatMessageLog(combat, '');
 
   return true;
 }

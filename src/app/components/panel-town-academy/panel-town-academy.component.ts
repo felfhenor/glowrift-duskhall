@@ -6,8 +6,8 @@ import { MarkerCurrencyInlineComponent } from '@components/marker-currency-inlin
 import { PanelTownBuildingUpgradeComponent } from '@components/panel-town-building-upgrade/panel-town-building-upgrade.component';
 import { StatsSkillComponent } from '@components/stats-skill/stats-skill.component';
 import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
-import { hasCurrencies } from '@helpers/currency';
-import { getSkillById } from '@helpers/skill';
+import { currencyHasMultipleAmounts } from '@helpers/currency';
+import { skillGetById } from '@helpers/skill';
 import {
   academyCanEnchantSkill,
   academyEnchantSkill,
@@ -45,13 +45,14 @@ export class PanelTownAcademyComponent {
       costs: Object.keys(path.cost).filter(
         (c) => path.cost[c as GameCurrency] > 0,
       ) as GameCurrency[],
-      canEnchant: academyCanEnchantSkill(item) && hasCurrencies(path.cost),
+      canEnchant:
+        academyCanEnchantSkill(item) && currencyHasMultipleAmounts(path.cost),
     }));
   });
 
   public enchantSkill(skill: EquipmentSkill, enchant: AcademyEnchant) {
     academyEnchantSkill(skill, enchant);
 
-    this.selectedSkill.set(getSkillById(skill.id));
+    this.selectedSkill.set(skillGetById(skill.id));
   }
 }

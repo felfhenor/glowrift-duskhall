@@ -1,4 +1,4 @@
-import { getHighestLootRarity } from '@helpers/world';
+import { worldNodeGetHighestLootRarity } from '@helpers/world';
 import type { WorldLocation } from '@interfaces';
 import type { DropRarity } from '@interfaces/droppable';
 import type { NodeSpriteData } from '@interfaces/sprite';
@@ -24,7 +24,7 @@ const RARITY_COLORS: Record<DropRarity, number> = {
  * @param location World location data
  * @returns Text sprite for the level indicator
  */
-export function createLevelIndicator(
+export function pixiIndicatorNodeLevelCreate(
   x: number,
   y: number,
   location: WorldLocation,
@@ -32,7 +32,7 @@ export function createLevelIndicator(
   const pixelX = x * 64;
   const pixelY = y * 64;
 
-  const highestRarity = getHighestLootRarity(location);
+  const highestRarity = worldNodeGetHighestLootRarity(location);
   const color = highestRarity ? RARITY_COLORS[highestRarity] : 0xffffff; // Default to white
 
   const levelText = new Text({
@@ -68,7 +68,7 @@ export function createLevelIndicator(
  * @param debugMode Whether to show debug coordinates
  * @returns Created sprite data
  */
-export function createNodeSprites(
+export function pixiIndicatorNodeSpriteCreate(
   x: number,
   y: number,
   nodeData: WorldLocation,
@@ -118,7 +118,7 @@ export function createNodeSprites(
   }
 
   if (objectSprite && checkTexture && xTexture) {
-    const claimIndicator = createClaimIndicator(
+    const claimIndicator = pixiInidicatorNodeClaimCreate(
       nodeData.currentlyClaimed,
       x,
       y,
@@ -132,7 +132,7 @@ export function createNodeSprites(
 
   // Add level indicator showing encounter level with rarity-based color
   if (nodeData.encounterLevel >= 1) {
-    const levelIndicator = createLevelIndicator(x, y, nodeData);
+    const levelIndicator = pixiIndicatorNodeLevelCreate(x, y, nodeData);
     mapContainer.addChild(levelIndicator);
     spriteData.levelIndicator = levelIndicator;
   }
@@ -167,7 +167,7 @@ export function createNodeSprites(
  * @param container Container to add indicator to
  * @returns Object with graphics and cleanup function
  */
-export function createPlayerAtLocationIndicator(
+export function pixiIndicatorNodePlayerAtLocationCreate(
   x: number,
   y: number,
   container: Container,
@@ -219,7 +219,7 @@ export function createPlayerAtLocationIndicator(
  * @param xTexture Texture for unclaimed indicator
  * @returns Sprite for the claim indicator
  */
-export function createClaimIndicator(
+export function pixiInidicatorNodeClaimCreate(
   isClaimed: boolean,
   x: number,
   y: number,
@@ -249,7 +249,7 @@ export function createClaimIndicator(
  * @param container Container to add line to
  * @returns Object with graphics and cleanup function
  */
-export function createTravelLine(
+export function pixiIndicatorTravelLineCreate(
   fromX: number,
   fromY: number,
   toX: number,
@@ -286,7 +286,7 @@ export function createTravelLine(
  * @param container Container to add sprite to
  * @returns Object with sprite and cleanup function
  */
-export function createTravelingHeroIndicator(
+export function pixiIndicatorHeroTravelCreate(
   x: number,
   y: number,
   heroTexture: Texture,

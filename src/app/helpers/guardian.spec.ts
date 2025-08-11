@@ -1,4 +1,4 @@
-import { createGuardianForLocation } from '@helpers/guardian';
+import { guardianCreateForLocation } from '@helpers/guardian';
 import type {
   EquipmentSkillId,
   GameStat,
@@ -50,7 +50,7 @@ describe('Guardian Helper Functions', () => {
       };
 
       // Act
-      const guardian = createGuardianForLocation(location, guardianContent);
+      const guardian = guardianCreateForLocation(location, guardianContent);
 
       // Assert
       const expectedStats: Record<GameStat, number> = {
@@ -103,7 +103,7 @@ describe('Guardian Helper Functions', () => {
       };
 
       // Act
-      const guardian = createGuardianForLocation(location, guardianContent);
+      const guardian = guardianCreateForLocation(location, guardianContent);
 
       // Assert
       expect(guardian.sprite).toBe(guardianContent.sprite);

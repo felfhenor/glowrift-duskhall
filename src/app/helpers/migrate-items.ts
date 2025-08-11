@@ -1,11 +1,11 @@
 import { getEntry } from '@helpers/content';
-import { getDroppableEquippableBaseId } from '@helpers/droppable';
-import { allHeroes, updateHeroData } from '@helpers/hero';
+import { droppableGetBaseId } from '@helpers/droppable';
+import { allHeroes, heroUpdateData } from '@helpers/hero';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import type { EquipmentItem } from '@interfaces';
 
-export function getUpdatedItem(item: EquipmentItem): EquipmentItem {
-  return Object.assign(item, getEntry(getDroppableEquippableBaseId(item)), {
+function getUpdatedItem(item: EquipmentItem): EquipmentItem {
+  return Object.assign(item, getEntry(droppableGetBaseId(item)), {
     id: item.id,
   } as Partial<EquipmentItem>);
 }
@@ -15,7 +15,7 @@ export function migrateItems() {
   migrateEquippedItems();
 }
 
-export function migrateInventoryItems() {
+function migrateInventoryItems() {
   const items = gamestate().inventory.items;
   const newItems = items.map((s) => getUpdatedItem(s));
 
@@ -25,9 +25,9 @@ export function migrateInventoryItems() {
   });
 }
 
-export function migrateEquippedItems() {
+function migrateEquippedItems() {
   allHeroes().forEach((hero) => {
-    updateHeroData(hero.id, {
+    heroUpdateData(hero.id, {
       equipment: {
         accessory: hero.equipment.accessory
           ? getUpdatedItem(hero.equipment.accessory)

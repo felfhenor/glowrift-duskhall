@@ -1,5 +1,5 @@
-import { handleCombatDefeat } from '@helpers/combat-end';
-import { getNodesMatchingHeroPreferences } from '@helpers/world';
+import { combatHandleDefeat } from '@helpers/combat-end';
+import { worldGetNodesMatchingPreferences } from '@helpers/world';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type {
@@ -12,24 +12,24 @@ import type {
 
 // Mock dependencies
 vi.mock('@helpers/combat-log', () => ({
-  logCombatMessage: vi.fn(),
+  combatMessageLog: vi.fn(),
 }));
 
-vi.mock('@helpers/explore', () => ({
+vi.mock('@helpers/travel', () => ({
   travelHome: vi.fn(),
 }));
 
 vi.mock('@helpers/hero', () => ({
-  updateHeroData: vi.fn(),
+  heroUpdateData: vi.fn(),
 }));
 
 vi.mock('@helpers/hero-stats', () => ({
-  recalculateStats: vi.fn(),
+  heroRecalculateStats: vi.fn(),
 }));
 
 vi.mock('@helpers/rng', () => ({
-  seededrng: vi.fn(),
-  randomChoice: vi.fn(),
+  rngSeeded: vi.fn(),
+  rngChoice: vi.fn(),
 }));
 
 vi.mock('@helpers/state-game', () => ({
@@ -93,7 +93,7 @@ describe('Too Hard Nodes Feature', () => {
 
       vi.mocked(gamestate).mockReturnValue(mockState as GameState);
 
-      handleCombatDefeat(combat);
+      combatHandleDefeat(combat);
 
       expect(updateGamestate).toHaveBeenCalled();
       const updateFunction = vi.mocked(updateGamestate).mock.calls[0][0];
@@ -141,7 +141,7 @@ describe('Too Hard Nodes Feature', () => {
 
       vi.mocked(gamestate).mockReturnValue(mockState as GameState);
 
-      handleCombatDefeat(combat);
+      combatHandleDefeat(combat);
 
       expect(updateGamestate).toHaveBeenCalled();
       const updateFunction = vi.mocked(updateGamestate).mock.calls[0][0];
@@ -241,7 +241,7 @@ describe('Too Hard Nodes Feature', () => {
       } as unknown as GameState);
 
       const availableNodes = [validNode, tooHardNode, highLevelNode];
-      const result = getNodesMatchingHeroPreferences(baseNode, availableNodes);
+      const result = worldGetNodesMatchingPreferences(baseNode, availableNodes);
 
       // Should include both validNode and tooHardNode, but exclude highLevelNode (too high level)
       expect(result).toContain(validNode);
@@ -305,7 +305,7 @@ describe('Too Hard Nodes Feature', () => {
       } as unknown as GameState);
 
       const availableNodes = [validNode];
-      const result = getNodesMatchingHeroPreferences(baseNode, availableNodes);
+      const result = worldGetNodesMatchingPreferences(baseNode, availableNodes);
 
       expect(result).toContain(validNode);
       expect(result).toHaveLength(1);
@@ -409,7 +409,7 @@ describe('Too Hard Nodes Feature', () => {
       } as unknown as GameState);
 
       const availableNodes = [tooHardNode1, goodNode1, tooHardNode2, goodNode2];
-      const result = getNodesMatchingHeroPreferences(baseNode, availableNodes);
+      const result = worldGetNodesMatchingPreferences(baseNode, availableNodes);
 
       // Should include all 4 nodes
       expect(result).toHaveLength(4);

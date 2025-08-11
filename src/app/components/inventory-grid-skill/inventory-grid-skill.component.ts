@@ -3,11 +3,11 @@ import { Component, computed, input, output, signal } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { IconSkillComponent } from '@components/icon-skill/icon-skill.component';
 import {
+  actionSkillSalvage,
+  actionSkillSalvageValue,
   allHeroes,
-  equipSkill,
-  skillSalvage,
-  skillSalvageValue,
-  toggleSkillFavorite,
+  favoriteToggleSkill,
+  skillEquip,
 } from '@helpers';
 import type {
   EquipmentSkill,
@@ -48,15 +48,15 @@ export class InventoryGridSkillComponent {
   public allHeroes = computed(() => allHeroes());
 
   salvageValue(item: EquipmentSkill) {
-    return skillSalvageValue(item);
+    return actionSkillSalvageValue(item);
   }
 
   salvageItem(item: EquipmentSkill) {
-    skillSalvage(item);
+    actionSkillSalvage(item);
   }
 
   toggleFavorite(item: EquipmentSkill) {
-    toggleSkillFavorite(item);
+    favoriteToggleSkill(item);
   }
 
   heroEquippedSkill(hero: Hero, skillSlot: number): EquipmentSkill | undefined {
@@ -64,6 +64,6 @@ export class InventoryGridSkillComponent {
   }
 
   equipSkill(item: EquipmentSkill, hero: Hero, slot: number) {
-    equipSkill(hero, item, slot);
+    skillEquip(hero, item, slot);
   }
 }

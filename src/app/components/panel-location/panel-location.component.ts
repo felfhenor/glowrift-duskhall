@@ -13,16 +13,16 @@ import { LocationLootDisplayComponent } from '@components/location-loot-display/
 import { MarkerLocationClaimComponent } from '@components/marker-location-claim/marker-location-claim.component';
 import { MarkerLocationTraitComponent } from '@components/marker-location-trait/marker-location-trait.component';
 import {
-  areAllHeroesDead,
-  createGuardianForLocation,
+  currencyClaimsGetForNode,
   gamestate,
-  getCurrencyClaimsForNode,
   getEntry,
-  getSpriteFromNodeType,
-  isAtNode,
+  guardianCreateForLocation,
+  heroAreAllDead,
   isTravelingToNode,
   showLocationMenu,
-  totalTicksElapsed,
+  spriteGetFromNodeType,
+  timerTicksElapsed,
+  travelIsAtNode,
   travelTimeFromCurrentLocationTo,
   travelToNode,
 } from '@helpers';
@@ -60,7 +60,7 @@ export class PanelLocationComponent {
   public location = input.required<WorldLocation>();
 
   public objectSprite = computed(() =>
-    getSpriteFromNodeType(this.location().nodeType),
+    spriteGetFromNodeType(this.location().nodeType),
   );
 
   public traits = computed(() =>
@@ -83,17 +83,17 @@ export class PanelLocationComponent {
   public travelTimeRemaining = computed(
     () => gamestate().hero.travel.ticksLeft,
   );
-  public isAtThisNode = computed(() => isAtNode(this.location()));
+  public isAtThisNode = computed(() => travelIsAtNode(this.location()));
 
   public canTravelToThisNode = computed(
     () =>
       !this.isAtThisNode() &&
       !this.isTravelingToThisNode() &&
-      !areAllHeroesDead(),
+      !heroAreAllDead(),
   );
 
   public nodeLostTime = computed(
-    () => this.location().unclaimTime - totalTicksElapsed(),
+    () => this.location().unclaimTime - timerTicksElapsed(),
   );
 
   public elements = computed(() => sortBy(this.location().elements, 'element'));
@@ -101,14 +101,14 @@ export class PanelLocationComponent {
   public guardians = computed(() =>
     this.location()
       .guardianIds.map((g) => getEntry<Guardian>(g)!)
-      .map((g) => createGuardianForLocation(this.location(), g)),
+      .map((g) => guardianCreateForLocation(this.location(), g)),
   );
   public loot = computed(() =>
     this.location().claimLootIds.map((l) => getEntry<DroppableEquippable>(l)!),
   );
 
   public resourcesGenerated = computed(() => {
-    const generated = getCurrencyClaimsForNode(this.location());
+    const generated = currencyClaimsGetForNode(this.location());
     return sortBy(
       Object.keys(generated)
         .map((resource) => ({

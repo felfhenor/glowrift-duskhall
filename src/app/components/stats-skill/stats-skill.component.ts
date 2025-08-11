@@ -1,16 +1,16 @@
 import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 import {
-  allHeroTalents,
   getEntry,
-  getSkillEnchantLevel,
-  getSkillTechniqueDamageScalingStat,
-  getSkillTechniqueNumTargets,
-  getSkillTechniqueStatusEffectChance,
-  getSkillTechniqueStatusEffectDuration,
-  getSkillUses,
-  makeSkillForHero,
+  skillCreateForHero,
   skillDisplayElement,
+  skillEnchantLevel,
+  skillTechniqueDamageScalingStat,
+  skillTechniqueNumTargets,
+  skillTechniqueStatusEffectChance,
+  skillTechniqueStatusEffectDuration,
+  skillUses,
+  talentsForHero,
 } from '@helpers';
 import type {
   EquipmentSkill,
@@ -34,23 +34,21 @@ export class StatsSkillComponent {
     const hero = this.equippingHero();
     if (!hero) return [];
 
-    return allHeroTalents(hero);
+    return talentsForHero(hero);
   });
 
   public skillRef = computed(() => {
     const hero = this.equippingHero();
     if (!hero) return undefined;
 
-    return makeSkillForHero(hero, this.skill() as EquipmentSkill);
+    return skillCreateForHero(hero, this.skill() as EquipmentSkill);
   });
 
   public enchantLevel = computed(() =>
-    getSkillEnchantLevel(this.skill() as EquipmentSkill),
+    skillEnchantLevel(this.skill() as EquipmentSkill),
   );
 
-  public skillUses = computed(() =>
-    getSkillUses(this.skill() as EquipmentSkill),
-  );
+  public skillUses = computed(() => skillUses(this.skill() as EquipmentSkill));
 
   public element = computed(() => skillDisplayElement(this.skill()));
 
@@ -61,7 +59,7 @@ export class StatsSkillComponent {
       const statString = Object.keys(t.damageScaling)
         .filter((d) => t.damageScaling[d as GameStat])
         .map((d) => {
-          const statMult = getSkillTechniqueDamageScalingStat(
+          const statMult = skillTechniqueDamageScalingStat(
             skillRef,
             t,
             d as GameStat,
@@ -76,12 +74,9 @@ export class StatsSkillComponent {
           const statusEffect = getEntry<StatusEffectContent>(s.statusEffectId);
           if (!statusEffect) return '';
 
-          const defaultChance = getSkillTechniqueStatusEffectChance(
-            skillRef,
-            s,
-          );
+          const defaultChance = skillTechniqueStatusEffectChance(skillRef, s);
 
-          const defaultDuration = getSkillTechniqueStatusEffectDuration(
+          const defaultDuration = skillTechniqueStatusEffectDuration(
             skillRef,
             s,
           );
@@ -90,7 +85,7 @@ export class StatsSkillComponent {
         })
         .join(' + ');
 
-      const baseTargets = getSkillTechniqueNumTargets(skillRef, t);
+      const baseTargets = skillTechniqueNumTargets(skillRef, t);
 
       return {
         targetType: t.targetType,

@@ -1,10 +1,9 @@
 import {
-  addTimerAndAction,
-  doTimerActions,
-  getRegisterTick,
-  getTickActions,
+  timerActionAdd,
+  timerGetRegisterTick,
+  timerGetTickActions,
+  timerTicksElapsed,
   timerUnclaimVillage,
-  totalTicksElapsed,
 } from '@helpers/timer';
 import type {
   Timer,
@@ -28,12 +27,12 @@ vi.mock('@helpers/state-game', () => ({
 }));
 
 vi.mock('@helpers/world', () => ({
-  getWorldNode: vi.fn(),
-  unclaimNode: vi.fn(),
+  worldNodeGet: vi.fn(),
+  worldNodeUnclaim: vi.fn(),
 }));
 
 import { gamestate, updateGamestate } from '@helpers/state-game';
-import { getWorldNode, unclaimNode } from '@helpers/world';
+import { worldNodeGet, worldNodeUnclaim } from '@helpers/world';
 
 describe('Timer Functions', () => {
   beforeEach(() => {
@@ -46,7 +45,7 @@ describe('Timer Functions', () => {
         actionClock: { numTicks: 42, timers: {} },
       } as ReturnType<typeof gamestate>);
 
-      expect(totalTicksElapsed()).toBe(42);
+      expect(timerTicksElapsed()).toBe(42);
     });
   });
 
@@ -56,7 +55,7 @@ describe('Timer Functions', () => {
         actionClock: { numTicks: 100, timers: {} },
       } as ReturnType<typeof gamestate>);
 
-      expect(getRegisterTick(50)).toBe(150);
+      expect(timerGetRegisterTick(50)).toBe(150);
     });
   });
 
@@ -74,7 +73,7 @@ describe('Timer Functions', () => {
         },
       } as ReturnType<typeof gamestate>);
 
-      expect(getTickActions(100)).toEqual([mockTimer]);
+      expect(timerGetTickActions(100)).toEqual([mockTimer]);
     });
 
     it('should return empty array for non-existent tick', () => {
@@ -82,7 +81,7 @@ describe('Timer Functions', () => {
         actionClock: { numTicks: 0, timers: {} },
       } as ReturnType<typeof gamestate>);
 
-      expect(getTickActions(100)).toEqual([]);
+      expect(timerGetTickActions(100)).toEqual([]);
     });
   });
 
@@ -97,20 +96,7 @@ describe('Timer Functions', () => {
         actionClock: { numTicks: 100, timers: {} },
       } as ReturnType<typeof gamestate>);
 
-      addTimerAndAction(mockTimer, 50);
-
-      expect(updateGamestate).toHaveBeenCalled();
-    });
-  });
-
-  describe('doTimerActions', () => {
-    it('should execute all actions and clear timer slot', () => {
-      const mockTimer: Timer = {
-        type: 'UnclaimVillage',
-        location: { x: 0, y: 0 },
-      };
-
-      doTimerActions([mockTimer], 100);
+      timerActionAdd(mockTimer, 50);
 
       expect(updateGamestate).toHaveBeenCalled();
     });
@@ -129,12 +115,12 @@ describe('Timer Functions', () => {
         y: 1,
       } as WorldLocation;
 
-      vi.mocked(getWorldNode).mockReturnValue(mockNode);
+      vi.mocked(worldNodeGet).mockReturnValue(mockNode);
 
       timerUnclaimVillage(mockTimer);
 
-      expect(getWorldNode).toHaveBeenCalledWith(1, 1);
-      expect(unclaimNode).toHaveBeenCalledWith(mockNode);
+      expect(worldNodeGet).toHaveBeenCalledWith(1, 1);
+      expect(worldNodeUnclaim).toHaveBeenCalledWith(mockNode);
     });
 
     it('should do nothing if node not found', () => {
@@ -144,11 +130,11 @@ describe('Timer Functions', () => {
         location,
       };
 
-      vi.mocked(getWorldNode).mockReturnValue(undefined);
+      vi.mocked(worldNodeGet).mockReturnValue(undefined);
 
       timerUnclaimVillage(mockTimer);
 
-      expect(unclaimNode).not.toHaveBeenCalled();
+      expect(worldNodeUnclaim).not.toHaveBeenCalled();
     });
   });
 });

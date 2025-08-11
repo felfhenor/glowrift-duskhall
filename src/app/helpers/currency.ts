@@ -1,9 +1,9 @@
 import { getEntry } from '@helpers/content';
-import { getDefaultCurrencyBlock } from '@helpers/defaults';
-import { getFestivalProductionMultiplier } from '@helpers/festival-production';
+import { defaultCurrencyBlock } from '@helpers/defaults';
+import { festivalProductionMultiplier } from '@helpers/festival-production';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { locationTraitCurrencyAllGenerateModifiers } from '@helpers/trait-location-currency';
-import { getClaimedNodes } from '@helpers/world';
+import { worldGetClaimedNodes } from '@helpers/world';
 import type {
   CurrencyBlock,
   CurrencyContent,
@@ -11,25 +11,25 @@ import type {
   WorldLocation,
 } from '@interfaces';
 
-export function getCurrency(currency: GameCurrency): number {
+export function currencyGet(currency: GameCurrency): number {
   return gamestate().currency.currencies[currency] ?? 0;
 }
 
-export function hasCurrency(type: GameCurrency, needed: number): boolean {
-  return getCurrency(type) >= needed;
+export function currencyHasAmount(type: GameCurrency, needed: number): boolean {
+  return currencyGet(type) >= needed;
 }
 
-export function hasCurrencies(currencies: CurrencyBlock): boolean {
+export function currencyHasMultipleAmounts(currencies: CurrencyBlock): boolean {
   return Object.keys(currencies).every((curr) =>
-    hasCurrency(curr as GameCurrency, currencies[curr as GameCurrency]),
+    currencyHasAmount(curr as GameCurrency, currencies[curr as GameCurrency]),
   );
 }
 
-export function gainCurrencies(currencies: Partial<CurrencyBlock>): void {
+export function currencyGainMultiple(currencies: Partial<CurrencyBlock>): void {
   updateGamestate((state) => {
     Object.keys(currencies).forEach((deltaCurrency) => {
       const key = deltaCurrency as GameCurrency;
-      const multiplier = 1 + getFestivalProductionMultiplier(key);
+      const multiplier = 1 + festivalProductionMultiplier(key);
       const gainedCurrency = (currencies[key] ?? 0) * multiplier;
 
       state.currency.currencies[key] = Math.max(
@@ -41,31 +41,31 @@ export function gainCurrencies(currencies: Partial<CurrencyBlock>): void {
   });
 }
 
-export function gainCurrency(currency: GameCurrency, amount = 1): void {
-  gainCurrencies({
+export function currencyGain(currency: GameCurrency, amount = 1): void {
+  currencyGainMultiple({
     [currency]: amount,
   });
 }
 
-export function loseCurrencies(currencies: Partial<CurrencyBlock>): void {
+export function currencyLoseMultiple(currencies: Partial<CurrencyBlock>): void {
   Object.keys(currencies).forEach((curr) => {
     currencies[curr as GameCurrency] = -currencies[curr as GameCurrency]!;
   });
 
-  gainCurrencies(currencies);
+  currencyGainMultiple(currencies);
 }
 
-export function loseCurrency(currency: GameCurrency, amount = 1): void {
-  gainCurrency(currency, -amount);
+export function currencyLose(currency: GameCurrency, amount = 1): void {
+  currencyGain(currency, -amount);
 }
 
-export function gainCurrentCurrencyClaims(): void {
+export function currencyClaimsGetCurrent(): void {
   const currencyGains = gamestate().currency.currencyPerTickEarnings;
-  gainCurrencies(currencyGains);
+  currencyGainMultiple(currencyGains);
 }
 
-export function getCurrencyClaimsForNode(node: WorldLocation): CurrencyBlock {
-  const base = getDefaultCurrencyBlock();
+export function currencyClaimsGetForNode(node: WorldLocation): CurrencyBlock {
+  const base = defaultCurrencyBlock();
 
   switch (node.nodeType) {
     case 'cave': {
@@ -113,12 +113,12 @@ export function getCurrencyClaimsForNode(node: WorldLocation): CurrencyBlock {
   return base;
 }
 
-export function getUpdatedCurrencyClaims(): CurrencyBlock {
-  const base = getDefaultCurrencyBlock();
-  const allClaimed = getClaimedNodes();
+export function currencyClaimsGetUpdated(): CurrencyBlock {
+  const base = defaultCurrencyBlock();
+  const allClaimed = worldGetClaimedNodes();
 
   allClaimed.forEach((node) => {
-    const claims = getCurrencyClaimsForNode(node);
+    const claims = currencyClaimsGetForNode(node);
     Object.keys(claims).forEach((currencyChange) => {
       base[currencyChange as GameCurrency] +=
         claims[currencyChange as GameCurrency];
@@ -128,18 +128,18 @@ export function getUpdatedCurrencyClaims(): CurrencyBlock {
   return base;
 }
 
-export function mergeCurrencyClaims(delta: CurrencyBlock) {
+export function currencyClaimsMerge(delta: CurrencyBlock) {
   const current = gamestate().currency.currencyPerTickEarnings;
   Object.keys(delta).forEach((currencyChange) => {
     current[currencyChange as GameCurrency] +=
       delta[currencyChange as GameCurrency];
   });
 
-  updateCurrencyClaims(current);
+  currencyClaimsUpdate(current);
 }
 
-export function updateCurrencyClaims(
-  claims = getUpdatedCurrencyClaims(),
+export function currencyClaimsUpdate(
+  claims = currencyClaimsGetUpdated(),
 ): void {
   updateGamestate((state) => {
     state.currency.currencyPerTickEarnings = claims;

@@ -1,7 +1,7 @@
 import {
-  itemBuyValue,
-  itemSalvage,
-  itemSalvageValue,
+  actionItemBuyValue,
+  actionItemSalvage,
+  actionItemSalvageValue,
 } from '@helpers/action-equipment';
 import type {
   EquipmentItem,
@@ -15,11 +15,11 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock dependencies
 vi.mock('@helpers/currency', () => ({
-  gainCurrency: vi.fn(),
+  currencyGain: vi.fn(),
 }));
 
 vi.mock('@helpers/inventory-equipment', () => ({
-  removeItemFromInventory: vi.fn(),
+  itemInventoryRemove: vi.fn(),
 }));
 
 vi.mock('@helpers/notify', () => ({
@@ -27,12 +27,12 @@ vi.mock('@helpers/notify', () => ({
 }));
 
 vi.mock('@helpers/item', () => ({
-  getItemStat: vi.fn(),
+  itemStat: vi.fn(),
 }));
 
-import { gainCurrency } from '@helpers/currency';
-import { removeItemFromInventory } from '@helpers/inventory-equipment';
-import { getItemStat } from '@helpers/item';
+import { currencyGain } from '@helpers/currency';
+import { itemInventoryRemove } from '@helpers/inventory-equipment';
+import { itemStat } from '@helpers/item';
 import { notifySuccess } from '@helpers/notify';
 
 describe('Action Equipment Functions', () => {
@@ -73,7 +73,7 @@ describe('Action Equipment Functions', () => {
 
   describe('itemSalvageValue', () => {
     it('should calculate correct salvage value based on stats', () => {
-      vi.mocked(getItemStat)
+      vi.mocked(itemStat)
         .mockReturnValueOnce(3) // Aura
         .mockReturnValueOnce(5) // Force
         .mockReturnValueOnce(10) // Health
@@ -85,7 +85,7 @@ describe('Action Equipment Functions', () => {
         10 * 2 + // Health * 2
         2 * 10; // Speed * 10
 
-      expect(itemSalvageValue(testItem)).toBe(expectedValue);
+      expect(actionItemSalvageValue(testItem)).toBe(expectedValue);
     });
   });
 
@@ -97,12 +97,12 @@ describe('Action Equipment Functions', () => {
         5 * 2 + // Health * 2
         5 * 10; // Speed * 10
 
-      vi.mocked(getItemStat).mockReturnValue(5); // All stats return 5 for simple calculation
+      vi.mocked(itemStat).mockReturnValue(5); // All stats return 5 for simple calculation
 
-      itemSalvage(testItem);
+      actionItemSalvage(testItem);
 
-      expect(removeItemFromInventory).toHaveBeenCalledWith(testItem);
-      expect(gainCurrency).toHaveBeenCalledWith('Mana', expectedValue);
+      expect(itemInventoryRemove).toHaveBeenCalledWith(testItem);
+      expect(currencyGain).toHaveBeenCalledWith('Mana', expectedValue);
       expect(notifySuccess).toHaveBeenCalledWith(
         `Salvaged ${testItem.name} for ${expectedValue} mana!`,
       );
@@ -111,7 +111,7 @@ describe('Action Equipment Functions', () => {
 
   describe('itemBuyValue', () => {
     it('should return salvage value multiplied by 10', () => {
-      vi.mocked(getItemStat).mockReturnValue(5); // All stats return 5 for simple calculation
+      vi.mocked(itemStat).mockReturnValue(5); // All stats return 5 for simple calculation
 
       const salvageValue =
         5 * 4 + // Aura * 4
@@ -119,7 +119,7 @@ describe('Action Equipment Functions', () => {
         5 * 2 + // Health * 2
         5 * 10; // Speed * 10
 
-      expect(itemBuyValue(testItem)).toBe(salvageValue * 10);
+      expect(actionItemBuyValue(testItem)).toBe(salvageValue * 10);
     });
   });
 });

@@ -1,5 +1,5 @@
 import { getEntry } from '@helpers/content';
-import { getDefaultStats } from '@helpers/defaults';
+import { defaultStats } from '@helpers/defaults';
 import { gamestate } from '@helpers/state-game';
 import type {
   EquipmentItemId,
@@ -10,35 +10,17 @@ import type {
 } from '@interfaces';
 import {
   type DroppableEquippable,
-  type DropRarity,
   type EquipmentItem,
   type EquipmentItemContent,
   type GameElement,
   type GameStat,
   type WorldLocationElement,
 } from '@interfaces';
-import { groupBy, sortBy, sum, sumBy } from 'es-toolkit/compat';
+import { groupBy, sum, sumBy } from 'es-toolkit/compat';
 
-export function sortedRarityList<T extends DroppableEquippable>(
-  items: T[],
-): T[] {
-  return sortBy(items, [
-    (i) => -i.dropLevel,
-    (i) => {
-      const rarityOrder: Record<DropRarity, number> = {
-        Common: 0,
-        Uncommon: -1,
-        Rare: -2,
-        Mystical: -3,
-        Legendary: -4,
-        Unique: -5,
-      };
-      return rarityOrder[i.rarity] ?? 0;
-    },
-  ]);
-}
-
-export function isEquipment(item: DroppableEquippable): item is EquipmentItem {
+export function itemIsEquipment(
+  item: DroppableEquippable,
+): item is EquipmentItem {
   return (
     item.__type === 'weapon' ||
     item.__type === 'armor' ||
@@ -47,28 +29,21 @@ export function isEquipment(item: DroppableEquippable): item is EquipmentItem {
   );
 }
 
-export function getItemById(
+export function itemGetById(
   itemId: EquipmentItemId,
 ): EquipmentItem | undefined {
   return gamestate().inventory.items.find((i) => i.id === itemId);
 }
 
-export function getItemStat(
-  item: EquipmentItemContent,
-  stat: GameStat,
-): number {
+export function itemStat(item: EquipmentItemContent, stat: GameStat): number {
   return (
     (item.baseStats[stat] ?? 0) +
     ((item as EquipmentItem)?.mods?.baseStats?.[stat] ?? 0) +
-    sum(
-      getItemTraits(item as EquipmentItem).map(
-        (t) => t?.baseStats?.[stat] ?? 0,
-      ),
-    )
+    sum(itemTraits(item as EquipmentItem).map((t) => t?.baseStats?.[stat] ?? 0))
   );
 }
 
-export function getItemElementMultiplier(
+export function itemElementMultiplier(
   item: EquipmentItemContent,
   element: GameElement,
 ): number {
@@ -106,7 +81,7 @@ export function getItemElementMultiplier(
   ]);
 }
 
-export function addItemElement(
+export function itemElementAdd(
   item: EquipmentItem,
   locElement: WorldLocationElement,
 ): void {
@@ -118,27 +93,27 @@ export function addItemElement(
   });
 }
 
-export function addItemStat(
+export function itemStatAdd(
   item: EquipmentItem,
   stat: GameStat,
   value: number,
 ): void {
   item.mods ??= {};
-  item.mods.baseStats ??= getDefaultStats();
+  item.mods.baseStats ??= defaultStats();
   item.mods.baseStats[stat] += value;
 }
 
-export function getItemEnchantLevel(item: EquipmentItem): number {
+export function itemEnchantLevel(item: EquipmentItem): number {
   return item.enchantLevel + (item.mods?.enchantLevel ?? 0);
 }
 
-export function getItemTraits(item: EquipmentItem): TraitEquipmentContent[] {
+export function itemTraits(item: EquipmentItem): TraitEquipmentContent[] {
   return [...item.traitIds, ...(item.mods?.traitIds ?? [])].map(
     (t) => getEntry<TraitEquipmentContent>(t)!,
   );
 }
 
-export function getItemTalents(item: EquipmentItem): TalentBoost[] {
+export function itemTalents(item: EquipmentItem): TalentBoost[] {
   // Get talents from item and mods
   const itemTalents = [
     ...item.talentBoosts,
@@ -146,7 +121,7 @@ export function getItemTalents(item: EquipmentItem): TalentBoost[] {
   ];
 
   // Get talents from traits
-  const traitTalents = getItemTraits(item).flatMap(
+  const traitTalents = itemTraits(item).flatMap(
     (trait) => trait.talentBoosts ?? [],
   );
 
@@ -161,7 +136,7 @@ export function getItemTalents(item: EquipmentItem): TalentBoost[] {
   }));
 }
 
-export function getItemSkills(item: EquipmentItem): EquipmentSkillContent[] {
+export function itemSkills(item: EquipmentItem): EquipmentSkillContent[] {
   return [...item.skillIds, ...(item.mods?.skillIds ?? [])].map(
     (t) => getEntry<EquipmentSkillContent>(t)!,
   );

@@ -1,8 +1,8 @@
 import { getEntry } from '@helpers/content';
 import { gamestate } from '@helpers/state-game';
 import {
-  allHeroTalents,
   talentAddedTechniques,
+  talentsForHero,
   talentStatusEffectChanceBoost,
   talentStatusEffectDurationBoost,
   talentTargetCountBoost,
@@ -21,28 +21,28 @@ import type { Hero } from '@interfaces/hero';
 import type { GameStat } from '@interfaces/stat';
 import { intersection, sortBy, uniq } from 'es-toolkit/compat';
 
-export function getSkillEnchantLevel(skill: EquipmentSkill): number {
+export function skillEnchantLevel(skill: EquipmentSkill): number {
   return skill.enchantLevel + (skill.mods?.enchantLevel ?? 0);
 }
 
-export function getSkillById(
+export function skillGetById(
   skillId: EquipmentSkillId,
 ): EquipmentSkill | undefined {
   return gamestate().inventory.skills.find((i) => i.id === skillId);
 }
 
-export function getSkillUses(skill: EquipmentSkill): number {
+export function skillUses(skill: EquipmentSkill): number {
   return skill.usesPerCombat + (skill.mods?.usesPerCombat ?? 0);
 }
 
-export function getSkillTechniqueNumTargets(
+export function skillTechniqueNumTargets(
   skill: EquipmentSkill,
   technique: EquipmentSkillContentTechnique,
 ): number {
   return technique.targets + (skill.mods?.numTargets ?? 0);
 }
 
-export function getSkillTechniqueDamageScalingStat(
+export function skillTechniqueDamageScalingStat(
   skill: EquipmentSkill,
   technique: EquipmentSkillContentTechnique,
   stat: GameStat,
@@ -52,7 +52,7 @@ export function getSkillTechniqueDamageScalingStat(
   );
 }
 
-export function getSkillTechniqueStatusEffectChance(
+export function skillTechniqueStatusEffectChance(
   skill: EquipmentSkill,
   techniqueApplication: EquipmentSkillTechniqueStatusEffectApplication,
 ): number {
@@ -64,7 +64,7 @@ export function getSkillTechniqueStatusEffectChance(
   );
 }
 
-export function getSkillTechniqueStatusEffectDuration(
+export function skillTechniqueStatusEffectDuration(
   skill: EquipmentSkill,
   techniqueApplication: EquipmentSkillTechniqueStatusEffectApplication,
 ): number {
@@ -101,11 +101,11 @@ export function skillDisplayElement(skill: EquipmentSkill): string {
   return elements.join(', ');
 }
 
-export function makeSkillForHero(
+export function skillCreateForHero(
   hero: Hero,
   skillData: EquipmentSkill,
 ): EquipmentSkill {
-  const talents = allHeroTalents(hero);
+  const talents = talentsForHero(hero);
   const skill = structuredClone(skillData);
 
   const addedTechniques = structuredClone(

@@ -1,6 +1,5 @@
-import { describe, expect, it, vi, beforeEach } from 'vitest';
 import type { WorldLocation } from '@interfaces';
-import { distanceBetweenNodes } from '@helpers/travel';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock the dependencies
 vi.mock('@helpers/content', () => ({
@@ -13,12 +12,12 @@ vi.mock('@helpers/state-game', () => ({
 }));
 
 vi.mock('@helpers/rng', () => ({
-  seededrng: vi.fn(() => Math.random),
-  randomIdentifiableChoice: vi.fn(() => 'guardian-1'),
+  rngSeeded: vi.fn(() => Math.random),
+  rngChoiceIdentifiable: vi.fn(() => 'guardian-1'),
 }));
 
 vi.mock('@helpers/guardian', () => ({
-  createGuardianForLocation: vi.fn(() => ({ id: 'guardian-1' })),
+  guardianCreateForLocation: vi.fn(() => ({ id: 'guardian-1' })),
 }));
 
 vi.mock('@helpers/trait-location-worldgen', () => ({
@@ -26,7 +25,8 @@ vi.mock('@helpers/trait-location-worldgen', () => ({
 }));
 
 // Import the functions to test
-import { getGuardiansForLocation } from '@helpers/worldgen';
+import { distanceBetweenNodes } from '@helpers/math';
+import { worldgenGuardiansForLocation } from '@helpers/worldgen';
 
 describe('Distance-based Guardian Scaling', () => {
   beforeEach(async () => {
@@ -34,7 +34,7 @@ describe('Distance-based Guardian Scaling', () => {
     // Mock content for guardian data
     const { getEntriesByType, getEntry } = await import('@helpers/content');
     vi.mocked(getEntriesByType).mockReturnValue([
-      { id: 'guardian-1', name: 'Test Guardian' }
+      { id: 'guardian-1', name: 'Test Guardian' },
     ]);
     vi.mocked(getEntry).mockReturnValue({
       id: 'guardian-1',
@@ -89,8 +89,16 @@ describe('Distance-based Guardian Scaling', () => {
     };
 
     // Test that far locations have more guardians than near locations
-    const nearGuardians = getGuardiansForLocation(nearLocation, worldCenter, maxDistance);
-    const farGuardians = getGuardiansForLocation(farLocation, worldCenter, maxDistance);
+    const nearGuardians = worldgenGuardiansForLocation(
+      nearLocation,
+      worldCenter,
+      maxDistance,
+    );
+    const farGuardians = worldgenGuardiansForLocation(
+      farLocation,
+      worldCenter,
+      maxDistance,
+    );
 
     // Near location should have base count (1) + small distance bonus (~0-1)
     expect(nearGuardians.length).toBeGreaterThanOrEqual(1);
@@ -122,7 +130,7 @@ describe('Distance-based Guardian Scaling', () => {
     };
 
     // Should work without distance parameters and return base count
-    const guardians = getGuardiansForLocation(location);
+    const guardians = worldgenGuardiansForLocation(location);
     expect(guardians.length).toBe(1); // Base cave count without distance bonus
   });
 
@@ -146,8 +154,12 @@ describe('Distance-based Guardian Scaling', () => {
       traitIds: [],
     };
 
-    const guardians = getGuardiansForLocation(farCastle, worldCenter, maxDistance);
-    
+    const guardians = worldgenGuardiansForLocation(
+      farCastle,
+      worldCenter,
+      maxDistance,
+    );
+
     // Castle base (10) + distance bonus (5) = 15 guardians
     expect(guardians.length).toBe(15);
   });

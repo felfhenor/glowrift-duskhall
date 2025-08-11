@@ -1,7 +1,7 @@
-import { gainCurrentCurrencyClaims } from '@helpers/currency';
+import { currencyClaimsGetCurrent } from '@helpers/currency';
 
-export function currencyGameloop(numTicks: number): void {
+export function gameloopCurrency(numTicks: number): void {
   for (let i = 0; i < numTicks; i++) {
-    gainCurrentCurrencyClaims();
+    currencyClaimsGetCurrent();
   }
 }

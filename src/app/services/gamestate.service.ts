@@ -1,7 +1,7 @@
 import { effect, inject, Injectable, signal } from '@angular/core';
 import {
-  canRunGameloop,
-  doGameloop,
+  gameloop,
+  gameloopShouldRun,
   gamestate,
   getOption,
   isCatchingUp,
@@ -56,7 +56,7 @@ export class GamestateService {
 
     function runLoop(numTicks: number) {
       lastRunTime = Date.now();
-      doGameloop(numTicks);
+      gameloop(numTicks);
     }
 
     runLoop(1);
@@ -66,7 +66,7 @@ export class GamestateService {
         lastRunTime <= 0 ||
         !this.hasLoaded() ||
         !isGameStateReady() ||
-        !canRunGameloop()
+        !gameloopShouldRun()
       )
         return;
 

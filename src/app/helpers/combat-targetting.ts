@@ -1,6 +1,6 @@
-import { skillSucceedsElementCombatStatChance } from '@helpers/combat-stats';
+import { combatSkillSucceedsElementCombatStatChance } from '@helpers/combat-stats';
 import { getEntry } from '@helpers/content';
-import { getSkillUses } from '@helpers/skill';
+import { skillUses } from '@helpers/skill';
 import type {
   Combat,
   Combatant,
@@ -14,7 +14,7 @@ import type {
 } from '@interfaces';
 import { intersection, sampleSize, sortBy, union } from 'es-toolkit/compat';
 
-export function availableSkillsForCombatant(
+export function combatAvailableSkillsForCombatant(
   combatant: Combatant,
 ): EquipmentSkill[] {
   return [
@@ -23,11 +23,11 @@ export function availableSkillsForCombatant(
   ].filter(
     (skill) =>
       skill.usesPerCombat === -1 ||
-      (combatant.skillUses[skill.id] ?? 0) < getSkillUses(skill),
+      (combatant.skillUses[skill.id] ?? 0) < skillUses(skill),
   );
 }
 
-export function filterCombatantTargetListForSkillTechniqueBehavior(
+function filterCombatantTargetListForSkillTechniqueBehavior(
   combatants: Combatant[],
   behaviorData: EquipmentSkillTargetBehaviorData,
 ): Combatant[] {
@@ -55,7 +55,7 @@ export function filterCombatantTargetListForSkillTechniqueBehavior(
   return behaviors[behaviorData.behavior](combatants);
 }
 
-export function filterCombatantTargetListForSkillTechnique(
+function filterCombatantTargetListForSkillTechnique(
   combatants: Combatant[],
   technique: EquipmentSkillContentTechnique,
 ): Combatant[] {
@@ -66,7 +66,7 @@ export function filterCombatantTargetListForSkillTechnique(
   );
 }
 
-export function getBaseCombatantTargetListForSkillTechnique(
+function getBaseCombatantTargetListForSkillTechnique(
   combat: Combat,
   combatant: Combatant,
   skill: EquipmentSkill,
@@ -76,7 +76,7 @@ export function getBaseCombatantTargetListForSkillTechnique(
   let allies = myType === 'guardian' ? combat.guardians : combat.heroes;
   let enemies = myType === 'guardian' ? combat.heroes : combat.guardians;
 
-  const shouldReverse = skillSucceedsElementCombatStatChance(
+  const shouldReverse = combatSkillSucceedsElementCombatStatChance(
     skill,
     combatant,
     'redirectionChance',
@@ -99,7 +99,7 @@ export function getBaseCombatantTargetListForSkillTechnique(
   return targetTypes[technique.targetType];
 }
 
-export function getPossibleCombatantTargetsForSkillTechnique(
+export function combatGetPossibleCombatantTargetsForSkillTechnique(
   combat: Combat,
   combatant: Combatant,
   skill: EquipmentSkillContent,
@@ -114,19 +114,24 @@ export function getPossibleCombatantTargetsForSkillTechnique(
   return filterCombatantTargetListForSkillTechnique(baseList, tech);
 }
 
-export function getPossibleCombatantTargetsForSkill(
+export function combatGetPossibleCombatantTargetsForSkill(
   combat: Combat,
   combatant: Combatant,
   skill: EquipmentSkillContent,
 ): Combatant[] {
   return union(
     skill.techniques.flatMap((t) =>
-      getPossibleCombatantTargetsForSkillTechnique(combat, combatant, skill, t),
+      combatGetPossibleCombatantTargetsForSkillTechnique(
+        combat,
+        combatant,
+        skill,
+        t,
+      ),
     ),
   );
 }
 
-export function getTargetsFromListBasedOnType(
+export function combatGetTargetsFromListBasedOnType(
   combatants: Combatant[],
   type: CombatantTargettingType,
   select: number,

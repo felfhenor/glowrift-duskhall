@@ -1,34 +1,18 @@
 import { signal } from '@angular/core';
-import { currentCombatHasGuardiansAlive } from '@helpers/combat-end';
-import { error } from '@helpers/logging';
-import { gamestate } from '@helpers/state-game';
-import { travelToNode } from '@helpers/travel';
+import { combatHasGuardiansAlive } from '@helpers/combat-end';
 import { globalStatusText } from '@helpers/ui';
-import { getCurrentWorldNode, getNearestTown } from '@helpers/world';
+import { worldNodeGetCurrent } from '@helpers/world';
 
 export const exploreProgressText = signal<string>('');
 export const exploreProgressPercent = signal<number>(0);
 
 export function isExploring() {
-  const currentPosition = getCurrentWorldNode();
+  const currentPosition = worldNodeGetCurrent();
   if (!currentPosition) return false;
-  return currentCombatHasGuardiansAlive();
+  return combatHasGuardiansAlive();
 }
 
-export function updateExploringAndGlobalStatusText(status: string): void {
+export function exploringUpdateGlobalStatusText(status: string): void {
   exploreProgressText.set(status);
   globalStatusText.set(status);
-}
-
-export function travelHome(): void {
-  const currentPosition = gamestate().hero.position;
-  const nearestTown = getNearestTown(currentPosition);
-
-  if (!nearestTown) {
-    error('No towns found in the world.');
-    return;
-  }
-
-  updateExploringAndGlobalStatusText('Returning to nearest town...');
-  travelToNode(nearestTown);
 }

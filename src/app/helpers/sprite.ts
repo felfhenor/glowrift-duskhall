@@ -1,17 +1,15 @@
-import { randomNumber, seededrng } from '@helpers/rng';
+import { angleBetweenPoints } from '@helpers/math';
+import { rngNumber, rngSeeded } from '@helpers/rng';
 import { gamestate } from '@helpers/state-game';
-import {
-  getAngleBetweenPoints,
-  getElementsForCardinalDirection,
-} from '@helpers/worldgen';
+import { elementsForCardinalDirection } from '@helpers/worldgen';
 import type { GameElement, LocationType, WorldPosition } from '@interfaces';
 import * as Compass from 'cardinal-direction';
 
-export function indexToSprite(index: number): string {
+export function spriteGetFromIndex(index: number): string {
   return index.toString().padStart(4, '0');
 }
 
-export function getSpriteForPosition(x: number, y: number): string {
+export function spriteGetForPosition(x: number, y: number): string {
   const state = gamestate();
 
   const elementStartSprites: Record<GameElement, number> = {
@@ -27,11 +25,11 @@ export function getSpriteForPosition(x: number, y: number): string {
   };
 
   const cardinality = Compass.cardinalFromDegree(
-    getAngleBetweenPoints(centerPosition, { x, y }),
+    angleBetweenPoints(centerPosition, { x, y }),
     Compass.CardinalSubset.Intercardinal,
   );
 
-  const elements = getElementsForCardinalDirection(
+  const elements = elementsForCardinalDirection(
     Compass.CardinalDirection[
       cardinality as unknown as number
     ] as unknown as Compass.CardinalDirection,
@@ -39,13 +37,13 @@ export function getSpriteForPosition(x: number, y: number): string {
 
   const dominantElement = elements[0]?.element ?? 'Air';
 
-  return indexToSprite(
+  return spriteGetFromIndex(
     elementStartSprites[dominantElement] +
-      randomNumber(4, seededrng(`${state.gameId}-${x},${y}`)),
+      rngNumber(4, rngSeeded(`${state.gameId}-${x},${y}`)),
   );
 }
 
-export function getSpriteFromNodeType(
+export function spriteGetFromNodeType(
   nodeType: LocationType | undefined,
 ): string {
   switch (nodeType) {

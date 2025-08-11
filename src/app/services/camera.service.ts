@@ -1,6 +1,6 @@
 import type { OnDestroy } from '@angular/core';
 import { Injectable, signal } from '@angular/core';
-import { gamestate, setCameraPosition } from '@helpers';
+import { cameraPositionSet, gamestate } from '@helpers';
 
 export interface Point {
   x: number;
@@ -69,7 +69,7 @@ export class CameraService implements OnDestroy {
     const newCameraX = currentCameraPos.x - deltaX / this.#panSensitivity;
     const newCameraY = currentCameraPos.y - deltaY / this.#panSensitivity;
 
-    setCameraPosition(newCameraX, newCameraY);
+    cameraPositionSet(newCameraX, newCameraY);
 
     this.lastPanPosition.set({ x: event.clientX, y: event.clientY });
   }

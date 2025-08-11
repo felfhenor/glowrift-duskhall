@@ -1,17 +1,17 @@
-import type { EquipmentSkill } from '@interfaces';
-import { gainCurrency } from '@helpers/currency';
-import { removeSkillFromInventory } from '@helpers/inventory-skill';
+import { currencyGain } from '@helpers/currency';
+import { skillInventoryRemove } from '@helpers/inventory-skill';
 import { notifySuccess } from '@helpers/notify';
+import type { EquipmentSkill } from '@interfaces';
 
-export function skillSalvageValue(item: EquipmentSkill): number {
+export function actionSkillSalvageValue(item: EquipmentSkill): number {
   return item.dropLevel * 100;
 }
 
-export function skillSalvage(item: EquipmentSkill): void {
-  const manaGained = skillSalvageValue(item);
+export function actionSkillSalvage(item: EquipmentSkill): void {
+  const manaGained = actionSkillSalvageValue(item);
 
-  removeSkillFromInventory(item);
-  gainCurrency('Mana', manaGained);
+  skillInventoryRemove(item);
+  currencyGain('Mana', manaGained);
 
   notifySuccess(`Salvaged ${item.name} for ${manaGained} mana!`);
 }

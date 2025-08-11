@@ -1,7 +1,7 @@
 import type { OnChanges, OnInit } from '@angular/core';
 import { Component, input, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { updateHeroData } from '@helpers/hero';
+import { heroUpdateData } from '@helpers/hero';
 import type { CombatantTargettingType } from '@interfaces/combat';
 import type { Hero } from '@interfaces/hero';
 
@@ -30,6 +30,6 @@ export class PanelHeroesTargettingComponent implements OnInit, OnChanges {
   }
 
   public setTargettingType(type: CombatantTargettingType): void {
-    updateHeroData(this.hero().id, { targettingType: type });
+    heroUpdateData(this.hero().id, { targettingType: type });
   }
 }
