@@ -1,8 +1,5 @@
 name: Release New Tags
 
-permissions:
-  contents: write
-
 on:
   push:
     tags:
@@ -76,6 +73,9 @@ jobs:
     name: Create Windows Binary
 
     runs-on: ${{ matrix.os }}
+
+    permissions:
+      contents: write
 
     strategy:
       matrix:
