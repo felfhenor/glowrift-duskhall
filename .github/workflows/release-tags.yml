@@ -96,10 +96,8 @@ jobs:
         with:
           name: release_url
 
-      - uses: pCYSl5EDgo/cat@master
-        id: loadReleaseUrl
-        with:
-          path: release_url/release_url.txt
+      - id: loadReleaseUrl
+        run: echo "releaseUrl=$(cat release_url/release_url.txt)" >> $GITHUB_OUTPUT
 
       - uses: actions/checkout@v2
 
@@ -124,7 +122,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.loadReleaseUrl.outputs.text }}
+          upload_url: ${{ steps.loadReleaseUrl.outputs.releaseUrl }}
           asset_path: ./electron/out/make/squirrel.windows/x64/glowrift-duskhall.exe
           asset_name: glowrift-duskhall.exe
           asset_content_type: application/vnd.microsoft.portable-executable
