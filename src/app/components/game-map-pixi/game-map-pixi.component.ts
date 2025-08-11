@@ -4,16 +4,15 @@ import {
   gamestate,
   getOption,
   isTraveling,
-  mapDragSetup,
   pixiAppInitialize,
-  pixiGameMapContainersCreate,
   pixiIconTextureClaimCreate,
   pixiIndicatorHeroTravelCreate,
   pixiIndicatorNodePlayerAtLocationCreate,
   pixiIndicatorNodeSpriteCreate,
   pixiIndicatorTravelLineCreate,
-  pixiResponsiveCanvasSetup,
   pixiTextureGameMapLoad,
+  pixiViewportCreate,
+  pixiViewportResponsiveSetup,
   showLocationMenu,
   spriteGetForPosition,
   spriteGetFromNodeType,
@@ -28,6 +27,7 @@ import { ContentService } from '@services/content.service';
 import { LoggerService } from '@services/logger.service';
 import { MapStateService } from '@services/map-state.service';
 import type { Application, Container, Texture } from 'pixi.js';
+import type { Viewport } from 'pixi-viewport';
 
 @Component({
   selector: 'app-game-map-pixi',
@@ -44,6 +44,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
   private mapStateService = inject(MapStateService);
 
   private app?: Application;
+  private viewport?: Viewport;
   private mapContainer?: Container;
   private terrainTextures: LoadedTextures = {};
   private objectTextures: LoadedTextures = {};
@@ -149,39 +150,28 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       antialias: false,
     });
 
-    const containers = pixiGameMapContainersCreate(this.app);
-    this.mapContainer = containers.mapContainer;
-    this.playerIndicatorContainer = containers.playerIndicatorContainer;
-    this.travelVisualizationContainer = containers.travelVisualizationContainer;
+    // Get world dimensions for viewport configuration
+    const world = gamestate().world;
+    
+    const viewportSetup = pixiViewportCreate({
+      app: this.app,
+      worldWidth: world.config.width,
+      worldHeight: world.config.height,
+      tileSize: 64,
+      maxZoom: 1, // Current view is max zoom (64x64 tiles)
+      minZoom: 0.25, // Allow zooming out to 25% of normal size
+    });
+
+    this.viewport = viewportSetup.viewport;
+    this.mapContainer = viewportSetup.mapContainer;
+    this.playerIndicatorContainer = viewportSetup.playerIndicatorContainer;
+    this.travelVisualizationContainer = viewportSetup.travelVisualizationContainer;
     this.mapContainer.cullable = true;
 
-    this.resizeObserver = pixiResponsiveCanvasSetup(
-      this.app,
+    this.resizeObserver = pixiViewportResponsiveSetup(
+      this.viewport,
       this.pixiContainer()?.nativeElement,
     );
-
-    this.setupMouseDragging();
-  }
-
-  private setupMouseDragging() {
-    if (
-      !this.app ||
-      !this.mapContainer ||
-      !this.playerIndicatorContainer ||
-      !this.travelVisualizationContainer
-    )
-      return;
-
-    mapDragSetup({
-      app: this.app,
-      containers: [
-        this.mapContainer,
-        this.playerIndicatorContainer,
-        this.travelVisualizationContainer,
-      ],
-      viewportWidth: this.nodeWidth(),
-      viewportHeight: this.nodeHeight(),
-    });
   }
 
   private async loadTextures() {

@@ -44,3 +44,12 @@ export interface DragHandlerConfig {
   viewportHeight: number;
   tileSize?: number;
 }
+
+export interface ViewportConfig {
+  app: Application;
+  worldWidth: number;
+  worldHeight: number;
+  tileSize?: number;
+  maxZoom?: number;
+  minZoom?: number;
+}
