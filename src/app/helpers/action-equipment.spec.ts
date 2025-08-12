@@ -28,7 +28,9 @@ vi.mock('@helpers/notify', () => ({
 
 vi.mock('@helpers/item', () => ({
   itemStat: vi.fn(),
-  itemTalents: vi.fn(),
+  itemTalents: vi.fn(() => []),
+  itemSkills: vi.fn(() => []),
+  itemTraits: vi.fn(() => []),
 }));
 
 vi.mock('@helpers/town', () => ({
