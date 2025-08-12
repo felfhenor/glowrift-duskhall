@@ -4,14 +4,12 @@ import type { EquipmentItem } from '@interfaces/content-equipment';
 import type { EquipmentSkillContent } from '@interfaces/content-skill';
 import type { DroppableEquippable } from '@interfaces/droppable';
 
-/**
- * Used entirely for debugging to add items to the inventory quickly.
- *
- * @param id the item id/name to add
- */
+export function debugCreateDroppable(id: string): DroppableEquippable {
+  return droppableMakeReal(getEntry<DroppableEquippable>(id)!);
+}
+
 export function debugGainDroppableById(id: string): void {
-  const item = droppableMakeReal(getEntry<DroppableEquippable>(id)!);
-  droppableGain(item);
+  droppableGain(debugCreateDroppable(id)!);
 }
 
 export function debugSkillGainEvery(): void {

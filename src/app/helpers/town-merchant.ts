@@ -10,12 +10,12 @@ import { gamestate, updateGamestate } from '@helpers/state-game';
 import type { EquipmentItem } from '@interfaces';
 
 export function merchantMaxItems(): number {
-  return 8 + Math.floor(gamestate().town.buildingLevels.Merchant / 5);
+  return 8 + Math.floor(gamestate().town.buildingLevels.Merchant / 2);
 }
 
 function merchantItemGenerate(): EquipmentItem {
   const allItems = equipmentAllDefinitions().filter(
-    (item) => item.dropLevel <= gamestate().town.buildingLevels.Merchant,
+    (item) => item.dropLevel <= gamestate().town.buildingLevels.Merchant * 5,
   );
   const chosenItem = equipmentPickRandomDefinitionByRarity(allItems);
 
