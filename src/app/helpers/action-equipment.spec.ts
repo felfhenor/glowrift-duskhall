@@ -28,6 +28,15 @@ vi.mock('@helpers/notify', () => ({
 
 vi.mock('@helpers/item', () => ({
   itemStat: vi.fn(),
+  itemTalents: vi.fn(),
+}));
+
+vi.mock('@helpers/town', () => ({
+  townBuildingLevel: vi.fn(() => 0),
+}));
+
+vi.mock('@helpers/rng', () => ({
+  rngUuid: () => 'mock-uuid',
 }));
 
 import { currencyGain } from '@helpers/currency';
