@@ -7,6 +7,10 @@ export function alchemistSkillsMax() {
   return Math.floor(Math.min(15, 3 + townBuildingLevel('Alchemist') / 3));
 }
 
+export function alchemistCurrencyMultiplier(): number {
+  return townBuildingLevel('Alchemist');
+}
+
 export function alchemistSalvageSkills(items: EquipmentSkill[]): void {
   items.forEach((item) => {
     alchemistSalvageSkill(item);
@@ -29,11 +33,12 @@ export function alchemistMultiSkillSalvageCurrencyGain(
     const currencies = alchemistSkillSalvageCurrencyGain(skill);
     Object.entries(currencies).forEach(([curr, amount]) => {
       const currency = curr as GameCurrency;
+      const addedAmount = alchemistCurrencyMultiplier() * amount;
 
       if (result[currency]) {
-        result[currency] += amount;
+        result[currency] += addedAmount;
       } else {
-        result[currency] = amount;
+        result[currency] = addedAmount;
       }
     });
   });

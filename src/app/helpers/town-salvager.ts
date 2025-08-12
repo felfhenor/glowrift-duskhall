@@ -4,8 +4,12 @@ import { townBuildingLevel } from '@helpers/town';
 import type { GameCurrency } from '@interfaces/content-currency';
 import type { EquipmentItem } from '@interfaces/content-equipment';
 
-export function salvagerItemsMax() {
+export function salvagerItemsMax(): number {
   return Math.floor(Math.min(15, 3 + townBuildingLevel('Salvager') / 3));
+}
+
+export function salvagerCurrencyMultiplier(): number {
+  return Math.floor(townBuildingLevel('Salvager') / 2);
 }
 
 export function salvagerSalvageItems(items: EquipmentItem[]): void {
@@ -30,11 +34,12 @@ export function salvagerMultiItemSalvageCurrencyGain(
     const currencies = salvagerItemSalvageCurrencyGain(item);
     Object.entries(currencies).forEach(([curr, amount]) => {
       const currency = curr as GameCurrency;
+      const addedAmount = salvagerCurrencyMultiplier() * amount;
 
       if (result[currency]) {
-        result[currency] += amount;
+        result[currency] += addedAmount;
       } else {
-        result[currency] = amount;
+        result[currency] = addedAmount;
       }
     });
   });

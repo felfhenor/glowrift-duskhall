@@ -5,6 +5,7 @@ import { IconLocationComponent } from '@components/icon-location/icon-location.c
 import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
 import {
   academyMaxEnchantLevel,
+  alchemistCurrencyMultiplier,
   alchemistSkillsMax,
   blacksmithMaxEnchantLevel,
   currencyHasAmount,
@@ -12,6 +13,7 @@ import {
   marketCurrencyBonus,
   merchantMaxItemLevel,
   merchantMaxItems,
+  salvagerCurrencyMultiplier,
   salvagerItemsMax,
   townBuildingLevel,
   townBuildingMaxLevel,
@@ -39,11 +41,11 @@ export class PanelTownBuildingUpgradeComponent {
   public description = computed(() => {
     const upgradeReasons: Record<TownBuilding, string> = {
       Academy: `Academy can enchant items up to Lv.${academyMaxEnchantLevel()}.`,
-      Alchemist: `Alchemist can salvage up to ${alchemistSkillsMax()} skills simultaneously.`,
+      Alchemist: `Alchemist can salvage up to ${alchemistSkillsMax()} skills simultaneously. Skills salvage for ${alchemistCurrencyMultiplier()}x value.`,
       Blacksmith: `Blacksmith can enchant items up to Lv.${blacksmithMaxEnchantLevel()}.`,
       Market: `Market gives ${Math.floor(marketCurrencyBonus() * 100)}% more currency per exchange.`,
       Merchant: `Merchant has ${merchantMaxItems()} items for sale. Items can be up to level ${merchantMaxItemLevel()}.`,
-      Salvager: `Salvager can salvage up to ${salvagerItemsMax()} items simultaneously.`,
+      Salvager: `Salvager can salvage up to ${salvagerItemsMax()} items simultaneously. Items salvage for ${salvagerCurrencyMultiplier()}x value.`,
     };
 
     return upgradeReasons[this.building()];
