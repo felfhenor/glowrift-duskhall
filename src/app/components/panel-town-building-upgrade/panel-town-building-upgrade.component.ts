@@ -13,6 +13,7 @@ import {
   marketCurrencyBonus,
   merchantMaxItemLevel,
   merchantMaxItems,
+  merchantTraitChance,
   salvagerCurrencyMultiplier,
   salvagerItemsMax,
   townBuildingLevel,
@@ -44,7 +45,7 @@ export class PanelTownBuildingUpgradeComponent {
       Alchemist: `Alchemist can salvage up to ${alchemistSkillsMax()} skills simultaneously. Skills salvage for ${alchemistCurrencyMultiplier()}x value.`,
       Blacksmith: `Blacksmith can enchant items up to Lv.${blacksmithMaxEnchantLevel()}.`,
       Market: `Market gives ${Math.floor(marketCurrencyBonus() * 100)}% more currency per exchange.`,
-      Merchant: `Merchant has ${merchantMaxItems()} items for sale. Items can be up to level ${merchantMaxItemLevel()}.`,
+      Merchant: `Merchant has ${merchantMaxItems()} items for sale. Items can be up to level ${merchantMaxItemLevel()}. Items have a ${merchantTraitChance()}% chance to have a special trait.`,
       Salvager: `Salvager can salvage up to ${salvagerItemsMax()} items simultaneously. Items salvage for ${salvagerCurrencyMultiplier()}x value.`,
     };
 

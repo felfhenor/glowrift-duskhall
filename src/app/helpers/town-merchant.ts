@@ -6,9 +6,11 @@ import {
 } from '@helpers/creator-equipment';
 import { currencyHasAmount, currencyLose } from '@helpers/currency';
 import { itemInventoryAdd } from '@helpers/inventory-equipment';
+import { rngSucceedsChance } from '@helpers/rng';
 import { updateGamestate } from '@helpers/state-game';
 import { talentTownStatTotalForAllHeroes } from '@helpers/talent';
 import { townBuildingLevel } from '@helpers/town';
+import { traitAddToEquipment } from '@helpers/trait-equipment';
 import type { EquipmentItem } from '@interfaces';
 
 export function merchantMaxItems(): number {
@@ -23,13 +25,25 @@ export function merchantMaxItemLevel(): number {
   );
 }
 
+export function merchantTraitChance(): number {
+  return 3 * townBuildingLevel('Merchant');
+}
+
 function merchantItemGenerate(): EquipmentItem {
   const allItems = equipmentAllDefinitions().filter(
     (item) => item.dropLevel <= merchantMaxItemLevel(),
   );
   const chosenItem = equipmentPickRandomDefinitionByRarity(allItems);
 
-  return equipmentCreate(chosenItem);
+  const createdItem = equipmentCreate(chosenItem);
+
+  if (rngSucceedsChance(merchantTraitChance())) {
+    createdItem.mods ??= {};
+    createdItem.mods.traitIds = [];
+    traitAddToEquipment(createdItem);
+  }
+
+  return createdItem;
 }
 
 export function merchantGenerateItems(): void {
