@@ -44,6 +44,15 @@ const RARITY_PRIORITY: Record<DropRarity, number> = {
   Unique: 6,
 };
 
+export function worldMaxDistance(): number {
+  const state = gamestate();
+
+  return distanceBetweenNodes(
+    { x: Math.floor(state.world.config.width / 2), y: 0 },
+    state.world.homeBase,
+  );
+}
+
 /**
  * Get the highest rarity of loot items at a location
  * @param location World location with loot IDs
@@ -270,6 +279,8 @@ export function worldNodeUnclaim(node: WorldLocation): void {
       updateNodeData.currentlyClaimed = false;
       updateNodeData.guardianIds = worldgenGuardiansForLocation(
         updateNodeData,
+        gamestate().world.homeBase,
+        worldMaxDistance(),
       ).map((i) => i.id);
       updateNodeData.claimLootIds = worldgenLootForLocation(updateNodeData).map(
         (i) => i.id,
