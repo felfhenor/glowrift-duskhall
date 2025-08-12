@@ -24,6 +24,10 @@ import type { GameStat } from '@interfaces/stat';
 import type { BlacksmithEnchant } from '@interfaces/town';
 import { sumBy } from 'es-toolkit/compat';
 
+export function blacksmithMaxEnchantLevel(): number {
+  return townBuildingLevel('Blacksmith');
+}
+
 export function blacksmithRerollItemTraitCost(item: EquipmentItem): number {
   if (item.traitIds.length === 0) return 1000;
 
@@ -62,7 +66,7 @@ export function blacksmithRerollItemTrait(item: EquipmentItem): void {
 }
 
 export function blacksmithCanEnchantItem(item: EquipmentItem): boolean {
-  return itemEnchantLevel(item) < townBuildingLevel('Blacksmith');
+  return itemEnchantLevel(item) < blacksmithMaxEnchantLevel();
 }
 
 export function blacksmithNextItemEnchants(

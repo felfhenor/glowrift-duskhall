@@ -6,16 +6,21 @@ import {
 } from '@helpers/creator-equipment';
 import { currencyHasAmount, currencyLose } from '@helpers/currency';
 import { itemInventoryAdd } from '@helpers/inventory-equipment';
-import { gamestate, updateGamestate } from '@helpers/state-game';
+import { updateGamestate } from '@helpers/state-game';
+import { townBuildingLevel } from '@helpers/town';
 import type { EquipmentItem } from '@interfaces';
 
 export function merchantMaxItems(): number {
-  return 8 + Math.floor(gamestate().town.buildingLevels.Merchant / 2);
+  return 8 + Math.floor(townBuildingLevel('Merchant') / 2);
+}
+
+export function merchantMaxItemLevel(): number {
+  return 5 + Math.floor(townBuildingLevel('Merchant') * 5);
 }
 
 function merchantItemGenerate(): EquipmentItem {
   const allItems = equipmentAllDefinitions().filter(
-    (item) => item.dropLevel <= gamestate().town.buildingLevels.Merchant * 5,
+    (item) => item.dropLevel <= merchantMaxItemLevel(),
   );
   const chosenItem = equipmentPickRandomDefinitionByRarity(allItems);
 

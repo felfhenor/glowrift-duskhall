@@ -27,6 +27,6 @@ export function actionItemSalvage(item: EquipmentItem): void {
 
 export function actionItemBuyValue(item: EquipmentItemContent): number {
   return Math.floor(
-    actionItemSalvageValue(item) * (10 - townBuildingLevel('Merchant') * 0.09),
+    actionItemSalvageValue(item) * (10 - townBuildingLevel('Merchant') * 0.05),
   );
 }

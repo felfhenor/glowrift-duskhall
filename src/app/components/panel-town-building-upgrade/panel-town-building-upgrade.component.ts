@@ -4,8 +4,15 @@ import { IconItemComponent } from '@components/icon-currency/icon-currency.compo
 import { IconLocationComponent } from '@components/icon-location/icon-location.component';
 import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
 import {
+  academyMaxEnchantLevel,
+  alchemistSkillsMax,
+  blacksmithMaxEnchantLevel,
   currencyHasAmount,
   gamestate,
+  marketCurrencyBonus,
+  merchantMaxItemLevel,
+  merchantMaxItems,
+  salvagerItemsMax,
   townBuildingLevel,
   townBuildingMaxLevel,
   townBuildingUpgradeCost,
@@ -28,6 +35,19 @@ import type { GameCurrency, LocationType, TownBuilding } from '@interfaces';
 })
 export class PanelTownBuildingUpgradeComponent {
   public building = input.required<TownBuilding>();
+
+  public description = computed(() => {
+    const upgradeReasons: Record<TownBuilding, string> = {
+      Academy: `Academy can enchant items up to Lv.${academyMaxEnchantLevel()}.`,
+      Alchemist: `Alchemist can salvage up to ${alchemistSkillsMax()} skills simultaneously.`,
+      Blacksmith: `Blacksmith can enchant items up to Lv.${blacksmithMaxEnchantLevel()}.`,
+      Market: `Market gives ${Math.floor(marketCurrencyBonus() * 100)}% more currency per exchange.`,
+      Merchant: `Merchant has ${merchantMaxItems()} items for sale. Items can be up to level ${merchantMaxItemLevel()}.`,
+      Salvager: `Salvager can salvage up to ${salvagerItemsMax()} items simultaneously.`,
+    };
+
+    return upgradeReasons[this.building()];
+  });
 
   public nextLevel = computed(() => townBuildingLevel(this.building()) + 1);
 

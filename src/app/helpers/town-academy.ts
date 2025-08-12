@@ -18,8 +18,12 @@ import type { GameStat } from '@interfaces/stat';
 import type { AcademyEnchant } from '@interfaces/town';
 import { uniq } from 'es-toolkit/compat';
 
+export function academyMaxEnchantLevel(): number {
+  return townBuildingLevel('Academy');
+}
+
 export function academyCanEnchantSkill(item: EquipmentSkill): boolean {
-  return skillEnchantLevel(item) < townBuildingLevel('Academy');
+  return skillEnchantLevel(item) < academyMaxEnchantLevel();
 }
 export function academyNextSkillEnchants(
   skill: EquipmentSkill,
