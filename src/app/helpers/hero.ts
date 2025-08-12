@@ -1,5 +1,6 @@
 import { spriteGetFromIndex } from '@helpers/sprite';
 import { gamestate, updateGamestate } from '@helpers/state-game';
+import { talentTownStatTotalForAllHeroes } from '@helpers/talent';
 import { worldNodeGet, worldNodeGetCurrent } from '@helpers/world';
 import type {
   DropRarity,
@@ -120,10 +121,14 @@ export function heroRecoveryPercent(): string {
 }
 
 export function heroHealAll(amount: number): void {
+  const totalAmount =
+    amount * (1 + talentTownStatTotalForAllHeroes('healOverTimeBonus'));
+
   const heroes = allHeroes();
+
   heroes.forEach((hero) => {
     const maxHealth = hero.totalStats.Health;
-    const newHp = Math.min(hero.hp + amount, maxHealth);
+    const newHp = Math.min(hero.hp + totalAmount, maxHealth);
 
     hero.hp = newHp;
   });

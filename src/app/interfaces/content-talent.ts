@@ -14,6 +14,13 @@ export type TalentId = Branded<string, 'TalentId'>;
 
 export type TalentBoost = { talentId: TalentId; value: number };
 
+export type TalentTownStats = {
+  merchantFindItemBonus: number;
+  marketTradeBonusPercent: number;
+  breakdownCurrencyBonus: number;
+  healOverTimeBonus: number;
+};
+
 export type TalentContent = IsContentItem &
   Artable &
   HasDescription & {
@@ -29,18 +36,15 @@ export type TalentContent = IsContentItem &
     applyToAttributes: EquipmentSkillAttribute[];
 
     boostStats: StatBlock;
-
     boostedStatusEffectChance: number;
     boostedStatusEffectDuration: number;
     boostStatusEffectStats: StatBlock;
 
     additionalTargets: number;
-
     chanceToIgnoreConsume: number;
-
     applyStatusEffects: EquipmentSkillTechniqueStatusEffectApplication[];
-
     combatStats: CombatantCombatStats;
-
     addTechniques: EquipmentSkillContentTechnique[];
+
+    townStats: TalentTownStats;
   };

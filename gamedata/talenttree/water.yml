@@ -7,21 +7,21 @@
         - talentId: Strength of Healsprite I
         - talentId: Blank Talent
         - talentId: Blank Talent
-        - talentId: Blank Talent
+        - talentId: Curative Towns
 
     - level: 5
       learnableTalents:
         - talentId: Blank Talent
         - talentId: Healing Waters I
         - talentId: Tidal Resonance I
-        - talentId: Deep Freeze I
+        - talentId: Blank Talent
 
     - level: 10
       requiredTalentsInvested: 2
       learnableTalents:
         - talentId: Strength of Healsprite II
         - talentId: Blank Talent
-        - talentId: Blank Talent
+        - talentId: Deep Freeze I
         - talentId: Permeating Chill I
     - level: 15
       requiredTalentsInvested: 2
@@ -29,14 +29,14 @@
         - talentId: Blank Talent
         - talentId: Healing Waters II
         - talentId: Tidal Resonance II
-        - talentId: Deep Freeze II
+        - talentId: Blank Talent
 
     - level: 20
       requiredTalentsInvested: 4
       learnableTalents:
         - talentId: Strength of Healsprite III
         - talentId: Regenerative Chill
-        - talentId: Blank Talent
+        - talentId: Deep Freeze II
         - talentId: Permeating Chill II
 
     - level: 25

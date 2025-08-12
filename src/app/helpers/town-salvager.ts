@@ -1,5 +1,6 @@
 import { currencyGainMultiple } from '@helpers/currency';
 import { itemInventoryRemove } from '@helpers/inventory-equipment';
+import { talentTownStatTotalForAllHeroes } from '@helpers/talent';
 import { townBuildingLevel } from '@helpers/town';
 import type { GameCurrency } from '@interfaces/content-currency';
 import type { EquipmentItem } from '@interfaces/content-equipment';
@@ -9,7 +10,10 @@ export function salvagerItemsMax(): number {
 }
 
 export function salvagerCurrencyMultiplier(): number {
-  return Math.floor(townBuildingLevel('Salvager') / 2);
+  return (
+    Math.floor(townBuildingLevel('Salvager') / 2) +
+    talentTownStatTotalForAllHeroes('breakdownCurrencyBonus')
+  );
 }
 
 export function salvagerSalvageItems(items: EquipmentItem[]): void {

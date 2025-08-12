@@ -21,6 +21,7 @@ import type {
   TalentBoost,
   TalentContent,
   TalentId,
+  TalentTownStats,
   TalentTreeContent,
   TraitEquipmentContent,
   TraitEquipmentId,
@@ -231,6 +232,17 @@ function ensureTraitLocation(
   };
 }
 
+function ensureTalentTownStats(
+  townStats: Partial<TalentTownStats>,
+): Required<TalentTownStats> {
+  return {
+    merchantFindItemBonus: townStats.merchantFindItemBonus ?? 0,
+    marketTradeBonusPercent: townStats.marketTradeBonusPercent ?? 0,
+    breakdownCurrencyBonus: townStats.breakdownCurrencyBonus ?? 0,
+    healOverTimeBonus: townStats.healOverTimeBonus ?? 0,
+  };
+}
+
 function ensureTalent(talent: Partial<TalentContent>): Required<TalentContent> {
   return {
     id: talent.id ?? ('UNKNOWN' as TalentId),
@@ -264,6 +276,8 @@ function ensureTalent(talent: Partial<TalentContent>): Required<TalentContent> {
     combatStats: ensureCombatStats(talent.combatStats),
 
     addTechniques: (talent.addTechniques ?? []).map(ensureTechnique),
+
+    townStats: ensureTalentTownStats(talent.townStats ?? {}),
   };
 }
 

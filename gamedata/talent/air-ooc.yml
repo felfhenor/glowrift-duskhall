@@ -1,0 +1,7 @@
+- id: 5a77c4a2-21e4-4cce-891f-b283493f9a11
+  name: Winds of Trade
+  description: 'The Market gives +5% more currency on trade.'
+  sprite: '0039'
+
+  townStats:
+    marketTradeBonusPercent: 0.05

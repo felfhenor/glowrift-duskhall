@@ -1,7 +1,7 @@
 import { getEntry } from '@helpers/content';
 import { defaultCombatStats } from '@helpers/defaults';
 import { droppableGetBaseId } from '@helpers/droppable';
-import { heroUpdateData } from '@helpers/hero';
+import { allHeroes, heroUpdateData } from '@helpers/hero';
 import type { CombatantCombatStats } from '@interfaces/combat';
 import type {
   EquipmentSkill,
@@ -9,12 +9,27 @@ import type {
   EquipmentSkillTechniqueStatusEffectApplication,
 } from '@interfaces/content-skill';
 import type { StatusEffectContent } from '@interfaces/content-statuseffect';
-import type { TalentContent, TalentId } from '@interfaces/content-talent';
+import type {
+  TalentContent,
+  TalentId,
+  TalentTownStats,
+} from '@interfaces/content-talent';
 import type { TalentTreeContent } from '@interfaces/content-talenttree';
 import type { ElementBlock } from '@interfaces/element';
 import type { Hero } from '@interfaces/hero';
 import type { GameStat, StatBlock } from '@interfaces/stat';
-import { intersection, isNumber, isObject, sum, uniq } from 'es-toolkit/compat';
+import {
+  intersection,
+  isNumber,
+  isObject,
+  sum,
+  sumBy,
+  uniq,
+} from 'es-toolkit/compat';
+
+export function talentsForAllHeroes(): TalentContent[] {
+  return allHeroes().flatMap((t) => talentsForHero(t));
+}
 
 export function talentsForHero(hero: Hero): TalentContent[] {
   return Object.entries(hero.talents)
@@ -249,4 +264,17 @@ export function talentAddedTechniques(
   skill: EquipmentSkill,
 ): EquipmentSkillContentTechnique[] {
   return talentsForSkill(talents, skill).flatMap((t) => t.addTechniques);
+}
+
+function talentTownStatTotal(
+  talents: TalentContent[],
+  stat: keyof TalentTownStats,
+): number {
+  return sumBy(talents, (t) => t.townStats[stat] ?? 0);
+}
+
+export function talentTownStatTotalForAllHeroes(
+  stat: keyof TalentTownStats,
+): number {
+  return talentTownStatTotal(talentsForAllHeroes(), stat);
 }

@@ -7,6 +7,7 @@ import {
 import { currencyHasAmount, currencyLose } from '@helpers/currency';
 import { itemInventoryAdd } from '@helpers/inventory-equipment';
 import { updateGamestate } from '@helpers/state-game';
+import { talentTownStatTotalForAllHeroes } from '@helpers/talent';
 import { townBuildingLevel } from '@helpers/town';
 import type { EquipmentItem } from '@interfaces';
 
@@ -15,7 +16,11 @@ export function merchantMaxItems(): number {
 }
 
 export function merchantMaxItemLevel(): number {
-  return 5 + Math.floor(townBuildingLevel('Merchant') * 5);
+  return (
+    5 +
+    Math.floor(townBuildingLevel('Merchant') * 5) +
+    talentTownStatTotalForAllHeroes('merchantFindItemBonus')
+  );
 }
 
 function merchantItemGenerate(): EquipmentItem {

@@ -1,0 +1,7 @@
+- id: b4aa9e4e-af8d-4137-8e50-8bcb6b023f04
+  name: Treasure Hunter
+  description: 'The Merchant can find items +5 levels higher to sell.'
+  sprite: '0038'
+
+  townStats:
+    merchantFindItemBonus: 5

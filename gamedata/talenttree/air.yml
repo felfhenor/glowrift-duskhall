@@ -7,7 +7,7 @@
         - talentId: Strength of Thunderwave I
         - talentId: Blank Talent
         - talentId: Blank Talent
-        - talentId: Storm Caller I
+        - talentId: Winds of Trade
 
     - level: 5
       learnableTalents:
@@ -22,7 +22,7 @@
         - talentId: Strength of Thunderwave II
         - talentId: Disorienting Winds
         - talentId: Blank Talent
-        - talentId: Storm Caller II
+        - talentId: Storm Caller I
 
     - level: 15
       requiredTalentsInvested: 2
@@ -38,7 +38,7 @@
         - talentId: Strength of Thunderwave III
         - talentId: Blank Talent
         - talentId: Blank Talent
-        - talentId: Storm Caller III
+        - talentId: Storm Caller II
 
     - level: 25
       requiredTalentsInvested: 4
@@ -54,7 +54,7 @@
         - talentId: Blank Talent
         - talentId: Blank Talent
         - talentId: Blank Talent
-        - talentId: Blank Talent
+        - talentId: Storm Caller III
 
     - level: 35
       requiredTalentsInvested: 6

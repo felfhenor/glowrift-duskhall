@@ -1,5 +1,6 @@
 import { currencyGainMultiple } from '@helpers/currency';
 import { skillInventoryRemove } from '@helpers/inventory-skill';
+import { talentTownStatTotalForAllHeroes } from '@helpers/talent';
 import { townBuildingLevel } from '@helpers/town';
 import type { EquipmentSkill, GameCurrency } from '@interfaces';
 
@@ -8,7 +9,10 @@ export function alchemistSkillsMax() {
 }
 
 export function alchemistCurrencyMultiplier(): number {
-  return townBuildingLevel('Alchemist');
+  return (
+    townBuildingLevel('Alchemist') +
+    talentTownStatTotalForAllHeroes('breakdownCurrencyBonus')
+  );
 }
 
 export function alchemistSalvageSkills(items: EquipmentSkill[]): void {

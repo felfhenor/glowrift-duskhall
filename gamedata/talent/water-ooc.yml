@@ -1,0 +1,7 @@
+- id: b4107281-d9ed-41d4-9fef-609270720221
+  name: Curative Towns
+  description: 'When recovering health at a town, heal an additional +3 Health per tick.'
+  sprite: '0036'
+
+  townStats:
+    healOverTimeBonus: 3

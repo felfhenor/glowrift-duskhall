@@ -7,7 +7,7 @@
         - talentId: Strength of Earthspike I
         - talentId: Blank Talent
         - talentId: Blank Talent
-        - talentId: Earthquake
+        - talentId: Treasure Hunter
 
     - level: 5
       learnableTalents:
@@ -22,7 +22,7 @@
         - talentId: Strength of Earthspike II
         - talentId: Fortifying Spears
         - talentId: Blank Talent
-        - talentId: Earthly Endurance
+        - talentId: Earthquake
 
     - level: 15
       requiredTalentsInvested: 2
@@ -36,7 +36,7 @@
       requiredTalentsInvested: 4
       learnableTalents:
         - talentId: Strength of Earthspike III
-        - talentId: Blank Talent
+        - talentId: Earthly Endurance
         - talentId: Blank Talent
         - talentId: Resounding Endurance
 

@@ -1,0 +1,7 @@
+- id: 867c6d53-640e-4533-bd93-d1b92a207a1f
+  name: Fires of Deconstruction
+  description: 'The Salvager and Alchemist give +0.5x more currency when breaking down items or skills.'
+  sprite: '0037'
+
+  townStats:
+    breakdownCurrencyBonus: 0.5
