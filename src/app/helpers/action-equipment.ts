@@ -1,6 +1,6 @@
 import { currencyGain } from '@helpers/currency';
 import { itemInventoryRemove } from '@helpers/inventory-equipment';
-import { itemStat, itemTalents, itemTraits } from '@helpers/item';
+import { itemSkills, itemStat, itemTalents, itemTraits } from '@helpers/item';
 import { notifySuccess } from '@helpers/notify';
 import { townBuildingLevel } from '@helpers/town';
 import type {
@@ -25,7 +25,7 @@ export function actionItemSalvageValue(item: EquipmentItemContent): number {
     itemStat(item, 'Force') * 6 +
     itemStat(item, 'Health') * 2 +
     itemStat(item, 'Speed') * 10 +
-    item.skillIds.length * 500 +
+    itemSkills(item).length * 500 +
     sumBy(itemTalents(item), (t) => t.value) * 1000 +
     sumBy(itemTraits(item), (t) => traitRarityBaseValues[t.rarity])
   );
