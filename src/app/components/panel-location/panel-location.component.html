@@ -14,16 +14,8 @@
     </div>
 
     <div>
-      <div class="flex flex-row gap-2">
-        <div>
-          {{ locationData.name }}
-        </div>
-
-        @for (trait of traits(); track $index) {
-          <app-marker-location-trait
-            [trait]="trait"
-          ></app-marker-location-trait>
-        }
+      <div>
+        {{ locationData.name }}
       </div>
 
       <div class="italic text-sm font-normal">
@@ -36,8 +28,14 @@
     <app-button-close (click)="closeMenu()"></app-button-close>
   </div>
 
-  <div class="h-full flex flex-row">
-    <div class="h-full flex flex-2 flex-col gap-2 justify-between">
+  <div class="w-full flex flex-row justify-center mt-4 gap-2 min-h-[24px]">
+    @for (trait of traits(); track $index) {
+      <app-marker-location-trait [trait]="trait"></app-marker-location-trait>
+    }
+  </div>
+
+  <div class="flex flex-row">
+    <div class="flex flex-2 flex-col gap-2 justify-between">
       <div>
         <div class="my-1 text-lg">Guardians ({{ guardians().length }})</div>
 
