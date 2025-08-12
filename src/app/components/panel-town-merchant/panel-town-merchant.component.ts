@@ -48,13 +48,15 @@ export class PanelTownMerchantComponent {
   }
 
   public buyCurrentItem(): void {
-    if (!this.purchasingItem()) return;
+    const item = this.purchasingItem();
+    if (!item) return;
+
     if (!currencyHasAmount('Mana', this.purchaseCost())) {
       notifyError(`You do not have enough Mana to buy this item.`);
       return;
     }
 
-    merchantBuy(this.shopItems().indexOf(this.purchasingItem()!));
+    merchantBuy(item);
 
     this.purchasingItem.set(undefined);
   }

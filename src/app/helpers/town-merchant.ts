@@ -44,12 +44,7 @@ export function merchantResetTicks(): void {
   });
 }
 
-export function merchantBuy(itemSlot: number): void {
-  const item = gamestate().town.merchant.soldItems[itemSlot];
-  if (!item) {
-    return;
-  }
-
+export function merchantBuy(item: EquipmentItem): void {
   const cost = actionItemBuyValue(item);
   if (!currencyHasAmount('Mana', cost)) {
     return;
@@ -59,7 +54,10 @@ export function merchantBuy(itemSlot: number): void {
   itemInventoryAdd(item);
 
   updateGamestate((state) => {
-    state.town.merchant.soldItems[itemSlot] = undefined;
+    const index = state.town.merchant.soldItems.findIndex(
+      (i) => i?.id === item.id,
+    );
+    state.town.merchant.soldItems[index] = undefined;
     return state;
   });
 }
