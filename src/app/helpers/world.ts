@@ -218,6 +218,8 @@ export function worldNodeRewardsGain(node: WorldLocation): void {
 }
 
 export function worldNodeClaim(node: WorldLocation): void {
+  if (node.currentlyClaimed) return;
+
   const claims = currencyClaimsGetForNode(node);
   currencyClaimsMerge(claims);
 
