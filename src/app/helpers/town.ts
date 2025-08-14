@@ -5,7 +5,7 @@ import {
 } from '@helpers/currency';
 import { defaultCurrencyBlock, defaultNodeCountBlock } from '@helpers/defaults';
 import { gamestate, updateGamestate } from '@helpers/state-game';
-import { worldNodeHasClaimedCount } from '@helpers/world';
+import { locationHasClaimedCount } from '@helpers/world-location';
 import type {
   GameCurrency,
   LocationType,
@@ -149,7 +149,7 @@ export function townCanUpgradeBuildingLevel(building: TownBuilding): boolean {
     const numRequired = liberation[libType as LocationType] ?? 0;
     if (numRequired <= 0) return;
 
-    if (!worldNodeHasClaimedCount(libType as LocationType, numRequired)) {
+    if (!locationHasClaimedCount(libType as LocationType, numRequired)) {
       shouldUpgrade = false;
     }
   });

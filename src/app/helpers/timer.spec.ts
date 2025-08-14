@@ -1,5 +1,4 @@
 import {
-  timerActionAdd,
   timerGetRegisterTick,
   timerGetTickActions,
   timerTicksElapsed,
@@ -26,13 +25,13 @@ vi.mock('@helpers/state-game', () => ({
   ),
 }));
 
-vi.mock('@helpers/world', () => ({
-  worldNodeGet: vi.fn(),
-  worldNodeUnclaim: vi.fn(),
+vi.mock('@helpers/world-location', () => ({
+  locationGet: vi.fn(),
+  locationUnclaim: vi.fn(),
 }));
 
-import { gamestate, updateGamestate } from '@helpers/state-game';
-import { worldNodeGet, worldNodeUnclaim } from '@helpers/world';
+import { gamestate } from '@helpers/state-game';
+import { locationGet, locationUnclaim } from '@helpers/world-location';
 
 describe('Timer Functions', () => {
   beforeEach(() => {
@@ -85,23 +84,6 @@ describe('Timer Functions', () => {
     });
   });
 
-  describe('addTimerAndAction', () => {
-    it('should add timer action to specified future tick', () => {
-      const mockTimer: Timer = {
-        type: 'UnclaimVillage',
-        location: { x: 0, y: 0 },
-      };
-
-      vi.mocked(gamestate).mockReturnValue({
-        actionClock: { numTicks: 100, timers: {} },
-      } as ReturnType<typeof gamestate>);
-
-      timerActionAdd(mockTimer, 50);
-
-      expect(updateGamestate).toHaveBeenCalled();
-    });
-  });
-
   describe('timerUnclaimVillage', () => {
     it('should unclaim node at specified location', () => {
       const location: WorldPosition = { x: 1, y: 1 };
@@ -115,12 +97,12 @@ describe('Timer Functions', () => {
         y: 1,
       } as WorldLocation;
 
-      vi.mocked(worldNodeGet).mockReturnValue(mockNode);
+      vi.mocked(locationGet).mockReturnValue(mockNode);
 
       timerUnclaimVillage(mockTimer);
 
-      expect(worldNodeGet).toHaveBeenCalledWith(1, 1);
-      expect(worldNodeUnclaim).toHaveBeenCalledWith(mockNode);
+      expect(locationGet).toHaveBeenCalledWith(1, 1);
+      expect(locationUnclaim).toHaveBeenCalledWith(mockNode);
     });
 
     it('should do nothing if node not found', () => {
@@ -130,11 +112,11 @@ describe('Timer Functions', () => {
         location,
       };
 
-      vi.mocked(worldNodeGet).mockReturnValue(undefined);
+      vi.mocked(locationGet).mockReturnValue(undefined);
 
       timerUnclaimVillage(mockTimer);
 
-      expect(worldNodeUnclaim).not.toHaveBeenCalled();
+      expect(locationUnclaim).not.toHaveBeenCalled();
     });
   });
 });

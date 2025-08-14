@@ -10,6 +10,7 @@ import {
   blacksmithMaxEnchantLevel,
   currencyHasAmount,
   gamestate,
+  locationHasClaimedCount,
   marketCurrencyBonus,
   merchantMaxItemLevel,
   merchantMaxItems,
@@ -21,7 +22,6 @@ import {
   townBuildingUpgradeCost,
   townCanUpgradeBuildingLevel,
   townUpgradeBuildingLevel,
-  worldNodeHasClaimedCount,
 } from '@helpers';
 import type { GameCurrency, LocationType, TownBuilding } from '@interfaces';
 
@@ -92,7 +92,7 @@ export class PanelTownBuildingUpgradeComponent {
   public currentCurrencies = computed(() => gamestate().currency.currencies);
 
   public hasNodeClaim(type: LocationType, num: number) {
-    return worldNodeHasClaimedCount(type, num);
+    return locationHasClaimedCount(type, num);
   }
 
   public hasCurrency(type: GameCurrency, num: number) {

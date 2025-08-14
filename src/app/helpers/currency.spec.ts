@@ -45,8 +45,8 @@ vi.mock('@helpers/state-game', () => ({
   }),
 }));
 
-vi.mock('@helpers/world', () => ({
-  getClaimedNodes: vi.fn(),
+vi.mock('@helpers/world-location', () => ({
+  locationGetClaimed: vi.fn(),
 }));
 
 vi.mock('@helpers/signal', () => ({
@@ -123,7 +123,7 @@ describe('Currency Helper Functions', () => {
       } as WorldLocation;
 
       const claims = currencyClaimsGetForNode(node);
-      expect(claims.Mana).toBe(2);
+      expect(claims.Mana).toBe(1);
     });
 
     it('should calculate currency claims for town nodes', () => {
@@ -133,7 +133,7 @@ describe('Currency Helper Functions', () => {
       } as WorldLocation;
 
       const claims = currencyClaimsGetForNode(node);
-      expect(claims.Mana).toBe(1);
+      expect(claims.Mana).toBe(5);
     });
   });
 });

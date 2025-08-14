@@ -2,7 +2,7 @@ import { notify } from '@helpers/notify';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { isTraveling } from '@helpers/travel';
 import { globalStatusText } from '@helpers/ui';
-import { worldNodeGet, worldNodeGetCurrent } from '@helpers/world';
+import { locationGet, locationGetCurrent } from '@helpers/world-location';
 
 export function gameloopTravel(numTicks: number): void {
   if (!isTraveling()) return;
@@ -29,7 +29,7 @@ export function gameloopTravel(numTicks: number): void {
     return state;
   });
 
-  const travelingToNode = worldNodeGet(travel.x, travel.y);
+  const travelingToNode = locationGet(travel.x, travel.y);
   if (travelingToNode) {
     globalStatusText.set(
       `Traveling to ${travelingToNode.name || 'new destination'}... ${
@@ -39,7 +39,7 @@ export function gameloopTravel(numTicks: number): void {
   }
 
   if (didFinishTravel) {
-    const newNode = worldNodeGetCurrent();
+    const newNode = locationGetCurrent();
 
     notify(`Arrived at ${newNode?.name ?? 'destination'}!`, 'Travel');
     updateGamestate((state) => {

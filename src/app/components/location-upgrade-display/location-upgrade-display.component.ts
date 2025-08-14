@@ -7,7 +7,7 @@ import {
   locationUpgrade,
   locationUpgradeCosts,
   locationUpgradeLevel,
-} from '@helpers/world-location';
+} from '@helpers/world-location-upgrade';
 import type {
   LocationUpgradeContent,
   LocationUpgradeContentNumerics,

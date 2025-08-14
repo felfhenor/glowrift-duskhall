@@ -2,10 +2,10 @@ import {
   defaultAffinities,
   defaultCurrencyBlock,
   defaultHero,
+  defaultLocation,
   defaultNodeCountBlock,
   defaultPosition,
   defaultStats,
-  defaultWorldNode,
 } from '@helpers/defaults';
 import type {
   ElementBlock,
@@ -129,7 +129,7 @@ describe('Default Helpers', () => {
 
 describe('defaultWorldNode', () => {
   it('should create default world node with default coordinates', () => {
-    const node = defaultWorldNode();
+    const node = defaultLocation();
     const expected: WorldLocation = {
       id: 'mock-uuid',
       elements: [],
@@ -144,6 +144,7 @@ describe('defaultWorldNode', () => {
       claimLootIds: [],
       unclaimTime: 0,
       traitIds: [],
+      locationUpgrades: {},
     };
 
     expect(node).toEqual(expected);
@@ -152,7 +153,7 @@ describe('defaultWorldNode', () => {
   it('should create world node with provided coordinates', () => {
     const x = 5;
     const y = 10;
-    const node = defaultWorldNode(x, y);
+    const node = defaultLocation(x, y);
 
     expect(node.x).toBe(x);
     expect(node.y).toBe(y);

@@ -22,6 +22,7 @@ import {
   isTravelingToNode,
   locationAvailableUpgrades,
   locationEncounterLevel,
+  locationGet,
   locationLevel,
   locationLootLevel,
   locationMaxLevel,
@@ -31,7 +32,6 @@ import {
   travelIsAtNode,
   travelTimeFromCurrentLocationTo,
   travelToNode,
-  worldNodeGet,
 } from '@helpers';
 import type { TraitLocationContent } from '@interfaces';
 import {
@@ -68,9 +68,9 @@ export class PanelLocationComponent {
     const nodePosition = showLocationMenu();
     const worldCenter = gamestate().world.homeBase;
 
-    if (!nodePosition) return worldNodeGet(worldCenter.x, worldCenter.y);
+    if (!nodePosition) return locationGet(worldCenter.x, worldCenter.y);
 
-    return worldNodeGet(nodePosition?.x, nodePosition?.y);
+    return locationGet(nodePosition?.x, nodePosition?.y);
   });
 
   public objectSprite = computed(() =>

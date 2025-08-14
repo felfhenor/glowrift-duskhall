@@ -2,7 +2,7 @@ import { allHeroes } from '@helpers/hero';
 import { heroStats } from '@helpers/hero-stats';
 import { rngChoice, rngSeeded } from '@helpers/rng';
 import { updateGamestate } from '@helpers/state-game';
-import { worldNodeTooHardClear } from '@helpers/world';
+import { locationTooHardClear } from '@helpers/world-location';
 import type { Hero, StatBlock } from '@interfaces';
 import { clamp } from 'es-toolkit/compat';
 
@@ -32,7 +32,7 @@ function heroLevelUp(hero: Hero): void {
   hero.hp = hero.totalStats.Health;
 
   // Clear the "too hard" nodes list when any hero levels up
-  worldNodeTooHardClear();
+  locationTooHardClear();
 }
 
 export function heroAllGainXp(xp: number): void {

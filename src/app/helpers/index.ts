@@ -91,4 +91,5 @@ export * from './victory';
 export * from './world';
 export * from './world-change-notifications';
 export * from './world-location';
+export * from './world-location-upgrade';
 export * from './worldgen';

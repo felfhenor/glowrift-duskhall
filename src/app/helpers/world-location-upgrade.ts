@@ -1,0 +1,185 @@
+import { getEntriesByType, getEntry } from '@helpers/content';
+import {
+  currencyClaimsGetForNode,
+  currencyClaimsUpdate,
+  currencyLoseMultiple,
+} from '@helpers/currency';
+import { distanceBetweenNodes } from '@helpers/math';
+import { updateGamestate } from '@helpers/state-game';
+import {
+  timerAddUnclaimAction,
+  timerGetUnclaimActionForLocation,
+  timerRemoveActionById,
+} from '@helpers/timer';
+import { townBuildingLevel, townHasUpgrade } from '@helpers/town';
+import { worldNodeGetAccessId } from '@helpers/world';
+import { worldNotifyUpdated } from '@helpers/world-change-notifications';
+import { locationGetClaimed } from '@helpers/world-location';
+import type { CurrencyBlock, GameCurrency } from '@interfaces/content-currency';
+import type {
+  LocationUpgradeContent,
+  LocationUpgradeContentNumerics,
+  LocationUpgradeId,
+} from '@interfaces/content-locationupgrade';
+import type { TownUpgradeContent } from '@interfaces/content-townupgrade';
+import type { WorldLocation } from '@interfaces/world';
+import { sortBy, sum, sumBy, uniq } from 'es-toolkit/compat';
+
+export function locationEncounterLevel(location: WorldLocation): number {
+  return location.encounterLevel;
+}
+
+export function locationLootLevel(location: WorldLocation): number {
+  return (
+    location.encounterLevel +
+    locationUpgradeStatTotal(location, 'boostedLootLevelPerLevel')
+  );
+}
+
+export function locationMaxLevel(): number {
+  return townBuildingLevel('Rally Point');
+}
+
+export function locationLevel(location: WorldLocation): number {
+  return sum(Object.values(location.locationUpgrades ?? {}));
+}
+
+export function locationUpgradeLevel(
+  location: WorldLocation,
+  upgrade: LocationUpgradeContent,
+): number {
+  return location.locationUpgrades?.[upgrade.id] ?? 0;
+}
+
+export function locationCanUpgrade(
+  location: WorldLocation,
+  upgrade: LocationUpgradeContent,
+): boolean {
+  const townUpgrade = getEntry<TownUpgradeContent>(
+    upgrade.requiresTownUpgradeId,
+  );
+  if (!townUpgrade) return false;
+
+  return (
+    townHasUpgrade(townUpgrade) &&
+    locationLevel(location) < townBuildingLevel('Rally Point')
+  );
+}
+
+export function locationAvailableUpgrades(
+  location: WorldLocation,
+): LocationUpgradeContent[] {
+  const nodeType = location.nodeType;
+  if (!nodeType) return [];
+
+  return getEntriesByType<LocationUpgradeContent>('locationupgrade').filter(
+    (upgrade) => {
+      if (location.unclaimTime <= 0 && upgrade.boostedUnclaimableCount)
+        return false;
+
+      return (
+        upgrade.appliesToTypes.includes(nodeType) &&
+        townHasUpgrade(
+          getEntry<TownUpgradeContent>(upgrade.requiresTownUpgradeId)!,
+        )
+      );
+    },
+  );
+}
+
+export function locationUpgradeCostScalar(
+  location: WorldLocation,
+  upgrade: LocationUpgradeContent,
+): number {
+  return (
+    upgrade.costScalePerTile *
+    (1 +
+      sortBy(
+        locationGetClaimed()
+          .filter((n) => n.nodeType === 'town')
+          .map((node) => distanceBetweenNodes(node, location)),
+      )[0])
+  );
+}
+
+export function locationUpgradeCosts(
+  location: WorldLocation,
+  upgrade: LocationUpgradeContent,
+): CurrencyBlock {
+  const baseScalar = locationUpgradeCostScalar(location, upgrade);
+  const generatedResources = currencyClaimsGetForNode(location);
+
+  const usedCurrencies: GameCurrency[] = uniq([
+    'Mana',
+    'Soul Essence',
+    'Common Dust',
+    'Uncommon Dust',
+    'Rare Dust',
+    'Mystical Dust',
+    'Legendary Dust',
+    ...(Object.keys(generatedResources).filter(
+      (k) => generatedResources[k as GameCurrency] > 0,
+    ) as GameCurrency[]),
+  ]);
+
+  return usedCurrencies.reduce((acc, currency) => {
+    const value = upgrade.baseCost[currency]
+      ? (generatedResources[currency] ?? 0) + upgrade.baseCost[currency]
+      : 0;
+
+    if (value === 0) return acc;
+
+    acc[currency] = baseScalar * value;
+    return acc;
+  }, {} as CurrencyBlock);
+}
+
+export function locationUpgrade(
+  location: WorldLocation,
+  upgrade: LocationUpgradeContent,
+): void {
+  location.locationUpgrades ??= {};
+  location.locationUpgrades[upgrade.id] =
+    (location.locationUpgrades[upgrade.id] ?? 0) + 1;
+
+  const costs = locationUpgradeCosts(location, upgrade);
+  currencyLoseMultiple(costs);
+
+  if (upgrade.boostedUnclaimableCount) {
+    location.unclaimTime = -1;
+  }
+
+  if (upgrade.boostedProductionValuePercentPerLevel) {
+    currencyClaimsUpdate();
+  }
+
+  if (upgrade.boostedTicksPerLevel) {
+    const oldTimer = timerGetUnclaimActionForLocation(location);
+    if (oldTimer) {
+      timerRemoveActionById(oldTimer.id, oldTimer.tick);
+    }
+
+    location.unclaimTime += upgrade.boostedTicksPerLevel;
+
+    timerAddUnclaimAction(location, location.unclaimTime);
+  }
+
+  worldNotifyUpdated(location);
+
+  updateGamestate((state) => {
+    state.world.nodes[worldNodeGetAccessId(location)] = location;
+    return state;
+  });
+}
+
+export function locationUpgradeStatTotal(
+  location: WorldLocation,
+  key: keyof LocationUpgradeContentNumerics,
+): number {
+  return sumBy(
+    Object.keys(location.locationUpgrades ?? {}),
+    (upgKey) =>
+      (location.locationUpgrades[upgKey as LocationUpgradeId] ?? 0) *
+      (getEntry<LocationUpgradeContent>(upgKey)?.[key] ?? 0),
+  );
+}

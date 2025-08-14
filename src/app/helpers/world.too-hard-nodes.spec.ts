@@ -1,5 +1,5 @@
 import { combatHandleDefeat } from '@helpers/combat-end';
-import { worldGetNodesMatchingPreferences } from '@helpers/world';
+import { locationGetAllMatchingPreferences } from '@helpers/world-location';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type {
@@ -241,7 +241,10 @@ describe('Too Hard Nodes Feature', () => {
       } as unknown as GameState);
 
       const availableNodes = [validNode, tooHardNode, highLevelNode];
-      const result = worldGetNodesMatchingPreferences(baseNode, availableNodes);
+      const result = locationGetAllMatchingPreferences(
+        baseNode,
+        availableNodes,
+      );
 
       // Should include both validNode and tooHardNode, but exclude highLevelNode (too high level)
       expect(result).toContain(validNode);
@@ -305,7 +308,10 @@ describe('Too Hard Nodes Feature', () => {
       } as unknown as GameState);
 
       const availableNodes = [validNode];
-      const result = worldGetNodesMatchingPreferences(baseNode, availableNodes);
+      const result = locationGetAllMatchingPreferences(
+        baseNode,
+        availableNodes,
+      );
 
       expect(result).toContain(validNode);
       expect(result).toHaveLength(1);
@@ -409,7 +415,10 @@ describe('Too Hard Nodes Feature', () => {
       } as unknown as GameState);
 
       const availableNodes = [tooHardNode1, goodNode1, tooHardNode2, goodNode2];
-      const result = worldGetNodesMatchingPreferences(baseNode, availableNodes);
+      const result = locationGetAllMatchingPreferences(
+        baseNode,
+        availableNodes,
+      );
 
       // Should include all 4 nodes
       expect(result).toHaveLength(4);

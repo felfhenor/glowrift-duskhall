@@ -1,5 +1,5 @@
-import { worldNodeGetHighestLootRarity } from '@helpers/world';
-import { locationLevel } from '@helpers/world-location';
+import { locationGetHighestLootRarity } from '@helpers/world-location';
+import { locationLevel } from '@helpers/world-location-upgrade';
 import type { WorldLocation } from '@interfaces';
 import type { DropRarity } from '@interfaces/droppable';
 import type { NodeSpriteData } from '@interfaces/sprite';
@@ -33,7 +33,7 @@ export function pixiIndicatorNodeLevelCreate(
   const pixelX = x * 64;
   const pixelY = y * 64;
 
-  const highestRarity = worldNodeGetHighestLootRarity(location);
+  const highestRarity = locationGetHighestLootRarity(location);
   const color = highestRarity ? RARITY_COLORS[highestRarity] : 0xffffff; // Default to white
 
   const levelText = new Text({

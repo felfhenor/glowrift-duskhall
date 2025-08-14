@@ -11,12 +11,12 @@ import { allHeroes, heroUpdateData } from '@helpers/hero';
 import { heroAllGainXp } from '@helpers/hero-xp';
 import { locationTraitCurrencySpecialModifier } from '@helpers/trait-location-currency';
 import { travelHome } from '@helpers/travel';
+import { worldNodeGetAccessId } from '@helpers/world';
 import {
-  worldNodeAddTooHard,
-  worldNodeGet,
-  worldNodeGetAccessId,
-  worldNodeRewardsGain,
-} from '@helpers/world';
+  locationAddTooHard,
+  locationGet,
+  locationRewardsGain,
+} from '@helpers/world-location';
 import type {
   Combat,
   Combatant,
@@ -61,7 +61,7 @@ function handleCombatVictory(combat: Combat): void {
   // Update hero health after combat
   updateHeroHealthAfterCombat(combat);
 
-  const currentNode = worldNodeGet(
+  const currentNode = locationGet(
     combat.locationPosition.x,
     combat.locationPosition.y,
   );
@@ -90,7 +90,7 @@ function handleCombatVictory(combat: Combat): void {
     currencyGain('Soul Essence', soulEssenceGained);
     combatMessageLog(combat, `You gained ${soulEssenceGained} Soul Essence!`);
 
-    worldNodeRewardsGain(currentNode);
+    locationRewardsGain(currentNode);
 
     currentNode.claimLootIds.forEach((lootDefId) => {
       const lootDef = getEntry<DroppableEquippable>(lootDefId);
@@ -117,7 +117,7 @@ export function combatHandleDefeat(combat: Combat): void {
 
   // Track this node as too hard for now
   const currentNodeId = worldNodeGetAccessId(combat.locationPosition);
-  worldNodeAddTooHard(currentNodeId);
+  locationAddTooHard(currentNodeId);
 
   travelHome();
 }

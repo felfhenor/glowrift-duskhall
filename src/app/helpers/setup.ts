@@ -7,7 +7,7 @@ import { droppableMakeReal } from '@helpers/droppable';
 import { allHeroes } from '@helpers/hero';
 import { skillEquip } from '@helpers/inventory-skill';
 import { gamestate, updateGamestate } from '@helpers/state-game';
-import { worldNodeGet } from '@helpers/world';
+import { locationGet } from '@helpers/world-location';
 import type { EquipmentSkill } from '@interfaces/content-skill';
 
 export function isSetup(): boolean {
@@ -35,7 +35,7 @@ export function setupFinish(): void {
   });
 
   const homeBase = gamestate().world.homeBase;
-  const laflotte = worldNodeGet(homeBase.x, homeBase.y);
+  const laflotte = locationGet(homeBase.x, homeBase.y);
   if (!laflotte) return;
 
   const claims = currencyClaimsGetForNode(laflotte);

@@ -1,4 +1,4 @@
-import { worldGetNearestTown } from '@helpers/world';
+import { locationGetNearestTown } from '@helpers/world-location';
 import type { WorldLocation } from '@interfaces';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -69,7 +69,7 @@ describe('World Functions', () => {
       } as ReturnType<typeof gamestate>);
 
       // Position at (3, 0) should be closest to Town C at (5, 0)
-      const result = worldGetNearestTown({ x: 3, y: 0 });
+      const result = locationGetNearestTown({ x: 3, y: 0 });
       expect(result).toEqual(towns[2]);
     });
 
@@ -93,7 +93,7 @@ describe('World Functions', () => {
         },
       } as ReturnType<typeof gamestate>);
 
-      const result = worldGetNearestTown({ x: 0, y: 0 });
+      const result = locationGetNearestTown({ x: 0, y: 0 });
       expect(result).toBeUndefined();
     });
 
@@ -116,7 +116,7 @@ describe('World Functions', () => {
         },
       } as ReturnType<typeof gamestate>);
 
-      const result = worldGetNearestTown({ x: 0, y: 0 });
+      const result = locationGetNearestTown({ x: 0, y: 0 });
       expect(result).toEqual(town);
     });
 
@@ -152,7 +152,7 @@ describe('World Functions', () => {
       } as ReturnType<typeof gamestate>);
 
       // Both towns are distance 1 from origin, should return the first one found
-      const result = worldGetNearestTown({ x: 0, y: 0 });
+      const result = locationGetNearestTown({ x: 0, y: 0 });
       expect([towns[0], towns[1]]).toContain(result);
     });
   });

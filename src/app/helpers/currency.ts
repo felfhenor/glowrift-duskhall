@@ -3,8 +3,8 @@ import { defaultCurrencyBlock } from '@helpers/defaults';
 import { festivalProductionMultiplier } from '@helpers/festival-production';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { locationTraitCurrencyAllGenerateModifiers } from '@helpers/trait-location-currency';
-import { worldGetClaimedNodes } from '@helpers/world';
-import { locationUpgradeStatTotal } from '@helpers/world-location';
+import { locationGetClaimed } from '@helpers/world-location';
+import { locationUpgradeStatTotal } from '@helpers/world-location-upgrade';
 import type {
   CurrencyBlock,
   CurrencyContent,
@@ -128,7 +128,7 @@ export function currencyClaimsGetForNode(node: WorldLocation): CurrencyBlock {
 
 export function currencyClaimsGetUpdated(): CurrencyBlock {
   const base = defaultCurrencyBlock();
-  const allClaimed = worldGetClaimedNodes();
+  const allClaimed = locationGetClaimed();
 
   allClaimed.forEach((node) => {
     const claims = currencyClaimsGetForNode(node);

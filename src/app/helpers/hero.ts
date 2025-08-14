@@ -1,7 +1,7 @@
 import { spriteGetFromIndex } from '@helpers/sprite';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { talentTownStatTotalForAllHeroes } from '@helpers/talent';
-import { worldNodeGet, worldNodeGetCurrent } from '@helpers/world';
+import { locationGet, locationGetCurrent } from '@helpers/world-location';
 import type {
   DropRarity,
   Hero,
@@ -51,7 +51,7 @@ export function heroPositionGet(): WorldPosition {
 }
 
 export function heroPositionSet(x: number, y: number): void {
-  const node = worldNodeGet(x, y);
+  const node = locationGet(x, y);
 
   updateGamestate((state) => {
     state.hero.position.nodeId = node?.id ?? '';
@@ -106,7 +106,7 @@ export function heroAreAllDead(): boolean {
 }
 
 export function heroRecoveringInTown(): boolean {
-  if (worldNodeGetCurrent()?.nodeType !== 'town') return false;
+  if (locationGetCurrent()?.nodeType !== 'town') return false;
 
   const heroes = allHeroes();
   return heroes.some((hero) => hero.hp < hero.totalStats.Health);

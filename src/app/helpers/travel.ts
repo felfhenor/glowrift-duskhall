@@ -5,7 +5,7 @@ import { distanceBetweenNodes } from '@helpers/math';
 import { notify } from '@helpers/notify';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { locationTraitExplorationMultiplier } from '@helpers/trait-location-exploration';
-import { worldGetNearestTown } from '@helpers/world';
+import { locationGetNearestTown } from '@helpers/world-location';
 import type { WorldLocation, WorldPosition } from '@interfaces';
 
 export function isTraveling() {
@@ -58,7 +58,7 @@ export function isTravelingToNode(node: WorldLocation): boolean {
 
 export function travelHome(): void {
   const currentPosition = gamestate().hero.position;
-  const nearestTown = worldGetNearestTown(currentPosition);
+  const nearestTown = locationGetNearestTown(currentPosition);
 
   if (!nearestTown) {
     error('No towns found in the world.');

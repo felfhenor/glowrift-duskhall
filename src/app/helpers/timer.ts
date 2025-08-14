@@ -1,6 +1,6 @@
 import { rngUuid } from '@helpers/rng';
 import { gamestate, updateGamestate } from '@helpers/state-game';
-import { worldNodeGet, worldNodeUnclaim } from '@helpers/world';
+import { locationGet, locationUnclaim } from '@helpers/world-location';
 import type {
   Timer,
   TimerAction,
@@ -89,12 +89,12 @@ function timerActionDoSingular(action: Timer) {
 }
 
 export function timerUnclaimVillage(action: TimerUnclaimVillage): void {
-  const node = worldNodeGet(action.location.x, action.location.y);
+  const node = locationGet(action.location.x, action.location.y);
   if (!node) return;
 
   if (node.unclaimTime === -1) {
     updateGamestate((state) => {
-      const updateNodeData = worldNodeGet(node.x, node.y, state);
+      const updateNodeData = locationGet(node.x, node.y, state);
       if (updateNodeData) {
         updateNodeData.unclaimTime = 0;
       }
@@ -104,7 +104,7 @@ export function timerUnclaimVillage(action: TimerUnclaimVillage): void {
     return;
   }
 
-  worldNodeUnclaim(node);
+  locationUnclaim(node);
 }
 
 export function timerAddUnclaimAction(
@@ -149,11 +149,3 @@ export function timerRemoveActionById(id: TimerId, tick: number): void {
     return state;
   });
 }
-
-/*
-export function getTimerUnclaimForLocation(location: WorldLocation): TimerUnclaimVillage | undefined {
-  const tickPosition =
-  const timers = timerGetTickActions(timerTicksElapsed());
-  return timers.find((timer) => timer.type === 'UnclaimVillage' && timer.location === location);
-}
-*/

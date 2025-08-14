@@ -11,7 +11,7 @@ import {
   skillAllDefinitions,
   skillPickRandomDefinitionByRarity,
 } from '@helpers/creator-skill';
-import { defaultNodeCountBlock, defaultWorldNode } from '@helpers/defaults';
+import { defaultLocation, defaultNodeCountBlock } from '@helpers/defaults';
 import { guardianCreateForLocation } from '@helpers/guardian';
 import { angleBetweenPoints, distanceBetweenNodes } from '@helpers/math';
 import { Quadtree } from '@helpers/quadtree';
@@ -35,7 +35,7 @@ import { worldNodeGetAccessId } from '@helpers/world';
 import {
   locationEncounterLevel,
   locationLootLevel,
-} from '@helpers/world-location';
+} from '@helpers/world-location-upgrade';
 import type {
   DropRarity,
   QuadtreePoint,
@@ -89,7 +89,7 @@ function fillEmptySpaceWithEmptyNodes(
       if (nodes[`${x},${y}`]) continue;
 
       nodes[`${x},${y}`] = {
-        ...defaultWorldNode(x, y),
+        ...defaultLocation(x, y),
       };
     }
   }
@@ -368,7 +368,7 @@ function addCornerNodes(
 
         // Create the node
         const cornerNode: WorldLocation = {
-          ...defaultWorldNode(),
+          ...defaultLocation(),
           id: rngUuid(),
           x: position.x,
           y: position.y,
@@ -420,7 +420,7 @@ export async function worldgenGenerateWorld(
   };
 
   const firstTown: WorldLocation = {
-    ...defaultWorldNode(),
+    ...defaultLocation(),
     id: rngUuid(),
     x: Math.floor(config.width / 2),
     y: Math.floor(config.height / 2),
@@ -526,7 +526,7 @@ export async function worldgenGenerateWorld(
         .fill(undefined)
         .map((_, i) => {
           const node: WorldLocation = {
-            ...defaultWorldNode(),
+            ...defaultLocation(),
             id: rngUuid(),
             x: -1,
             y: -1,
@@ -567,7 +567,7 @@ export async function worldgenGenerateWorld(
         .fill(nodeType)
         .map((nodeType, i) => {
           const node: WorldLocation = {
-            ...defaultWorldNode(),
+            ...defaultLocation(),
             id: rngUuid(),
             x: -1,
             y: -1,

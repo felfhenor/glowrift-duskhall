@@ -7,11 +7,11 @@ import {
 import { isTraveling, travelToNode } from '@helpers/travel';
 import { globalStatusText } from '@helpers/ui';
 import {
-  worldGetClosestUnclaimedClaimableNode,
-  worldGetNodesMatchingPreferences,
-  worldNodeGetCurrent,
-  worldNodeGetInOrderOfCloseness,
-} from '@helpers/world';
+  locationGetAllMatchingPreferences,
+  locationGetClosestUnclaimedClaimableLocation,
+  locationGetCurrent,
+  locationGetInOrderOfCloseness,
+} from '@helpers/world-location';
 
 export function gameloopAutoTravel(): void {
   if (isExploring()) return;
@@ -28,11 +28,11 @@ export function gameloopAutoTravel(): void {
     return;
   }
 
-  const currentNode = worldNodeGetCurrent();
+  const currentNode = locationGetCurrent();
   if (currentNode) {
-    const anyUnclaimedNode = worldGetClosestUnclaimedClaimableNode(
+    const anyUnclaimedNode = locationGetClosestUnclaimedClaimableLocation(
       currentNode,
-      worldNodeGetInOrderOfCloseness(currentNode),
+      locationGetInOrderOfCloseness(currentNode),
     );
     if (!anyUnclaimedNode) {
       globalStatusText.set('No unclaimed nodes available; idle.');
@@ -40,8 +40,8 @@ export function gameloopAutoTravel(): void {
     }
 
     const nodesWithinRiskTolerance =
-      worldGetNodesMatchingPreferences(currentNode);
-    const nextNode = worldGetClosestUnclaimedClaimableNode(
+      locationGetAllMatchingPreferences(currentNode);
+    const nextNode = locationGetClosestUnclaimedClaimableLocation(
       currentNode,
       nodesWithinRiskTolerance,
     );

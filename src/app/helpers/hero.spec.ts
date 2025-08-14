@@ -16,8 +16,8 @@ vi.mock('@helpers/sprite', () => ({
   ),
 }));
 
-vi.mock('@helpers/world', () => ({
-  worldNodeGet: vi.fn(),
+vi.mock('@helpers/world-location', () => ({
+  locationGet: vi.fn(),
 }));
 
 vi.mock('@helpers/state-game', () => ({
@@ -28,7 +28,7 @@ vi.mock('@helpers/state-game', () => ({
 }));
 
 import { gamestate, updateGamestate } from '@helpers/state-game';
-import { worldNodeGet } from '@helpers/world';
+import { locationGet } from '@helpers/world-location';
 
 describe('Hero Helper Functions', () => {
   const mockHero: Hero = {
@@ -106,16 +106,16 @@ describe('Hero Helper Functions', () => {
   describe('setHeroPosition', () => {
     it('should update hero position', () => {
       const mockNode = { id: 'node-1' };
-      vi.mocked(worldNodeGet).mockReturnValue(mockNode as WorldLocation);
+      vi.mocked(locationGet).mockReturnValue(mockNode as WorldLocation);
 
       heroPositionSet(10, 20);
 
       expect(updateGamestate).toHaveBeenCalled();
-      expect(worldNodeGet).toHaveBeenCalledWith(10, 20);
+      expect(locationGet).toHaveBeenCalledWith(10, 20);
     });
 
     it('should handle missing node', () => {
-      vi.mocked(worldNodeGet).mockReturnValue(undefined);
+      vi.mocked(locationGet).mockReturnValue(undefined);
 
       heroPositionSet(10, 20);
 

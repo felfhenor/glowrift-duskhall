@@ -1,6 +1,6 @@
 import { getEntriesByType, getEntry } from '@helpers/content';
 import { droppableGain, droppableMakeReal } from '@helpers/droppable';
-import { worldNodeClaim, worldNodeGetAll } from '@helpers/world';
+import { locationClaim, locationGetAll } from '@helpers/world-location';
 import type { EquipmentItem } from '@interfaces/content-equipment';
 import type { EquipmentSkillContent } from '@interfaces/content-skill';
 import type { DroppableEquippable } from '@interfaces/droppable';
@@ -35,5 +35,5 @@ export function debugItemGainEvery(): void {
 }
 
 export function debugClaimAllNodes(): void {
-  worldNodeGetAll().forEach(worldNodeClaim);
+  locationGetAll().forEach(locationClaim);
 }

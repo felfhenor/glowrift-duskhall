@@ -166,7 +166,7 @@ export function defaultLootRarityPreferences(): Record<DropRarity, boolean> {
   };
 }
 
-export function defaultWorldNode(x = -1, y = -1): WorldLocation {
+export function defaultLocation(x = -1, y = -1): WorldLocation {
   return {
     id: rngUuid(),
     elements: [],

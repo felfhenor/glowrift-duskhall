@@ -8,12 +8,15 @@ import { combatHasGuardiansAlive } from '@helpers/combat-end';
 import { exploringUpdateGlobalStatusText } from '@helpers/explore';
 import { updateGamestate } from '@helpers/state-game';
 import { isTraveling } from '@helpers/travel';
-import { worldNodeGetCurrent, worldNodeRewardsGain } from '@helpers/world';
+import {
+  locationGetCurrent,
+  locationRewardsGain,
+} from '@helpers/world-location';
 
 export function gameloopExplore(numTicks: number): void {
   if (isTraveling()) return;
 
-  const node = worldNodeGetCurrent();
+  const node = locationGetCurrent();
   if (!node) return;
   if (node.currentlyClaimed) return;
 
@@ -25,7 +28,7 @@ export function gameloopExplore(numTicks: number): void {
   if (!currentCombat()) {
     // claim a node if there are no guardians to defend it
     if (node.guardianIds.length === 0) {
-      worldNodeRewardsGain(node);
+      locationRewardsGain(node);
       return;
     }
 

@@ -18,7 +18,7 @@ import {
 } from '@helpers/state-game';
 import { getOption, setOption } from '@helpers/state-options';
 import { victoryClaim, victoryHasWonForFirstTime } from '@helpers/victory';
-import { worldNodeAreAllClaimed } from '@helpers/world';
+import { locationAreAllClaimed } from '@helpers/world-location';
 
 export const isGameloopPaused = computed(() => getOption('gameloopPaused'));
 
@@ -31,7 +31,7 @@ export function gameloop(totalTicks: number): void {
   if (!isGameStateReady()) return;
   if (isGameloopPaused()) return;
 
-  if (worldNodeAreAllClaimed() && !victoryHasWonForFirstTime()) {
+  if (locationAreAllClaimed() && !victoryHasWonForFirstTime()) {
     victoryClaim();
     setOption('gameloopPaused', true);
     return;
