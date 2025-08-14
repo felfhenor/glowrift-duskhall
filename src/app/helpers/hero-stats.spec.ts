@@ -24,6 +24,11 @@ vi.mock('@helpers/item', () => ({
   itemStat: vi.fn(),
 }));
 
+vi.mock('@helpers/defaults', () => ({
+  defaultStats: vi.fn(),
+}));
+
+import { defaultStats } from '@helpers/defaults';
 import { heroGet, heroUpdateData } from '@helpers/hero';
 import { itemStat } from '@helpers/item';
 
@@ -79,19 +84,33 @@ describe('Hero Stats Functions', () => {
       const equipment: EquipmentBlock = {
         weapon: {
           id: 'weapon-1' as EquipmentItemId,
+          name: 'weapon-1',
           __type: 'weapon',
-          baseStats: {},
+          baseStats: defaultStats(),
           rarity: 'Common',
           dropLevel: 1,
           sprite: '',
+          elementMultipliers: [],
+          traitIds: [],
+          talentBoosts: [],
+          skillIds: [],
+          enchantLevel: 0,
+          unableToUpgrade: [],
         },
         armor: {
           id: 'armor-1' as EquipmentItemId,
+          name: 'armor-1',
           __type: 'armor',
-          baseStats: {},
+          baseStats: defaultStats(),
           rarity: 'Common',
           dropLevel: 1,
           sprite: '',
+          elementMultipliers: [],
+          traitIds: [],
+          talentBoosts: [],
+          skillIds: [],
+          enchantLevel: 0,
+          unableToUpgrade: [],
         },
         accessory: undefined,
         trinket: undefined,
@@ -114,11 +133,18 @@ describe('Hero Stats Functions', () => {
       testHero.equipment = {
         weapon: {
           id: 'weapon-1' as EquipmentItemId,
+          name: 'weapon-1',
           __type: 'weapon',
-          baseStats: {},
+          baseStats: defaultStats(),
           rarity: 'Common',
           dropLevel: 1,
           sprite: '',
+          elementMultipliers: [],
+          traitIds: [],
+          talentBoosts: [],
+          skillIds: [],
+          enchantLevel: 0,
+          unableToUpgrade: [],
         },
         armor: undefined,
         accessory: undefined,
@@ -136,19 +162,33 @@ describe('Hero Stats Functions', () => {
       testHero.equipment = {
         weapon: {
           id: 'weapon-1' as EquipmentItemId,
+          name: 'weapon-1',
           __type: 'weapon',
-          baseStats: {},
+          baseStats: defaultStats(),
           rarity: 'Common',
           dropLevel: 1,
           sprite: '',
+          elementMultipliers: [],
+          traitIds: [],
+          talentBoosts: [],
+          skillIds: [],
+          enchantLevel: 0,
+          unableToUpgrade: [],
         },
         armor: {
           id: 'armor-1' as EquipmentItemId,
+          name: 'armor-1',
           __type: 'armor',
-          baseStats: {},
+          baseStats: defaultStats(),
           rarity: 'Common',
           dropLevel: 1,
           sprite: '',
+          elementMultipliers: [],
+          traitIds: [],
+          talentBoosts: [],
+          skillIds: [],
+          enchantLevel: 0,
+          unableToUpgrade: [],
         },
         accessory: undefined,
         trinket: undefined,

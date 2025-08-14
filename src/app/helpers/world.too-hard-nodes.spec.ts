@@ -174,6 +174,7 @@ describe('Too Hard Nodes Feature', () => {
         claimLootIds: [],
         unclaimTime: 0,
         traitIds: [],
+        locationUpgrades: {},
       };
 
       const validNode: WorldLocation = {
@@ -190,6 +191,7 @@ describe('Too Hard Nodes Feature', () => {
         claimLootIds: [],
         unclaimTime: 0,
         traitIds: [],
+        locationUpgrades: {},
       };
 
       const tooHardNode: WorldLocation = {
@@ -206,6 +208,7 @@ describe('Too Hard Nodes Feature', () => {
         claimLootIds: [],
         unclaimTime: 0,
         traitIds: [],
+        locationUpgrades: {},
       };
 
       const highLevelNode: WorldLocation = {
@@ -222,6 +225,7 @@ describe('Too Hard Nodes Feature', () => {
         claimLootIds: [],
         unclaimTime: 0,
         traitIds: [],
+        locationUpgrades: {},
       };
 
       vi.mocked(gamestate).mockReturnValue({
@@ -273,6 +277,7 @@ describe('Too Hard Nodes Feature', () => {
         claimLootIds: [],
         unclaimTime: 0,
         traitIds: [],
+        locationUpgrades: {},
       };
 
       const validNode: WorldLocation = {
@@ -289,6 +294,7 @@ describe('Too Hard Nodes Feature', () => {
         claimLootIds: [],
         unclaimTime: 0,
         traitIds: [],
+        locationUpgrades: {},
       };
 
       vi.mocked(gamestate).mockReturnValue({
@@ -332,6 +338,7 @@ describe('Too Hard Nodes Feature', () => {
         claimLootIds: [],
         unclaimTime: 0,
         traitIds: [],
+        locationUpgrades: {},
       };
 
       const goodNode1: WorldLocation = {
@@ -348,6 +355,7 @@ describe('Too Hard Nodes Feature', () => {
         claimLootIds: [],
         unclaimTime: 0,
         traitIds: [],
+        locationUpgrades: {},
       };
 
       const goodNode2: WorldLocation = {
@@ -364,6 +372,7 @@ describe('Too Hard Nodes Feature', () => {
         claimLootIds: [],
         unclaimTime: 0,
         traitIds: [],
+        locationUpgrades: {},
       };
 
       const tooHardNode1: WorldLocation = {
@@ -380,6 +389,7 @@ describe('Too Hard Nodes Feature', () => {
         claimLootIds: [],
         unclaimTime: 0,
         traitIds: [],
+        locationUpgrades: {},
       };
 
       const tooHardNode2: WorldLocation = {
@@ -396,6 +406,7 @@ describe('Too Hard Nodes Feature', () => {
         claimLootIds: [],
         unclaimTime: 0,
         traitIds: [],
+        locationUpgrades: {},
       };
 
       vi.mocked(gamestate).mockReturnValue({

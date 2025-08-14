@@ -6,18 +6,9 @@ import {
 import type { CurrencyBlock, GameCurrency, WorldLocation } from '@interfaces';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-// Mock dependencies
-vi.mock('@helpers/state-game', () => ({
-  gamestate: vi.fn(),
-  updateGamestate: vi.fn((callback) =>
-    callback({
-      currency: {
-        currencies: {} as Record<GameCurrency, number>,
-        currencyPerTickEarnings: {} as Record<GameCurrency, number>,
-      },
-    }),
-  ),
-  blankCurrencyBlock: () => ({
+vi.mock('@helpers/defaults', () => ({
+  defaultLocation: vi.fn(),
+  defaultCurrencyBlock: () => ({
     'Fire Sliver': 0,
     'Fire Shard': 0,
     'Fire Crystal': 0,
@@ -45,6 +36,19 @@ vi.mock('@helpers/state-game', () => ({
   }),
 }));
 
+// Mock dependencies
+vi.mock('@helpers/state-game', () => ({
+  gamestate: vi.fn(),
+  updateGamestate: vi.fn((callback) =>
+    callback({
+      currency: {
+        currencies: {} as Record<GameCurrency, number>,
+        currencyPerTickEarnings: {} as Record<GameCurrency, number>,
+      },
+    }),
+  ),
+}));
+
 vi.mock('@helpers/world-location', () => ({
   locationGetClaimed: vi.fn(),
 }));
@@ -57,6 +61,7 @@ vi.mock('@helpers/state-options', () => ({
   options: vi.fn(),
 }));
 
+import { defaultLocation } from '@helpers/defaults';
 import { gamestate } from '@helpers/state-game';
 
 describe('Currency Helper Functions', () => {
@@ -107,6 +112,7 @@ describe('Currency Helper Functions', () => {
   describe('getCurrencyClaimsForNode', () => {
     it('should calculate currency claims for cave nodes', () => {
       const node: WorldLocation = {
+        ...defaultLocation(),
         nodeType: 'cave',
         traitIds: [],
         elements: [{ element: 'Fire', intensity: 100 }],
@@ -118,6 +124,7 @@ describe('Currency Helper Functions', () => {
 
     it('should calculate currency claims for village nodes', () => {
       const node: WorldLocation = {
+        ...defaultLocation(),
         nodeType: 'village',
         traitIds: [],
       } as WorldLocation;
@@ -128,6 +135,7 @@ describe('Currency Helper Functions', () => {
 
     it('should calculate currency claims for town nodes', () => {
       const node: WorldLocation = {
+        ...defaultLocation(),
         nodeType: 'town',
         traitIds: [],
       } as WorldLocation;

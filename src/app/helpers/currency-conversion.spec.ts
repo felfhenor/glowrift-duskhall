@@ -8,18 +8,21 @@ import { describe, expect, it } from 'vitest';
 describe('Currency Conversion', () => {
   const manaCurrency: CurrencyContent = {
     id: 'mana' as CurrencyId,
+    __type: 'currency',
     name: 'Mana',
     value: 1,
   };
 
   const fireSliverCurrency: CurrencyContent = {
     id: 'fire-sliver' as CurrencyId,
+    __type: 'currency',
     name: 'Fire Sliver',
     value: 5,
   };
 
   const fireShardCurrency: CurrencyContent = {
     id: 'fire-shard' as CurrencyId,
+    __type: 'currency',
     name: 'Fire Shard',
     value: 25,
   };

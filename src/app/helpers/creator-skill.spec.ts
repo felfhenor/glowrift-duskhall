@@ -12,6 +12,10 @@ import type { PRNG } from 'seedrandom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock dependencies
+vi.mock('@helpers/defaults', () => ({
+  defaultStats: vi.fn(),
+}));
+
 vi.mock('@helpers/content', () => ({
   getEntriesByType: vi.fn(),
   getEntry: vi.fn(),
@@ -29,6 +33,7 @@ vi.mock('@helpers/rng', () => ({
 }));
 
 import { getEntriesByType, getEntry } from '@helpers/content';
+import { defaultStats } from '@helpers/defaults';
 import { droppableCleanup } from '@helpers/droppable';
 import { rngChoiceRarity, rngSeeded } from '@helpers/rng';
 
@@ -43,9 +48,16 @@ describe('Skill Creator Functions', () => {
     dropLevel: 1,
     techniques: [],
     usesPerCombat: -1,
+    damageScaling: defaultStats(),
+    disableUpgrades: false,
+    enchantLevel: 0,
+    numTargets: 0,
+    statusEffectChanceBoost: {},
+    statusEffectDurationBoost: {},
+    unableToUpgrade: [],
   };
 
-  const mockRng: PRNG = () => 0.5;
+  const mockRng = () => 0.5;
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -68,11 +80,11 @@ describe('Skill Creator Functions', () => {
       const mockDefinitions = [mockSkillContent];
       vi.mocked(rngChoiceRarity).mockReturnValue(mockSkillContent);
       vi.mocked(getEntry).mockReturnValue(mockSkillContent);
-      vi.mocked(rngSeeded).mockReturnValue(mockRng);
+      vi.mocked(rngSeeded).mockReturnValue(mockRng as PRNG);
 
       const result = skillPickRandomDefinitionByRarity(
         mockDefinitions,
-        mockRng,
+        mockRng as PRNG,
       );
 
       expect(result).toEqual(mockSkillContent);
@@ -82,9 +94,9 @@ describe('Skill Creator Functions', () => {
     it('should throw error if no skill could be generated', () => {
       vi.mocked(rngChoiceRarity).mockReturnValue(undefined);
 
-      expect(() => skillPickRandomDefinitionByRarity([], mockRng)).toThrow(
-        'Could not generate a skill.',
-      );
+      expect(() =>
+        skillPickRandomDefinitionByRarity([], mockRng as PRNG),
+      ).toThrow('Could not generate a skill.');
     });
 
     it('should throw error if skill definition not found', () => {
@@ -92,7 +104,7 @@ describe('Skill Creator Functions', () => {
       vi.mocked(getEntry).mockReturnValue(undefined);
 
       expect(() =>
-        skillPickRandomDefinitionByRarity([mockSkillContent], mockRng),
+        skillPickRandomDefinitionByRarity([mockSkillContent], mockRng as PRNG),
       ).toThrow('Could not generate a skill.');
     });
 
@@ -107,7 +119,7 @@ describe('Skill Creator Functions', () => {
 
       skillPickRandomDefinitionByRarity(
         [preventDropSkill, mockSkillContent],
-        mockRng,
+        mockRng as PRNG,
       );
 
       expect(rngChoiceRarity).toHaveBeenCalledWith([mockSkillContent], mockRng);

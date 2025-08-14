@@ -1,8 +1,9 @@
+import { defaultStats } from '@helpers/defaults';
 import {
   itemInventoryAdd,
   itemInventoryMaxSize,
 } from '@helpers/inventory-equipment';
-import type { EquipmentItem, GameState } from '@interfaces';
+import type { EquipmentItem, EquipmentItemId, GameState } from '@interfaces';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock dependencies
@@ -37,7 +38,7 @@ describe('Inventory Equipment Management', () => {
         items: [],
         skills: [],
       },
-    } as GameState;
+    } as unknown as GameState;
   });
 
   function createTestItem(
@@ -46,7 +47,7 @@ describe('Inventory Equipment Management', () => {
     type: string = 'weapon',
   ): EquipmentItem {
     return {
-      id: `item-${rarity}-${dropLevel}-${Math.random()}`,
+      id: `item-${rarity}-${dropLevel}-${Math.random()}` as EquipmentItemId,
       name: `Test ${rarity} ${type}`,
       __type: type as 'weapon' | 'armor' | 'accessory' | 'trinket',
       rarity: rarity as
@@ -58,12 +59,13 @@ describe('Inventory Equipment Management', () => {
         | 'Unique',
       dropLevel,
       sprite: '',
-      baseStats: {},
+      baseStats: defaultStats(),
       elementMultipliers: [],
       traitIds: [],
       talentBoosts: [],
       skillIds: [],
       enchantLevel: 0,
+      unableToUpgrade: [],
     } as EquipmentItem;
   }
 

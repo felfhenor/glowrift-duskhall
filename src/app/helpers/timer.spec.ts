@@ -6,6 +6,7 @@ import {
 } from '@helpers/timer';
 import type {
   Timer,
+  TimerId,
   TimerUnclaimVillage,
   WorldLocation,
   WorldPosition,
@@ -62,6 +63,8 @@ describe('Timer Functions', () => {
     it('should return actions for specified tick', () => {
       const mockTimer: Timer = {
         type: 'UnclaimVillage',
+        id: 'test-timer-1' as TimerId,
+        tick: 100,
         location: { x: 0, y: 0 },
       };
 
@@ -70,7 +73,7 @@ describe('Timer Functions', () => {
           numTicks: 0,
           timers: { 100: [mockTimer] },
         },
-      } as ReturnType<typeof gamestate>);
+      } as unknown as ReturnType<typeof gamestate>);
 
       expect(timerGetTickActions(100)).toEqual([mockTimer]);
     });
@@ -89,6 +92,8 @@ describe('Timer Functions', () => {
       const location: WorldPosition = { x: 1, y: 1 };
       const mockTimer: TimerUnclaimVillage = {
         type: 'UnclaimVillage',
+        id: 'test-timer-2' as TimerId,
+        tick: 200,
         location,
       };
 
@@ -109,10 +114,14 @@ describe('Timer Functions', () => {
       const location: WorldPosition = { x: 1, y: 1 };
       const mockTimer: TimerUnclaimVillage = {
         type: 'UnclaimVillage',
+        id: 'test-timer-3' as TimerId,
+        tick: 300,
         location,
       };
 
-      vi.mocked(locationGet).mockReturnValue(undefined);
+      vi.mocked(locationGet).mockReturnValue(
+        undefined as unknown as WorldLocation,
+      );
 
       timerUnclaimVillage(mockTimer);
 

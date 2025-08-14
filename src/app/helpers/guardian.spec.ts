@@ -3,13 +3,18 @@ import type {
   EquipmentSkillId,
   GameStat,
   GuardianContent,
-  TalentId,
   WorldLocation,
 } from '@interfaces';
 import type { CombatantTargettingType } from '@interfaces/combat';
 import type { GuardianId } from '@interfaces/content-guardian';
 import type { GameElement } from '@interfaces/element';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
+
+vi.mock('@helpers/defaults', () => ({
+  defaultCombatStats: vi.fn(),
+}));
+
+import { defaultCombatStats } from '@helpers/defaults';
 
 describe('Guardian Helper Functions', () => {
   describe('createGuardianForLocation', () => {
@@ -28,6 +33,7 @@ describe('Guardian Helper Functions', () => {
         guardianIds: [],
         claimLootIds: [],
         traitIds: [],
+        locationUpgrades: {},
       };
 
       const guardianContent: GuardianContent = {
@@ -45,7 +51,9 @@ describe('Guardian Helper Functions', () => {
         skillIds: [],
         resistance: {} as Record<GameElement, number>,
         affinity: {} as Record<GameElement, number>,
-        talents: {},
+        talents: [],
+        combatStats: defaultCombatStats(),
+        minLevel: 1,
         targettingType: 'Random' as CombatantTargettingType,
       };
 
@@ -81,6 +89,7 @@ describe('Guardian Helper Functions', () => {
         guardianIds: [],
         claimLootIds: [],
         traitIds: [],
+        locationUpgrades: {},
       };
 
       const guardianContent: GuardianContent = {
@@ -98,7 +107,9 @@ describe('Guardian Helper Functions', () => {
         skillIds: ['skill-1' as EquipmentSkillId],
         resistance: { Fire: 10 } as Record<GameElement, number>,
         affinity: { Water: 5 } as Record<GameElement, number>,
-        talents: { 'talent-1': 1 } as Record<TalentId, number>,
+        talents: [],
+        combatStats: defaultCombatStats(),
+        minLevel: 1,
         targettingType: 'Strongest' as CombatantTargettingType,
       };
 

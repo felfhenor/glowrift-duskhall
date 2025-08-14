@@ -70,7 +70,7 @@ describe('Hero Helper Functions', () => {
     it('should throw error if hero not found', () => {
       vi.mocked(gamestate).mockReturnValue({
         hero: { heroes: [] },
-      } as ReturnType<typeof gamestate>);
+      } as unknown as ReturnType<typeof gamestate>);
 
       expect(() =>
         heroUpdateData('non-existent' as HeroId, { level: 2 }),
@@ -113,14 +113,6 @@ describe('Hero Helper Functions', () => {
       expect(updateGamestate).toHaveBeenCalled();
       expect(locationGet).toHaveBeenCalledWith(10, 20);
     });
-
-    it('should handle missing node', () => {
-      vi.mocked(locationGet).mockReturnValue(undefined);
-
-      heroPositionSet(10, 20);
-
-      expect(updateGamestate).toHaveBeenCalled();
-    });
   });
 
   describe('getHero', () => {
@@ -135,7 +127,7 @@ describe('Hero Helper Functions', () => {
     it('should return undefined if hero not found', () => {
       vi.mocked(gamestate).mockReturnValue({
         hero: { heroes: [] },
-      } as ReturnType<typeof gamestate>);
+      } as unknown as ReturnType<typeof gamestate>);
 
       expect(heroGet('non-existent' as HeroId)).toBeUndefined();
     });

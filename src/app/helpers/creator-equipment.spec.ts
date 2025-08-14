@@ -12,6 +12,11 @@ import type { PRNG } from 'seedrandom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock dependencies
+vi.mock('@helpers/defaults', () => ({
+  defaultEquipment: vi.fn(),
+  defaultStats: vi.fn(),
+}));
+
 vi.mock('@helpers/content', () => ({
   getEntriesByType: vi.fn(),
   getEntry: vi.fn(),
@@ -29,21 +34,23 @@ vi.mock('@helpers/rng', () => ({
 }));
 
 import { getEntriesByType, getEntry } from '@helpers/content';
+import { defaultEquipment, defaultStats } from '@helpers/defaults';
 import { rngChoiceRarity, rngSeeded } from '@helpers/rng';
 
 describe('Equipment Creator Functions', () => {
   const mockItemContent: EquipmentItemContent = {
+    ...defaultEquipment(),
     id: 'item-1' as EquipmentItemId,
     name: 'Test Item',
     __type: 'weapon',
     sprite: 'item-sprite',
     rarity: 'Common',
     dropLevel: 1,
-    baseStats: {},
+    baseStats: defaultStats(),
     traitIds: [],
   };
 
-  const mockRng: PRNG = () => 0.5;
+  const mockRng = () => 0.5;
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -91,11 +98,11 @@ describe('Equipment Creator Functions', () => {
     it('should return a random item definition', () => {
       vi.mocked(rngChoiceRarity).mockReturnValue(mockItemContent);
       vi.mocked(getEntry).mockReturnValue(mockItemContent);
-      vi.mocked(rngSeeded).mockReturnValue(mockRng);
+      vi.mocked(rngSeeded).mockReturnValue(mockRng as PRNG);
 
       const result = equipmentPickRandomDefinitionByRarity(
         [mockItemContent],
-        mockRng,
+        mockRng as PRNG,
       );
 
       expect(result).toEqual(mockItemContent);
@@ -105,9 +112,9 @@ describe('Equipment Creator Functions', () => {
     it('should throw error if no item could be generated', () => {
       vi.mocked(rngChoiceRarity).mockReturnValue(undefined);
 
-      expect(() => equipmentPickRandomDefinitionByRarity([], mockRng)).toThrow(
-        'Could not generate an item.',
-      );
+      expect(() =>
+        equipmentPickRandomDefinitionByRarity([], mockRng as PRNG),
+      ).toThrow('Could not generate an item.');
     });
 
     it('should throw error if item definition not found', () => {
@@ -115,7 +122,10 @@ describe('Equipment Creator Functions', () => {
       vi.mocked(getEntry).mockReturnValue(undefined);
 
       expect(() =>
-        equipmentPickRandomDefinitionByRarity([mockItemContent], mockRng),
+        equipmentPickRandomDefinitionByRarity(
+          [mockItemContent],
+          mockRng as PRNG,
+        ),
       ).toThrow('Could not generate an item.');
     });
   });

@@ -37,7 +37,7 @@ describe('Inventory Skill Management', () => {
         items: [],
         skills: [],
       },
-    } as GameState;
+    } as unknown as GameState;
   });
 
   function createTestSkill(rarity: string, dropLevel: number): EquipmentSkill {
@@ -54,6 +54,7 @@ describe('Inventory Skill Management', () => {
         | 'Unique',
       dropLevel,
       sprite: '',
+      frames: 1,
       baseStats: {},
       elementMultipliers: [],
       cooldownTurns: 1,
@@ -63,7 +64,13 @@ describe('Inventory Skill Management', () => {
       healingMultiplier: 0,
       statusEffectIds: [],
       enchantLevel: 0,
-    } as EquipmentSkill;
+      techniques: [],
+      usesPerCombat: -1,
+      numTargets: 1,
+      damageScaling: { Force: 0, Health: 0, Speed: 0, Aura: 0 },
+      statusEffectDurationBoost: {},
+      statusEffectChanceBoost: {},
+    } as unknown as EquipmentSkill;
   }
 
   describe('addSkillToInventory when inventory has space', () => {

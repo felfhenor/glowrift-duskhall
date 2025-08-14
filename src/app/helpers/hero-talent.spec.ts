@@ -29,6 +29,12 @@ vi.mock('@helpers/talent', () => ({
   talentIdsInTalentTree: vi.fn(),
 }));
 
+vi.mock('@helpers/defaults', () => ({
+  defaultTownStats: vi.fn(),
+  defaultCombatStats: vi.fn(),
+}));
+
+import { defaultCombatStats, defaultTownStats } from '@helpers/defaults';
 import { heroUpdateData } from '@helpers/hero';
 import { talentIdsInTalentTree } from '@helpers/talent';
 
@@ -178,7 +184,8 @@ describe('Hero Talent Functions', () => {
       additionalTargets: 0,
       chanceToIgnoreConsume: 0,
       applyStatusEffects: [],
-      combatStats: {},
+      combatStats: defaultCombatStats(),
+      townStats: defaultTownStats(),
       addTechniques: [],
     };
 

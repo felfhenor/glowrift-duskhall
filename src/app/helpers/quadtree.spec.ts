@@ -1,5 +1,6 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { Quadtree, type QuadtreePoint, type QuadtreeBounds } from '@helpers/quadtree';
+import { Quadtree } from '@helpers/quadtree';
+import type { QuadtreeBounds, QuadtreePoint } from '@interfaces/world';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('Quadtree', () => {
   let quadtree: Quadtree;
@@ -14,7 +15,12 @@ describe('Quadtree', () => {
       const point: QuadtreePoint = { x: 10, y: 10, taken: false };
       quadtree.insert(point);
 
-      const retrieved = quadtree.retrieve({ x: 5, y: 5, width: 10, height: 10 });
+      const retrieved = quadtree.retrieve({
+        x: 5,
+        y: 5,
+        width: 10,
+        height: 10,
+      });
       expect(retrieved).toHaveLength(1);
       expect(retrieved[0]).toEqual(point);
     });
@@ -23,7 +29,12 @@ describe('Quadtree', () => {
       const point: QuadtreePoint = { x: 50, y: 50, taken: false };
       quadtree.insert(point);
 
-      const retrieved = quadtree.retrieve({ x: 0, y: 0, width: 10, height: 10 });
+      const retrieved = quadtree.retrieve({
+        x: 0,
+        y: 0,
+        width: 10,
+        height: 10,
+      });
       expect(retrieved).toHaveLength(0);
     });
 
@@ -35,14 +46,24 @@ describe('Quadtree', () => {
         { x: 80, y: 80, taken: false },
       ];
 
-      points.forEach(point => quadtree.insert(point));
+      points.forEach((point) => quadtree.insert(point));
 
       // Query that should get first 3 points
-      const retrieved1 = quadtree.retrieve({ x: 0, y: 0, width: 40, height: 40 });
+      const retrieved1 = quadtree.retrieve({
+        x: 0,
+        y: 0,
+        width: 40,
+        height: 40,
+      });
       expect(retrieved1).toHaveLength(3);
 
       // Query that should get only the last point
-      const retrieved2 = quadtree.retrieve({ x: 70, y: 70, width: 30, height: 30 });
+      const retrieved2 = quadtree.retrieve({
+        x: 70,
+        y: 70,
+        width: 30,
+        height: 30,
+      });
       expect(retrieved2).toHaveLength(1);
       expect(retrieved2[0]).toEqual(points[3]);
     });
@@ -65,7 +86,7 @@ describe('Quadtree', () => {
         { x: 99, y: 99, taken: false },
       ];
 
-      boundaryPoints.forEach(point => quadtree.insert(point));
+      boundaryPoints.forEach((point) => quadtree.insert(point));
       const allPoints = quadtree.getAllPoints();
       expect(allPoints).toHaveLength(4);
     });
@@ -78,13 +99,18 @@ describe('Quadtree', () => {
         quadtree.insert({ x: 10 + i, y: 10, taken: false });
       }
 
-      const retrieved = quadtree.retrieve({ x: 0, y: 0, width: 30, height: 30 });
+      const retrieved = quadtree.retrieve({
+        x: 0,
+        y: 0,
+        width: 30,
+        height: 30,
+      });
       expect(retrieved).toHaveLength(15);
     });
 
     it('should maintain all points after subdivision', () => {
       const points: QuadtreePoint[] = [];
-      
+
       // Add points distributed across all quadrants
       for (let x = 5; x < 100; x += 10) {
         for (let y = 5; y < 100; y += 10) {
@@ -94,7 +120,12 @@ describe('Quadtree', () => {
         }
       }
 
-      const allRetrieved = quadtree.retrieve({ x: 0, y: 0, width: 100, height: 100 });
+      const allRetrieved = quadtree.retrieve({
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 100,
+      });
       expect(allRetrieved).toHaveLength(points.length);
     });
   });
@@ -105,8 +136,13 @@ describe('Quadtree', () => {
       quadtree.insert(point);
 
       quadtree.updatePoint(25, 25, true);
-      
-      const retrieved = quadtree.retrieve({ x: 20, y: 20, width: 10, height: 10 });
+
+      const retrieved = quadtree.retrieve({
+        x: 20,
+        y: 20,
+        width: 10,
+        height: 10,
+      });
       expect(retrieved[0].taken).toBe(true);
     });
 
@@ -134,17 +170,32 @@ describe('Quadtree', () => {
       }
 
       // Test retrieval of a small area
-      const centerArea = worldQuadtree.retrieve({ x: 20, y: 20, width: 10, height: 10 });
+      const centerArea = worldQuadtree.retrieve({
+        x: 20,
+        y: 20,
+        width: 10,
+        height: 10,
+      });
       expect(centerArea).toHaveLength(100); // 10x10 area
 
       // Test marking some positions as taken
       worldQuadtree.updatePoint(25, 25, true);
-      const centerPoint = worldQuadtree.retrieve({ x: 25, y: 25, width: 1, height: 1 });
+      const centerPoint = worldQuadtree.retrieve({
+        x: 25,
+        y: 25,
+        width: 1,
+        height: 1,
+      });
       expect(centerPoint[0].taken).toBe(true);
     });
 
     it('should efficiently find available positions in a sparse world', () => {
-      const worldBounds: QuadtreeBounds = { x: 0, y: 0, width: 100, height: 100 };
+      const worldBounds: QuadtreeBounds = {
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 100,
+      };
       const sparseQuadtree = new Quadtree(worldBounds);
 
       // Create a sparse world with mostly taken positions
@@ -155,9 +206,14 @@ describe('Quadtree', () => {
       }
 
       // Find available positions (should be much fewer)
-      const allPositions = sparseQuadtree.retrieve({ x: 0, y: 0, width: 100, height: 100 });
-      const availablePositions = allPositions.filter(p => !p.taken);
-      
+      const allPositions = sparseQuadtree.retrieve({
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 100,
+      });
+      const availablePositions = allPositions.filter((p) => !p.taken);
+
       // Should have positions at (0,0), (0,5), (0,10), etc.
       expect(availablePositions.length).toBe(400); // 20x20 grid of available positions
     });
@@ -182,7 +238,12 @@ describe('Quadtree', () => {
       quadtree.insert({ x: 55, y: 55, taken: false });
 
       // Query that overlaps quadrant boundaries
-      const overlapping = quadtree.retrieve({ x: 40, y: 40, width: 20, height: 20 });
+      const overlapping = quadtree.retrieve({
+        x: 40,
+        y: 40,
+        width: 20,
+        height: 20,
+      });
       expect(overlapping).toHaveLength(2);
     });
   });

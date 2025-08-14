@@ -4,10 +4,13 @@ import type {
   CurrencyBlock,
   DropRarity,
   ElementBlock,
+  EquipmentItem,
+  EquipmentItemId,
   Hero,
   HeroId,
   LocationType,
   StatBlock,
+  TalentTownStats,
   WorldConfigContent,
   WorldLocation,
   WorldPosition,
@@ -197,5 +200,32 @@ export function defaultCombatStats(): CombatantCombatStats {
     damageReflectPercent: defaultAffinities(),
     healingIgnorePercent: defaultAffinities(),
     reviveChance: 0,
+  };
+}
+
+export function defaultTownStats(): TalentTownStats {
+  return {
+    breakdownCurrencyBonus: 0,
+    healOverTimeBonus: 0,
+    marketTradeBonusPercent: 0,
+    merchantFindItemBonus: 0,
+  };
+}
+
+export function defaultEquipment(): EquipmentItem {
+  return {
+    id: 'UNKNOWN' as EquipmentItemId,
+    name: '',
+    __type: 'trinket',
+    sprite: 'item-sprite',
+    rarity: 'Common',
+    baseStats: defaultStats(),
+    elementMultipliers: [],
+    dropLevel: 0,
+    enchantLevel: 0,
+    skillIds: [],
+    talentBoosts: [],
+    traitIds: [],
+    unableToUpgrade: [],
   };
 }

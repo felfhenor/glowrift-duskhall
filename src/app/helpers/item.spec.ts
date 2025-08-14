@@ -125,6 +125,11 @@ describe('Item Helper Functions', () => {
         dropLevel: 1,
         sprite: '',
         traitIds: [],
+        enchantLevel: 0,
+        talentBoosts: [],
+        elementMultipliers: [],
+        skillIds: [],
+        unableToUpgrade: [],
       };
 
       expect(itemStat(item, baseStat)).toBe(5);
@@ -143,6 +148,11 @@ describe('Item Helper Functions', () => {
         dropLevel: 1,
         sprite: '',
         traitIds: [],
+        enchantLevel: 0,
+        talentBoosts: [],
+        elementMultipliers: [],
+        skillIds: [],
+        unableToUpgrade: [],
       };
 
       expect(itemStat(item, baseStat)).toBe(8);
@@ -167,6 +177,7 @@ describe('Item Helper Functions', () => {
         enchantLevel: 0,
         elementMultipliers: [],
         skillIds: [],
+        unableToUpgrade: [],
       };
 
       const talents = itemTalents(item);

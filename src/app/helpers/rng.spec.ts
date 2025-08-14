@@ -94,13 +94,13 @@ describe('RNG Helper Functions', () => {
 
   describe('succeedsChance', () => {
     it('should return true when random value is within chance', () => {
-      const mockRng: PRNG = () => 0.5; // 50%
-      expect(rngSucceedsChance(75, mockRng)).toBeTruthy();
+      const mockRng = () => 0.5; // 50%
+      expect(rngSucceedsChance(75, mockRng as PRNG)).toBeTruthy();
     });
 
     it('should return false when random value exceeds chance', () => {
-      const mockRng: PRNG = () => 0.8; // 80%
-      expect(rngSucceedsChance(50, mockRng)).toBeFalsy();
+      const mockRng = () => 0.8; // 80%
+      expect(rngSucceedsChance(50, mockRng as PRNG)).toBeFalsy();
     });
   });
 

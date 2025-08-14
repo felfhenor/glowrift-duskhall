@@ -1,4 +1,4 @@
-import type { WorldLocation } from '@interfaces';
+import type { GuardianContent, WorldLocation } from '@interfaces';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock the dependencies
@@ -42,13 +42,21 @@ describe('Distance-based Guardian Scaling', () => {
       __type: 'guardian',
       sprite: 'test',
       frames: 1,
+      minLevel: 1,
       statScaling: { Force: 1, Health: 1, Speed: 1, Aura: 1 },
       skillIds: [],
       resistance: {},
       affinity: {},
-      talentIds: {},
+      talents: [],
       targettingType: 'Random',
-    });
+      combatStats: {
+        hp: 100,
+        block: 0,
+        accuracy: 100,
+        crit: 0,
+        critMultiplier: 1,
+      },
+    } as unknown as GuardianContent);
   });
 
   it('should add more guardians to locations further from world center', () => {
@@ -70,6 +78,7 @@ describe('Distance-based Guardian Scaling', () => {
       guardianIds: [],
       claimLootIds: [],
       traitIds: [],
+      locationUpgrades: {},
     };
 
     const farLocation: WorldLocation = {
@@ -86,6 +95,7 @@ describe('Distance-based Guardian Scaling', () => {
       guardianIds: [],
       claimLootIds: [],
       traitIds: [],
+      locationUpgrades: {},
     };
 
     // Test that far locations have more guardians than near locations
@@ -127,6 +137,7 @@ describe('Distance-based Guardian Scaling', () => {
       guardianIds: [],
       claimLootIds: [],
       traitIds: [],
+      locationUpgrades: {},
     };
 
     // Should work without distance parameters and return base count
@@ -152,6 +163,7 @@ describe('Distance-based Guardian Scaling', () => {
       guardianIds: [],
       claimLootIds: [],
       traitIds: [],
+      locationUpgrades: {},
     };
 
     const guardians = worldgenGuardiansForLocation(
