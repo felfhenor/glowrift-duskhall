@@ -1,5 +1,4 @@
-import { gamestate, updateGamestate } from '@helpers/state-game';
-import { worldNodeGetAccessId } from '@helpers/world';
+import { locationGetAll } from '@helpers/world-location';
 import type { LocationType, WorldLocation } from '@interfaces';
 
 /**
@@ -14,82 +13,64 @@ const REVELATION_RADIUS: Record<LocationType, number> = {
 };
 
 /**
- * Check if a node is revealed (visible to the player)
+ * Check if a position is revealed by checking if it's within revelation radius of any claimed node
  */
-export function fogIsNodeRevealed(nodeAccessId: string): boolean {
-  const { world } = gamestate();
-  return world.revealedNodes.includes(nodeAccessId);
+export function fogIsPositionRevealed(x: number, y: number): boolean {
+  const claimedNodes = locationGetAll().filter(node => node.currentlyClaimed);
+  
+  for (const claimedNode of claimedNodes) {
+    if (!claimedNode.nodeType) continue;
+    
+    const radius = REVELATION_RADIUS[claimedNode.nodeType];
+    const dx = Math.abs(x - claimedNode.x);
+    const dy = Math.abs(y - claimedNode.y);
+    
+    // Check if position is within the revelation radius
+    if (dx <= radius && dy <= radius) {
+      return true;
+    }
+  }
+  
+  return false;
 }
 
 /**
  * Check if a world location is revealed (visible to the player)
  */
 export function fogIsLocationRevealed(location: WorldLocation): boolean {
-  return fogIsNodeRevealed(worldNodeGetAccessId(location));
+  return fogIsPositionRevealed(location.x, location.y);
 }
 
 /**
- * Reveal a specific node by its access ID
- */
-export function fogRevealNode(nodeAccessId: string): void {
-  updateGamestate((state) => {
-    if (!state.world.revealedNodes.includes(nodeAccessId)) {
-      state.world.revealedNodes.push(nodeAccessId);
-    }
-    return state;
-  });
-}
-
-/**
- * Reveal a specific location
- */
-export function fogRevealLocation(location: WorldLocation): void {
-  fogRevealNode(worldNodeGetAccessId(location));
-}
-
-/**
- * Reveal an area around a location when it's claimed
- */
-export function fogRevealAreaAroundLocation(location: WorldLocation): void {
-  if (!location.nodeType) return;
-
-  const radius = REVELATION_RADIUS[location.nodeType];
-  const centerX = location.x;
-  const centerY = location.y;
-
-  const nodesToReveal: string[] = [];
-
-  // Reveal nodes in a square area around the location
-  for (let dx = -radius; dx <= radius; dx++) {
-    for (let dy = -radius; dy <= radius; dy++) {
-      const x = centerX + dx;
-      const y = centerY + dy;
-      const nodeAccessId = `${x},${y}`;
-      nodesToReveal.push(nodeAccessId);
-    }
-  }
-
-  updateGamestate((state) => {
-    nodesToReveal.forEach((nodeId) => {
-      if (!state.world.revealedNodes.includes(nodeId)) {
-        state.world.revealedNodes.push(nodeId);
-      }
-    });
-    return state;
-  });
-}
-
-/**
- * Get all revealed node access IDs
+ * Get all revealed positions as a set of "x,y" strings
+ * This is used for testing compatibility
  */
 export function fogGetRevealedNodes(): Set<string> {
-  return new Set(gamestate().world.revealedNodes);
+  const revealed = new Set<string>();
+  const claimedNodes = locationGetAll().filter(node => node.currentlyClaimed);
+  
+  for (const claimedNode of claimedNodes) {
+    if (!claimedNode.nodeType) continue;
+    
+    const radius = REVELATION_RADIUS[claimedNode.nodeType];
+    
+    // Add all positions within the revelation radius
+    for (let dx = -radius; dx <= radius; dx++) {
+      for (let dy = -radius; dy <= radius; dy++) {
+        const x = claimedNode.x + dx;
+        const y = claimedNode.y + dy;
+        revealed.add(`${x},${y}`);
+      }
+    }
+  }
+  
+  return revealed;
 }
 
 /**
- * Check if a position is revealed (for use in rendering)
+ * Legacy function - now a no-op since revelation is automatic based on claimed nodes
+ * @deprecated This function is no longer needed as fog revelation is now automatic
  */
-export function fogIsPositionRevealed(x: number, y: number): boolean {
-  const nodeAccessId = `${x},${y}`;
-  return fogIsNodeRevealed(nodeAccessId);
+export function fogRevealAreaAroundLocation(): void {
+  // No longer needed - fog revelation is now automatic based on claimed nodes
 }

@@ -3,7 +3,6 @@ import { currencyClaimsGain, currencyClaimsLose } from '@helpers/currency';
 import { defaultLocation, defaultNodeCountBlock } from '@helpers/defaults';
 import { discordUpdateStatus } from '@helpers/discord';
 import { droppableGain, droppableMakeReal } from '@helpers/droppable';
-import { fogRevealAreaAroundLocation } from '@helpers/fog-of-war';
 import { itemElementAdd, itemIsEquipment } from '@helpers/item';
 import { distanceBetweenNodes } from '@helpers/math';
 import { notify } from '@helpers/notify';
@@ -213,9 +212,6 @@ export function locationClaim(node: WorldLocation): void {
 
     return state;
   });
-
-  // Reveal area around claimed location
-  fogRevealAreaAroundLocation(node);
 
   discordUpdateStatus();
 }

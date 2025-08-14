@@ -37,7 +37,6 @@ export interface GameStateWorld {
 
   nodeCounts: Record<LocationType, number>;
   claimedCounts: Record<LocationType, number>;
-  revealedNodes: string[];
 }
 
 export type GameStateHeroesTraveling = WorldPosition & {
