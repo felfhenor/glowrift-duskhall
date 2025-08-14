@@ -1,8 +1,4 @@
-import {
-  currencyHasAmount,
-  currencyLose,
-  currencyLoseMultiple,
-} from '@helpers/currency';
+import { currencyHasAmount, currencyLoseMultiple } from '@helpers/currency';
 import { defaultCurrencyBlock, defaultNodeCountBlock } from '@helpers/defaults';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { locationHasClaimedCount } from '@helpers/world-location';
@@ -167,10 +163,10 @@ export function townCanUpgradeBuildingLevel(building: TownBuilding): boolean {
 }
 
 export function townUpgradeBuildingLevel(building: TownBuilding): void {
+  if (!townCanUpgradeBuildingLevel(building)) return;
+
   const { currency } = townBuildingUpgradeCost(building);
-  Object.keys(currency).forEach((curr) => {
-    currencyLose(curr as GameCurrency, currency[curr as GameCurrency] ?? 0);
-  });
+  currencyLoseMultiple(currency);
 
   updateGamestate((state) => {
     state.town.buildingLevels[building]++;

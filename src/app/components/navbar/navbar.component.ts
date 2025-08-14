@@ -18,6 +18,7 @@ import {
   showInventoryMenu,
   showOptionsMenu,
   showTownMenu,
+  showWorldMenu,
 } from '@helpers';
 import type { GameCurrency, Icon } from '@interfaces';
 import { TippyDirective } from '@ngneat/helipopper';
@@ -64,32 +65,43 @@ export class NavbarComponent implements OnInit, OnDestroy {
   public readonly panelConfigs: Array<{
     name: string;
     icon: Icon;
+    hotkey: string;
     clickCb: () => void;
   }> = [
     {
+      name: 'World',
+      icon: 'gameWorld',
+      hotkey: '1',
+      clickCb: () => this.toggleWorld(),
+    },
+    {
       name: 'Town',
       icon: 'gameMedievalGate',
+      hotkey: '2',
       clickCb: () => this.toggleTown(),
     },
     {
       name: 'Combat',
       icon: 'gameSwordBrandish',
+      hotkey: '3',
       clickCb: () => this.toggleCombat(),
     },
     {
       name: 'Inventory',
       icon: 'gameSwapBag',
+      hotkey: '4',
       clickCb: () => this.toggleInventory(),
     },
-    { name: 'Heroes', icon: 'gameAges', clickCb: () => this.toggleHeroes() },
     {
-      name: 'Focus Camera',
-      icon: 'gameHumanTarget',
-      clickCb: () => this.focusCamera(),
+      name: 'Heroes',
+      icon: 'gameAges',
+      hotkey: '5',
+      clickCb: () => this.toggleHeroes(),
     },
     {
       name: 'Options',
       icon: 'tablerSettings',
+      hotkey: '6',
       clickCb: () => this.toggleOptions(),
     },
   ];
@@ -148,6 +160,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
     showTownMenu.set(!showTownMenu());
   }
 
+  public toggleWorld() {
+    if (showWorldMenu()) {
+      showWorldMenu.set(false);
+      return;
+    }
+
+    closeAllMenus();
+    showWorldMenu.set(!showWorldMenu());
+  }
+
   public focusCamera() {
     cameraCenterOnPlayer();
   }
@@ -158,22 +180,23 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // Menu toggles
-    this.hotkeys.addShortcut({ keys: '1' }).subscribe(() => this.toggleTown());
-    this.hotkeys
-      .addShortcut({ keys: '2' })
-      .subscribe(() => this.toggleCombat());
+    this.hotkeys.addShortcut({ keys: '1' }).subscribe(() => this.toggleWorld());
+    this.hotkeys.addShortcut({ keys: '2' }).subscribe(() => this.toggleTown());
     this.hotkeys
       .addShortcut({ keys: '3' })
-      .subscribe(() => this.toggleInventory());
+      .subscribe(() => this.toggleCombat());
     this.hotkeys
       .addShortcut({ keys: '4' })
+      .subscribe(() => this.toggleInventory());
+    this.hotkeys
+      .addShortcut({ keys: '5' })
       .subscribe(() => this.toggleHeroes());
     this.hotkeys
       .addShortcut({ keys: '6' })
       .subscribe(() => this.toggleOptions());
 
     // Game controls
-    this.hotkeys.addShortcut({ keys: '5' }).subscribe(() => this.focusCamera());
+    this.hotkeys.addShortcut({ keys: 'f' }).subscribe(() => this.focusCamera());
     this.hotkeys
       .addShortcut({ keys: 'space' })
       .subscribe(() => this.togglePause());
@@ -195,6 +218,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       '4',
       '5',
       '6',
+      '7',
       'space',
       'escape',
       'q',

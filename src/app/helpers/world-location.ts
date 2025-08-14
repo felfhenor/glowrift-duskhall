@@ -1,6 +1,6 @@
 import { getEntry } from '@helpers/content';
 import { currencyClaimsGain, currencyClaimsLose } from '@helpers/currency';
-import { defaultLocation } from '@helpers/defaults';
+import { defaultLocation, defaultNodeCountBlock } from '@helpers/defaults';
 import { discordUpdateStatus } from '@helpers/discord';
 import { droppableGain, droppableMakeReal } from '@helpers/droppable';
 import { itemElementAdd, itemIsEquipment } from '@helpers/item';
@@ -24,6 +24,16 @@ import type { DroppableEquippable, DropRarity } from '@interfaces/droppable';
 import { RARITY_PRIORITY } from '@interfaces/droppable';
 import type { WorldLocation } from '@interfaces/world';
 import { isNumber, sortBy } from 'es-toolkit/compat';
+
+export function resetClaimedNodeCounts(): void {
+  const baseNodeCount = defaultNodeCountBlock();
+  locationGetClaimed().forEach((node) => baseNodeCount[node.nodeType!]++);
+
+  updateGamestate((state) => {
+    state.world.claimedCounts = baseNodeCount;
+    return state;
+  });
+}
 
 export function locationClaimDuration(location: WorldLocation): number {
   return (

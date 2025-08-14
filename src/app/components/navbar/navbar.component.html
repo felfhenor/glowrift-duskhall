@@ -38,6 +38,31 @@
 
   <div class="navbar-end">
     <ul class="menu menu-horizontal px-1 flex gap-2">
+      @for (panel of panelConfigs; track $index) {
+        <li class="action-button" appRequireSetup>
+          <button
+            class="btn btn-xs btn-accent"
+            [tp]="panel.name + ' [' + panel.hotkey + ']'"
+            (click)="panel.clickCb()"
+            appSfx="ui-click"
+            [sfxOffset]="$index"
+            [sfxTrigger]="['click']"
+          >
+            <app-icon [name]="panel.icon" size="2em" color="#000"></app-icon>
+          </button>
+        </li>
+      }
+
+      <li class="action-button" appRequireSetup>
+        <button
+          class="btn btn-xs btn-info"
+          [tp]="'Focus Camera [F]'"
+          (click)="focusCamera()"
+        >
+          <app-icon name="gameHumanTarget" size="2em" color="#000"></app-icon>
+        </button>
+      </li>
+
       <li class="action-button" appRequireSetup>
         <button
           class="btn btn-xs btn-info"
@@ -51,21 +76,6 @@
           ></app-icon>
         </button>
       </li>
-
-      @for (panel of panelConfigs; track $index) {
-        <li class="action-button" appRequireSetup>
-          <button
-            class="btn btn-xs btn-accent"
-            [tp]="panel.name + ' [' + ($index + 1) + ']'"
-            (click)="panel.clickCb()"
-            appSfx="ui-click"
-            [sfxOffset]="$index"
-            [sfxTrigger]="['click']"
-          >
-            <app-icon [name]="panel.icon" size="2em" color="#000"></app-icon>
-          </button>
-        </li>
-      }
 
       <li class="action-button">
         <a

@@ -18,6 +18,7 @@ export const showInventoryMenu = signal<boolean>(false);
 export const showHeroesMenu = signal<boolean>(false);
 export const showCombatMenu = signal<boolean>(false);
 export const showTownMenu = signal<boolean>(false);
+export const showWorldMenu = signal<boolean>(false);
 
 export const isCatchingUp = signal<boolean>(false);
 
@@ -32,5 +33,6 @@ export function closeAllMenus() {
   showOptionsMenu.set(false);
   showInventoryMenu.set(false);
   showTownMenu.set(false);
+  showWorldMenu.set(false);
   showLocationMenu.set(undefined);
 }

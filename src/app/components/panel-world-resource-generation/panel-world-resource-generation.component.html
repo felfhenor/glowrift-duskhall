@@ -1,0 +1,23 @@
+<div class="grid grid-cols-3 gap-2">
+  @for (claimData of claims(); track $index) {
+    <div class="col-span-1 card bg-base-100 shadow-xl">
+      <div class="card-body">
+        <div class="stats shadow">
+          <div class="stat">
+            <div class="stat-figure">
+              <app-icon-currency
+                [currency]="claimData.currency"
+              ></app-icon-currency>
+            </div>
+
+            <div class="stat-value text-xl">
+              +{{ claimData.amount | number: '1.0-2' }}
+            </div>
+
+            <div class="stat-desc text-lg">{{ claimData.currency }} / tick</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

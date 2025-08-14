@@ -23,6 +23,7 @@ import {
   gameSwapBag,
   gameSwordBrandish,
   gameVibratingShield,
+  gameWorld,
 } from '@ng-icons/game-icons';
 import {
   tablerCheck,
@@ -56,6 +57,7 @@ export const ALL_ICONS = {
   gameEarthWorm,
   gameMedievalGate,
   gameDustCloud,
+  gameWorld,
   tablerPlus,
   tablerSettings,
   tablerX,

@@ -35,6 +35,12 @@
     </app-panel-container>
   }
 
+  @if (showWorld()) {
+    <app-panel-container>
+      <app-panel-world class="absolute inset-0 panel-layer"></app-panel-world>
+    </app-panel-container>
+  }
+
   @if (showLocation()) {
     <app-panel-container>
       <app-panel-location

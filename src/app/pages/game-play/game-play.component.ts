@@ -10,6 +10,7 @@ import { PanelLocationComponent } from '@components/panel-location/panel-locatio
 import { PanelOptionsComponent } from '@components/panel-options/panel-options.component';
 import { PanelTownComponent } from '@components/panel-town/panel-town.component';
 
+import { PanelWorldComponent } from '@components/panel-world/panel-world.component';
 import {
   gamestate,
   isCatchingUp,
@@ -19,6 +20,7 @@ import {
   showLocationMenu,
   showOptionsMenu,
   showTownMenu,
+  showWorldMenu,
   victoryDismissWinDialog,
 } from '@helpers';
 
@@ -35,6 +37,7 @@ import {
     PanelTownComponent,
     DecimalPipe,
     RouterModule,
+    PanelWorldComponent,
   ],
   templateUrl: './game-play.component.html',
   styleUrl: './game-play.component.scss',
@@ -46,6 +49,8 @@ export class GamePlayComponent {
   public showLocation = computed(() => showLocationMenu());
   public showInventory = computed(() => showInventoryMenu());
   public showTown = computed(() => showTownMenu());
+  public showWorld = computed(() => showWorldMenu());
+
   public isCatchingUp = computed(() => isCatchingUp());
   public showWinNotification = computed(
     () =>

@@ -4,12 +4,12 @@ import { CountdownComponent } from '@components/countdown/countdown.component';
 import { festivalGetActive, gamestate } from '@helpers';
 
 @Component({
-  selector: 'app-panel-town-festivals',
+  selector: 'app-panel-world-festivals',
   imports: [CountdownComponent, BlankSlateComponent],
-  templateUrl: './panel-town-festivals.component.html',
-  styleUrl: './panel-town-festivals.component.scss',
+  templateUrl: './panel-world-festivals.component.html',
+  styleUrl: './panel-world-festivals.component.scss',
 })
-export class PanelTownFestivalsComponent {
+export class PanelWorldFestivalsComponent {
   public allFestivals = computed(() =>
     festivalGetActive().map((festival) => ({
       festival,

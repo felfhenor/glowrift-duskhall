@@ -1,0 +1,26 @@
+<div class="grid grid-cols-3 gap-2">
+  @for (claimData of claimsOrdered(); track $index) {
+    <div class="col-span-1 card bg-base-100 shadow-xl">
+      <div class="card-body">
+        <div class="stats shadow">
+          <div class="stat">
+            <div class="stat-figure">
+              <app-icon-location
+                [type]="claimData.nodeType"
+              ></app-icon-location>
+            </div>
+
+            <div class="stat-value text-xl">
+              {{ claimData.owned }} / {{ claimData.total }}
+              {{ claimData.nodeType }}s
+            </div>
+
+            <div class="stat-desc text-lg">
+              {{ ((claimData.owned / claimData.total) * 100).toFixed(2) }}%
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

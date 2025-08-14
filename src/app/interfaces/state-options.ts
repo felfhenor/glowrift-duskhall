@@ -25,8 +25,9 @@ export type ToggleableCategory = Exclude<
   'Error' | 'Success'
 >;
 
-export type TownTab = TownBuilding | 'Festivals';
-export type CombatTab = 'Preferences' | 'CombatLog' | 'Claims';
+export type WorldTab = 'Festivals' | 'Claims' | 'ResourceGeneration';
+export type TownTab = TownBuilding;
+export type CombatTab = 'Preferences' | 'CombatLog';
 export type OptionsTab = 'UI' | 'Savefile' | 'Debug';
 
 export interface CombatTabLink {
@@ -48,6 +49,7 @@ export type GameOptions = Record<GameOption, boolean> & {
   combatTab: CombatTab;
   optionsTab: OptionsTab;
   townTab: TownTab;
+  worldTab: WorldTab;
   inventoryFilter: InventorySlotType;
   selectedHeroIndex: number;
   selectedTalentTreeElement: GameElement;

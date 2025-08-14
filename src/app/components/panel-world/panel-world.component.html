@@ -1,15 +1,9 @@
 @let currentTab = activeTab();
 
 <app-card-page>
-  <span header>Combat</span>
+  <span header>World</span>
 
   <div pageactions>
-    @if (canFlee()) {
-      <button class="btn btn-warning mr-4" (click)="fleeFromCombat()">
-        Flee
-      </button>
-    }
-
     <app-button-close (click)="closeMenu()"></app-button-close>
   </div>
 
@@ -21,20 +15,25 @@
         [class.tab-active]="currentTab === tab.link"
         (click)="changeActiveTab(tab.link)"
         (keydown)="changeActiveTab(tab.link)"
+        [appAnalyticsClick]="'World:Navigate:' + tab.name"
       >
         {{ tab.name }}
       </button>
     }
   </div>
 
-  <div class="mt-1 p-3 max-h-[500px] overflow-y-auto">
+  <div class="p-3 max-h-[550px] h-[550px] overflow-y-auto">
     @switch (currentTab) {
-      @case ('Preferences') {
-        <app-panel-combat-preferences></app-panel-combat-preferences>
+      @case ('ResourceGeneration') {
+        <app-panel-world-resource-generation></app-panel-world-resource-generation>
       }
 
-      @case ('CombatLog') {
-        <app-panel-combat-combatlog></app-panel-combat-combatlog>
+      @case ('Claims') {
+        <app-panel-world-claims></app-panel-world-claims>
+      }
+
+      @case ('Festivals') {
+        <app-panel-world-festivals></app-panel-world-festivals>
       }
     }
   </div>

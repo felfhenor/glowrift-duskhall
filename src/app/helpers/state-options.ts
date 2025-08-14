@@ -23,6 +23,7 @@ export function defaultOptions(): GameOptions {
     combatTab: 'Preferences',
     optionsTab: 'UI',
     townTab: 'Market',
+    worldTab: 'ResourceGeneration',
     inventoryFilter: 'accessory',
     selectedHeroIndex: 0,
     selectedTalentTreeElement: 'Fire',

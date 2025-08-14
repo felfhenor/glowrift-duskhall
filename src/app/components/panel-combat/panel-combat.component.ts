@@ -1,6 +1,5 @@
 import { Component, computed } from '@angular/core';
 import { CardPageComponent } from '@components/card-page/card-page.component';
-import { PanelCombatClaimsComponent } from '@components/panel-combat-claims/panel-combat-claims.component';
 import { PanelCombatCombatlogComponent } from '@components/panel-combat-combatlog/panel-combat-combatlog.component';
 import { PanelCombatPreferencesComponent } from '@components/panel-combat-preferences/panel-combat-preferences.component';
 import { OptionsBaseComponent } from '@components/panel-options/option-base-page.component';
@@ -21,7 +20,6 @@ import type { CombatTab, CombatTabLink } from '@interfaces';
     CardPageComponent,
     PanelCombatPreferencesComponent,
     PanelCombatCombatlogComponent,
-    PanelCombatClaimsComponent,
     ButtonCloseComponent,
   ],
   templateUrl: './panel-combat.component.html',
@@ -39,7 +37,6 @@ export class PanelCombatComponent extends OptionsBaseComponent {
       name: 'Preferences',
       link: 'Preferences',
     },
-    { name: 'Claims', link: 'Claims' },
     { name: 'Combat Log', link: 'CombatLog' },
   ];
 

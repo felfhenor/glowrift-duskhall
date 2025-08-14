@@ -2,6 +2,7 @@ import { getEntriesByType, getEntry } from '@helpers/content';
 import {
   currencyClaimsGetForNode,
   currencyClaimsUpdate,
+  currencyHasMultipleAmounts,
   currencyLoseMultiple,
 } from '@helpers/currency';
 import { distanceBetweenNodes } from '@helpers/math';
@@ -138,12 +139,16 @@ export function locationUpgrade(
   location: WorldLocation,
   upgrade: LocationUpgradeContent,
 ): void {
+  if (locationLevel(location) >= locationMaxLevel()) return;
+
+  const costs = locationUpgradeCosts(location, upgrade);
+  if (!currencyHasMultipleAmounts(costs)) return;
+
+  currencyLoseMultiple(costs);
+
   location.locationUpgrades ??= {};
   location.locationUpgrades[upgrade.id] =
     (location.locationUpgrades[upgrade.id] ?? 0) + 1;
-
-  const costs = locationUpgradeCosts(location, upgrade);
-  currencyLoseMultiple(costs);
 
   if (upgrade.boostedUnclaimableCount) {
     location.unclaimTime = -1;

@@ -52,3 +52,7 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 ## Interfaces
 
 - Put all interfaces in the relevant file in `src/app/interfaces`. Do NOT export interfaces from services or components.
+
+## JavaScript Fundamentals
+
+- Do NOT use `Array.sort()`, instead prefer `es-toolkit/compat`->`sortBy`.

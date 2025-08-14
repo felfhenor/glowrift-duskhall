@@ -656,7 +656,10 @@ export async function worldgenGenerateWorld(
       y: firstTown.y,
     },
     nodeCounts: counts,
-    claimedCounts: defaultNodeCountBlock(),
+    claimedCounts: {
+      ...defaultNodeCountBlock(),
+      town: 1,
+    },
   };
 }
 

@@ -5,7 +5,6 @@ import { CardPageComponent } from '@components/card-page/card-page.component';
 import { PanelTownAcademyComponent } from '@components/panel-town-academy/panel-town-academy.component';
 import { PanelTownAlchemistComponent } from '@components/panel-town-alchemist/panel-town-alchemist.component';
 import { PanelTownBlacksmithComponent } from '@components/panel-town-blacksmith/panel-town-blacksmith.component';
-import { PanelTownFestivalsComponent } from '@components/panel-town-festivals/panel-town-festivals.component';
 import { PanelTownMarketComponent } from '@components/panel-town-market/panel-town-market.component';
 import { PanelTownMerchantComponent } from '@components/panel-town-merchant/panel-town-merchant.component';
 import { PanelTownRallyPointComponent } from '@components/panel-town-rallypoint/panel-town-rallypoint.component';
@@ -32,7 +31,6 @@ import { TeleportOutletDirective } from '@ngneat/overview';
     PanelTownAcademyComponent,
     TeleportOutletDirective,
     PanelTownAlchemistComponent,
-    PanelTownFestivalsComponent,
     PanelTownSalvagerComponent,
     PanelTownRallyPointComponent,
   ],
@@ -92,12 +90,6 @@ export class PanelTownComponent {
       link: 'Rally Point',
       showIf: computed(() => true),
       level: computed(() => townBuildingLevel('Rally Point')),
-    },
-    {
-      name: 'Festivals',
-      link: 'Festivals',
-      showIf: computed(() => true),
-      level: computed(() => 0),
     },
   ];
 
