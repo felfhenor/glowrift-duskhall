@@ -215,8 +215,8 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       this.checkTexture = claimTextures.checkTexture;
       this.xTexture = claimTextures.xTexture;
       
-      // Create fog texture
-      this.fogTexture = pixiTextureFogCreate(32, 0.7);
+      // Create fog texture with 64x64 size and higher opacity
+      this.fogTexture = pixiTextureFogCreate(64, 0.8);
     } catch (error) {
       this.loggerService.error('Failed to load textures:', error);
     }
@@ -364,10 +364,11 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     if (!fogIsPositionRevealed(worldX, worldY)) {
       const fogSprite = new Sprite(this.fogTexture);
       
-      fogSprite.x = x * 32;
-      fogSprite.y = y * 32;
-      fogSprite.width = 32;
-      fogSprite.height = 32;
+      // Use 64x64 to match the tile size
+      fogSprite.x = x * 64;
+      fogSprite.y = y * 64;
+      fogSprite.width = 64;
+      fogSprite.height = 64;
       
       this.fogContainer.addChild(fogSprite);
     }
