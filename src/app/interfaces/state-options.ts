@@ -9,6 +9,7 @@ export type GameOption =
   | 'debugMapNodePositions'
   | 'debugGameloopTimerUpdates'
   | 'debugAllowBackgroundOperations'
+  | 'debugDisableFogOfWar'
   | 'audioPlay'
   | 'gameloopPaused'
   | 'canSendNotifications';

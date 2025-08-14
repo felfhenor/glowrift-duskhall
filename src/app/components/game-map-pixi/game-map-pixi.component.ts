@@ -137,6 +137,15 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
         this.updateFogForViewport();
       }
     });
+
+    // Effect to watch for debug fog of war option changes
+    effect(() => {
+      getOption('debugDisableFogOfWar'); // Watch debug option changes
+
+      if (this.app && this.fogContainer && this.fogTexture) {
+        this.updateFogForViewport();
+      }
+    });
   }
 
   async ngOnInit() {
@@ -374,6 +383,12 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
 
   private updateFogForViewport() {
     if (!this.fogContainer || !this.fogTexture) return;
+    
+    // If fog of war is disabled in debug options, clear all fog and return
+    if (getOption('debugDisableFogOfWar')) {
+      this.fogContainer.removeChildren();
+      return;
+    }
 
     // Clear all existing fog sprites
     this.fogContainer.removeChildren();
@@ -388,6 +403,9 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
 
   private createFogSprite(x: number, y: number) {
     if (!this.fogContainer || !this.fogTexture) return;
+
+    // If fog of war is disabled in debug options, don't create fog sprites
+    if (getOption('debugDisableFogOfWar')) return;
 
     const camera = this.camera();
     const worldX = Math.floor(camera.x) + x;
