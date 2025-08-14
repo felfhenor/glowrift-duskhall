@@ -1,7 +1,4 @@
-import {
-  festivalCheckExpirations,
-  festivalMaybeStartNew,
-} from '@helpers/festival';
+import { festivalMaybeStartNew } from '@helpers/festival';
 import { updateGamestate } from '@helpers/state-game';
 
 export function gameloopFestival(numTicks: number): void {
@@ -10,6 +7,5 @@ export function gameloopFestival(numTicks: number): void {
     return state;
   });
 
-  festivalCheckExpirations();
   festivalMaybeStartNew();
 }

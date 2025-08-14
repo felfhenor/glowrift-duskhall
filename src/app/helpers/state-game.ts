@@ -9,6 +9,7 @@ import {
   defaultPosition,
   defaultWorldConfig,
 } from '@helpers/defaults';
+import { error } from '@helpers/logging';
 import { rngUuid } from '@helpers/rng';
 import { localStorageSignal } from '@helpers/signal';
 import { type GameId, type GameState } from '@interfaces';
@@ -116,12 +117,31 @@ export function setGameState(state: GameState): void {
 export function updateGamestate(func: (state: GameState) => GameState): void {
   const uncommitted = uncommittedGamestate();
   if (uncommitted) {
-    uncommittedGamestate.set(func(uncommitted));
+    const res = func(uncommitted);
+    if (!res) {
+      error(
+        'GameState:Update',
+        `Failed to update game state. Would be set to a falsy value.`,
+        new Error().stack,
+      );
+      return;
+    }
+
+    uncommittedGamestate.set(res);
     return;
   }
 
-  const newState = func(__backingGamestate());
-  setGameState(newState);
+  const res = func(__backingGamestate());
+  if (!res) {
+    error(
+      'GameState:Update',
+      `Failed to update game state. Would be set to a falsy value.`,
+      new Error().stack,
+    );
+    return;
+  }
+
+  setGameState(res);
 }
 
 export function myGameId(): GameId {

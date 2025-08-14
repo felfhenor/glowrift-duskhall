@@ -2,9 +2,11 @@ import { rngUuid } from '@helpers/rng';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { locationGet, locationUnclaim } from '@helpers/world-location';
 import type {
+  FestivalId,
   Timer,
   TimerAction,
   TimerData,
+  TimerEndFestival,
   TimerId,
   TimerUnclaimVillage,
   WorldLocation,
@@ -80,12 +82,21 @@ export function timerActionDo(actions: Timer[], atTime: number): void {
 }
 
 function timerActionDoSingular(action: Timer) {
-  const actions: Record<TimerAction, (action: Timer) => void> = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const actions: Record<TimerAction, (action: any) => void> = {
     UNKNOWN: () => {},
     UnclaimVillage: timerUnclaimVillage,
+    EndFestival: timerEndFestival,
   };
 
   actions[action.type](action);
+}
+
+export function timerEndFestival(action: TimerEndFestival): void {
+  updateGamestate((state) => {
+    delete state.festival.festivals[action.festivalId];
+    return state;
+  });
 }
 
 export function timerUnclaimVillage(action: TimerUnclaimVillage): void {
@@ -123,6 +134,19 @@ export function timerAddUnclaimAction(
   );
 }
 
+export function timerAddFestivalEndAction(
+  festivalId: FestivalId,
+  atTicks: number,
+): void {
+  timerActionAdd(
+    {
+      type: 'EndFestival',
+      festivalId,
+    },
+    atTicks,
+  );
+}
+
 export function timerGetUnclaimActionForLocation(
   location: WorldLocation,
 ): TimerUnclaimVillage | undefined {
@@ -130,9 +154,9 @@ export function timerGetUnclaimActionForLocation(
   return timers.find(
     (timer) =>
       timer.type === 'UnclaimVillage' &&
-      timer.location.x === location.x &&
-      timer.location.y === location.y,
-  );
+      (timer as TimerUnclaimVillage).location.x === location.x &&
+      (timer as TimerUnclaimVillage).location.y === location.y,
+  ) as TimerUnclaimVillage;
 }
 
 export function timerRemoveActionById(id: TimerId, tick: number): void {

@@ -1,8 +1,9 @@
-import { clockGetTickTimer, clockIsTimerExpired } from '@helpers/clock';
+import { clockGetTickTimer } from '@helpers/clock';
 import { getEntriesByType, getEntry } from '@helpers/content';
 import { notify } from '@helpers/notify';
 import { rngChoiceRarity, rngSucceedsChance } from '@helpers/rng';
 import { gamestate, updateGamestate } from '@helpers/state-game';
+import { timerAddFestivalEndAction } from '@helpers/timer';
 import type { FestivalContent } from '@interfaces';
 
 export function festivalGetActive(): FestivalContent[] {
@@ -21,13 +22,15 @@ export function festivalStart(festivalId: string): void {
 
   notify(festivalData.description, 'Festival');
 
+  const endsAt = clockGetTickTimer(festivalData.duration);
+
   updateGamestate((state) => {
-    state.festival.festivals[festivalId] = clockGetTickTimer(
-      festivalData.duration,
-    );
+    state.festival.festivals[festivalId] = endsAt;
     state.festival.ticksWithoutFestivalStart = 0;
     return state;
   });
+
+  timerAddFestivalEndAction(festivalData.id, endsAt);
 }
 
 export function festivalStop(festivalId: string): void {
@@ -39,16 +42,6 @@ export function festivalStop(festivalId: string): void {
   updateGamestate((state) => {
     delete state.festival.festivals[festivalId];
     return state;
-  });
-}
-
-export function festivalCheckExpirations(): void {
-  const activeFestivals = gamestate().festival.festivals;
-  const expiredFestivals = Object.keys(activeFestivals).filter((fest) =>
-    clockIsTimerExpired(activeFestivals[fest]),
-  );
-  expiredFestivals.forEach((festivalId) => {
-    festivalStop(festivalId);
   });
 }
 
