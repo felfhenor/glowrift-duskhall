@@ -4,6 +4,7 @@ import {
   gamestate,
   getOption,
   isTraveling,
+  locationGet,
   mapDragSetup,
   pixiAppInitialize,
   pixiGameMapContainersCreate,
@@ -334,15 +335,18 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     const camera = this.camera();
     const worldX = Math.floor(camera.x) + x;
     const worldY = Math.floor(camera.y) + y;
+    
+    // Always get fresh node data to ensure we have the latest claim status
+    const currentNodeData = locationGet(worldX, worldY);
     const isRevealed = fogIsPositionRevealed(worldX, worldY);
 
     const nodeKey = `${x}-${y}`;
     const spriteData = pixiIndicatorNodeSpriteCreate(
       x,
       y,
-      nodeData,
+      currentNodeData,
       tileSprite,
-      spriteGetFromNodeType(nodeData.nodeType),
+      spriteGetFromNodeType(currentNodeData.nodeType),
       this.terrainTextures,
       this.objectTextures,
       this.mapContainer,
