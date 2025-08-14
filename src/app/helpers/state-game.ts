@@ -32,6 +32,7 @@ export function blankGameState(): GameState {
       homeBase: defaultPosition(),
       nodeCounts: defaultNodeCountBlock(),
       claimedCounts: defaultNodeCountBlock(),
+      revealedNodes: [],
     },
     camera: defaultPosition(),
     hero: {

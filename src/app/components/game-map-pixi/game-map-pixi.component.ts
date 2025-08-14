@@ -14,12 +14,14 @@ import {
   pixiIndicatorTravelLineCreate,
   pixiResponsiveCanvasSetup,
   pixiTextureGameMapLoad,
+  pixiTextureFogCreate,
   showLocationMenu,
   spriteGetForPosition,
   spriteGetFromNodeType,
   travelVisualizationProgress,
   worldClearNodeChanges,
   worldGetNodeChanges,
+  fogIsPositionRevealed,
 } from '@helpers';
 import type { MapTileData, WorldLocation } from '@interfaces';
 import type { NodeSpriteData } from '@interfaces/sprite';
@@ -28,6 +30,7 @@ import { ContentService } from '@services/content.service';
 import { LoggerService } from '@services/logger.service';
 import { MapStateService } from '@services/map-state.service';
 import type { Application, Container, Texture } from 'pixi.js';
+import { Sprite } from 'pixi.js';
 
 @Component({
   selector: 'app-game-map-pixi',
@@ -45,11 +48,13 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
 
   private app?: Application;
   private mapContainer?: Container;
+  private fogContainer?: Container;
   private terrainTextures: LoadedTextures = {};
   private objectTextures: LoadedTextures = {};
   private heroTextures: LoadedTextures = {};
   private checkTexture?: Texture;
   private xTexture?: Texture;
+  private fogTexture?: Texture;
   private nodeSprites: Record<string, NodeSpriteData> = {};
   private playerIndicatorContainer?: Container;
   private travelVisualizationContainer?: Container;
@@ -151,6 +156,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
 
     const containers = pixiGameMapContainersCreate(this.app);
     this.mapContainer = containers.mapContainer;
+    this.fogContainer = containers.fogContainer;
     this.playerIndicatorContainer = containers.playerIndicatorContainer;
     this.travelVisualizationContainer = containers.travelVisualizationContainer;
     this.mapContainer.cullable = true;
@@ -167,6 +173,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     if (
       !this.app ||
       !this.mapContainer ||
+      !this.fogContainer ||
       !this.playerIndicatorContainer ||
       !this.travelVisualizationContainer
     )
@@ -176,6 +183,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       app: this.app,
       containers: [
         this.mapContainer,
+        this.fogContainer,
         this.playerIndicatorContainer,
         this.travelVisualizationContainer,
       ],
@@ -206,13 +214,16 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       const claimTextures = pixiIconTextureClaimCreate();
       this.checkTexture = claimTextures.checkTexture;
       this.xTexture = claimTextures.xTexture;
+      
+      // Create fog texture
+      this.fogTexture = pixiTextureFogCreate(32, 0.7);
     } catch (error) {
       this.loggerService.error('Failed to load textures:', error);
     }
   }
 
   private updateMap(mapData: MapTileData[][]) {
-    if (!this.mapContainer || !this.playerIndicatorContainer) return;
+    if (!this.mapContainer || !this.playerIndicatorContainer || !this.fogContainer) return;
 
     // Clean up previous player indicator before clearing container
     if (this.playerIndicatorCleanup) {
@@ -221,12 +232,14 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     }
 
     this.mapContainer.removeChildren();
+    this.fogContainer.removeChildren();
     this.playerIndicatorContainer.removeChildren();
     this.nodeSprites = {};
 
     mapData.forEach((row) => {
       row.forEach(({ x, y, nodeData, tileSprite }) => {
         this.createNodeSprites(x, y, nodeData, tileSprite);
+        this.createFogSprite(x, y);
       });
     });
   }
@@ -303,6 +316,11 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
   ) {
     if (!this.mapContainer) return;
 
+    const camera = this.camera();
+    const worldX = Math.floor(camera.x) + x;
+    const worldY = Math.floor(camera.y) + y;
+    const isRevealed = fogIsPositionRevealed(worldX, worldY);
+
     const nodeKey = `${x}-${y}`;
     const spriteData = pixiIndicatorNodeSpriteCreate(
       x,
@@ -315,12 +333,43 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       this.mapContainer,
       this.checkTexture,
       this.xTexture,
-      (nodeData: WorldLocation) => this.investigateLocation(nodeData),
+      isRevealed ? (nodeData: WorldLocation) => this.investigateLocation(nodeData) : undefined,
       this.debugMapNodePositions(),
     );
 
     if (spriteData) {
+      // Disable interactivity for unrevealed nodes
+      if (!isRevealed && spriteData.object) {
+        spriteData.object.interactive = false;
+        spriteData.object.cursor = 'default';
+      }
+
+      // Hide level indicator for unrevealed nodes
+      if (!isRevealed && spriteData.levelIndicator) {
+        spriteData.levelIndicator.visible = false;
+      }
+
       this.nodeSprites[nodeKey] = spriteData;
+    }
+  }
+
+  private createFogSprite(x: number, y: number) {
+    if (!this.fogContainer || !this.fogTexture) return;
+
+    const camera = this.camera();
+    const worldX = Math.floor(camera.x) + x;
+    const worldY = Math.floor(camera.y) + y;
+
+    // Only render fog if the position is not revealed
+    if (!fogIsPositionRevealed(worldX, worldY)) {
+      const fogSprite = new Sprite(this.fogTexture);
+      
+      fogSprite.x = x * 32;
+      fogSprite.y = y * 32;
+      fogSprite.width = 32;
+      fogSprite.height = 32;
+      
+      this.fogContainer.addChild(fogSprite);
     }
   }
 

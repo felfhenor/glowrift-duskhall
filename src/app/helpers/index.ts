@@ -29,6 +29,7 @@ export * from './festival';
 export * from './festival-combat';
 export * from './festival-exploration';
 export * from './festival-production';
+export * from './fog-of-war';
 export * from './game-init';
 export * from './gameloop';
 export * from './gameloop-autotravel';

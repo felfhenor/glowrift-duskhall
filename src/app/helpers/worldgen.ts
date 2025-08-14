@@ -660,6 +660,7 @@ export async function worldgenGenerateWorld(
       ...defaultNodeCountBlock(),
       town: 1,
     },
+    revealedNodes: [worldNodeGetAccessId(firstTown)],
   };
 }
 
