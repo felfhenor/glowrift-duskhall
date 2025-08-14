@@ -127,6 +127,15 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
         this.updatePlayerIndicators();
       }
     });
+
+    // Separate effect for fog updates when camera changes
+    effect(() => {
+      this.camera(); // Watch camera changes
+
+      if (this.app && this.fogContainer && this.fogTexture) {
+        this.updateFogForViewport();
+      }
+    });
   }
 
   async ngOnInit() {
