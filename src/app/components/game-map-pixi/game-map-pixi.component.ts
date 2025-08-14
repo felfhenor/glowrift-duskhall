@@ -249,7 +249,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     worldY: number,
     updatedNode: WorldLocation,
   ) {
-    if (!this.mapContainer) return;
+    if (!this.mapContainer || !this.fogContainer) return;
 
     const camera = this.camera();
     const relativeX = worldX - Math.floor(camera.x);
@@ -305,6 +305,12 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       // Get the correct tile sprite for this world position
       const tileSprite = spriteGetForPosition(worldX, worldY);
       this.createNodeSprites(relativeX, relativeY, updatedNode, tileSprite);
+      
+      // When a node's claimed status changes, we need to refresh fog for the entire visible area
+      // because this node might now reveal or hide areas due to its revelation radius
+      if (updatedNode.currentlyClaimed !== undefined) {
+        this.updateFogForViewport();
+      }
     }
   }
 
@@ -350,6 +356,20 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       }
 
       this.nodeSprites[nodeKey] = spriteData;
+    }
+  }
+
+  private updateFogForViewport() {
+    if (!this.fogContainer || !this.fogTexture) return;
+
+    // Clear all existing fog sprites
+    this.fogContainer.removeChildren();
+    
+    // Recreate fog sprites for the entire viewport
+    for (let x = 0; x < this.nodeWidth(); x++) {
+      for (let y = 0; y < this.nodeHeight(); y++) {
+        this.createFogSprite(x, y);
+      }
     }
   }
 
