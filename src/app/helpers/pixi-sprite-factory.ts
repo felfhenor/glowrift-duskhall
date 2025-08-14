@@ -1,4 +1,5 @@
 import { worldNodeGetHighestLootRarity } from '@helpers/world';
+import { locationLevel } from '@helpers/world-location';
 import type { WorldLocation } from '@interfaces';
 import type { DropRarity } from '@interfaces/droppable';
 import type { NodeSpriteData } from '@interfaces/sprite';
@@ -52,6 +53,40 @@ export function pixiIndicatorNodeLevelCreate(
   levelText.cullable = true;
 
   return levelText;
+}
+
+/**
+ * Creates a node level indicator sprite showing the upgrade level of the location
+ * @param x Grid x position
+ * @param y Grid y position
+ * @param location World location data
+ * @returns Text sprite for the level indicator
+ */
+export function pixiIndicatorNodeUpgradeLevelCreate(
+  x: number,
+  y: number,
+  upgradeLevel: number,
+): Text {
+  const pixelX = x * 64;
+  const pixelY = y * 64;
+
+  const upgradeText = new Text({
+    text: `+${upgradeLevel}`,
+    style: {
+      fontSize: 12,
+      fill: '#16a34a',
+      fontFamily: 'Arial',
+      fontWeight: 'bold',
+      stroke: { color: 0x000000, width: 1 }, // Black outline for better visibility
+    },
+  });
+
+  // Position text at bottom right of tile
+  upgradeText.x = pixelX + 64 - 22;
+  upgradeText.y = pixelY + 64 - 22; // 14px from bottom for 12px font
+  upgradeText.cullable = true;
+
+  return upgradeText;
 }
 
 /**
@@ -117,7 +152,13 @@ export function pixiIndicatorNodeSpriteCreate(
     }
   }
 
-  if (objectSprite && checkTexture && xTexture) {
+  const upgradeLevel = locationLevel(nodeData);
+  if (
+    objectSprite &&
+    checkTexture &&
+    xTexture &&
+    (upgradeLevel === 0 || !nodeData.currentlyClaimed)
+  ) {
     const claimIndicator = pixiInidicatorNodeClaimCreate(
       nodeData.currentlyClaimed,
       x,
@@ -128,6 +169,17 @@ export function pixiIndicatorNodeSpriteCreate(
     claimIndicator.cullable = true;
     mapContainer.addChild(claimIndicator);
     spriteData.claimIndicator = claimIndicator;
+  }
+
+  // Add upgrade level indicator if it makes sense to
+  if (nodeData.currentlyClaimed && upgradeLevel >= 1) {
+    const upgradeIndicator = pixiIndicatorNodeUpgradeLevelCreate(
+      x,
+      y,
+      upgradeLevel,
+    );
+    mapContainer.addChild(upgradeIndicator);
+    spriteData.upgradeIndicator = upgradeIndicator;
   }
 
   // Add level indicator showing encounter level with rarity-based color

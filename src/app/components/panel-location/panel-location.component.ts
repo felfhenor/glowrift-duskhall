@@ -1,15 +1,16 @@
 import { DecimalPipe, TitleCasePipe } from '@angular/common';
-import { Component, computed, input } from '@angular/core';
+import { Component, computed } from '@angular/core';
 import { AtlasImageComponent } from '@components/atlas-image/atlas-image.component';
+import { BlankSlateComponent } from '@components/blank-slate/blank-slate.component';
 import { ButtonCloseComponent } from '@components/button-close/button-close.component';
 import { CardPageComponent } from '@components/card-page/card-page.component';
 import { CountdownComponent } from '@components/countdown/countdown.component';
 import { IconItemComponent } from '@components/icon-currency/icon-currency.component';
 import { IconElementComponent } from '@components/icon-element/icon-element.component';
 import { IconComponent } from '@components/icon/icon.component';
-import { LocationClaimProgressTextComponent } from '@components/location-claim-progress-text/location-claim-progress-text.component';
 import { LocationGuardianDisplayComponent } from '@components/location-guardian-display/location-guardian-display.component';
 import { LocationLootDisplayComponent } from '@components/location-loot-display/location-loot-display.component';
+import { LocationUpgradeDisplayComponent } from '@components/location-upgrade-display/location-upgrade-display.component';
 import { MarkerLocationClaimComponent } from '@components/marker-location-claim/marker-location-claim.component';
 import { MarkerLocationTraitComponent } from '@components/marker-location-trait/marker-location-trait.component';
 import {
@@ -19,19 +20,24 @@ import {
   guardianCreateForLocation,
   heroAreAllDead,
   isTravelingToNode,
+  locationAvailableUpgrades,
+  locationEncounterLevel,
+  locationLevel,
+  locationLootLevel,
+  locationMaxLevel,
   showLocationMenu,
   spriteGetFromNodeType,
   timerTicksElapsed,
   travelIsAtNode,
   travelTimeFromCurrentLocationTo,
   travelToNode,
+  worldNodeGet,
 } from '@helpers';
 import type { TraitLocationContent } from '@interfaces';
 import {
   type DroppableEquippable,
   type GameCurrency,
   type Guardian,
-  type WorldLocation,
 } from '@interfaces';
 import { sortBy } from 'es-toolkit/compat';
 
@@ -45,19 +51,27 @@ import { sortBy } from 'es-toolkit/compat';
     TitleCasePipe,
     DecimalPipe,
     CountdownComponent,
-    LocationClaimProgressTextComponent,
     LocationGuardianDisplayComponent,
     LocationLootDisplayComponent,
     IconItemComponent,
     IconElementComponent,
     MarkerLocationTraitComponent,
     ButtonCloseComponent,
+    BlankSlateComponent,
+    LocationUpgradeDisplayComponent,
   ],
   templateUrl: './panel-location.component.html',
   styleUrl: './panel-location.component.scss',
 })
 export class PanelLocationComponent {
-  public location = input.required<WorldLocation>();
+  public location = computed(() => {
+    const nodePosition = showLocationMenu();
+    const worldCenter = gamestate().world.homeBase;
+
+    if (!nodePosition) return worldNodeGet(worldCenter.x, worldCenter.y);
+
+    return worldNodeGet(nodePosition?.x, nodePosition?.y);
+  });
 
   public objectSprite = computed(() =>
     spriteGetFromNodeType(this.location().nodeType),
@@ -80,9 +94,11 @@ export class PanelLocationComponent {
   public isTravelingToThisNode = computed(() =>
     isTravelingToNode(this.location()),
   );
+
   public travelTimeRemaining = computed(
     () => gamestate().hero.travel.ticksLeft,
   );
+
   public isAtThisNode = computed(() => travelIsAtNode(this.location()));
 
   public canTravelToThisNode = computed(
@@ -119,6 +135,16 @@ export class PanelLocationComponent {
       'resource',
     );
   });
+
+  public availableUpgrades = computed(() =>
+    locationAvailableUpgrades(this.location()),
+  );
+  public upgradeLevel = computed(() => locationLevel(this.location()));
+  public maxUpgradeLevel = computed(() => locationMaxLevel());
+  public encounterLevel = computed(() =>
+    locationEncounterLevel(this.location()),
+  );
+  public lootLevel = computed(() => locationLootLevel(this.location()));
 
   closeMenu() {
     showLocationMenu.set(undefined);

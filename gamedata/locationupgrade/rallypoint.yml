@@ -1,0 +1,84 @@
+- id: dc031585-1d6f-415d-8017-813688447d67
+  name: Boosted Production
+  description: 'Boost production of all resources at this location by +{value}%.'
+
+  requiresTownUpgradeId: Increased Production
+  appliesToTypes: ['cave', 'dungeon', 'castle', 'village']
+
+  costScalePerTile: 1
+
+  baseCost:
+    Mana: 100
+    Fire Sliver: 20
+    Water Sliver: 20
+    Air Sliver: 20
+    Earth Sliver: 20
+    Fire Shard: 10
+    Water Shard: 10
+    Air Shard: 10
+    Earth Shard: 10
+    Fire Crystal: 5
+    Water Crystal: 5
+    Air Crystal: 5
+    Earth Crystal: 5
+
+  boostedProductionValuePercentPerLevel: 25
+
+- id: ebfff21b-1f3c-41fa-a531-260f9ebaf0d5
+  name: Boosted Stash Quality
+  description: 'Boost the loot generated at this location by +{value} level(s).'
+
+  requiresTownUpgradeId: Stash Quality
+  appliesToTypes: ['cave', 'dungeon', 'castle']
+
+  costScalePerTile: 0.5
+
+  baseCost:
+    Mana: 300
+    Common Dust: 3
+    Uncommon Dust: 2
+    Rare Dust: 1
+
+  boostedLootLevelPerLevel: 1
+
+- id: 0ce28255-0b9d-46bd-8d31-ef93c0f84f14
+  name: Boosted Evil Resistance
+  description: 'Boost the auto-unclaim time at this location by +{value} ticks.'
+
+  requiresTownUpgradeId: Evil Resistance
+  appliesToTypes: ['cave', 'dungeon', 'castle', 'village']
+
+  costScalePerTile: 3
+
+  baseCost:
+    Mana: 300
+    Soul Essence: 200
+
+  boostedTicksPerLevel: 30
+
+- id: 41d6d427-cbe8-4583-8754-2631c2ca8f48
+  name: Nullify Evil
+  description: 'Make this location immune to auto-unclaiming.'
+
+  requiresTownUpgradeId: Evil Resistance
+  appliesToTypes: ['town']
+
+  costScalePerTile: 1
+
+  baseCost:
+    Mana: 1000000
+    Fire Sliver: 500
+    Water Sliver: 500
+    Air Sliver: 500
+    Earth Sliver: 500
+    Fire Shard: 100
+    Water Shard: 100
+    Air Shard: 100
+    Earth Shard: 100
+    Fire Crystal: 50
+    Water Crystal: 50
+    Air Crystal: 50
+    Earth Crystal: 50
+    Soul Essence: 100000
+
+  boostedUnclaimableCount: 1

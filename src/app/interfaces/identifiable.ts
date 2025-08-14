@@ -12,7 +12,9 @@ export type ContentType =
   | 'talent'
   | 'talenttree'
   | 'traitequipment'
-  | 'traitlocation';
+  | 'traitlocation'
+  | 'townupgrade'
+  | 'locationupgrade';
 
 export interface Identifiable {
   id: string;

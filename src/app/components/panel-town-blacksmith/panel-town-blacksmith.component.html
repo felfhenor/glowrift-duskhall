@@ -66,16 +66,10 @@
                   chosen.name
                 }}"
               >
-                {{ path.path.description }}
-
-                <div class="flex flex-row gap-2">
-                  @for (currency of path.costs; track $index) {
-                    <app-marker-currency-inline
-                      [currency]="currency"
-                      [value]="path.path.cost[currency]"
-                    ></app-marker-currency-inline>
-                  }
-                </div>
+                <app-button-cost-list
+                  [label]="path.path.description"
+                  [currencies]="path.path.cost"
+                ></app-button-cost-list>
               </button>
             </li>
           }

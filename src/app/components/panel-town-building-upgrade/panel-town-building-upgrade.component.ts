@@ -47,6 +47,7 @@ export class PanelTownBuildingUpgradeComponent {
       Market: `Market gives ${Math.floor(marketCurrencyBonus() * 100)}% more currency per exchange.`,
       Merchant: `Merchant has ${merchantMaxItems()} items for sale. Items can be up to level ${merchantMaxItemLevel()}. Items have a ${merchantTraitChance()}% chance to have a special trait.`,
       Salvager: `Salvager can salvage up to ${salvagerItemsMax()} items simultaneously. Items salvage for ${salvagerCurrencyMultiplier()}x value.`,
+      'Rally Point': `Rally Point allows captured locations to be upgraded to +${townBuildingLevel('Rally Point')}.`,
     };
 
     return upgradeReasons[this.building()];

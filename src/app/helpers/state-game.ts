@@ -79,11 +79,13 @@ export function blankGameState(): GameState {
         Market: 1,
         Merchant: 1,
         Salvager: 1,
+        'Rally Point': 1,
       },
       merchant: {
         soldItems: [],
         ticksUntilRefresh: 0,
       },
+      townUpgrades: {},
     },
     festival: {
       ticksWithoutFestivalStart: 0,
@@ -92,13 +94,13 @@ export function blankGameState(): GameState {
   };
 }
 
-let uncommittedGamestate: GameState | undefined = undefined;
+const uncommittedGamestate = signal<GameState | undefined>(undefined);
 
 const _gamestate = localStorageSignal<GameState>('gamestate', blankGameState());
 const __backingGamestate: Signal<GameState> = _gamestate.asReadonly();
 
 export function gamestate(): GameState {
-  return uncommittedGamestate ?? __backingGamestate();
+  return uncommittedGamestate() ?? __backingGamestate();
 }
 
 export const isGameStateReady = signal<boolean>(false);
@@ -112,8 +114,9 @@ export function setGameState(state: GameState): void {
 }
 
 export function updateGamestate(func: (state: GameState) => GameState): void {
-  if (uncommittedGamestate) {
-    uncommittedGamestate = func(uncommittedGamestate);
+  const uncommitted = uncommittedGamestate();
+  if (uncommitted) {
+    uncommittedGamestate.set(func(uncommitted));
     return;
   }
 
@@ -126,13 +129,14 @@ export function myGameId(): GameId {
 }
 
 export function beginGameStateCommits(): void {
-  uncommittedGamestate = structuredClone(__backingGamestate());
+  uncommittedGamestate.set(structuredClone(__backingGamestate()));
 }
 
 export function endGameStateCommits(): void {
-  if (uncommittedGamestate) {
-    setGameState(uncommittedGamestate);
+  const uncommitted = uncommittedGamestate();
+  if (uncommitted) {
+    setGameState(uncommitted);
   }
 
-  uncommittedGamestate = undefined;
+  uncommittedGamestate.set(undefined);
 }

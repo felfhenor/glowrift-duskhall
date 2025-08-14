@@ -1,7 +1,8 @@
+import type { LocationUpgradeId } from '@interfaces/content-locationupgrade';
 import type { TraitLocationId } from '@interfaces/content-trait-location';
+import type { LocationType } from '@interfaces/content-worldconfig';
 import type { GameElement } from '@interfaces/element';
 import type { Identifiable } from '@interfaces/identifiable';
-import type { LocationType } from '@interfaces/worldconfig';
 
 export interface QuadtreePoint {
   x: number;
@@ -40,4 +41,6 @@ export type WorldLocation = WorldPosition &
     claimLootIds: string[];
 
     traitIds: TraitLocationId[];
+
+    locationUpgrades: Record<LocationUpgradeId, number>;
   };

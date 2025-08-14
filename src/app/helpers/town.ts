@@ -1,8 +1,17 @@
-import { currencyHasAmount, currencyLose } from '@helpers/currency';
+import {
+  currencyHasAmount,
+  currencyLose,
+  currencyLoseMultiple,
+} from '@helpers/currency';
 import { defaultCurrencyBlock, defaultNodeCountBlock } from '@helpers/defaults';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { worldNodeHasClaimedCount } from '@helpers/world';
-import type { GameCurrency, LocationType, TownBuilding } from '@interfaces';
+import type {
+  GameCurrency,
+  LocationType,
+  TownBuilding,
+  TownUpgradeContent,
+} from '@interfaces';
 
 export function townBuildingLevel(building: TownBuilding): number {
   return gamestate().town.buildingLevels[building] ?? 1;
@@ -38,6 +47,11 @@ export function townBuildingUpgradeCost(building: TownBuilding) {
     Salvager: {
       ...defaultNodeCountBlock(),
       dungeon: 1,
+    },
+
+    'Rally Point': {
+      ...defaultNodeCountBlock(),
+      cave: 3,
     },
   };
 
@@ -80,6 +94,15 @@ export function townBuildingUpgradeCost(building: TownBuilding) {
       Mana: 1000,
       'Earth Shard': 3,
     },
+    'Rally Point': {
+      ...defaultCurrencyBlock(),
+      Mana: 10000,
+      'Fire Sliver': 250,
+      'Water Sliver': 250,
+      'Air Sliver': 250,
+      'Earth Sliver': 250,
+      'Soul Essence': 25,
+    },
   };
 
   const currentLevel = townBuildingLevel(building);
@@ -108,6 +131,7 @@ export function townBuildingMaxLevel(building: TownBuilding) {
     Market: 99,
     Merchant: 99,
     Salvager: 99,
+    'Rally Point': 99,
   };
 
   return maxLevels[building] ?? 1;
@@ -150,6 +174,19 @@ export function townUpgradeBuildingLevel(building: TownBuilding): void {
 
   updateGamestate((state) => {
     state.town.buildingLevels[building]++;
+    return state;
+  });
+}
+
+export function townHasUpgrade(upgrade: TownUpgradeContent): boolean {
+  return gamestate().town.townUpgrades[upgrade.id];
+}
+
+export function townBuyUpgrade(upgrade: TownUpgradeContent): void {
+  currencyLoseMultiple(upgrade.cost);
+
+  updateGamestate((state) => {
+    state.town.townUpgrades[upgrade.id] = true;
     return state;
   });
 }

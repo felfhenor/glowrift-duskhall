@@ -1,7 +1,12 @@
-import { defaultAffinities, defaultStats } from '@helpers/defaults';
+import {
+  defaultAffinities,
+  defaultCurrencyBlock,
+  defaultStats,
+} from '@helpers/defaults';
 import type {
   CombatantCombatStats,
   ContentType,
+  CurrencyBlock,
   CurrencyContent,
   ElementBlock,
   EquipmentElement,
@@ -15,6 +20,8 @@ import type {
   GuardianContent,
   GuardianId,
   IsContentItem,
+  LocationUpgradeContent,
+  LocationUpgradeId,
   StatBlock,
   StatusEffectContent,
   StatusEffectId,
@@ -23,6 +30,8 @@ import type {
   TalentId,
   TalentTownStats,
   TalentTreeContent,
+  TownUpgradeContent,
+  TownUpgradeId,
   TraitEquipmentContent,
   TraitEquipmentId,
   TraitLocationContent,
@@ -43,6 +52,8 @@ const initializers: Record<ContentType, (entry: any) => any> = {
   statuseffect: ensureStatusEffect,
   talent: ensureTalent,
   talenttree: ensureTalentTree,
+  townupgrade: ensureTownUpgrade,
+  locationupgrade: ensureLocationUpgrade,
   traitequipment: ensureTraitEquipment,
   traitlocation: ensureTraitLocation,
   worldconfig: ensureWorldConfig,
@@ -56,6 +67,12 @@ function ensureAffinities(
   elementblock: Partial<ElementBlock> = {},
 ): Required<ElementBlock> {
   return Object.assign({}, defaultAffinities(), elementblock);
+}
+
+function ensureCurrencies(
+  currencies: Partial<CurrencyBlock> = {},
+): Required<CurrencyBlock> {
+  return Object.assign({}, defaultCurrencyBlock(), currencies);
 }
 
 function ensureEquipmentElement(
@@ -324,5 +341,40 @@ function ensureTraitEquipment(
     skillIds: traitEquipment.skillIds ?? [],
     traitIds: traitEquipment.traitIds ?? [],
     talentBoosts: (traitEquipment.talentBoosts ?? []).map(ensureTalentBoost),
+  };
+}
+
+function ensureTownUpgrade(
+  townUpgrade: Partial<TownUpgradeContent>,
+): Required<TownUpgradeContent> {
+  return {
+    id: townUpgrade.id ?? ('UNKNOWN' as TownUpgradeId),
+    name: townUpgrade.name ?? 'UNKNOWN',
+    description: townUpgrade.description ?? 'UNKNOWN',
+    __type: 'townupgrade',
+    cost: ensureCurrencies(townUpgrade.cost),
+    levelRequirement: townUpgrade.levelRequirement ?? 1,
+  };
+}
+
+function ensureLocationUpgrade(
+  locationUpgrade: Partial<LocationUpgradeContent>,
+): Required<LocationUpgradeContent> {
+  return {
+    id: locationUpgrade.id ?? ('UNKNOWN' as LocationUpgradeId),
+    name: locationUpgrade.name ?? 'UNKNOWN',
+    description: locationUpgrade.description ?? 'UNKNOWN',
+    __type: 'locationupgrade',
+    requiresTownUpgradeId:
+      locationUpgrade.requiresTownUpgradeId ?? ('UNKNOWN' as TownUpgradeId),
+    appliesToTypes: locationUpgrade.appliesToTypes ?? [],
+
+    costScalePerTile: locationUpgrade.costScalePerTile ?? 1,
+    baseCost: ensureCurrencies(locationUpgrade.baseCost),
+    boostedProductionValuePercentPerLevel:
+      locationUpgrade.boostedProductionValuePercentPerLevel ?? 0,
+    boostedLootLevelPerLevel: locationUpgrade.boostedLootLevelPerLevel ?? 0,
+    boostedTicksPerLevel: locationUpgrade.boostedTicksPerLevel ?? 0,
+    boostedUnclaimableCount: locationUpgrade.boostedUnclaimableCount ?? 0,
   };
 }

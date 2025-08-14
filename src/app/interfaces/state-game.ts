@@ -2,13 +2,17 @@ import type { Combat } from '@interfaces/combat';
 import type { CurrencyBlock } from '@interfaces/content-currency';
 import type { EquipmentItem } from '@interfaces/content-equipment';
 import type { EquipmentSkill } from '@interfaces/content-skill';
+import type { TownUpgradeId } from '@interfaces/content-townupgrade';
+import type {
+  LocationType,
+  WorldConfigContent,
+} from '@interfaces/content-worldconfig';
 import type { DropRarity } from '@interfaces/droppable';
 import type { Hero, HeroRiskTolerance } from '@interfaces/hero';
 import type { Branded } from '@interfaces/identifiable';
 import type { Timer } from '@interfaces/timer';
 import type { TownBuilding } from '@interfaces/town';
 import type { WorldLocation, WorldPosition } from '@interfaces/world';
-import type { LocationType, WorldConfigContent } from '@interfaces/worldconfig';
 
 export type GameId = Branded<string, 'GameId'>;
 
@@ -81,6 +85,7 @@ export interface GameStateTownMerchant {
 export interface GameStateTown {
   buildingLevels: Record<TownBuilding, number>;
   merchant: GameStateTownMerchant;
+  townUpgrades: Record<TownUpgradeId, boolean>;
 }
 
 export interface GameStateFestival {

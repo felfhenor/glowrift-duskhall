@@ -1,8 +1,5 @@
 import { getEntry } from '@helpers/content';
-import {
-  currencyClaimsGetForNode,
-  currencyClaimsMerge,
-} from '@helpers/currency';
+import { currencyClaimsGain, currencyClaimsLose } from '@helpers/currency';
 import { defaultWorldNode } from '@helpers/defaults';
 import { discordUpdateStatus } from '@helpers/discord';
 import { droppableGain, droppableMakeReal } from '@helpers/droppable';
@@ -10,11 +7,12 @@ import { itemElementAdd, itemIsEquipment } from '@helpers/item';
 import { distanceBetweenNodes } from '@helpers/math';
 import { notify } from '@helpers/notify';
 import { gamestate, updateGamestate } from '@helpers/state-game';
-import { timerActionAdd, timerGetRegisterTick } from '@helpers/timer';
+import { timerAddUnclaimAction, timerGetRegisterTick } from '@helpers/timer';
 import {
   worldNotifyClaim,
   worldNotifyUnclaimed,
 } from '@helpers/world-change-notifications';
+import { locationClaimDuration } from '@helpers/world-location';
 import {
   worldgenGuardiansForLocation,
   worldgenLootForLocation,
@@ -23,12 +21,12 @@ import type {
   DropRarity,
   DroppableEquippable,
   EquipmentItemContent,
-  GameCurrency,
   GameId,
   GameStateWorld,
   LocationType,
   WorldConfigContent,
   WorldLocation,
+  WorldPosition,
 } from '@interfaces';
 import { isNumber, sortBy } from 'es-toolkit/compat';
 
@@ -43,6 +41,10 @@ const RARITY_PRIORITY: Record<DropRarity, number> = {
   Legendary: 5,
   Unique: 6,
 };
+
+export function worldNodeGetAccessId(node: WorldPosition): string {
+  return `${node.x},${node.y}`;
+}
 
 export function worldMaxDistance(): number {
   const state = gamestate();
@@ -187,7 +189,7 @@ export function worldGetNodesMatchingPreferences(
 
   // Then sort them so that "too hard" nodes come last (de-prioritized)
   return sortBy(sortedByRarity, (node) => {
-    const nodeId = `${node.x},${node.y}`;
+    const nodeId = worldNodeGetAccessId(node);
     return tooHardNodes.includes(nodeId) ? 1 : 0;
   });
 }
@@ -220,22 +222,11 @@ export function worldNodeRewardsGain(node: WorldLocation): void {
 export function worldNodeClaim(node: WorldLocation): void {
   if (node.currentlyClaimed) return;
 
-  const claims = currencyClaimsGetForNode(node);
-  currencyClaimsMerge(claims);
+  currencyClaimsGain(node);
 
-  const claimDuration = (100 - node.encounterLevel) * 25;
-  if (node.nodeType !== 'town') {
-    timerActionAdd(
-      {
-        location: {
-          x: node.x,
-          y: node.y,
-        },
-        type: 'UnclaimVillage',
-      },
-      claimDuration,
-    );
-  }
+  const claimDuration = locationClaimDuration(node);
+  const unclaimTime = timerGetRegisterTick(claimDuration);
+  timerAddUnclaimAction(node, unclaimTime);
 
   updateGamestate((state) => {
     const updateNodeData = worldNodeGet(node.x, node.y, state);
@@ -245,9 +236,7 @@ export function worldNodeClaim(node: WorldLocation): void {
       updateNodeData.guardianIds = [];
       updateNodeData.claimLootIds = [];
 
-      if (updateNodeData.nodeType !== 'town') {
-        updateNodeData.unclaimTime = timerGetRegisterTick(claimDuration);
-      }
+      updateNodeData.unclaimTime = unclaimTime;
 
       if (updateNodeData.nodeType) {
         state.world.claimedCounts[updateNodeData.nodeType]++;
@@ -264,16 +253,9 @@ export function worldNodeClaim(node: WorldLocation): void {
 }
 
 export function worldNodeUnclaim(node: WorldLocation): void {
-  const claims = currencyClaimsGetForNode(node);
-  Object.keys(claims).forEach(
-    (currencyKey) =>
-      (claims[currencyKey as GameCurrency] =
-        -claims[currencyKey as GameCurrency]),
-  );
+  currencyClaimsLose(node);
 
   notify(`${node.name} was lost!`, 'LocationClaim');
-
-  currencyClaimsMerge(claims);
 
   updateGamestate((state) => {
     const updateNodeData = worldNodeGet(node.x, node.y, state);

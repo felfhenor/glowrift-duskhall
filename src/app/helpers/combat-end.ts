@@ -14,6 +14,7 @@ import { travelHome } from '@helpers/travel';
 import {
   worldNodeAddTooHard,
   worldNodeGet,
+  worldNodeGetAccessId,
   worldNodeRewardsGain,
 } from '@helpers/world';
 import type {
@@ -115,7 +116,7 @@ export function combatHandleDefeat(combat: Combat): void {
   updateHeroHealthAfterCombat(combat);
 
   // Track this node as too hard for now
-  const currentNodeId = `${combat.locationPosition.x},${combat.locationPosition.y}`;
+  const currentNodeId = worldNodeGetAccessId(combat.locationPosition);
   worldNodeAddTooHard(currentNodeId);
 
   travelHome();

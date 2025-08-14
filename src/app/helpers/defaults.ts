@@ -181,6 +181,7 @@ export function defaultWorldNode(x = -1, y = -1): WorldLocation {
     claimLootIds: [],
     unclaimTime: 0,
     traitIds: [],
+    locationUpgrades: {},
   };
 }
 

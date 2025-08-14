@@ -86,6 +86,7 @@ function fixSchema(schema: any): any {
         'debuffIgnoreChance',
         'damageReflectPercent',
       ];
+      const costKeys = ['cost'];
 
       if (statBlockKeys.includes(key)) {
         if (
@@ -112,6 +113,20 @@ function fixSchema(schema: any): any {
           processedValue.title = key;
           processedValue.description =
             'Element block - you can specify any combination of Fire, Water, Earth, and Air values';
+        }
+      }
+
+      if (costKeys.includes(key)) {
+        if (
+          processedValue &&
+          processedValue.properties &&
+          processedValue.required
+        ) {
+          // Make all ElementBlock properties optional
+          delete processedValue.required;
+          processedValue.title = key;
+          processedValue.description =
+            'Currency block - you can specify any combination of currency values';
         }
       }
 
@@ -339,9 +354,11 @@ const program = TJS.getProgramFromFiles(
     path.resolve(__dirname, '../src/app/interfaces/content-guardian.ts'),
     path.resolve(__dirname, '../src/app/interfaces/content-festival.ts'),
     path.resolve(__dirname, '../src/app/interfaces/content-talenttree.ts'),
+    path.resolve(__dirname, '../src/app/interfaces/content-locationupgrade.ts'),
+    path.resolve(__dirname, '../src/app/interfaces/content-townupgrade.ts'),
     path.resolve(__dirname, '../src/app/interfaces/content-trait-equipment.ts'),
     path.resolve(__dirname, '../src/app/interfaces/content-trait-location.ts'),
-    path.resolve(__dirname, '../src/app/interfaces/worldconfig.ts'),
+    path.resolve(__dirname, '../src/app/interfaces/content-worldconfig.ts'),
   ],
   {
     strictNullChecks: false, // Disabled to handle complex types
@@ -373,6 +390,8 @@ const contentTypeMap = {
   guardian: 'GuardianContent',
   festival: 'FestivalContent',
   talenttree: 'TalentTreeContent',
+  townupgrade: 'TownUpgradeContent',
+  locationupgrade: 'LocationUpgradeContent',
   traitequipment: 'TraitEquipmentContent',
   traitlocation: 'TraitLocationContent',
   worldconfig: 'WorldConfigContent',

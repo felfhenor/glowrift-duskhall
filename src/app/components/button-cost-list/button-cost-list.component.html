@@ -1,0 +1,14 @@
+<div class="flex flex-col gap-2">
+  @if (label(); as label) {
+    <div>{{ label }}</div>
+  }
+
+  <div class="flex flex-row gap-2">
+    @for (currency of currencyList(); track $index) {
+      <app-marker-currency-inline
+        [currency]="currency.currency"
+        [value]="currency.value"
+      ></app-marker-currency-inline>
+    }
+  </div>
+</div>

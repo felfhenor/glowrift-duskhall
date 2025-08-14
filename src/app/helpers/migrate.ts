@@ -2,6 +2,7 @@ import { migrateItems } from '@helpers/migrate-items';
 import { migrateSkills } from '@helpers/migrate-skills';
 import { blankGameState, gamestate, setGameState } from '@helpers/state-game';
 import { defaultOptions, options, setOptions } from '@helpers/state-options';
+import { cleanupOldTimerEntries } from '@helpers/timer';
 import { merge } from 'es-toolkit/compat';
 
 export function migrateGameState() {
@@ -11,6 +12,8 @@ export function migrateGameState() {
 
   migrateItems();
   migrateSkills();
+
+  cleanupOldTimerEntries();
 }
 
 export function migrateOptionsState() {

@@ -31,6 +31,11 @@ import {
   locationTraitGuardianCountModifier,
   locationTraitLootCountModifier,
 } from '@helpers/trait-location-worldgen';
+import { worldNodeGetAccessId } from '@helpers/world';
+import {
+  locationEncounterLevel,
+  locationLootLevel,
+} from '@helpers/world-location';
 import type {
   DropRarity,
   QuadtreePoint,
@@ -372,7 +377,7 @@ function addCornerNodes(
         };
 
         // Add to nodes and update counts
-        nodes[`${position.x},${position.y}`] = cornerNode;
+        nodes[worldNodeGetAccessId(cornerNode)] = cornerNode;
         counts[nodeType]++;
       }
     }
@@ -477,8 +482,8 @@ export async function worldgenGenerateWorld(
 
   const addNode = (node: WorldLocation): void => {
     nodeList.push(node);
-    nodes[`${node.x},${node.y}`] = node;
-    nodePositionsAvailable[`${node.x},${node.y}`].taken = true;
+    nodes[worldNodeGetAccessId(node)] = node;
+    nodePositionsAvailable[worldNodeGetAccessId(node)].taken = true;
     positionQuadtree.updatePoint(node.x, node.y, true);
   };
 
@@ -496,7 +501,7 @@ export async function worldgenGenerateWorld(
   for (let x = 0; x < config.width; x++) {
     for (let y = 0; y < config.height; y++) {
       const position = { x, y, taken: false };
-      nodePositionsAvailable[`${x},${y}`] = position;
+      nodePositionsAvailable[worldNodeGetAccessId(position)] = position;
       positionQuadtree.insert(position);
     }
   }
@@ -664,12 +669,14 @@ function populateLocationWithLoot(location: WorldLocation): void {
 export function worldgenLootForLocation(
   location: WorldLocation,
 ): DroppableEquippable[] {
+  const lootLevel = locationLootLevel(location);
+
   const allValidItemDefinitions = equipmentAllDefinitions().filter(
-    (d) => d.dropLevel <= location.encounterLevel,
+    (d) => d.dropLevel <= lootLevel,
   );
 
   const allValidSkillDefinitions = skillAllDefinitions().filter(
-    (d) => d.dropLevel <= location.encounterLevel,
+    (d) => d.dropLevel <= lootLevel,
   );
 
   const rng = rngSeeded(
@@ -723,8 +730,10 @@ export function worldgenGuardiansForLocation(
     `$${gamestate().gameId}-${location.id}-${location.claimCount}`,
   );
 
+  const encounterLevel = locationEncounterLevel(location);
+
   const validGuardians = getEntriesByType<GuardianContent>('guardian').filter(
-    (g) => g.minLevel <= location.encounterLevel,
+    (g) => g.minLevel <= encounterLevel,
   );
 
   const numGuardians = numGuardiansForLocation(

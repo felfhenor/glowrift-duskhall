@@ -4,6 +4,7 @@ import { festivalProductionMultiplier } from '@helpers/festival-production';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { locationTraitCurrencyAllGenerateModifiers } from '@helpers/trait-location-currency';
 import { worldGetClaimedNodes } from '@helpers/world';
+import { locationUpgradeStatTotal } from '@helpers/world-location';
 import type {
   CurrencyBlock,
   CurrencyContent,
@@ -93,21 +94,33 @@ export function currencyClaimsGetForNode(node: WorldLocation): CurrencyBlock {
     }
 
     case 'village': {
-      base.Mana += 2;
+      base.Mana += 1;
       break;
     }
     case 'town': {
-      base.Mana += 1;
+      base.Mana += 5;
       break;
     }
   }
 
+  // factor in trait modifiers
   const modifiers = locationTraitCurrencyAllGenerateModifiers(node);
   modifiers.forEach((mod) => {
     const currency = getEntry<CurrencyContent>(mod.currencyId);
     if (!currency) return;
 
     base[currency.name] += currency.value;
+  });
+
+  // factor in location upgrades
+  const percentMultiplier =
+    1 +
+    locationUpgradeStatTotal(node, 'boostedProductionValuePercentPerLevel') /
+      100;
+
+  Object.keys(base).forEach((currKey) => {
+    const curr = currKey as GameCurrency;
+    base[curr] *= percentMultiplier;
   });
 
   return base;
@@ -126,6 +139,22 @@ export function currencyClaimsGetUpdated(): CurrencyBlock {
   });
 
   return base;
+}
+
+export function currencyClaimsGain(node: WorldLocation) {
+  const claims = currencyClaimsGetForNode(node);
+  currencyClaimsMerge(claims);
+}
+
+export function currencyClaimsLose(node: WorldLocation) {
+  const claims = currencyClaimsGetForNode(node);
+  Object.keys(claims).forEach(
+    (currencyKey) =>
+      (claims[currencyKey as GameCurrency] =
+        -claims[currencyKey as GameCurrency]),
+  );
+
+  currencyClaimsMerge(claims);
 }
 
 export function currencyClaimsMerge(delta: CurrencyBlock) {

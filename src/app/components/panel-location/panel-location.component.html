@@ -16,10 +16,14 @@
     <div>
       <div>
         {{ locationData.name }}
+
+        @if (upgradeLevel() > 0) {
+          +{{ upgradeLevel() }}
+        }
       </div>
 
       <div class="italic text-sm font-normal">
-        Encounter Level: {{ locationData.encounterLevel }}
+        Encounter Level: {{ encounterLevel() }} | Loot Level: {{ lootLevel() }}
       </div>
     </div>
   </span>
@@ -29,80 +33,33 @@
   </div>
 
   <div class="w-full flex flex-row justify-center mt-4 gap-2 min-h-[24px]">
+    @if (isAtThisNode()) {
+      <div class="badge badge-info">
+        <app-icon name="gameSevenPointedStar" size="1.5em"></app-icon>
+        You are here!
+      </div>
+    }
+
+    @if (locationData.currentlyClaimed) {
+      @if (nodeLostTime() > 0) {
+        <div class="badge badge-warning">
+          <app-countdown
+            [secondsLeft]="nodeLostTime()"
+            label="Node Lost In"
+          ></app-countdown>
+        </div>
+      } @else {
+        <div class="badge badge-success">This node is permanently safe!</div>
+      }
+    }
+
     @for (trait of traits(); track $index) {
       <app-marker-location-trait [trait]="trait"></app-marker-location-trait>
     }
   </div>
 
-  <div class="flex flex-row">
-    <div class="flex flex-2 flex-col gap-2 justify-between">
-      <div>
-        <div class="my-1 text-lg">Guardians ({{ guardians().length }})</div>
-
-        <div class="w-full grid grid-cols-7 max-w-[486px] gap-1">
-          @for (guardian of guardians(); track $index) {
-            <app-location-guardian-display
-              class="w-[68px] h-[68px]"
-              [guardian]="guardian"
-            ></app-location-guardian-display>
-          } @empty {
-            <div class="col-span-3">None</div>
-          }
-        </div>
-      </div>
-
-      <div class="flex flex-col gap-2 mt-2">
-        @if (isAtThisNode()) {
-          <div class="flex gap-2 items-center">
-            <app-icon name="gameSevenPointedStar" size="1.5em"></app-icon>
-            You are here!
-          </div>
-
-          <app-location-claim-progress-text></app-location-claim-progress-text>
-        }
-
-        @if (nodeLostTime() > 0) {
-          <div class="badge badge-warning">
-            <app-countdown
-              [secondsLeft]="nodeLostTime()"
-              label="Node Lost In"
-            ></app-countdown>
-          </div>
-        }
-
-        <button
-          class="btn btn-info btn-block"
-          [disabled]="!canTravelToThisNode()"
-          (click)="travelToThisNode()"
-        >
-          <app-countdown
-            [secondsLeft]="travelTimeSeconds()"
-            [parenthesize]="true"
-            label="Travel"
-          ></app-countdown>
-        </button>
-      </div>
-    </div>
-
-    <div class="h-full flex flex-2 flex-col gap-2">
-      <div>
-        <div class="my-1 text-lg">Loot ({{ loot().length }})</div>
-
-        <div class="w-full grid grid-cols-7 max-w-[486px] gap-1">
-          @for (item of loot(); track $index) {
-            <div>
-              <app-location-loot-display
-                [loot]="item"
-              ></app-location-loot-display>
-            </div>
-          } @empty {
-            <div class="col-span-3">None</div>
-          }
-        </div>
-      </div>
-    </div>
-
-    <div class="h-full flex flex-1 flex-col gap-2">
+  <div class="flex flex-row mt-2 gap-2">
+    <div class="flex flex-1 flex-col gap-2 justify-between">
       <div class="text-lg">Elements Present</div>
 
       @for (el of elements(); track $index) {
@@ -129,6 +86,75 @@
         </div>
       } @empty {
         None
+      }
+
+      <div class="flex flex-col gap-2 mt-2">
+        <button
+          class="btn btn-info btn-block"
+          [disabled]="!canTravelToThisNode()"
+          (click)="travelToThisNode()"
+        >
+          <app-countdown
+            [secondsLeft]="travelTimeSeconds()"
+            [parenthesize]="true"
+            label="Travel"
+          ></app-countdown>
+        </button>
+      </div>
+    </div>
+
+    <div class="h-full flex flex-3 gap-2">
+      @if (locationData.currentlyClaimed) {
+        <div class="flex flex-1 flex-col">
+          <div class="my-1 text-lg">
+            Upgrades (Max Lv.{{ maxUpgradeLevel() }})
+          </div>
+
+          <div class="grid grid-cols-3">
+            @for (upgrade of availableUpgrades(); track $index) {
+              <app-location-upgrade-display
+                class="col-span-1"
+                [location]="locationData"
+                [upgrade]="upgrade"
+              ></app-location-upgrade-display>
+            } @empty {
+              <app-blank-slate class="!h-48 col-span-3">
+                No upgrades unlocked for this node.
+              </app-blank-slate>
+            }
+          </div>
+        </div>
+      } @else {
+        <div class="flex flex-1 flex-col">
+          <div class="my-1 text-lg">Guardians ({{ guardians().length }})</div>
+
+          <div class="w-full grid grid-cols-7 max-w-[486px] gap-1">
+            @for (guardian of guardians(); track $index) {
+              <app-location-guardian-display
+                class="w-[68px] h-[68px]"
+                [guardian]="guardian"
+              ></app-location-guardian-display>
+            } @empty {
+              <div class="col-span-3">None</div>
+            }
+          </div>
+        </div>
+
+        <div class="flex flex-1 flex-col">
+          <div class="my-1 text-lg">Loot ({{ loot().length }})</div>
+
+          <div class="w-full grid grid-cols-7 max-w-[486px] gap-1">
+            @for (item of loot(); track $index) {
+              <div>
+                <app-location-loot-display
+                  [loot]="item"
+                ></app-location-loot-display>
+              </div>
+            } @empty {
+              <div class="col-span-3">None</div>
+            }
+          </div>
+        </div>
       }
     </div>
   </div>

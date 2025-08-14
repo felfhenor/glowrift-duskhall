@@ -26,7 +26,7 @@ export class StatsItemCompareComponent {
   public leftSideStatDeltas: Signal<StatBlock> = computed(() => ({
     Aura: this.itemAura() - itemStat(this.compareWith(), 'Aura'),
     Force: this.itemForce() - itemStat(this.compareWith(), 'Force'),
-    Health: this.itemHealth() - itemStat(this.item(), 'Health'),
+    Health: this.itemHealth() - itemStat(this.compareWith(), 'Health'),
     Speed: this.itemSpeed() - itemStat(this.compareWith(), 'Speed'),
   }));
 

@@ -1,0 +1,27 @@
+@let upg = upgrade();
+
+<div class="card bg-base-200 foreground shadow-xl">
+  <div class="card-body">
+    <div class="text-lg">{{ upg.name }} ({{ numPurchases() }})</div>
+
+    <p class="min-h-16">{{ description() }}</p>
+
+    @if (canUpgrade()) {
+      <button
+        class="btn btn-neutral"
+        (click)="buyUpgrade()"
+        [disabled]="!hasCurrency()"
+        appAnalyticsClick="Game:Location:Upgrade:{{ upg.name }}"
+      >
+        <app-button-cost-list
+          [label]="''"
+          [currencies]="upgradeCost()"
+        ></app-button-cost-list>
+      </button>
+    } @else {
+      <button class="btn btn-warning" [disabled]="true">
+        Rally Point needs to level up first.
+      </button>
+    }
+  </div>
+</div>

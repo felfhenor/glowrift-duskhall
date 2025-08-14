@@ -6,6 +6,7 @@ export interface NodeSpriteData {
   claimIndicator?: Sprite;
   debugText?: Text;
   levelIndicator?: Text;
+  upgradeIndicator?: Text;
 }
 
 export type NodeSprites = Record<string, NodeSpriteData>;

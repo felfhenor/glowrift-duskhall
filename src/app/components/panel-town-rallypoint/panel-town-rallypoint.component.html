@@ -1,0 +1,51 @@
+<div class="flex flex-row gap-2">
+  <div class="flex-1 flex flex-col">
+    <app-panel-town-building-upgrade
+      [building]="'Rally Point'"
+    ></app-panel-town-building-upgrade>
+  </div>
+
+  <div class="flex-2">
+    <div class="card bg-base-100 foreground shadow-xl">
+      <div class="card-body">
+        <div class="card-title">Unlock Upgrades</div>
+
+        <div class="grid grid-cols-2 overflow-y-auto max-h-[430px]">
+          @for (upg of allUpgrades(); track $index) {
+            <div class="col-span-1">
+              <div class="card bg-base-200 foreground shadow-xl">
+                <div class="card-body">
+                  <div class="text-lg">
+                    {{ upg.name }} (Lv.{{ upg.levelRequirement }})
+                  </div>
+
+                  <p class="min-h-16">{{ upg.description }}</p>
+
+                  @if (!upg.alreadyOwned) {
+                    <button
+                      class="btn btn-neutral"
+                      [disabled]="!upg.canBuy"
+                      (click)="buyUpgrade(upg)"
+                      appAnalyticsClick="Game:Town:RallyPoint:Upgrade:{{
+                        upg.name
+                      }}"
+                    >
+                      <app-button-cost-list
+                        [label]="''"
+                        [currencies]="upg.cost"
+                      ></app-button-cost-list>
+                    </button>
+                  } @else {
+                    <button class="btn btn-success" [disabled]="true">
+                      You own this!
+                    </button>
+                  }
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

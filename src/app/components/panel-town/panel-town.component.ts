@@ -8,6 +8,7 @@ import { PanelTownBlacksmithComponent } from '@components/panel-town-blacksmith/
 import { PanelTownFestivalsComponent } from '@components/panel-town-festivals/panel-town-festivals.component';
 import { PanelTownMarketComponent } from '@components/panel-town-market/panel-town-market.component';
 import { PanelTownMerchantComponent } from '@components/panel-town-merchant/panel-town-merchant.component';
+import { PanelTownRallyPointComponent } from '@components/panel-town-rallypoint/panel-town-rallypoint.component';
 import { PanelTownSalvagerComponent } from '@components/panel-town-salvager/panel-town-salvager.component';
 import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
 import {
@@ -33,6 +34,7 @@ import { TeleportOutletDirective } from '@ngneat/overview';
     PanelTownAlchemistComponent,
     PanelTownFestivalsComponent,
     PanelTownSalvagerComponent,
+    PanelTownRallyPointComponent,
   ],
   templateUrl: './panel-town.component.html',
   styleUrl: './panel-town.component.scss',
@@ -84,6 +86,12 @@ export class PanelTownComponent {
       link: 'Academy',
       showIf: computed(() => true),
       level: computed(() => townBuildingLevel('Academy')),
+    },
+    {
+      name: 'Rally Point',
+      link: 'Rally Point',
+      showIf: computed(() => true),
+      level: computed(() => townBuildingLevel('Rally Point')),
     },
     {
       name: 'Festivals',

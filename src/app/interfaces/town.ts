@@ -12,7 +12,8 @@ export type TownBuilding =
   | 'Blacksmith'
   | 'Academy'
   | 'Alchemist'
-  | 'Salvager';
+  | 'Salvager'
+  | 'Rally Point';
 
 export type ItemAction = 'Salvage' | 'Equip';
 
