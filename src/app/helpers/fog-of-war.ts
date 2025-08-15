@@ -12,34 +12,14 @@ const REVELATION_RADIUS: Record<LocationType, number> = {
   town: 5, // 11x11 area (radius 5)
 };
 
-/**
- * Check if a position is revealed by checking if it's within revelation radius of any claimed node
- */
-export function fogIsPositionRevealed(x: number, y: number): boolean {
-  const claimedNodes = locationGetAll().filter((node) => node.currentlyClaimed);
-
-  for (const claimedNode of claimedNodes) {
-    if (!claimedNode.nodeType) continue;
-
-    const radius = REVELATION_RADIUS[claimedNode.nodeType];
-    const dx = Math.abs(x - claimedNode.x);
-    const dy = Math.abs(y - claimedNode.y);
-
-    // Check if position is within the revelation radius
-    if (dx <= radius && dy <= radius) {
-      return true;
-    }
-  }
-
-  return false;
-}
+// Cache for revealed positions to avoid recalculating on every check
+let cachedRevealedPositions: Set<string> | null = null;
 
 /**
- * Get all revealed positions as a set of "x,y" strings
- * This is used for testing compatibility
+ * Builds the cache of all revealed positions based on currently claimed nodes
  */
-export function fogGetRevealedNodes(): Set<string> {
-  const revealed = new Set<string>();
+function buildRevealedPositionsCache(): Set<string> {
+  const revealedPositions = new Set<string>();
   const claimedNodes = locationGetAll().filter((node) => node.currentlyClaimed);
 
   for (const claimedNode of claimedNodes) {
@@ -52,10 +32,57 @@ export function fogGetRevealedNodes(): Set<string> {
       for (let dy = -radius; dy <= radius; dy++) {
         const x = claimedNode.x + dx;
         const y = claimedNode.y + dy;
-        revealed.add(`${x},${y}`);
+        revealedPositions.add(`${x},${y}`);
       }
     }
   }
 
-  return revealed;
+  return revealedPositions;
+}
+
+/**
+ * Gets the cached revealed positions, building the cache if it doesn't exist
+ */
+function getRevealedPositionsCache(): Set<string> {
+  if (cachedRevealedPositions === null) {
+    cachedRevealedPositions = buildRevealedPositionsCache();
+  }
+  return cachedRevealedPositions;
+}
+
+/**
+ * Invalidates the revealed positions cache, forcing it to be rebuilt on next access
+ */
+export function fogInvalidateCache(): void {
+  cachedRevealedPositions = null;
+}
+
+/**
+ * Check if a position is revealed by checking if it's within revelation radius of any claimed node
+ * Now uses cached revealed positions for better performance
+ */
+export function fogIsPositionRevealed(x: number, y: number): boolean {
+  const revealedPositions = getRevealedPositionsCache();
+  return revealedPositions.has(`${x},${y}`);
+}
+
+/**
+ * Get all revealed positions as a set of "x,y" strings
+ * Now uses cached revealed positions for better performance
+ */
+export function fogGetRevealedNodes(): Set<string> {
+  return new Set(getRevealedPositionsCache());
+}
+
+/**
+ * Reveals the area around a location (currently a no-op since revelation is handled by node claiming)
+ * This function exists for API compatibility but doesn't perform any action since fog revelation
+ * is automatically calculated based on claimed nodes.
+ */
+export function fogRevealAreaAroundLocation(_location: {
+  x: number;
+  y: number;
+}): void {
+  // No-op: fog revelation is handled automatically by claimed nodes
+  // The cache will be invalidated when nodes are claimed/unclaimed
 }

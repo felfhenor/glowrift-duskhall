@@ -1,4 +1,5 @@
 import { signal } from '@angular/core';
+import { fogInvalidateCache } from '@helpers/fog-of-war';
 import type { WorldLocation, WorldNodeChangeEvent } from '@interfaces';
 
 // Global signal for world node changes
@@ -22,6 +23,9 @@ export function worldClearNodeChanges() {
  * Notifies that a node has been claimed
  */
 export function worldNotifyClaim(node: WorldLocation): void {
+  // Invalidate fog of war cache since claimed nodes affect revealed areas
+  fogInvalidateCache();
+
   const currentChanges = worldNodeChanges();
   worldNodeChanges.set([
     ...currentChanges,
@@ -39,6 +43,9 @@ export function worldNotifyClaim(node: WorldLocation): void {
  * Notifies that a node has been unclaimed
  */
 export function worldNotifyUnclaimed(node: WorldLocation): void {
+  // Invalidate fog of war cache since unclaimed nodes affect revealed areas
+  fogInvalidateCache();
+
   const currentChanges = worldNodeChanges();
   worldNodeChanges.set([
     ...currentChanges,

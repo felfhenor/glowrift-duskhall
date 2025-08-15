@@ -1,4 +1,3 @@
-import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { combatGenerateForLocation } from '@helpers/combat-create';
 import type {
   EquipmentSkill,
@@ -11,6 +10,7 @@ import type {
   TalentId,
   WorldLocation,
 } from '@interfaces';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock all dependencies
 vi.mock('@helpers/content', () => ({
@@ -106,7 +106,9 @@ describe('combat-create', () => {
 
       vi.mocked(allHeroes).mockReturnValue([]);
       vi.mocked(rngUuid).mockReturnValue('combat-id-123');
-      vi.mocked(locationTraitCombatElementPercentageModifier).mockReturnValue(0);
+      vi.mocked(locationTraitCombatElementPercentageModifier).mockReturnValue(
+        0,
+      );
 
       // Act
       const result = combatGenerateForLocation(location);
@@ -190,7 +192,9 @@ describe('combat-create', () => {
       };
 
       vi.mocked(allHeroes).mockReturnValue([mockHero]);
-      vi.mocked(heroEquipmentSkills).mockReturnValue(['weapon-skill' as EquipmentSkillId]);
+      vi.mocked(heroEquipmentSkills).mockReturnValue([
+        'weapon-skill' as EquipmentSkillId,
+      ]);
       vi.mocked(skillCreateForHero).mockReturnValue(mockSkill);
       vi.mocked(heroFullTalentHash).mockReturnValue({});
       vi.mocked(talentsForHero).mockReturnValue([]);
@@ -206,9 +210,16 @@ describe('combat-create', () => {
         healingIgnorePercent: { Air: 0, Earth: 0, Fire: 0, Water: 0 },
         reviveChance: 0,
       });
-      vi.mocked(heroElements).mockReturnValue({ Air: 5, Earth: 0, Fire: 10, Water: 0 });
+      vi.mocked(heroElements).mockReturnValue({
+        Air: 5,
+        Earth: 0,
+        Fire: 10,
+        Water: 0,
+      });
       vi.mocked(rngUuid).mockReturnValue('combat-id-123');
-      vi.mocked(locationTraitCombatElementPercentageModifier).mockReturnValue(0);
+      vi.mocked(locationTraitCombatElementPercentageModifier).mockReturnValue(
+        0,
+      );
 
       // Act
       const result = combatGenerateForLocation(location);
@@ -220,9 +231,24 @@ describe('combat-create', () => {
       expect(hero.name).toBe('Test Hero');
       expect(hero.isEnemy).toBe(false);
       expect(hero.targettingType).toBe('Random');
-      expect(hero.baseStats).toEqual({ Force: 10, Health: 50, Speed: 8, Aura: 6 });
-      expect(hero.statBoosts).toEqual({ Force: 0, Health: 0, Speed: 0, Aura: 0 });
-      expect(hero.totalStats).toEqual({ Force: 15, Health: 60, Speed: 10, Aura: 8 });
+      expect(hero.baseStats).toEqual({
+        Force: 10,
+        Health: 50,
+        Speed: 8,
+        Aura: 6,
+      });
+      expect(hero.statBoosts).toEqual({
+        Force: 0,
+        Health: 0,
+        Speed: 0,
+        Aura: 0,
+      });
+      expect(hero.totalStats).toEqual({
+        Force: 15,
+        Health: 60,
+        Speed: 10,
+        Aura: 8,
+      });
       expect(hero.hp).toBe(50);
       expect(hero.level).toBe(5);
       expect(hero.sprite).toBe('hero-sprite');
@@ -293,7 +319,9 @@ describe('combat-create', () => {
       vi.mocked(getEntry).mockReturnValue(mockGuardianContent);
       vi.mocked(guardianCreateForLocation).mockReturnValue(mockGuardian);
       vi.mocked(rngUuid).mockReturnValue('combat-id-456');
-      vi.mocked(locationTraitCombatElementPercentageModifier).mockReturnValue(0);
+      vi.mocked(locationTraitCombatElementPercentageModifier).mockReturnValue(
+        0,
+      );
 
       // Act
       const result = combatGenerateForLocation(location);
@@ -305,9 +333,24 @@ describe('combat-create', () => {
       expect(guardian.name).toBe('Test Guardian Lv.3 [A]');
       expect(guardian.isEnemy).toBe(true);
       expect(guardian.targettingType).toBe('Strongest');
-      expect(guardian.baseStats).toEqual({ Force: 6, Health: 30, Speed: 3, Aura: 3 });
-      expect(guardian.statBoosts).toEqual({ Force: 0, Health: 0, Speed: 0, Aura: 0 });
-      expect(guardian.totalStats).toEqual({ Force: 6, Health: 30, Speed: 3, Aura: 3 });
+      expect(guardian.baseStats).toEqual({
+        Force: 6,
+        Health: 30,
+        Speed: 3,
+        Aura: 3,
+      });
+      expect(guardian.statBoosts).toEqual({
+        Force: 0,
+        Health: 0,
+        Speed: 0,
+        Aura: 0,
+      });
+      expect(guardian.totalStats).toEqual({
+        Force: 6,
+        Health: 30,
+        Speed: 3,
+        Aura: 3,
+      });
       expect(guardian.hp).toBe(30);
       expect(guardian.level).toBe(3);
       expect(guardian.sprite).toBe('guardian-sprite');
@@ -316,8 +359,18 @@ describe('combat-create', () => {
       expect(guardian.skillRefs).toEqual([]);
       expect(guardian.talents).toEqual({ 'fire-mastery': 2 });
       expect(guardian.combatStats).toBeDefined();
-      expect(guardian.affinity).toEqual({ Air: 0, Earth: 0, Fire: 15, Water: 0 });
-      expect(guardian.resistance).toEqual({ Air: 0, Earth: 0, Fire: 25, Water: -10 });
+      expect(guardian.affinity).toEqual({
+        Air: 0,
+        Earth: 0,
+        Fire: 15,
+        Water: 0,
+      });
+      expect(guardian.resistance).toEqual({
+        Air: 0,
+        Earth: 0,
+        Fire: 25,
+        Water: -10,
+      });
       expect(guardian.skillUses).toEqual({});
       expect(guardian.statusEffects).toEqual([]);
       expect(guardian.statusEffectData).toEqual({});
@@ -378,7 +431,9 @@ describe('combat-create', () => {
       vi.mocked(getEntry).mockReturnValue(mockGuardianContent);
       vi.mocked(guardianCreateForLocation).mockReturnValue(mockGuardian);
       vi.mocked(rngUuid).mockReturnValue('combat-id-789');
-      vi.mocked(locationTraitCombatElementPercentageModifier).mockReturnValue(0);
+      vi.mocked(locationTraitCombatElementPercentageModifier).mockReturnValue(
+        0,
+      );
 
       // Act
       const result = combatGenerateForLocation(location);
@@ -448,7 +503,9 @@ describe('combat-create', () => {
       vi.mocked(getEntry).mockReturnValue(mockGuardianContent);
       vi.mocked(guardianCreateForLocation).mockReturnValue(mockGuardian);
       vi.mocked(rngUuid).mockReturnValue('combat-id-talents');
-      vi.mocked(locationTraitCombatElementPercentageModifier).mockReturnValue(0);
+      vi.mocked(locationTraitCombatElementPercentageModifier).mockReturnValue(
+        0,
+      );
 
       // Act
       const result = combatGenerateForLocation(location);
@@ -479,9 +536,13 @@ describe('combat-create', () => {
       };
 
       vi.mocked(allHeroes).mockReturnValue([]);
-      vi.mocked(getEntry).mockReturnValueOnce(undefined).mockReturnValueOnce(undefined);
+      vi.mocked(getEntry)
+        .mockReturnValueOnce(undefined)
+        .mockReturnValueOnce(undefined);
       vi.mocked(rngUuid).mockReturnValue('combat-id-null');
-      vi.mocked(locationTraitCombatElementPercentageModifier).mockReturnValue(0);
+      vi.mocked(locationTraitCombatElementPercentageModifier).mockReturnValue(
+        0,
+      );
 
       // Act
       const result = combatGenerateForLocation(location);
@@ -613,7 +674,9 @@ describe('combat-create', () => {
 
       vi.mocked(allHeroes).mockReturnValue([mockHero]);
       vi.mocked(heroEquipmentSkills).mockReturnValue([]);
-      vi.mocked(skillCreateForHero).mockReturnValueOnce(mockHero.skills[0]!).mockReturnValueOnce(mockHero.skills[1]!);
+      vi.mocked(skillCreateForHero)
+        .mockReturnValueOnce(mockHero.skills[0]!)
+        .mockReturnValueOnce(mockHero.skills[1]!);
       vi.mocked(heroFullTalentHash).mockReturnValue({});
       vi.mocked(talentsForHero).mockReturnValue([]);
       vi.mocked(talentCombineIntoCombatStats).mockReturnValue({
@@ -628,9 +691,16 @@ describe('combat-create', () => {
         healingIgnorePercent: { Air: 0, Earth: 0, Fire: 0, Water: 0 },
         reviveChance: 0,
       });
-      vi.mocked(heroElements).mockReturnValue({ Air: 0, Earth: 0, Fire: 0, Water: 0 });
+      vi.mocked(heroElements).mockReturnValue({
+        Air: 0,
+        Earth: 0,
+        Fire: 0,
+        Water: 0,
+      });
       vi.mocked(rngUuid).mockReturnValue('combat-id-multi-skill');
-      vi.mocked(locationTraitCombatElementPercentageModifier).mockReturnValue(0);
+      vi.mocked(locationTraitCombatElementPercentageModifier).mockReturnValue(
+        0,
+      );
 
       // Act
       const result = combatGenerateForLocation(location);
@@ -661,7 +731,9 @@ describe('combat-create', () => {
 
       vi.mocked(allHeroes).mockReturnValue([]);
       vi.mocked(rngUuid).mockReturnValue('complete-combat-id');
-      vi.mocked(locationTraitCombatElementPercentageModifier).mockReturnValue(0);
+      vi.mocked(locationTraitCombatElementPercentageModifier).mockReturnValue(
+        0,
+      );
 
       // Act
       const result = combatGenerateForLocation(location);
@@ -685,11 +757,25 @@ describe('combat-create', () => {
       // Verify all mocks were called correctly
       expect(allHeroes).toHaveBeenCalledTimes(1);
       expect(rngUuid).toHaveBeenCalledTimes(1);
-      expect(locationTraitCombatElementPercentageModifier).toHaveBeenCalledTimes(4);
-      expect(locationTraitCombatElementPercentageModifier).toHaveBeenCalledWith(location, 'Fire');
-      expect(locationTraitCombatElementPercentageModifier).toHaveBeenCalledWith(location, 'Air');
-      expect(locationTraitCombatElementPercentageModifier).toHaveBeenCalledWith(location, 'Water');
-      expect(locationTraitCombatElementPercentageModifier).toHaveBeenCalledWith(location, 'Earth');
+      expect(
+        locationTraitCombatElementPercentageModifier,
+      ).toHaveBeenCalledTimes(4);
+      expect(locationTraitCombatElementPercentageModifier).toHaveBeenCalledWith(
+        location,
+        'Fire',
+      );
+      expect(locationTraitCombatElementPercentageModifier).toHaveBeenCalledWith(
+        location,
+        'Air',
+      );
+      expect(locationTraitCombatElementPercentageModifier).toHaveBeenCalledWith(
+        location,
+        'Water',
+      );
+      expect(locationTraitCombatElementPercentageModifier).toHaveBeenCalledWith(
+        location,
+        'Earth',
+      );
     });
 
     it('should create deep clones of hero data to avoid mutation', () => {
@@ -733,7 +819,9 @@ describe('combat-create', () => {
 
       vi.mocked(allHeroes).mockReturnValue([mockHero]);
       vi.mocked(heroEquipmentSkills).mockReturnValue([]);
-      vi.mocked(heroFullTalentHash).mockReturnValue({ ['talent-1' as TalentId]: 2 });
+      vi.mocked(heroFullTalentHash).mockReturnValue({
+        ['talent-1' as TalentId]: 2,
+      });
       vi.mocked(talentsForHero).mockReturnValue([]);
       vi.mocked(talentCombineIntoCombatStats).mockReturnValue({
         repeatActionChance: { Air: 0, Earth: 0, Fire: 0, Water: 0 },
@@ -747,9 +835,16 @@ describe('combat-create', () => {
         healingIgnorePercent: { Air: 0, Earth: 0, Fire: 0, Water: 0 },
         reviveChance: 0,
       });
-      vi.mocked(heroElements).mockReturnValue({ Air: 0, Earth: 0, Fire: 0, Water: 0 });
+      vi.mocked(heroElements).mockReturnValue({
+        Air: 0,
+        Earth: 0,
+        Fire: 0,
+        Water: 0,
+      });
       vi.mocked(rngUuid).mockReturnValue('combat-id-clone-test');
-      vi.mocked(locationTraitCombatElementPercentageModifier).mockReturnValue(0);
+      vi.mocked(locationTraitCombatElementPercentageModifier).mockReturnValue(
+        0,
+      );
 
       // Act
       const result = combatGenerateForLocation(location);
