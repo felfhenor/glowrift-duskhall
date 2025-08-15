@@ -327,9 +327,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       
       // When a node's claimed status changes, we need to refresh fog for the entire visible area
       // because this node might now reveal or hide areas due to its revelation radius
-      if (updatedNode.currentlyClaimed !== undefined) {
-        this.updateFogForViewport();
-      }
+      this.updateFogForViewport();
     }
   }
 

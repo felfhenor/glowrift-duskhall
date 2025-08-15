@@ -29,7 +29,6 @@ vi.mock('@helpers/world-location', () => ({
 // Import the functions under test after mocking
 import {
   fogIsPositionRevealed,
-  fogIsLocationRevealed,
   fogGetRevealedNodes,
   fogRevealAreaAroundLocation,
 } from '@helpers/fog-of-war';
@@ -155,8 +154,8 @@ describe('Fog of War (Claimed-based)', () => {
       const nearbyLocation = defaultLocation(12, 12);
       const farLocation = defaultLocation(20, 20);
       
-      expect(fogIsLocationRevealed(nearbyLocation)).toBe(true); // within town's radius
-      expect(fogIsLocationRevealed(farLocation)).toBe(false); // outside town's radius
+      expect(fogIsPositionRevealed(nearbyLocation.x, nearbyLocation.y)).toBe(true); // within town's radius
+      expect(fogIsPositionRevealed(farLocation.x, farLocation.y)).toBe(false); // outside town's radius
     });
   });
 

@@ -1,5 +1,5 @@
 import { locationGetAll } from '@helpers/world-location';
-import type { LocationType, WorldLocation } from '@interfaces';
+import type { LocationType } from '@interfaces';
 
 /**
  * Revelation radius for each location type when claimed
@@ -34,12 +34,6 @@ export function fogIsPositionRevealed(x: number, y: number): boolean {
   return false;
 }
 
-/**
- * Check if a world location is revealed (visible to the player)
- */
-export function fogIsLocationRevealed(location: WorldLocation): boolean {
-  return fogIsPositionRevealed(location.x, location.y);
-}
 
 /**
  * Get all revealed positions as a set of "x,y" strings
