@@ -347,7 +347,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     
     // Always get fresh node data to ensure we have the latest claim status
     const currentNodeData = locationGet(worldX, worldY);
-    const isRevealed = fogIsPositionRevealed(worldX, worldY);
+    const isRevealed = getOption('debugDisableFogOfWar') || fogIsPositionRevealed(worldX, worldY);
 
     const nodeKey = `${x}-${y}`;
     const spriteData = pixiIndicatorNodeSpriteCreate(
