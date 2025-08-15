@@ -16,24 +16,23 @@ const REVELATION_RADIUS: Record<LocationType, number> = {
  * Check if a position is revealed by checking if it's within revelation radius of any claimed node
  */
 export function fogIsPositionRevealed(x: number, y: number): boolean {
-  const claimedNodes = locationGetAll().filter(node => node.currentlyClaimed);
-  
+  const claimedNodes = locationGetAll().filter((node) => node.currentlyClaimed);
+
   for (const claimedNode of claimedNodes) {
     if (!claimedNode.nodeType) continue;
-    
+
     const radius = REVELATION_RADIUS[claimedNode.nodeType];
     const dx = Math.abs(x - claimedNode.x);
     const dy = Math.abs(y - claimedNode.y);
-    
+
     // Check if position is within the revelation radius
     if (dx <= radius && dy <= radius) {
       return true;
     }
   }
-  
+
   return false;
 }
-
 
 /**
  * Get all revealed positions as a set of "x,y" strings
@@ -41,13 +40,13 @@ export function fogIsPositionRevealed(x: number, y: number): boolean {
  */
 export function fogGetRevealedNodes(): Set<string> {
   const revealed = new Set<string>();
-  const claimedNodes = locationGetAll().filter(node => node.currentlyClaimed);
-  
+  const claimedNodes = locationGetAll().filter((node) => node.currentlyClaimed);
+
   for (const claimedNode of claimedNodes) {
     if (!claimedNode.nodeType) continue;
-    
+
     const radius = REVELATION_RADIUS[claimedNode.nodeType];
-    
+
     // Add all positions within the revelation radius
     for (let dx = -radius; dx <= radius; dx++) {
       for (let dy = -radius; dy <= radius; dy++) {
@@ -57,14 +56,6 @@ export function fogGetRevealedNodes(): Set<string> {
       }
     }
   }
-  
-  return revealed;
-}
 
-/**
- * Legacy function - now a no-op since revelation is automatic based on claimed nodes
- * @deprecated This function is no longer needed as fog revelation is now automatic
- */
-export function fogRevealAreaAroundLocation(): void {
-  // No longer needed - fog revelation is now automatic based on claimed nodes
+  return revealed;
 }
