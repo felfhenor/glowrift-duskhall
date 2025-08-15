@@ -4,6 +4,7 @@ import {
   gamestate,
   getOption,
   isTraveling,
+  locationGet,
   mapDragSetup,
   pixiAppInitialize,
   pixiGameMapContainersCreate,
@@ -14,12 +15,14 @@ import {
   pixiIndicatorTravelLineCreate,
   pixiResponsiveCanvasSetup,
   pixiTextureGameMapLoad,
+  pixiTextureFogCreate,
   showLocationMenu,
   spriteGetForPosition,
   spriteGetFromNodeType,
   travelVisualizationProgress,
   worldClearNodeChanges,
   worldGetNodeChanges,
+  fogIsPositionRevealed,
 } from '@helpers';
 import type { MapTileData, WorldLocation } from '@interfaces';
 import type { NodeSpriteData } from '@interfaces/sprite';
@@ -28,6 +31,7 @@ import { ContentService } from '@services/content.service';
 import { LoggerService } from '@services/logger.service';
 import { MapStateService } from '@services/map-state.service';
 import type { Application, Container, Texture } from 'pixi.js';
+import { Sprite } from 'pixi.js';
 
 @Component({
   selector: 'app-game-map-pixi',
@@ -45,11 +49,13 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
 
   private app?: Application;
   private mapContainer?: Container;
+  private fogContainer?: Container;
   private terrainTextures: LoadedTextures = {};
   private objectTextures: LoadedTextures = {};
   private heroTextures: LoadedTextures = {};
   private checkTexture?: Texture;
   private xTexture?: Texture;
+  private fogTexture?: Texture;
   private nodeSprites: Record<string, NodeSpriteData> = {};
   private playerIndicatorContainer?: Container;
   private travelVisualizationContainer?: Container;
@@ -122,6 +128,24 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
         this.updatePlayerIndicators();
       }
     });
+
+    // Separate effect for fog updates when camera changes
+    effect(() => {
+      this.camera(); // Watch camera changes
+
+      if (this.app && this.fogContainer && this.fogTexture) {
+        this.updateFogForViewport();
+      }
+    });
+
+    // Effect to watch for debug fog of war option changes
+    effect(() => {
+      getOption('debugDisableFogOfWar'); // Watch debug option changes
+
+      if (this.app && this.fogContainer && this.fogTexture) {
+        this.updateFogForViewport();
+      }
+    });
   }
 
   async ngOnInit() {
@@ -151,6 +175,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
 
     const containers = pixiGameMapContainersCreate(this.app);
     this.mapContainer = containers.mapContainer;
+    this.fogContainer = containers.fogContainer;
     this.playerIndicatorContainer = containers.playerIndicatorContainer;
     this.travelVisualizationContainer = containers.travelVisualizationContainer;
     this.mapContainer.cullable = true;
@@ -167,6 +192,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     if (
       !this.app ||
       !this.mapContainer ||
+      !this.fogContainer ||
       !this.playerIndicatorContainer ||
       !this.travelVisualizationContainer
     )
@@ -176,6 +202,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       app: this.app,
       containers: [
         this.mapContainer,
+        this.fogContainer,
         this.playerIndicatorContainer,
         this.travelVisualizationContainer,
       ],
@@ -206,13 +233,16 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       const claimTextures = pixiIconTextureClaimCreate();
       this.checkTexture = claimTextures.checkTexture;
       this.xTexture = claimTextures.xTexture;
+      
+      // Create fog texture with 64x64 size and higher opacity
+      this.fogTexture = pixiTextureFogCreate(64, 0.8);
     } catch (error) {
       this.loggerService.error('Failed to load textures:', error);
     }
   }
 
   private updateMap(mapData: MapTileData[][]) {
-    if (!this.mapContainer || !this.playerIndicatorContainer) return;
+    if (!this.mapContainer || !this.playerIndicatorContainer || !this.fogContainer) return;
 
     // Clean up previous player indicator before clearing container
     if (this.playerIndicatorCleanup) {
@@ -221,12 +251,14 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     }
 
     this.mapContainer.removeChildren();
+    this.fogContainer.removeChildren();
     this.playerIndicatorContainer.removeChildren();
     this.nodeSprites = {};
 
     mapData.forEach((row) => {
       row.forEach(({ x, y, nodeData, tileSprite }) => {
         this.createNodeSprites(x, y, nodeData, tileSprite);
+        this.createFogSprite(x, y);
       });
     });
   }
@@ -236,7 +268,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     worldY: number,
     updatedNode: WorldLocation,
   ) {
-    if (!this.mapContainer) return;
+    if (!this.mapContainer || !this.fogContainer) return;
 
     const camera = this.camera();
     const relativeX = worldX - Math.floor(camera.x);
@@ -292,6 +324,10 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       // Get the correct tile sprite for this world position
       const tileSprite = spriteGetForPosition(worldX, worldY);
       this.createNodeSprites(relativeX, relativeY, updatedNode, tileSprite);
+      
+      // When a node's claimed status changes, we need to refresh fog for the entire visible area
+      // because this node might now reveal or hide areas due to its revelation radius
+      this.updateFogForViewport();
     }
   }
 
@@ -303,24 +339,87 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
   ) {
     if (!this.mapContainer) return;
 
+    const camera = this.camera();
+    const worldX = Math.floor(camera.x) + x;
+    const worldY = Math.floor(camera.y) + y;
+    
+    // Always get fresh node data to ensure we have the latest claim status
+    const currentNodeData = locationGet(worldX, worldY);
+    const isRevealed = getOption('debugDisableFogOfWar') || fogIsPositionRevealed(worldX, worldY);
+
     const nodeKey = `${x}-${y}`;
     const spriteData = pixiIndicatorNodeSpriteCreate(
       x,
       y,
-      nodeData,
+      currentNodeData,
       tileSprite,
-      spriteGetFromNodeType(nodeData.nodeType),
+      spriteGetFromNodeType(currentNodeData.nodeType),
       this.terrainTextures,
       this.objectTextures,
       this.mapContainer,
       this.checkTexture,
       this.xTexture,
-      (nodeData: WorldLocation) => this.investigateLocation(nodeData),
+      isRevealed ? (nodeData: WorldLocation) => this.investigateLocation(nodeData) : undefined,
       this.debugMapNodePositions(),
     );
 
     if (spriteData) {
+      // Disable interactivity for unrevealed nodes
+      if (!isRevealed && spriteData.object) {
+        spriteData.object.interactive = false;
+        spriteData.object.cursor = 'default';
+      }
+
+      // Hide level indicator for unrevealed nodes
+      if (!isRevealed && spriteData.levelIndicator) {
+        spriteData.levelIndicator.visible = false;
+      }
+
       this.nodeSprites[nodeKey] = spriteData;
+    }
+  }
+
+  private updateFogForViewport() {
+    if (!this.fogContainer || !this.fogTexture) return;
+    
+    // If fog of war is disabled in debug options, clear all fog and return
+    if (getOption('debugDisableFogOfWar')) {
+      this.fogContainer.removeChildren();
+      return;
+    }
+
+    // Clear all existing fog sprites
+    this.fogContainer.removeChildren();
+    
+    // Recreate fog sprites for the entire viewport
+    for (let x = 0; x < this.nodeWidth(); x++) {
+      for (let y = 0; y < this.nodeHeight(); y++) {
+        this.createFogSprite(x, y);
+      }
+    }
+  }
+
+  private createFogSprite(x: number, y: number) {
+    if (!this.fogContainer || !this.fogTexture) return;
+
+    // If fog of war is disabled in debug options, don't create fog sprites
+    if (getOption('debugDisableFogOfWar')) return;
+
+    const camera = this.camera();
+    const worldX = Math.floor(camera.x) + x;
+    const worldY = Math.floor(camera.y) + y;
+
+    // Only render fog if the position is not revealed
+    if (!fogIsPositionRevealed(worldX, worldY)) {
+      const fogSprite = new Sprite(this.fogTexture);
+      
+      // Use 64x64 to match the tile size
+      fogSprite.x = x * 64;
+      fogSprite.y = y * 64;
+      fogSprite.width = 64;
+      fogSprite.height = 64;
+      
+      this.fogContainer.addChild(fogSprite);
     }
   }
 

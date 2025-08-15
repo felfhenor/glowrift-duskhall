@@ -53,19 +53,23 @@ export function pixiResponsiveCanvasSetup(
  */
 export function pixiGameMapContainersCreate(app: Application): {
   mapContainer: Container;
+  fogContainer: Container;
   playerIndicatorContainer: Container;
   travelVisualizationContainer: Container;
 } {
   const mapContainer = new Container();
+  const fogContainer = new Container();
   const playerIndicatorContainer = new Container();
   const travelVisualizationContainer = new Container();
 
   app.stage.addChild(mapContainer);
+  app.stage.addChild(fogContainer);
   app.stage.addChild(travelVisualizationContainer);
   app.stage.addChild(playerIndicatorContainer);
 
   return {
     mapContainer,
+    fogContainer,
     playerIndicatorContainer,
     travelVisualizationContainer,
   };

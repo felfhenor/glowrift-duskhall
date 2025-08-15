@@ -101,3 +101,26 @@ export function pixiIconTextureClaimCreate(): {
     xTexture: pixiTexdtureClaimCreate('✗', '#dc2626', 20),
   };
 }
+
+/**
+ * Creates a translucent white fog texture for unrevealed areas
+ * @param size Size of the fog tile in pixels
+ * @param opacity Opacity of the fog (0-1)
+ * @returns PIXI Texture for fog overlay
+ */
+export function pixiTextureFogCreate(
+  size: number = 32,
+  opacity: number = 0.7,
+): Texture {
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d')!;
+
+  canvas.width = size;
+  canvas.height = size;
+
+  // Create translucent white fog
+  ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+  ctx.fillRect(0, 0, size, size);
+
+  return Texture.from(canvas);
+}
