@@ -5,19 +5,19 @@
 </div>
 
 <div class="flex gap-2">
-  <div class="flex-1 min-w-[300px]">
-    <app-stats-item
-      [item]="item()"
-      [statDeltas]="leftSideStatDeltas()"
-      [elementDeltas]="leftSideElementDeltas()"
-    ></app-stats-item>
-  </div>
-
   <div class="flex-11 min-w-[300px]">
     <app-stats-item
       [item]="compareWith()"
       [statDeltas]="rightSideStatDeltas()"
       [elementDeltas]="rightSideElementDeltas()"
+    ></app-stats-item>
+  </div>
+
+  <div class="flex-1 min-w-[300px]">
+    <app-stats-item
+      [item]="item()"
+      [statDeltas]="leftSideStatDeltas()"
+      [elementDeltas]="leftSideElementDeltas()"
     ></app-stats-item>
   </div>
 </div>
