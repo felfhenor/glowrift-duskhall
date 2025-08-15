@@ -14,7 +14,7 @@ import type { FederatedPointerEvent } from 'pixi.js';
  * @param config Drag handler configuration
  * @returns Drag state object
  */
-export function mapDragSetup(config: DragHandlerConfig): DragState {
+export function pixiDragSetup(config: DragHandlerConfig): DragState {
   const {
     app,
     containers,

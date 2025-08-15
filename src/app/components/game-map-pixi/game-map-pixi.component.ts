@@ -1,12 +1,13 @@
 import type { ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { Component, computed, effect, inject, viewChild } from '@angular/core';
 import {
+  fogIsPositionRevealed,
   gamestate,
   getOption,
   isTraveling,
   locationGet,
-  mapDragSetup,
   pixiAppInitialize,
+  pixiDragSetup,
   pixiGameMapContainersCreate,
   pixiIconTextureClaimCreate,
   pixiIndicatorHeroTravelCreate,
@@ -14,15 +15,14 @@ import {
   pixiIndicatorNodeSpriteCreate,
   pixiIndicatorTravelLineCreate,
   pixiResponsiveCanvasSetup,
-  pixiTextureGameMapLoad,
   pixiTextureFogCreate,
+  pixiTextureGameMapLoad,
   showLocationMenu,
   spriteGetForPosition,
   spriteGetFromNodeType,
   travelVisualizationProgress,
   worldClearNodeChanges,
   worldGetNodeChanges,
-  fogIsPositionRevealed,
 } from '@helpers';
 import type { MapTileData, WorldLocation } from '@interfaces';
 import type { NodeSpriteData } from '@interfaces/sprite';
@@ -198,7 +198,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     )
       return;
 
-    mapDragSetup({
+    pixiDragSetup({
       app: this.app,
       containers: [
         this.mapContainer,
@@ -233,7 +233,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       const claimTextures = pixiIconTextureClaimCreate();
       this.checkTexture = claimTextures.checkTexture;
       this.xTexture = claimTextures.xTexture;
-      
+
       // Create fog texture with 64x64 size and higher opacity
       this.fogTexture = pixiTextureFogCreate(64, 0.8);
     } catch (error) {
@@ -242,7 +242,12 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
   }
 
   private updateMap(mapData: MapTileData[][]) {
-    if (!this.mapContainer || !this.playerIndicatorContainer || !this.fogContainer) return;
+    if (
+      !this.mapContainer ||
+      !this.playerIndicatorContainer ||
+      !this.fogContainer
+    )
+      return;
 
     // Clean up previous player indicator before clearing container
     if (this.playerIndicatorCleanup) {
@@ -324,7 +329,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       // Get the correct tile sprite for this world position
       const tileSprite = spriteGetForPosition(worldX, worldY);
       this.createNodeSprites(relativeX, relativeY, updatedNode, tileSprite);
-      
+
       // When a node's claimed status changes, we need to refresh fog for the entire visible area
       // because this node might now reveal or hide areas due to its revelation radius
       this.updateFogForViewport();
@@ -342,10 +347,12 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     const camera = this.camera();
     const worldX = Math.floor(camera.x) + x;
     const worldY = Math.floor(camera.y) + y;
-    
+
     // Always get fresh node data to ensure we have the latest claim status
     const currentNodeData = locationGet(worldX, worldY);
-    const isRevealed = getOption('debugDisableFogOfWar') || fogIsPositionRevealed(worldX, worldY);
+    const isRevealed =
+      getOption('debugDisableFogOfWar') ||
+      fogIsPositionRevealed(worldX, worldY);
 
     const nodeKey = `${x}-${y}`;
     const spriteData = pixiIndicatorNodeSpriteCreate(
@@ -359,7 +366,9 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       this.mapContainer,
       this.checkTexture,
       this.xTexture,
-      isRevealed ? (nodeData: WorldLocation) => this.investigateLocation(nodeData) : undefined,
+      isRevealed
+        ? (nodeData: WorldLocation) => this.investigateLocation(nodeData)
+        : undefined,
       this.debugMapNodePositions(),
     );
 
@@ -381,7 +390,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
 
   private updateFogForViewport() {
     if (!this.fogContainer || !this.fogTexture) return;
-    
+
     // If fog of war is disabled in debug options, clear all fog and return
     if (getOption('debugDisableFogOfWar')) {
       this.fogContainer.removeChildren();
@@ -390,7 +399,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
 
     // Clear all existing fog sprites
     this.fogContainer.removeChildren();
-    
+
     // Recreate fog sprites for the entire viewport
     for (let x = 0; x < this.nodeWidth(); x++) {
       for (let y = 0; y < this.nodeHeight(); y++) {
@@ -412,13 +421,13 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     // Only render fog if the position is not revealed
     if (!fogIsPositionRevealed(worldX, worldY)) {
       const fogSprite = new Sprite(this.fogTexture);
-      
+
       // Use 64x64 to match the tile size
       fogSprite.x = x * 64;
       fogSprite.y = y * 64;
       fogSprite.width = 64;
       fogSprite.height = 64;
-      
+
       this.fogContainer.addChild(fogSprite);
     }
   }
