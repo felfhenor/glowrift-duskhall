@@ -73,16 +73,3 @@ export function fogIsPositionRevealed(x: number, y: number): boolean {
 export function fogGetRevealedNodes(): Set<string> {
   return new Set(getRevealedPositionsCache());
 }
-
-/**
- * Reveals the area around a location (currently a no-op since revelation is handled by node claiming)
- * This function exists for API compatibility but doesn't perform any action since fog revelation
- * is automatically calculated based on claimed nodes.
- */
-export function fogRevealAreaAroundLocation(_location: {
-  x: number;
-  y: number;
-}): void {
-  // No-op: fog revelation is handled automatically by claimed nodes
-  // The cache will be invalidated when nodes are claimed/unclaimed
-}

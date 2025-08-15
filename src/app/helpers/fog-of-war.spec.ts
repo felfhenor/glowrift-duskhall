@@ -32,7 +32,6 @@ import {
   fogGetRevealedNodes,
   fogInvalidateCache,
   fogIsPositionRevealed,
-  fogRevealAreaAroundLocation,
 } from '@helpers/fog-of-war';
 
 describe('Fog of War (Claimed-based)', () => {
@@ -182,19 +181,6 @@ describe('Fog of War (Claimed-based)', () => {
 
       // Should have exactly 9 nodes (3x3)
       expect(revealedNodes.size).toBe(9);
-    });
-  });
-
-  describe('Legacy Function Compatibility', () => {
-    it('should safely handle fogRevealAreaAroundLocation as a no-op', () => {
-      const cave = defaultLocation(5, 5);
-      cave.nodeType = 'cave' as LocationType;
-
-      // This should not throw and should be a no-op
-      expect(() => fogRevealAreaAroundLocation(cave)).not.toThrow();
-
-      // Position should not be revealed since the cave is not claimed
-      expect(fogIsPositionRevealed(5, 5)).toBe(false);
     });
   });
 });
