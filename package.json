@@ -7,7 +7,7 @@
     "setup": "npm run gamedata:build",
     "lint": "ng lint",
     "test": "vitest run",
-    "test:watch": "vitest --ui",
+    "test:watch": "vitest --ui --api 9899",
     "build:copychangelog": "cpy CHANGELOG.md CHANGELOG-current.md dist/glowrift-duskhall/browser",
     "build:syncversion": "ts-node scripts/build-syncversion",
     "build:versioninfo": "ts-node scripts/build-versioninfo",

@@ -1,4 +1,7 @@
-import { actionSkillSalvageValue } from '@helpers/action-skill';
+import {
+  actionSkillSalvage,
+  actionSkillSalvageValue,
+} from '@helpers/action-skill';
 import type {
   EquipmentSkill,
   EquipmentSkillId,
@@ -19,6 +22,10 @@ vi.mock('@helpers/inventory-skill', () => ({
 vi.mock('@helpers/notify', () => ({
   notifySuccess: vi.fn(),
 }));
+
+import { currencyGain } from '@helpers/currency';
+import { skillInventoryRemove } from '@helpers/inventory-skill';
+import { notifySuccess } from '@helpers/notify';
 
 describe('Action Skill Functions', () => {
   let testSkill: EquipmentSkill;
@@ -67,6 +74,18 @@ describe('Action Skill Functions', () => {
 
       testSkill.dropLevel = 1;
       expect(actionSkillSalvageValue(testSkill)).toBe(100);
+    });
+  });
+
+  describe('skillSalvage', () => {
+    it('should salvage skill and grant mana', () => {
+      actionSkillSalvage(testSkill);
+
+      expect(vi.mocked(skillInventoryRemove)).toHaveBeenCalledWith(testSkill);
+      expect(vi.mocked(currencyGain)).toHaveBeenCalledWith('Mana', 500);
+      expect(vi.mocked(notifySuccess)).toHaveBeenCalledWith(
+        'Salvaged Test Skill for 500 mana!',
+      );
     });
   });
 });

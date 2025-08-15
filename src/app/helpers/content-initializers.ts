@@ -35,6 +35,7 @@ import type {
   TraitEquipmentContent,
   TraitEquipmentId,
   TraitLocationContent,
+  TraitLocationId,
   WorldConfigContent,
 } from '@interfaces';
 
@@ -149,13 +150,29 @@ function ensureWorldConfig(
   worldConfig: WorldConfigContent,
 ): Required<WorldConfigContent> {
   return {
-    ...worldConfig,
+    id: worldConfig.id ?? 'UNKNOWN',
+    name: worldConfig.name ?? 'UNKNOWN',
+    __type: 'worldconfig',
+    height: worldConfig.height ?? 50,
+    width: worldConfig.width ?? 50,
+    maxLevel: worldConfig.maxLevel ?? 25,
+    nodeCount: {
+      castle: worldConfig.nodeCount?.castle ?? { min: 1, max: 10 },
+      cave: worldConfig.nodeCount?.cave ?? { min: 1, max: 10 },
+      dungeon: worldConfig.nodeCount?.dungeon ?? { min: 1, max: 10 },
+      town: worldConfig.nodeCount?.town ?? { min: 1, max: 2 },
+      village: worldConfig.nodeCount?.village ?? { min: 1, max: 3 },
+    },
   };
 }
 
 function ensureCurrency(currency: CurrencyContent): CurrencyContent {
   return {
-    ...currency,
+    __type: 'currency',
+    id: currency.id ?? 'UNKNOWN',
+    name: currency.name ?? 'UNKNOWN',
+    value: currency.value ?? 0,
+    element: currency.element,
   };
 }
 
@@ -245,7 +262,12 @@ function ensureTraitLocation(
   trait: TraitLocationContent,
 ): Required<TraitLocationContent> {
   return {
-    ...trait,
+    __type: 'traitlocation',
+    id: trait.id ?? ('UNKNOWN' as TraitLocationId),
+    name: trait.name ?? 'UNKNOWN',
+    description: trait.description ?? 'UNKNOWN',
+    effects: trait.effects ?? {},
+    rarity: trait.rarity ?? 'Common',
   };
 }
 
