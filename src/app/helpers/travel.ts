@@ -3,6 +3,8 @@ import { notify } from '@helpers/notify';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { locationTraitExplorationMultiplier } from '@helpers/trait-location-exploration';
 import type { Hero, WorldLocation, WorldPosition } from '@interfaces';
+import { allHeroes } from '@helpers/hero';
+import { meanBy } from 'es-toolkit/compat';
 
 export function isTraveling() {
   return gamestate().hero.travel.ticksLeft > 0;
@@ -32,21 +34,16 @@ export function travelTimeFromCurrentLocationTo(node: WorldLocation): number {
     baseTravelTime * travelTimeMultiplier,
   );
 
-  const heroSpeeds: number[] = [];
+  const averageHeroSpeed = meanBy(
+    allHeroes(),
+    (heroSpeed) => heroSpeed.totalStats.Speed,
+  );
 
-  gamestate().hero.heroes.forEach((thisHero: Hero) => {
-    heroSpeeds.push(thisHero.totalStats.Speed);
-  });
-
-  const averageHeroSpeed =
-    heroSpeeds.reduce((totalSpeed, speed) => totalSpeed + speed, 0) /
-    heroSpeeds.length;
-
-  const heroSpeedTravelTimeReductionVar = 1 + averageHeroSpeed / 100;
+  const tickReduction = averageHeroSpeed;
 
   const totalTravelTime = baseTravelTime + travelTimeModification;
 
-  return Math.round(totalTravelTime / heroSpeedTravelTimeReductionVar);
+  return Math.max(1, totalTravelTime - tickReduction);
 }
 
 export function travelToNode(node: WorldLocation): void {
