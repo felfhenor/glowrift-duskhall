@@ -5,7 +5,7 @@ import { gamestate, updateGamestate } from '@helpers/state-game';
 import type { EquipmentItem } from '@interfaces';
 
 function getUpdatedItem(item: EquipmentItem): EquipmentItem {
-  return Object.assign(item, getEntry(droppableGetBaseId(item)), {
+  return Object.assign(item, getEntry(droppableGetBaseId(item)) ?? {}, {
     id: item.id,
   } as Partial<EquipmentItem>);
 }

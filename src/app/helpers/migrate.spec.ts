@@ -1,0 +1,506 @@
+import type { GameOptions } from '@interfaces';
+import type { GameState } from '@interfaces/state-game';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+// Direct module mocking to avoid Angular signal compilation issues
+vi.mock('@helpers/migrate-items', () => ({
+  migrateItems: vi.fn(),
+}));
+
+vi.mock('@helpers/migrate-skills', () => ({
+  migrateSkills: vi.fn(),
+}));
+
+vi.mock('@helpers/state-game', () => ({
+  blankGameState: vi.fn(),
+  gamestate: vi.fn(),
+  setGameState: vi.fn(),
+}));
+
+vi.mock('@helpers/state-options', () => ({
+  defaultOptions: vi.fn(),
+  options: vi.fn(),
+  setOptions: vi.fn(),
+}));
+
+vi.mock('@helpers/timer', () => ({
+  cleanupOldTimerEntries: vi.fn(),
+}));
+
+vi.mock('@helpers/world-location', () => ({
+  resetClaimedNodeCounts: vi.fn(),
+}));
+
+vi.mock('es-toolkit/compat', () => ({
+  merge: vi.fn(),
+}));
+
+// Import after mocking
+import { migrateGameState, migrateOptionsState } from '@helpers/migrate';
+
+// Import mocked functions
+import { migrateItems } from '@helpers/migrate-items';
+import { migrateSkills } from '@helpers/migrate-skills';
+import { blankGameState, gamestate, setGameState } from '@helpers/state-game';
+import { defaultOptions, options, setOptions } from '@helpers/state-options';
+import { cleanupOldTimerEntries } from '@helpers/timer';
+import { resetClaimedNodeCounts } from '@helpers/world-location';
+import { merge } from 'es-toolkit/compat';
+
+describe('migrate', () => {
+  // Mock data factories
+  const createMockGameState = (): GameState => ({
+    meta: {
+      version: 1,
+      isSetup: true,
+      isPaused: false,
+      hasWon: false,
+      hasDismissedWinNotification: false,
+      wonAtTick: 0,
+      createdAt: Date.now(),
+    },
+    gameId: 'test-game-id' as GameState['gameId'],
+    world: {
+      config: {
+        id: 'test-world',
+        name: 'Test World',
+        __type: 'worldconfig',
+        width: 100,
+        height: 100,
+        maxLevel: 25,
+        nodeCount: {
+          town: { min: 1, max: 2 },
+          village: { min: 1, max: 3 },
+          cave: { min: 0, max: 1 },
+          dungeon: { min: 0, max: 1 },
+          castle: { min: 1, max: 1 },
+        },
+      },
+      nodes: {},
+      homeBase: { x: 50, y: 50 },
+      nodeCounts: {
+        town: 5,
+        cave: 10,
+        village: 15,
+        dungeon: 8,
+        castle: 12,
+      },
+      claimedCounts: {
+        town: 0,
+        cave: 0,
+        village: 0,
+        dungeon: 0,
+        castle: 0,
+      },
+    },
+    camera: { x: 50, y: 50 },
+    hero: {
+      respawnTicks: 0,
+      riskTolerance: 'medium',
+      nodeTypePreferences: {
+        town: true,
+        cave: true,
+        village: true,
+        dungeon: true,
+        castle: true,
+      },
+      lootRarityPreferences: {
+        Common: true,
+        Uncommon: true,
+        Rare: true,
+        Mystical: true,
+        Legendary: true,
+        Unique: true,
+      },
+      heroes: [],
+      position: { nodeId: 'test-node', x: 50, y: 50 },
+      travel: { nodeId: 'test-travel-node', x: 45, y: 45, ticksLeft: 0 },
+      location: { ticksLeft: 0, ticksTotal: 0 },
+      tooHardNodes: [],
+    },
+    inventory: {
+      items: [],
+      skills: [],
+    },
+    currency: {
+      currencyPerTickEarnings: {
+        'Fire Sliver': 0,
+        'Fire Shard': 0,
+        'Fire Crystal': 0,
+        'Fire Core': 0,
+        'Water Sliver': 0,
+        'Water Shard': 0,
+        'Water Crystal': 0,
+        'Water Core': 0,
+        'Air Sliver': 0,
+        'Air Shard': 0,
+        'Air Crystal': 0,
+        'Air Core': 0,
+        'Earth Sliver': 0,
+        'Earth Shard': 0,
+        'Earth Crystal': 0,
+        'Earth Core': 0,
+        'Soul Essence': 0,
+        'Common Dust': 0,
+        'Uncommon Dust': 0,
+        'Rare Dust': 0,
+        'Legendary Dust': 0,
+        'Mystical Dust': 0,
+        'Unique Dust': 0,
+        Mana: 0,
+      },
+      currencies: {
+        'Fire Sliver': 25,
+        'Fire Shard': 5,
+        'Fire Crystal': 1,
+        'Fire Core': 0,
+        'Water Sliver': 30,
+        'Water Shard': 3,
+        'Water Crystal': 0,
+        'Water Core': 0,
+        'Air Sliver': 20,
+        'Air Shard': 2,
+        'Air Crystal': 0,
+        'Air Core': 0,
+        'Earth Sliver': 15,
+        'Earth Shard': 1,
+        'Earth Crystal': 0,
+        'Earth Core': 0,
+        'Soul Essence': 50,
+        'Common Dust': 10,
+        'Uncommon Dust': 0,
+        'Rare Dust': 0,
+        'Legendary Dust': 0,
+        'Mystical Dust': 0,
+        'Unique Dust': 0,
+        Mana: 1000,
+      },
+    },
+    actionClock: {
+      numTicks: 0,
+      timers: {},
+    },
+    town: {
+      buildingLevels: {
+        Academy: 1,
+        Alchemist: 1,
+        Blacksmith: 1,
+        Market: 1,
+        Merchant: 1,
+        Salvager: 1,
+        'Rally Point': 1,
+      },
+      merchant: {
+        ticksUntilRefresh: 0,
+        soldItems: [],
+      },
+      townUpgrades: {},
+    },
+    festival: {
+      ticksWithoutFestivalStart: 0,
+      festivals: {},
+    },
+  });
+
+  const createMockOptions = (): GameOptions => ({
+    showDebug: false,
+    debugConsoleLogStateUpdates: false,
+    debugGameloopTimerUpdates: false,
+    debugMapNodePositions: false,
+    debugAllowBackgroundOperations: false,
+    debugDisableFogOfWar: false,
+    debugTickMultiplier: 1,
+    audioPlay: true,
+    uiTheme: 'dark',
+    volume: 0.5,
+    gameloopPaused: false,
+    canSendNotifications: true,
+    enabledNotificationCategories: ['Travel', 'LocationClaim'],
+    combatTab: 'Preferences',
+    optionsTab: 'UI',
+    townTab: 'Market',
+    worldTab: 'ResourceGeneration',
+    inventoryFilter: 'accessory',
+    selectedHeroIndex: 0,
+    selectedTalentTreeElement: 'Fire',
+  });
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  describe('migrateGameState', () => {
+    it('should migrate game state by merging blank state with current state', () => {
+      // Arrange
+      const mockCurrentState = createMockGameState();
+      const mockBlankState = createMockGameState();
+      const mockMergedState = { ...mockBlankState, ...mockCurrentState };
+
+      vi.mocked(gamestate).mockReturnValue(mockCurrentState);
+      vi.mocked(blankGameState).mockReturnValue(mockBlankState);
+      vi.mocked(merge).mockReturnValue(mockMergedState);
+
+      // Act
+      migrateGameState();
+
+      // Assert
+      expect(blankGameState).toHaveBeenCalledOnce();
+      expect(gamestate).toHaveBeenCalledOnce();
+      expect(merge).toHaveBeenCalledWith(mockBlankState, mockCurrentState);
+      expect(setGameState).toHaveBeenCalledWith(mockMergedState);
+    });
+
+    it('should call migration helpers after setting game state', () => {
+      // Arrange
+      const mockCurrentState = createMockGameState();
+      const mockBlankState = createMockGameState();
+      const mockMergedState = { ...mockBlankState, ...mockCurrentState };
+
+      vi.mocked(gamestate).mockReturnValue(mockCurrentState);
+      vi.mocked(blankGameState).mockReturnValue(mockBlankState);
+      vi.mocked(merge).mockReturnValue(mockMergedState);
+
+      // Act
+      migrateGameState();
+
+      // Assert
+      expect(migrateItems).toHaveBeenCalledOnce();
+      expect(migrateSkills).toHaveBeenCalledOnce();
+      expect(cleanupOldTimerEntries).toHaveBeenCalledOnce();
+      expect(resetClaimedNodeCounts).toHaveBeenCalledOnce();
+    });
+
+    it('should perform migration steps in correct order', () => {
+      // Arrange
+      const mockCurrentState = createMockGameState();
+      const mockBlankState = createMockGameState();
+      const mockMergedState = { ...mockBlankState, ...mockCurrentState };
+
+      vi.mocked(gamestate).mockReturnValue(mockCurrentState);
+      vi.mocked(blankGameState).mockReturnValue(mockBlankState);
+      vi.mocked(merge).mockReturnValue(mockMergedState);
+
+      const callOrder: string[] = [];
+      vi.mocked(setGameState).mockImplementation(() => {
+        callOrder.push('setGameState');
+      });
+      vi.mocked(migrateItems).mockImplementation(() => {
+        callOrder.push('migrateItems');
+      });
+      vi.mocked(migrateSkills).mockImplementation(() => {
+        callOrder.push('migrateSkills');
+      });
+      vi.mocked(cleanupOldTimerEntries).mockImplementation(() => {
+        callOrder.push('cleanupOldTimerEntries');
+      });
+      vi.mocked(resetClaimedNodeCounts).mockImplementation(() => {
+        callOrder.push('resetClaimedNodeCounts');
+      });
+
+      // Act
+      migrateGameState();
+
+      // Assert
+      expect(callOrder).toEqual([
+        'setGameState',
+        'migrateItems',
+        'migrateSkills',
+        'cleanupOldTimerEntries',
+        'resetClaimedNodeCounts',
+      ]);
+    });
+
+    it('should handle partial game state data', () => {
+      // Arrange
+      const partialState = {
+        meta: {
+          version: 1,
+          isSetup: false,
+          isPaused: false,
+          hasWon: false,
+          hasDismissedWinNotification: false,
+          wonAtTick: 0,
+          createdAt: Date.now(),
+        },
+        gameId: 'partial-game-id' as GameState['gameId'],
+      } as GameState;
+
+      const mockBlankState = createMockGameState();
+      const mockMergedState = { ...mockBlankState, ...partialState };
+
+      vi.mocked(gamestate).mockReturnValue(partialState);
+      vi.mocked(blankGameState).mockReturnValue(mockBlankState);
+      vi.mocked(merge).mockReturnValue(mockMergedState);
+
+      // Act
+      migrateGameState();
+
+      // Assert
+      expect(merge).toHaveBeenCalledWith(mockBlankState, partialState);
+      expect(setGameState).toHaveBeenCalledWith(mockMergedState);
+      expect(migrateItems).toHaveBeenCalledOnce();
+      expect(migrateSkills).toHaveBeenCalledOnce();
+      expect(cleanupOldTimerEntries).toHaveBeenCalledOnce();
+      expect(resetClaimedNodeCounts).toHaveBeenCalledOnce();
+    });
+  });
+
+  describe('migrateOptionsState', () => {
+    it('should migrate options state by merging default options with current options', () => {
+      // Arrange
+      const mockCurrentOptions = createMockOptions();
+      const mockDefaultOptions = createMockOptions();
+      const mockMergedOptions = {
+        ...mockDefaultOptions,
+        ...mockCurrentOptions,
+      };
+
+      vi.mocked(options).mockReturnValue(mockCurrentOptions);
+      vi.mocked(defaultOptions).mockReturnValue(mockDefaultOptions);
+      vi.mocked(merge).mockReturnValue(mockMergedOptions);
+
+      // Act
+      migrateOptionsState();
+
+      // Assert
+      expect(defaultOptions).toHaveBeenCalledOnce();
+      expect(options).toHaveBeenCalledOnce();
+      expect(merge).toHaveBeenCalledWith(
+        mockDefaultOptions,
+        mockCurrentOptions,
+      );
+      expect(setOptions).toHaveBeenCalledWith(mockMergedOptions);
+    });
+
+    it('should handle partial options data', () => {
+      // Arrange
+      const partialOptions = {
+        showDebug: true,
+        audioPlay: false,
+        volume: 0.8,
+      } as GameOptions;
+
+      const mockDefaultOptions = createMockOptions();
+      const mockMergedOptions = { ...mockDefaultOptions, ...partialOptions };
+
+      vi.mocked(options).mockReturnValue(partialOptions);
+      vi.mocked(defaultOptions).mockReturnValue(mockDefaultOptions);
+      vi.mocked(merge).mockReturnValue(mockMergedOptions);
+
+      // Act
+      migrateOptionsState();
+
+      // Assert
+      expect(merge).toHaveBeenCalledWith(mockDefaultOptions, partialOptions);
+      expect(setOptions).toHaveBeenCalledWith(mockMergedOptions);
+    });
+
+    it('should handle empty options object', () => {
+      // Arrange
+      const emptyOptions = {} as GameOptions;
+      const mockDefaultOptions = createMockOptions();
+      const mockMergedOptions = mockDefaultOptions;
+
+      vi.mocked(options).mockReturnValue(emptyOptions);
+      vi.mocked(defaultOptions).mockReturnValue(mockDefaultOptions);
+      vi.mocked(merge).mockReturnValue(mockMergedOptions);
+
+      // Act
+      migrateOptionsState();
+
+      // Assert
+      expect(merge).toHaveBeenCalledWith(mockDefaultOptions, emptyOptions);
+      expect(setOptions).toHaveBeenCalledWith(mockMergedOptions);
+    });
+
+    it('should preserve custom options values during migration', () => {
+      // Arrange
+      const customOptions: GameOptions = {
+        ...createMockOptions(),
+        showDebug: true,
+        audioPlay: false,
+        volume: 0.8,
+        uiTheme: 'light',
+        enabledNotificationCategories: ['Travel'],
+        combatTab: 'CombatLog',
+        selectedHeroIndex: 2,
+      };
+
+      const mockDefaultOptions = createMockOptions();
+      const mockMergedOptions = { ...mockDefaultOptions, ...customOptions };
+
+      vi.mocked(options).mockReturnValue(customOptions);
+      vi.mocked(defaultOptions).mockReturnValue(mockDefaultOptions);
+      vi.mocked(merge).mockReturnValue(mockMergedOptions);
+
+      // Act
+      migrateOptionsState();
+
+      // Assert
+      expect(merge).toHaveBeenCalledWith(mockDefaultOptions, customOptions);
+      expect(setOptions).toHaveBeenCalledWith(mockMergedOptions);
+    });
+
+    it('should handle options with different notification categories', () => {
+      // Arrange
+      const optionsWithDifferentCategories: GameOptions = {
+        ...createMockOptions(),
+        enabledNotificationCategories: ['Travel', 'Festival'],
+      };
+
+      const mockDefaultOptions = createMockOptions();
+      const mockMergedOptions = {
+        ...mockDefaultOptions,
+        ...optionsWithDifferentCategories,
+      };
+
+      vi.mocked(options).mockReturnValue(optionsWithDifferentCategories);
+      vi.mocked(defaultOptions).mockReturnValue(mockDefaultOptions);
+      vi.mocked(merge).mockReturnValue(mockMergedOptions);
+
+      // Act
+      migrateOptionsState();
+
+      // Assert
+      expect(merge).toHaveBeenCalledWith(
+        mockDefaultOptions,
+        optionsWithDifferentCategories,
+      );
+      expect(setOptions).toHaveBeenCalledWith(mockMergedOptions);
+    });
+
+    it('should handle debug options correctly', () => {
+      // Arrange
+      const debugEnabledOptions: GameOptions = {
+        ...createMockOptions(),
+        showDebug: true,
+        debugConsoleLogStateUpdates: true,
+        debugGameloopTimerUpdates: true,
+        debugMapNodePositions: true,
+        debugAllowBackgroundOperations: true,
+        debugDisableFogOfWar: true,
+        debugTickMultiplier: 5,
+      };
+
+      const mockDefaultOptions = createMockOptions();
+      const mockMergedOptions = {
+        ...mockDefaultOptions,
+        ...debugEnabledOptions,
+      };
+
+      vi.mocked(options).mockReturnValue(debugEnabledOptions);
+      vi.mocked(defaultOptions).mockReturnValue(mockDefaultOptions);
+      vi.mocked(merge).mockReturnValue(mockMergedOptions);
+
+      // Act
+      migrateOptionsState();
+
+      // Assert
+      expect(merge).toHaveBeenCalledWith(
+        mockDefaultOptions,
+        debugEnabledOptions,
+      );
+      expect(setOptions).toHaveBeenCalledWith(mockMergedOptions);
+    });
+  });
+});
