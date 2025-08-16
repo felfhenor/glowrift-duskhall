@@ -15,7 +15,7 @@ import {
   pixiIndicatorNodeSpriteCreate,
   pixiIndicatorTravelLineCreate,
   pixiResponsiveCanvasSetup,
-  pixiTextureFogCreate,
+  pixiTextureFogGet,
   pixiTextureGameMapLoad,
   showLocationMenu,
   spriteGetForPosition,
@@ -57,6 +57,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
   private xTexture?: Texture;
   private fogTexture?: Texture;
   private nodeSprites: Record<string, NodeSpriteData> = {};
+  private fogSprites: Record<string, Sprite> = {}; // Track fog sprites by position
   private playerIndicatorContainer?: Container;
   private travelVisualizationContainer?: Container;
   private resizeObserver?: ResizeObserver;
@@ -161,6 +162,18 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     }
     this.travelVisualizationCleanups.forEach((cleanup) => cleanup());
 
+    // Clean up fog sprites properly
+    this.clearFogSprites();
+
+    // Clean up all textures to prevent memory leaks
+    // Note: We don't destroy the global fog texture since it's shared across the app
+    if (this.checkTexture) {
+      this.checkTexture.destroy(true);
+    }
+    if (this.xTexture) {
+      this.xTexture.destroy(true);
+    }
+
     this.resizeObserver?.disconnect();
     this.app?.destroy(true);
   }
@@ -234,8 +247,8 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       this.checkTexture = claimTextures.checkTexture;
       this.xTexture = claimTextures.xTexture;
 
-      // Create fog texture with 64x64 size and higher opacity
-      this.fogTexture = pixiTextureFogCreate(64, 0.8);
+      // Get the singleton fog texture
+      this.fogTexture = pixiTextureFogGet();
     } catch (error) {
       this.loggerService.error('Failed to load textures:', error);
     }
@@ -256,9 +269,10 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     }
 
     this.mapContainer.removeChildren();
-    this.fogContainer.removeChildren();
+    this.clearFogSprites();
     this.playerIndicatorContainer.removeChildren();
     this.nodeSprites = {};
+    this.fogSprites = {};
 
     mapData.forEach((row) => {
       row.forEach(({ x, y, nodeData, tileSprite }) => {
@@ -393,12 +407,12 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
 
     // If fog of war is disabled in debug options, clear all fog and return
     if (getOption('debugDisableFogOfWar')) {
-      this.fogContainer.removeChildren();
+      this.clearFogSprites();
       return;
     }
 
-    // Clear all existing fog sprites
-    this.fogContainer.removeChildren();
+    // Clear all existing fog sprites with proper cleanup
+    this.clearFogSprites();
 
     // Recreate fog sprites for the entire viewport
     for (let x = 0; x < this.nodeWidth(); x++) {
@@ -406,6 +420,18 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
         this.createFogSprite(x, y);
       }
     }
+  }
+
+  private clearFogSprites() {
+    if (!this.fogContainer) return;
+
+    // Properly destroy all fog sprites before removing them
+    Object.values(this.fogSprites).forEach((sprite) => {
+      this.fogContainer!.removeChild(sprite);
+      sprite.destroy();
+    });
+    this.fogSprites = {};
+    this.fogContainer.removeChildren();
   }
 
   private createFogSprite(x: number, y: number) {
@@ -417,9 +443,13 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     const camera = this.camera();
     const worldX = Math.floor(camera.x) + x;
     const worldY = Math.floor(camera.y) + y;
+    const spriteKey = `${x}-${y}`;
 
     // Only render fog if the position is not revealed
     if (!fogIsPositionRevealed(worldX, worldY)) {
+      // Don't recreate if sprite already exists
+      if (this.fogSprites[spriteKey]) return;
+
       const fogSprite = new Sprite(this.fogTexture);
 
       // Use 64x64 to match the tile size
@@ -429,6 +459,15 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       fogSprite.height = 64;
 
       this.fogContainer.addChild(fogSprite);
+      this.fogSprites[spriteKey] = fogSprite;
+    } else {
+      // Remove fog sprite if position is now revealed
+      const existingSprite = this.fogSprites[spriteKey];
+      if (existingSprite) {
+        this.fogContainer.removeChild(existingSprite);
+        existingSprite.destroy();
+        delete this.fogSprites[spriteKey];
+      }
     }
   }
 

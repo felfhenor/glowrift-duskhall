@@ -102,7 +102,46 @@ export function pixiIconTextureClaimCreate(): {
   };
 }
 
+// Singleton fog texture instance
+let globalFogTexture: Texture | null = null;
+
 /**
+ * Gets the global fog texture instance, creating it if it doesn't exist
+ * Always returns the same texture instance for memory efficiency
+ * @returns PIXI Texture for fog overlay
+ */
+export function pixiTextureFogGet(): Texture {
+  if (globalFogTexture === null) {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d')!;
+
+    // Use standard fog settings: 64x64 size, 0.8 opacity
+    canvas.width = 64;
+    canvas.height = 64;
+
+    // Create translucent white fog
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+    ctx.fillRect(0, 0, 64, 64);
+
+    globalFogTexture = Texture.from(canvas);
+  }
+
+  return globalFogTexture;
+}
+
+/**
+ * Clears the global fog texture and destroys it
+ * Should only be called when shutting down the entire application
+ */
+export function pixiTextureFogDestroy(): void {
+  if (globalFogTexture) {
+    globalFogTexture.destroy(true);
+    globalFogTexture = null;
+  }
+}
+
+/**
+ * @deprecated Use pixiTextureFogGet() instead for better memory efficiency
  * Creates a translucent white fog texture for unrevealed areas
  * @param size Size of the fog tile in pixels
  * @param opacity Opacity of the fog (0-1)
@@ -112,6 +151,16 @@ export function pixiTextureFogCreate(
   size: number = 32,
   opacity: number = 0.7,
 ): Texture {
+  // For backwards compatibility, just return the singleton if using standard settings
+  if (size === 64 && opacity === 0.8) {
+    return pixiTextureFogGet();
+  }
+
+  // For non-standard settings, create a unique texture (but log a warning)
+  console.warn(
+    'Creating non-standard fog texture. Consider using pixiTextureFogGet() instead.',
+  );
+
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d')!;
 
@@ -123,4 +172,12 @@ export function pixiTextureFogCreate(
   ctx.fillRect(0, 0, size, size);
 
   return Texture.from(canvas);
+}
+
+/**
+ * @deprecated Use pixiTextureFogDestroy() instead
+ * Clears the fog texture cache and destroys cached textures
+ */
+export function pixiTextureFogClearCache(): void {
+  pixiTextureFogDestroy();
 }
