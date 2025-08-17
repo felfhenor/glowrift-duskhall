@@ -2,7 +2,7 @@ import { getFestivalExplorationTickMultiplier } from '@helpers/festival-explorat
 import { notify } from '@helpers/notify';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { locationTraitExplorationMultiplier } from '@helpers/trait-location-exploration';
-import type { Hero, WorldLocation, WorldPosition } from '@interfaces';
+import type { WorldLocation, WorldPosition } from '@interfaces';
 import { allHeroes } from '@helpers/hero';
 import { meanBy } from 'es-toolkit/compat';
 
