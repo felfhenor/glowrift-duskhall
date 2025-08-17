@@ -23,6 +23,7 @@ export interface GameStateMeta {
   hasWon: boolean;
   hasDismissedWinNotification: boolean;
   wonAtTick: number;
+  lastSaveTick: number;
   createdAt: number;
 }
 

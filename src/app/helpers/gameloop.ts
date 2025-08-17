@@ -14,9 +14,11 @@ import {
   beginGameStateCommits,
   endGameStateCommits,
   isGameStateReady,
+  uncommittedGamestate,
   updateGamestate,
 } from '@helpers/state-game';
 import { getOption, setOption } from '@helpers/state-options';
+import { timerLastSaveTick, timerTicksElapsed } from '@helpers/timer';
 import { victoryClaim, victoryHasWonForFirstTime } from '@helpers/victory';
 import { locationAreAllClaimed } from '@helpers/world-location';
 
@@ -37,7 +39,9 @@ export function gameloop(totalTicks: number): void {
     return;
   }
 
-  beginGameStateCommits();
+  if (!uncommittedGamestate()) {
+    beginGameStateCommits();
+  }
 
   const numTicks = totalTicks * getOption('debugTickMultiplier');
 
@@ -83,5 +87,16 @@ export function gameloop(totalTicks: number): void {
     return state;
   });
 
-  endGameStateCommits();
+  const currentTick = timerTicksElapsed();
+  const nextSaveTick = timerLastSaveTick() + getOption('debugSaveInterval');
+  if (currentTick >= nextSaveTick) {
+    updateGamestate((state) => {
+      state.meta.lastSaveTick = currentTick;
+      return state;
+    });
+
+    debug('Gameloop:Save', `Saving @ tick ${currentTick}`);
+    endGameStateCommits();
+    beginGameStateCommits();
+  }
 }

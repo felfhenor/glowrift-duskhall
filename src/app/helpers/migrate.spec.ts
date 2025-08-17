@@ -11,8 +11,8 @@ vi.mock('@helpers/migrate-skills', () => ({
   migrateSkills: vi.fn(),
 }));
 
-vi.mock('@helpers/state-game', () => ({
-  blankGameState: vi.fn(),
+vi.mock('@helpers/defaults', () => ({
+  defaultGameState: vi.fn(),
   gamestate: vi.fn(),
   setGameState: vi.fn(),
 }));
@@ -39,9 +39,10 @@ vi.mock('es-toolkit/compat', () => ({
 import { migrateGameState, migrateOptionsState } from '@helpers/migrate';
 
 // Import mocked functions
+import { defaultGameState } from '@helpers/defaults';
 import { migrateItems } from '@helpers/migrate-items';
 import { migrateSkills } from '@helpers/migrate-skills';
-import { blankGameState, gamestate, setGameState } from '@helpers/state-game';
+import { gamestate, setGameState } from '@helpers/state-game';
 import { defaultOptions, options, setOptions } from '@helpers/state-options';
 import { cleanupOldTimerEntries } from '@helpers/timer';
 import { resetClaimedNodeCounts } from '@helpers/world-location';
@@ -58,6 +59,7 @@ describe('migrate', () => {
       hasDismissedWinNotification: false,
       wonAtTick: 0,
       createdAt: Date.now(),
+      lastSaveTick: 0,
     },
     gameId: 'test-game-id' as GameState['gameId'],
     world: {
@@ -210,6 +212,7 @@ describe('migrate', () => {
     debugAllowBackgroundOperations: false,
     debugDisableFogOfWar: false,
     debugTickMultiplier: 1,
+    debugSaveInterval: 30,
     audioPlay: true,
     uiTheme: 'dark',
     volume: 0.5,
@@ -237,14 +240,14 @@ describe('migrate', () => {
       const mockMergedState = { ...mockBlankState, ...mockCurrentState };
 
       vi.mocked(gamestate).mockReturnValue(mockCurrentState);
-      vi.mocked(blankGameState).mockReturnValue(mockBlankState);
+      vi.mocked(defaultGameState).mockReturnValue(mockBlankState);
       vi.mocked(merge).mockReturnValue(mockMergedState);
 
       // Act
       migrateGameState();
 
       // Assert
-      expect(blankGameState).toHaveBeenCalledOnce();
+      expect(defaultGameState).toHaveBeenCalledOnce();
       expect(gamestate).toHaveBeenCalledOnce();
       expect(merge).toHaveBeenCalledWith(mockBlankState, mockCurrentState);
       expect(setGameState).toHaveBeenCalledWith(mockMergedState);
@@ -257,7 +260,7 @@ describe('migrate', () => {
       const mockMergedState = { ...mockBlankState, ...mockCurrentState };
 
       vi.mocked(gamestate).mockReturnValue(mockCurrentState);
-      vi.mocked(blankGameState).mockReturnValue(mockBlankState);
+      vi.mocked(defaultGameState).mockReturnValue(mockBlankState);
       vi.mocked(merge).mockReturnValue(mockMergedState);
 
       // Act
@@ -277,7 +280,7 @@ describe('migrate', () => {
       const mockMergedState = { ...mockBlankState, ...mockCurrentState };
 
       vi.mocked(gamestate).mockReturnValue(mockCurrentState);
-      vi.mocked(blankGameState).mockReturnValue(mockBlankState);
+      vi.mocked(defaultGameState).mockReturnValue(mockBlankState);
       vi.mocked(merge).mockReturnValue(mockMergedState);
 
       const callOrder: string[] = [];
@@ -329,7 +332,7 @@ describe('migrate', () => {
       const mockMergedState = { ...mockBlankState, ...partialState };
 
       vi.mocked(gamestate).mockReturnValue(partialState);
-      vi.mocked(blankGameState).mockReturnValue(mockBlankState);
+      vi.mocked(defaultGameState).mockReturnValue(mockBlankState);
       vi.mocked(merge).mockReturnValue(mockMergedState);
 
       // Act

@@ -12,6 +12,7 @@ export function defaultOptions(): GameOptions {
     debugAllowBackgroundOperations: false,
     debugDisableFogOfWar: false,
     debugTickMultiplier: 1,
+    debugSaveInterval: 30,
 
     audioPlay: true,
 

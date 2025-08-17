@@ -1,113 +1,28 @@
 import type { Signal } from '@angular/core';
 import { signal } from '@angular/core';
-import {
-  defaultCurrencyBlock,
-  defaultHero,
-  defaultLootRarityPreferences,
-  defaultNodeCountBlock,
-  defaultNodeTypePreferences,
-  defaultPosition,
-  defaultWorldConfig,
-} from '@helpers/defaults';
+import { defaultGameState } from '@helpers/defaults';
 import { error } from '@helpers/logging';
-import { rngUuid } from '@helpers/rng';
 import { localStorageSignal } from '@helpers/signal';
 import { type GameId, type GameState } from '@interfaces';
 
-export function blankGameState(): GameState {
-  return {
-    meta: {
-      version: 1,
-      isSetup: false,
-      isPaused: false,
-      createdAt: Date.now(),
-      hasDismissedWinNotification: false,
-      hasWon: false,
-      wonAtTick: 0,
-    },
-    gameId: rngUuid() as GameId,
-    world: {
-      config: defaultWorldConfig(),
-      nodes: {},
-      homeBase: defaultPosition(),
-      nodeCounts: defaultNodeCountBlock(),
-      claimedCounts: defaultNodeCountBlock(),
-    },
-    camera: defaultPosition(),
-    hero: {
-      respawnTicks: 0,
-      riskTolerance: 'medium',
-      nodeTypePreferences: defaultNodeTypePreferences(),
-      lootRarityPreferences: defaultLootRarityPreferences(),
-      heroes: [
-        defaultHero({ name: 'Ignatius', sprite: '0004' }),
-        defaultHero({ name: 'Aquara', sprite: '0000' }),
-        defaultHero({ name: 'Zephyra', sprite: '0036' }),
-        defaultHero({ name: 'Terrus', sprite: '0060' }),
-      ],
-      position: {
-        nodeId: '',
-        ...defaultPosition(),
-      },
-      travel: {
-        nodeId: '',
-        ...defaultPosition(),
-        ticksLeft: 0,
-      },
-      location: {
-        ticksLeft: 0,
-        ticksTotal: 0,
-      },
-      tooHardNodes: [],
-    },
-    inventory: {
-      items: [],
-      skills: [],
-    },
-    currency: {
-      currencyPerTickEarnings: defaultCurrencyBlock(),
-      currencies: defaultCurrencyBlock(),
-    },
-    actionClock: {
-      numTicks: 0,
-      timers: {},
-    },
-    town: {
-      buildingLevels: {
-        Academy: 1,
-        Alchemist: 1,
-        Blacksmith: 1,
-        Market: 1,
-        Merchant: 1,
-        Salvager: 1,
-        'Rally Point': 1,
-      },
-      merchant: {
-        soldItems: [],
-        ticksUntilRefresh: 0,
-      },
-      townUpgrades: {},
-    },
-    festival: {
-      ticksWithoutFestivalStart: 0,
-      festivals: {},
-    },
-  };
-}
+const _uncommittedGamestate = signal<GameState | undefined>(undefined);
+export const uncommittedGamestate: Signal<GameState | undefined> =
+  _uncommittedGamestate.asReadonly();
 
-const uncommittedGamestate = signal<GameState | undefined>(undefined);
-
-const _gamestate = localStorageSignal<GameState>('gamestate', blankGameState());
+const _gamestate = localStorageSignal<GameState>(
+  'gamestate',
+  defaultGameState(),
+);
 const __backingGamestate: Signal<GameState> = _gamestate.asReadonly();
 
 export function gamestate(): GameState {
-  return uncommittedGamestate() ?? __backingGamestate();
+  return _uncommittedGamestate() ?? __backingGamestate();
 }
 
 export const isGameStateReady = signal<boolean>(false);
 
 export function resetGameState(): void {
-  _gamestate.set(blankGameState());
+  _gamestate.set(defaultGameState());
 }
 
 export function setGameState(state: GameState): void {
@@ -115,7 +30,7 @@ export function setGameState(state: GameState): void {
 }
 
 export function updateGamestate(func: (state: GameState) => GameState): void {
-  const uncommitted = uncommittedGamestate();
+  const uncommitted = _uncommittedGamestate();
   if (uncommitted) {
     const res = func(uncommitted);
     if (!res) {
@@ -127,7 +42,7 @@ export function updateGamestate(func: (state: GameState) => GameState): void {
       return;
     }
 
-    uncommittedGamestate.set(res);
+    _uncommittedGamestate.set(res);
     return;
   }
 
@@ -149,14 +64,14 @@ export function myGameId(): GameId {
 }
 
 export function beginGameStateCommits(): void {
-  uncommittedGamestate.set(structuredClone(__backingGamestate()));
+  _uncommittedGamestate.set(structuredClone(uncommittedGamestate()));
 }
 
 export function endGameStateCommits(): void {
-  const uncommitted = uncommittedGamestate();
+  const uncommitted = _uncommittedGamestate();
   if (uncommitted) {
     setGameState(uncommitted);
   }
 
-  uncommittedGamestate.set(undefined);
+  _uncommittedGamestate.set(undefined);
 }

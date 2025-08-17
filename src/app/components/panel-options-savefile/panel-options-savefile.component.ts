@@ -5,7 +5,7 @@ import { ButtonSavefileExportComponent } from '@components/button-savefile-expor
 import { ButtonSavefileImportComponent } from '@components/button-savefile-import/button-savefile-import.component';
 import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
 import {
-  blankGameState,
+  defaultGameState,
   gamestate,
   setGameState,
   timerTicksElapsed,
@@ -35,6 +35,6 @@ export class PanelOptionsSavefileComponent {
   async deleteSavefile() {
     await this.router.navigate(['/']);
 
-    setGameState(blankGameState());
+    setGameState(defaultGameState());
   }
 }

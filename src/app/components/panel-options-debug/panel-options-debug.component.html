@@ -125,6 +125,24 @@
             <span class="ml-2">{{ getOption('debugTickMultiplier') }}x</span>
           </label>
         </div>
+
+        <div class="form-control">
+          <label class="label cursor-pointer label-checkbox">
+            <span class="label-text !ml-0 mr-2">Save Interval</span>
+            <input
+              #saveInterval
+              type="range"
+              [min]="1"
+              [max]="60"
+              [value]="getOption('debugSaveInterval')"
+              (change)="
+                setOption('debugSaveInterval', saveInterval.valueAsNumber)
+              "
+              class="range range-secondary"
+            />
+            <span class="ml-2">{{ getOption('debugSaveInterval') }}s</span>
+          </label>
+        </div>
       </div>
     </div>
   </div>

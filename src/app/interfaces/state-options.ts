@@ -46,6 +46,7 @@ export type GameOptions = Record<GameOption, boolean> & {
   uiTheme: string;
   volume: number;
   debugTickMultiplier: number;
+  debugSaveInterval: number;
   enabledNotificationCategories: ToggleableCategory[];
   combatTab: CombatTab;
   optionsTab: OptionsTab;

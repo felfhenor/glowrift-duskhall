@@ -1,6 +1,7 @@
+import { defaultGameState } from '@helpers/defaults';
 import { migrateItems } from '@helpers/migrate-items';
 import { migrateSkills } from '@helpers/migrate-skills';
-import { blankGameState, gamestate, setGameState } from '@helpers/state-game';
+import { gamestate, setGameState } from '@helpers/state-game';
 import { defaultOptions, options, setOptions } from '@helpers/state-options';
 import { cleanupOldTimerEntries } from '@helpers/timer';
 import { resetClaimedNodeCounts } from '@helpers/world-location';
@@ -8,7 +9,7 @@ import { merge } from 'es-toolkit/compat';
 
 export function migrateGameState() {
   const state = gamestate();
-  const newState = merge(blankGameState(), state);
+  const newState = merge(defaultGameState(), state);
   setGameState(newState);
 
   migrateItems();

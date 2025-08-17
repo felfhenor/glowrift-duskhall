@@ -47,6 +47,10 @@ export function timerTicksElapsed(): number {
   return gamestate().actionClock.numTicks;
 }
 
+export function timerLastSaveTick(): number {
+  return gamestate().meta.lastSaveTick;
+}
+
 export function timerGetRegisterTick(ticksAway: number): number {
   return timerTicksElapsed() + ticksAway;
 }
