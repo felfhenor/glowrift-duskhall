@@ -82,10 +82,21 @@ export function pixiTexdtureClaimCreate(
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
 
+  ctx.strokeStyle = '#000000';
+  ctx.lineWidth = 1;
   ctx.strokeText(iconText, size / 2, size / 2);
   ctx.fillText(iconText, size / 2, size / 2);
 
-  return Texture.from(canvas);
+  try {
+    return Texture.from(canvas);
+  } catch (error) {
+    console.error('Failed to create claim texture:', error);
+    // Return a minimal fallback texture if creation fails
+    const fallbackCanvas = document.createElement('canvas');
+    fallbackCanvas.width = size;
+    fallbackCanvas.height = size;
+    return Texture.from(fallbackCanvas);
+  }
 }
 
 /**
@@ -106,24 +117,49 @@ export function pixiIconTextureClaimCreate(): {
 let globalFogTexture: Texture | null = null;
 
 /**
+ * Creates a new fog texture from canvas
+ * @returns PIXI Texture for fog overlay
+ */
+function createFogTexture(): Texture {
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d')!;
+
+  // Use standard fog settings: 64x64 size, 0.8 opacity
+  canvas.width = 64;
+  canvas.height = 64;
+
+  // Create translucent white fog
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+  ctx.fillRect(0, 0, 64, 64);
+
+  try {
+    return Texture.from(canvas);
+  } catch (error) {
+    console.error('Failed to create fog texture, creating fallback:', error);
+    // Create a minimal fallback texture
+    const fallbackCanvas = document.createElement('canvas');
+    fallbackCanvas.width = 64;
+    fallbackCanvas.height = 64;
+    const fallbackCtx = fallbackCanvas.getContext('2d')!;
+    fallbackCtx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+    fallbackCtx.fillRect(0, 0, 64, 64);
+    return Texture.from(fallbackCanvas);
+  }
+}
+
+/**
  * Gets the global fog texture instance, creating it if it doesn't exist
  * Always returns the same texture instance for memory efficiency
  * @returns PIXI Texture for fog overlay
  */
 export function pixiTextureFogGet(): Texture {
-  if (globalFogTexture === null) {
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d')!;
+  if (globalFogTexture === null || globalFogTexture.destroyed) {
+    // Clean up the old texture if it was destroyed due to context loss
+    if (globalFogTexture?.destroyed) {
+      globalFogTexture = null;
+    }
 
-    // Use standard fog settings: 64x64 size, 0.8 opacity
-    canvas.width = 64;
-    canvas.height = 64;
-
-    // Create translucent white fog
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-    ctx.fillRect(0, 0, 64, 64);
-
-    globalFogTexture = Texture.from(canvas);
+    globalFogTexture = createFogTexture();
   }
 
   return globalFogTexture;
@@ -171,7 +207,13 @@ export function pixiTextureFogCreate(
   ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
   ctx.fillRect(0, 0, size, size);
 
-  return Texture.from(canvas);
+  try {
+    return Texture.from(canvas);
+  } catch (error) {
+    console.error('Failed to create fog texture:', error);
+    // Fallback to the singleton fog texture if creation fails
+    return pixiTextureFogGet();
+  }
 }
 
 /**

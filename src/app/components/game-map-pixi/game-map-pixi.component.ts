@@ -66,6 +66,9 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
   private playerIndicatorCleanup?: () => void;
   private travelVisualizationCleanups: Array<() => void> = [];
 
+  // Performance optimization: debounce fog updates during camera movement
+  private fogUpdateTimeout?: ReturnType<typeof setTimeout>;
+
   // Use map state service instead of local computed values
   public nodeWidth = computed(() => this.mapStateService.nodeWidth());
   public nodeHeight = computed(() => this.mapStateService.nodeHeight());
@@ -96,7 +99,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
 
       if (changes.length > 0 && this.app && this.mapContainer) {
         this.loggerService.debug(
-          'GameMapPixi',
+          'PixiMap',
           `Processing ${changes.length} surgical node updates`,
         );
 
@@ -130,20 +133,33 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       }
     });
 
-    // Separate effect for fog updates when camera changes
+    // Separate effect for fog updates when camera changes - debounced for performance
     effect(() => {
       this.camera(); // Watch camera changes
 
       if (this.app && this.fogContainer && this.fogTexture) {
-        this.updateFogForViewport();
+        // Clear existing timeout to debounce rapid camera changes
+        if (this.fogUpdateTimeout) {
+          clearTimeout(this.fogUpdateTimeout);
+        }
+
+        // Debounce fog updates by 16ms (~1 frame at 60fps) to improve dragging performance
+        this.fogUpdateTimeout = setTimeout(() => {
+          this.updateFogForViewport();
+        }, 16);
       }
     });
 
-    // Effect to watch for debug fog of war option changes
+    // Effect to watch for debug fog of war option changes - immediate update
     effect(() => {
       getOption('debugDisableFogOfWar'); // Watch debug option changes
 
       if (this.app && this.fogContainer && this.fogTexture) {
+        // Debug option changes should be immediate, not debounced
+        if (this.fogUpdateTimeout) {
+          clearTimeout(this.fogUpdateTimeout);
+          this.fogUpdateTimeout = undefined;
+        }
         this.updateFogForViewport();
       }
     });
@@ -156,6 +172,11 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    // Clean up performance timers
+    if (this.fogUpdateTimeout) {
+      clearTimeout(this.fogUpdateTimeout);
+    }
+
     // Clean up tracked dynamic sprites
     if (this.playerIndicatorCleanup) {
       this.playerIndicatorCleanup();
@@ -192,6 +213,16 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     this.playerIndicatorContainer = containers.playerIndicatorContainer;
     this.travelVisualizationContainer = containers.travelVisualizationContainer;
     this.mapContainer.cullable = true;
+
+    // Add specific WebGL context restoration handler for this component
+    const canvas = this.app.canvas as HTMLCanvasElement;
+    canvas.addEventListener('webglcontextrestored', () => {
+      this.loggerService.info(
+        'PixiMap',
+        'WebGL context restored, refreshing textures',
+      );
+      this.refreshTexturesAfterContextRestore();
+    });
 
     this.resizeObserver = pixiResponsiveCanvasSetup(
       this.app,
@@ -247,11 +278,85 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       this.checkTexture = claimTextures.checkTexture;
       this.xTexture = claimTextures.xTexture;
 
-      // Get the singleton fog texture
+      // Get the singleton fog texture (will recreate if context was lost)
       this.fogTexture = pixiTextureFogGet();
     } catch (error) {
-      this.loggerService.error('Failed to load textures:', error);
+      this.loggerService.error('PixiMap', 'Failed to load textures:', error);
     }
+  }
+
+  /**
+   * Refreshes textures after WebGL context restoration
+   * This method recreates all textures and re-renders the map
+   */
+  private async refreshTexturesAfterContextRestore() {
+    this.loggerService.info(
+      'PixiMap',
+      'Refreshing textures after WebGL context restore',
+    );
+
+    try {
+      // Clear existing sprites to prevent rendering with invalid textures
+      this.clearAllSprites();
+
+      // Reload all textures
+      await this.loadTextures();
+
+      // Re-render the entire map with new textures
+      this.updateMap(this.map().tiles);
+
+      this.loggerService.info(
+        'PixiMap',
+        'Successfully refreshed textures after context restore',
+      );
+    } catch (error) {
+      this.loggerService.error(
+        'PixiMap',
+        'Failed to refresh textures after context restore:',
+        error,
+      );
+    }
+  }
+
+  /**
+   * Clears all sprites from containers
+   */
+  private clearAllSprites() {
+    // Clear fog sprites
+    this.clearFogSprites();
+
+    // Clear node sprites
+    Object.values(this.nodeSprites).forEach((spriteData) => {
+      if (spriteData.terrain) {
+        this.mapContainer?.removeChild(spriteData.terrain);
+        spriteData.terrain.destroy();
+      }
+      if (spriteData.object) {
+        this.mapContainer?.removeChild(spriteData.object);
+        spriteData.object.destroy();
+      }
+      if (spriteData.claimIndicator) {
+        this.mapContainer?.removeChild(spriteData.claimIndicator);
+        spriteData.claimIndicator.destroy();
+      }
+      if (spriteData.debugText) {
+        this.mapContainer?.removeChild(spriteData.debugText);
+        spriteData.debugText.destroy();
+      }
+      if (spriteData.levelIndicator) {
+        this.mapContainer?.removeChild(spriteData.levelIndicator);
+        spriteData.levelIndicator.destroy();
+      }
+    });
+    this.nodeSprites = {};
+
+    // Clear other dynamic sprites
+    if (this.playerIndicatorCleanup) {
+      this.playerIndicatorCleanup();
+      this.playerIndicatorCleanup = undefined;
+    }
+    this.travelVisualizationCleanups.forEach((cleanup) => cleanup());
+    this.travelVisualizationCleanups = [];
   }
 
   private updateMap(mapData: MapTileData[][]) {
@@ -306,7 +411,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       const existingSprite = this.nodeSprites[nodeKey];
       if (existingSprite) {
         this.loggerService.debug(
-          'GameMapPixi',
+          'PixiMap',
           `Removing existing sprite for node ${worldX},${worldY}`,
         );
 
@@ -337,7 +442,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
 
       // Create new sprite with updated data
       this.loggerService.debug(
-        'GameMapPixi',
+        'PixiMap',
         `Creating updated sprite for node ${worldX},${worldY}`,
       );
       // Get the correct tile sprite for this world position
@@ -403,7 +508,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
   }
 
   private updateFogForViewport() {
-    if (!this.fogContainer || !this.fogTexture) return;
+    if (!this.fogContainer) return;
 
     // If fog of war is disabled in debug options, clear all fog and return
     if (getOption('debugDisableFogOfWar')) {
@@ -411,34 +516,117 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // Clear all existing fog sprites with proper cleanup
-    this.clearFogSprites();
+    // Ensure we have a valid fog texture before updating
+    if (!this.fogTexture || this.fogTexture.destroyed) {
+      this.fogTexture = pixiTextureFogGet();
+    }
 
-    // Recreate fog sprites for the entire viewport
+    if (!this.fogTexture) {
+      this.loggerService.error(
+        'PixiMap',
+        'Could not create fog texture for viewport update',
+      );
+      return;
+    }
+
+    // Use incremental update instead of clearing all sprites
+    this.updateFogSpritesIncremental();
+  }
+
+  private updateFogSpritesIncremental() {
+    if (!this.fogContainer) return;
+
+    const camera = this.camera();
+    const currentViewportKeys = new Set<string>();
+
+    // Determine which fog sprites should exist in the current viewport
     for (let x = 0; x < this.nodeWidth(); x++) {
       for (let y = 0; y < this.nodeHeight(); y++) {
-        this.createFogSprite(x, y);
+        const worldX = Math.floor(camera.x) + x;
+        const worldY = Math.floor(camera.y) + y;
+        const spriteKey = `${x}-${y}`;
+
+        currentViewportKeys.add(spriteKey);
+
+        // Check if position should have fog
+        if (!fogIsPositionRevealed(worldX, worldY)) {
+          // Create sprite if it doesn't exist
+          if (!this.fogSprites[spriteKey]) {
+            this.createFogSpriteOptimized(x, y, spriteKey);
+          }
+        } else {
+          // Remove sprite if position is now revealed
+          this.removeFogSprite(spriteKey);
+        }
       }
+    }
+
+    // Remove sprites that are outside the current viewport
+    Object.keys(this.fogSprites).forEach((spriteKey) => {
+      if (!currentViewportKeys.has(spriteKey)) {
+        this.removeFogSprite(spriteKey);
+      }
+    });
+  }
+
+  private createFogSpriteOptimized(x: number, y: number, spriteKey: string) {
+    if (!this.fogContainer || !this.fogTexture) return;
+
+    try {
+      const fogSprite = new Sprite(this.fogTexture);
+
+      // Use 64x64 to match the tile size
+      fogSprite.x = x * 64;
+      fogSprite.y = y * 64;
+      fogSprite.width = 64;
+      fogSprite.height = 64;
+
+      this.fogContainer.addChild(fogSprite);
+      this.fogSprites[spriteKey] = fogSprite;
+    } catch (error) {
+      this.loggerService.error(
+        'PixiMap',
+        'Failed to create optimized fog sprite:',
+        error,
+      );
+      // If texture creation fails, try to refresh fog texture
+      this.fogTexture = pixiTextureFogGet();
+    }
+  }
+
+  private removeFogSprite(spriteKey: string) {
+    const sprite = this.fogSprites[spriteKey];
+    if (sprite && this.fogContainer) {
+      this.fogContainer.removeChild(sprite);
+      sprite.destroy();
+      delete this.fogSprites[spriteKey];
     }
   }
 
   private clearFogSprites() {
     if (!this.fogContainer) return;
 
-    // Properly destroy all fog sprites before removing them
-    Object.values(this.fogSprites).forEach((sprite) => {
-      this.fogContainer!.removeChild(sprite);
-      sprite.destroy();
+    // Use the optimized removal method for each sprite
+    Object.keys(this.fogSprites).forEach((spriteKey) => {
+      this.removeFogSprite(spriteKey);
     });
-    this.fogSprites = {};
+
+    // Ensure container is clean
     this.fogContainer.removeChildren();
   }
 
   private createFogSprite(x: number, y: number) {
-    if (!this.fogContainer || !this.fogTexture) return;
+    if (!this.fogContainer) return;
 
     // If fog of war is disabled in debug options, don't create fog sprites
     if (getOption('debugDisableFogOfWar')) return;
+
+    // Ensure we have a valid fog texture, recreate if destroyed
+    if (!this.fogTexture || this.fogTexture.destroyed) {
+      this.fogTexture = pixiTextureFogGet();
+    }
+
+    if (!this.fogTexture) return;
 
     const camera = this.camera();
     const worldX = Math.floor(camera.x) + x;
@@ -450,16 +638,26 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       // Don't recreate if sprite already exists
       if (this.fogSprites[spriteKey]) return;
 
-      const fogSprite = new Sprite(this.fogTexture);
+      try {
+        const fogSprite = new Sprite(this.fogTexture);
 
-      // Use 64x64 to match the tile size
-      fogSprite.x = x * 64;
-      fogSprite.y = y * 64;
-      fogSprite.width = 64;
-      fogSprite.height = 64;
+        // Use 64x64 to match the tile size
+        fogSprite.x = x * 64;
+        fogSprite.y = y * 64;
+        fogSprite.width = 64;
+        fogSprite.height = 64;
 
-      this.fogContainer.addChild(fogSprite);
-      this.fogSprites[spriteKey] = fogSprite;
+        this.fogContainer.addChild(fogSprite);
+        this.fogSprites[spriteKey] = fogSprite;
+      } catch (error) {
+        this.loggerService.error(
+          'PixiMap',
+          'Failed to create fog sprite:',
+          error,
+        );
+        // If texture creation fails, try to refresh fog texture
+        this.fogTexture = pixiTextureFogGet();
+      }
     } else {
       // Remove fog sprite if position is now revealed
       const existingSprite = this.fogSprites[spriteKey];
