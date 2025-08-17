@@ -1,3 +1,4 @@
+import { error } from '@helpers/logging';
 import type { LoadedTextures, TextureAtlas } from '@interfaces';
 import { Assets, Rectangle, Texture } from 'pixi.js';
 
@@ -89,8 +90,9 @@ export function pixiTexdtureClaimCreate(
 
   try {
     return Texture.from(canvas);
-  } catch (error) {
-    console.error('Failed to create claim texture:', error);
+  } catch (err) {
+    error('PixiMap', 'Failed to create claim texture:', err);
+
     // Return a minimal fallback texture if creation fails
     const fallbackCanvas = document.createElement('canvas');
     fallbackCanvas.width = size;
@@ -134,8 +136,8 @@ function createFogTexture(): Texture {
 
   try {
     return Texture.from(canvas);
-  } catch (error) {
-    console.error('Failed to create fog texture, creating fallback:', error);
+  } catch (err) {
+    error('PixiMap', 'Failed to create fog texture, creating fallback:', err);
     // Create a minimal fallback texture
     const fallbackCanvas = document.createElement('canvas');
     fallbackCanvas.width = 64;
@@ -174,52 +176,4 @@ export function pixiTextureFogDestroy(): void {
     globalFogTexture.destroy(true);
     globalFogTexture = null;
   }
-}
-
-/**
- * @deprecated Use pixiTextureFogGet() instead for better memory efficiency
- * Creates a translucent white fog texture for unrevealed areas
- * @param size Size of the fog tile in pixels
- * @param opacity Opacity of the fog (0-1)
- * @returns PIXI Texture for fog overlay
- */
-export function pixiTextureFogCreate(
-  size: number = 32,
-  opacity: number = 0.7,
-): Texture {
-  // For backwards compatibility, just return the singleton if using standard settings
-  if (size === 64 && opacity === 0.8) {
-    return pixiTextureFogGet();
-  }
-
-  // For non-standard settings, create a unique texture (but log a warning)
-  console.warn(
-    'Creating non-standard fog texture. Consider using pixiTextureFogGet() instead.',
-  );
-
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d')!;
-
-  canvas.width = size;
-  canvas.height = size;
-
-  // Create translucent white fog
-  ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
-  ctx.fillRect(0, 0, size, size);
-
-  try {
-    return Texture.from(canvas);
-  } catch (error) {
-    console.error('Failed to create fog texture:', error);
-    // Fallback to the singleton fog texture if creation fails
-    return pixiTextureFogGet();
-  }
-}
-
-/**
- * @deprecated Use pixiTextureFogDestroy() instead
- * Clears the fog texture cache and destroys cached textures
- */
-export function pixiTextureFogClearCache(): void {
-  pixiTextureFogDestroy();
 }

@@ -1,3 +1,4 @@
+import { warn } from '@helpers/logging';
 import type { PixiAppConfig } from '@interfaces/pixi-config';
 import { Application, Container } from 'pixi.js';
 
@@ -26,14 +27,8 @@ export async function pixiAppInitialize(
   const canvas = app.canvas as HTMLCanvasElement;
 
   canvas.addEventListener('webglcontextlost', (event) => {
-    console.warn('WebGL context lost, preventing default behavior');
+    warn('PixiMap', 'WebGL context lost, preventing default behavior');
     event.preventDefault();
-  });
-
-  canvas.addEventListener('webglcontextrestored', () => {
-    console.log('WebGL context restored, textures will be recreated as needed');
-    // The texture recreation will be handled automatically by pixiTextureFogGet()
-    // when it detects the texture is destroyed
   });
 
   container.appendChild(app.canvas);

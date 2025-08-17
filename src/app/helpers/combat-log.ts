@@ -5,6 +5,20 @@ import mustache from 'mustache';
 
 export const combatLog = localStorageSignal<CombatLog[]>('combatLog', []);
 
+let pendingCombatLogMessages: CombatLog[] = [];
+
+export function beginCombatLogCommits() {
+  pendingCombatLogMessages = [];
+}
+
+export function endCombatLogCommits() {
+  combatLog.update((logs) =>
+    [...pendingCombatLogMessages, ...logs].slice(0, 500),
+  );
+
+  pendingCombatLogMessages = [];
+}
+
 export function combatFormatMessage(template: string, props: unknown): string {
   return mustache.render(template, props);
 }
@@ -24,8 +38,9 @@ export function combatMessageLog(
     sprite: actor?.sprite,
   };
 
-  combatLog.update((logs) => [newLog, ...logs].slice(0, 500));
+  pendingCombatLogMessages.unshift(newLog);
 }
+
 export function combatLogReset(): void {
   combatLog.set([]);
 }
