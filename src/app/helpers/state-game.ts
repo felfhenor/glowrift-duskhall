@@ -1,37 +1,38 @@
-import type { Signal } from '@angular/core';
 import { signal } from '@angular/core';
 import { defaultGameState } from '@helpers/defaults';
 import { error } from '@helpers/logging';
 import { localStorageSignal } from '@helpers/signal';
-import { type GameId, type GameState } from '@interfaces';
-
-const _uncommittedGamestate = signal<GameState | undefined>(undefined);
-export const uncommittedGamestate: Signal<GameState | undefined> =
-  _uncommittedGamestate.asReadonly();
-
-const _gamestate = localStorageSignal<GameState>(
-  'gamestate',
-  defaultGameState(),
-);
-const __backingGamestate: Signal<GameState> = _gamestate.asReadonly();
-
-export function gamestate(): GameState {
-  return _uncommittedGamestate() ?? __backingGamestate();
-}
+import { type GameState } from '@interfaces';
 
 export const isGameStateReady = signal<boolean>(false);
 
-export function resetGameState(): void {
-  _gamestate.set(defaultGameState());
+let tickGamestate: GameState | undefined = undefined;
+
+const _liveGameState = signal<GameState>(defaultGameState());
+
+export function gamestate() {
+  return tickGamestate ?? _liveGameState();
 }
 
-export function setGameState(state: GameState): void {
-  _gamestate.set(structuredClone(state));
+const _savedGamestate = localStorageSignal<GameState>(
+  'gamestate',
+  defaultGameState(),
+  (state: GameState) => {
+    _liveGameState.set(state);
+  },
+);
+
+export function setGameState(state: GameState, commit = true): void {
+  _liveGameState.set(state);
+
+  if (commit) {
+    saveGameState();
+  }
 }
 
 export function updateGamestate(func: (state: GameState) => GameState): void {
-  const uncommitted = _uncommittedGamestate();
-  if (uncommitted) {
+  if (tickGamestate) {
+    const uncommitted = tickGamestate;
     const res = func(uncommitted);
     if (!res) {
       error(
@@ -42,11 +43,12 @@ export function updateGamestate(func: (state: GameState) => GameState): void {
       return;
     }
 
-    _uncommittedGamestate.set(res);
+    tickGamestate = res;
     return;
   }
 
-  const res = func(__backingGamestate());
+  const uncommitted = _liveGameState();
+  const res = func(uncommitted);
   if (!res) {
     error(
       'GameState:Update',
@@ -56,22 +58,25 @@ export function updateGamestate(func: (state: GameState) => GameState): void {
     return;
   }
 
-  setGameState(res);
+  _liveGameState.set(structuredClone(res));
 }
 
-export function myGameId(): GameId {
-  return __backingGamestate().gameId;
+export function resetGameState(): void {
+  setGameState(defaultGameState());
 }
 
-export function beginGameStateCommits(): void {
-  _uncommittedGamestate.set(structuredClone(uncommittedGamestate()));
+export function saveGameState(): void {
+  _savedGamestate.set(structuredClone(_liveGameState()));
 }
 
-export function endGameStateCommits(): void {
-  const uncommitted = _uncommittedGamestate();
-  if (uncommitted) {
-    setGameState(uncommitted);
+export function gamestateTickStart(): void {
+  tickGamestate = structuredClone(_liveGameState());
+}
+
+export function gamestateTickEnd(): void {
+  if (tickGamestate) {
+    _liveGameState.set(tickGamestate);
   }
 
-  _uncommittedGamestate.set(undefined);
+  tickGamestate = undefined;
 }

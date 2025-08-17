@@ -42,3 +42,7 @@ export function setWorld(world: GameStateWorld): void {
     return state;
   });
 }
+
+export function worldGameId(): GameId {
+  return gamestate().gameId;
+}

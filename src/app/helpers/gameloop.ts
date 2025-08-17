@@ -11,10 +11,10 @@ import { gameloopTravel } from '@helpers/gameloop-travel';
 import { debug } from '@helpers/logging';
 import { isSetup } from '@helpers/setup';
 import {
-  beginGameStateCommits,
-  endGameStateCommits,
+  gamestateTickEnd,
+  gamestateTickStart,
   isGameStateReady,
-  uncommittedGamestate,
+  saveGameState,
   updateGamestate,
 } from '@helpers/state-game';
 import { getOption, setOption } from '@helpers/state-options';
@@ -39,9 +39,7 @@ export function gameloop(totalTicks: number): void {
     return;
   }
 
-  if (!uncommittedGamestate()) {
-    beginGameStateCommits();
-  }
+  gamestateTickStart();
 
   const numTicks = totalTicks * getOption('debugTickMultiplier');
 
@@ -87,6 +85,8 @@ export function gameloop(totalTicks: number): void {
     return state;
   });
 
+  gamestateTickEnd();
+
   const currentTick = timerTicksElapsed();
   const nextSaveTick = timerLastSaveTick() + getOption('debugSaveInterval');
   if (currentTick >= nextSaveTick) {
@@ -95,8 +95,7 @@ export function gameloop(totalTicks: number): void {
       return state;
     });
 
+    saveGameState();
     debug('Gameloop:Save', `Saving @ tick ${currentTick}`);
-    endGameStateCommits();
-    beginGameStateCommits();
   }
 }

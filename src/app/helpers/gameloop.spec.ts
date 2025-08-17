@@ -94,8 +94,8 @@ import { isSetup } from '@helpers/setup';
 import type { gamestate } from '@helpers/state-game';
 import {
   beginGameStateCommits,
-  endGameStateCommits,
   isGameStateReady,
+  saveGameState,
   updateGamestate,
 } from '@helpers/state-game';
 import { getOption, setOption } from '@helpers/state-options';
@@ -406,7 +406,7 @@ describe('Gameloop Functions', () => {
           vi.mocked(gameloopFestival).mock.invocationCallOrder[0],
           vi.mocked(gameloopTimers).mock.invocationCallOrder[0],
           vi.mocked(updateGamestate).mock.invocationCallOrder[0],
-          vi.mocked(endGameStateCommits).mock.invocationCallOrder[0],
+          vi.mocked(saveGameState).mock.invocationCallOrder[0],
         ];
 
         // Verify calls are in ascending order
@@ -551,15 +551,14 @@ describe('Gameloop Functions', () => {
         gameloop(5);
 
         expect(beginGameStateCommits).toHaveBeenCalledTimes(1);
-        expect(endGameStateCommits).toHaveBeenCalledTimes(1);
+        expect(saveGameState).toHaveBeenCalledTimes(1);
 
         // Verify beginGameStateCommits is called before any gameloop functions
         const beginOrder = vi.mocked(beginGameStateCommits).mock
           .invocationCallOrder[0];
         const gameloopOrder =
           vi.mocked(gameloopAutoTravel).mock.invocationCallOrder[0];
-        const endOrder =
-          vi.mocked(endGameStateCommits).mock.invocationCallOrder[0];
+        const endOrder = vi.mocked(saveGameState).mock.invocationCallOrder[0];
 
         expect(beginOrder).toBeLessThan(gameloopOrder);
         expect(gameloopOrder).toBeLessThan(endOrder);
@@ -574,7 +573,7 @@ describe('Gameloop Functions', () => {
 
         expect(beginGameStateCommits).toHaveBeenCalledTimes(1);
         // endGameStateCommits should NOT be called when error occurs
-        expect(endGameStateCommits).not.toHaveBeenCalled();
+        expect(saveGameState).not.toHaveBeenCalled();
       });
     });
 

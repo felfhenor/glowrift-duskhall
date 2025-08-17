@@ -1,16 +1,23 @@
 import type { WritableSignal } from '@angular/core';
 import { signal } from '@angular/core';
+import { error } from '@helpers/logging';
 
 export function localStorageSignal<T>(
   localStorageKey: string,
   initialValue: T,
+  onLoad?: (value: T) => void,
 ): WritableSignal<T> {
   const storedValueRaw = localStorage.getItem(localStorageKey);
   if (storedValueRaw) {
     try {
       initialValue = JSON.parse(storedValueRaw);
+      onLoad?.(initialValue);
     } catch (e) {
-      console.error('Failed to parse stored value for key:', localStorageKey);
+      error(
+        'LocalStorageSignal',
+        'Failed to parse stored value for key:',
+        localStorageKey,
+      );
     }
   } else {
     localStorage.setItem(localStorageKey, JSON.stringify(initialValue));

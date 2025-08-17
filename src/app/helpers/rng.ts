@@ -1,4 +1,4 @@
-import { myGameId } from '@helpers/state-game';
+import { worldGameId } from '@helpers/world';
 import type { DropRarity, HasRarity, Identifiable } from '@interfaces';
 import { pull, sumBy } from 'es-toolkit/compat';
 import seedrandom, { type PRNG } from 'seedrandom';
@@ -17,7 +17,7 @@ export function rngSeeded(seed = rngUuid()): PRNG {
 }
 
 export function rngGame(): PRNG {
-  return rngSeeded(myGameId());
+  return rngSeeded(worldGameId());
 }
 
 export function rngChoice<T>(choices: T[], rng = rngSeeded(rngUuid())): T {

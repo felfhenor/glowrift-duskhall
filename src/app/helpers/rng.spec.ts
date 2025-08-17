@@ -18,9 +18,9 @@ vi.mock('uuid', () => ({
   v4: vi.fn(() => 'mock-uuid'),
 }));
 
-// Mock myGameId
-vi.mock('@helpers/state-game', () => ({
-  myGameId: vi.fn(() => 'game-uuid'),
+// Mock worldGameId
+vi.mock('@helpers/world', () => ({
+  worldGameId: vi.fn(() => 'game-uuid'),
 }));
 
 describe('RNG Helper Functions', () => {
