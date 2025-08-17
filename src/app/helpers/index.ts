@@ -3,6 +3,7 @@ export * from './action-skill';
 export * from './analytics';
 export * from './camera';
 export * from './camera-controller';
+export * from './claim-log';
 export * from './clock';
 export * from './combat';
 export * from './combat-create';

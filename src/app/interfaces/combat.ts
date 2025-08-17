@@ -12,16 +12,6 @@ import type { WorldPosition } from '@interfaces/world';
 
 export type CombatId = Branded<string, 'CombatId'>;
 
-export interface CombatLog {
-  combatId: CombatId;
-  messageId: string;
-  timestamp: number;
-  locationName: string;
-  message: string;
-  spritesheet?: 'guardian' | 'hero';
-  sprite?: string;
-}
-
 export type CombatantStatusEffectData = {
   isFrozen?: boolean;
 };

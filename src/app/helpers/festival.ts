@@ -20,7 +20,7 @@ export function festivalStart(festivalId: string): void {
   const festivalData = getEntry<FestivalContent>(festivalId);
   if (!festivalData) return;
 
-  notify(festivalData.description, 'Festival');
+  notify('Festival', festivalData.description);
 
   const endsAt = clockGetTickTimer(festivalData.duration);
 
@@ -37,7 +37,7 @@ export function festivalStop(festivalId: string): void {
   const festivalData = getEntry<FestivalContent>(festivalId);
   if (!festivalData) return;
 
-  notify(festivalData.endDescription, 'Festival');
+  notify('Festival', festivalData.endDescription);
 
   updateGamestate((state) => {
     delete state.festival.festivals[festivalId];

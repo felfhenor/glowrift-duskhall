@@ -10,7 +10,7 @@ const notification = new Subject<{
 }>();
 export const notification$ = notification.asObservable();
 
-export function notify(message: string, category: NotificationCategory): void {
+export function notify(category: NotificationCategory, message: string): void {
   if (
     !isPageVisible() ||
     isCatchingUp() ||

@@ -27,8 +27,6 @@ import {
 import { getEntry } from '@helpers/content';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 
-import { notify } from '@helpers/notify';
-
 import { sample, sortBy, sumBy } from 'es-toolkit/compat';
 
 import { combatSkillSucceedsElementCombatStatChance } from '@helpers/combat-stats';
@@ -302,10 +300,7 @@ export function combatDoCombatIteration(): void {
 
 export function combatHandleFlee(): void {
   const combat = currentCombat();
-  if (!combat) {
-    notify('You are not in combat!', 'Travel');
-    return;
-  }
+  if (!combat) return;
 
   combatMessageLog(combat, 'The heroes have fled!');
   combatHandleDefeat(combat);

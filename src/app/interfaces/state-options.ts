@@ -26,7 +26,11 @@ export type ToggleableCategory = Exclude<
   'Error' | 'Success'
 >;
 
-export type WorldTab = 'Festivals' | 'Claims' | 'ResourceGeneration';
+export type WorldTab =
+  | 'Festivals'
+  | 'Claims'
+  | 'ClaimsLog'
+  | 'ResourceGeneration';
 export type TownTab = TownBuilding;
 export type CombatTab = 'Preferences' | 'CombatLog';
 export type OptionsTab = 'UI' | 'Savefile' | 'Debug';

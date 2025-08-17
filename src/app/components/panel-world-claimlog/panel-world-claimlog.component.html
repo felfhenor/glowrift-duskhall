@@ -1,0 +1,26 @@
+<div>
+  @for (message of allClaimLogs(); track message.messageId) {
+    <div class="flex flex-row gap-2 justify-between">
+      <div class="flex items-center">
+        <div class="w-12 h-6 flex items-center justify-center scale-50">
+          <div class="mr-3 flex items-center justify-center">
+            <app-atlas-image
+              [assetName]="message.sprite"
+              [spritesheet]="'world-object'"
+              class="w-16 h-16"
+            ></app-atlas-image>
+          </div>
+        </div>
+        <div [innerHTML]="message.message"></div>
+      </div>
+
+      <div class="italic">
+        {{ message.locationName }} - {{ message.timestamp | date: 'short' }}
+      </div>
+    </div>
+  } @empty {
+    <div class="text-center">
+      <p>No claim events have happened yet.</p>
+    </div>
+  }
+</div>

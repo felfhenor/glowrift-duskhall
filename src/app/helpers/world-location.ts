@@ -1,3 +1,4 @@
+import { claimMessageLog } from '@helpers/claim-log';
 import { getEntry } from '@helpers/content';
 import { currencyClaimsGain, currencyClaimsLose } from '@helpers/currency';
 import { defaultLocation, defaultNodeCountBlock } from '@helpers/defaults';
@@ -5,9 +6,9 @@ import { discordUpdateStatus } from '@helpers/discord';
 import { droppableGain, droppableMakeReal } from '@helpers/droppable';
 import { itemElementAdd, itemIsEquipment } from '@helpers/item';
 import { distanceBetweenNodes } from '@helpers/math';
-import { notify } from '@helpers/notify';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { timerAddUnclaimAction, timerGetRegisterTick } from '@helpers/timer';
+import { globalStatusText } from '@helpers/ui';
 import { worldMaxDistance, worldNodeGetAccessId } from '@helpers/world';
 import {
   worldNotifyClaim,
@@ -163,7 +164,8 @@ export function locationGetClaimed(): WorldLocation[] {
 }
 
 export function locationRewardsGain(node: WorldLocation): void {
-  notify(`You have claimed ${node.name}!`, 'LocationClaim');
+  globalStatusText.set(`You have claimed ${node.name}!`);
+  claimMessageLog(node, `You have claimed ${node.name}!`);
 
   node.claimLootIds.forEach((lootDefId) => {
     const lootDef = getEntry<DroppableEquippable>(lootDefId);
@@ -219,7 +221,8 @@ export function locationClaim(node: WorldLocation): void {
 export function locationUnclaim(node: WorldLocation): void {
   currencyClaimsLose(node);
 
-  notify(`${node.name} was lost!`, 'LocationClaim');
+  globalStatusText.set(`${node.name} was lost!`);
+  claimMessageLog(node, `${node.name} was lost!`);
 
   updateGamestate((state) => {
     const updateNodeData = locationGet(node.x, node.y, state);

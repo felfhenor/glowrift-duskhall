@@ -2,9 +2,9 @@ import { exploringUpdateGlobalStatusText } from '@helpers/explore';
 import { festivalExplorationTickMultiplier } from '@helpers/festival-exploration';
 import { error } from '@helpers/logging';
 import { distanceBetweenNodes } from '@helpers/math';
-import { notify } from '@helpers/notify';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { locationTraitExplorationMultiplier } from '@helpers/trait-location-exploration';
+import { globalStatusText } from '@helpers/ui';
 import { locationGetNearestTown } from '@helpers/world-location';
 import type { WorldLocation, WorldPosition } from '@interfaces';
 
@@ -36,7 +36,7 @@ export function travelTimeFromCurrentLocationTo(node: WorldLocation): number {
 export function travelToNode(node: WorldLocation): void {
   const travelTime = travelTimeFromCurrentLocationTo(node);
 
-  notify(`Travel to ${node.name} initiated...`, 'Travel');
+  globalStatusText.set(`Travel to ${node.name} initiated...`);
 
   updateGamestate((state) => {
     state.hero.travel.nodeId = node.id;

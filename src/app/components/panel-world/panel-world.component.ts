@@ -1,6 +1,7 @@
 import { Component, computed } from '@angular/core';
 import { ButtonCloseComponent } from '@components/button-close/button-close.component';
 import { CardPageComponent } from '@components/card-page/card-page.component';
+import { PanelWorldClaimlogComponent } from '@components/panel-world-claimlog/panel-world-claimlog.component';
 import { PanelWorldClaimsComponent } from '@components/panel-world-claims/panel-world-claims.component';
 import { PanelWorldFestivalsComponent } from '@components/panel-world-festivals/panel-world-festivals.component';
 import { PanelWorldResourceGenerationComponent } from '@components/panel-world-resource-generation/panel-world-resource-generation.component';
@@ -18,6 +19,7 @@ import type { WorldTab } from '@interfaces/state-options';
     PanelWorldClaimsComponent,
     PanelWorldFestivalsComponent,
     PanelWorldResourceGenerationComponent,
+    PanelWorldClaimlogComponent,
   ],
   templateUrl: './panel-world.component.html',
   styleUrl: './panel-world.component.scss',
@@ -34,6 +36,7 @@ export class PanelWorldComponent {
   }> = [
     { name: 'Resource Generation', link: 'ResourceGeneration' },
     { name: 'Claimed Locations', link: 'Claims' },
+    { name: 'Claim Log', link: 'ClaimsLog' },
     {
       name: 'Festivals',
       link: 'Festivals',

@@ -4,7 +4,7 @@ import {
   heroRecoveringInTown,
   heroRecoveryPercent,
 } from '@helpers/hero';
-import { isTraveling, travelToNode } from '@helpers/travel';
+import { isTraveling, travelHome, travelToNode } from '@helpers/travel';
 import { globalStatusText } from '@helpers/ui';
 import {
   locationGetAllMatchingPreferences,
@@ -17,7 +17,7 @@ export function gameloopAutoTravel(): void {
   if (isExploring()) return;
   if (isTraveling()) return;
   if (heroAreAllDead()) {
-    globalStatusText.set('All heroes are defeated; cannot travel.');
+    travelHome();
     return;
   }
 
