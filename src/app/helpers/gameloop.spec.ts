@@ -56,10 +56,12 @@ vi.mock('@helpers/setup', () => ({
 }));
 
 vi.mock('@helpers/state-game', () => ({
-  beginGameStateCommits: vi.fn(),
-  endGameStateCommits: vi.fn(),
+  gamestateTickStart: vi.fn(),
+  gamestateTickEnd: vi.fn(),
   isGameStateReady: vi.fn(),
   updateGamestate: vi.fn(),
+  saveGameState: vi.fn(),
+  gamestate: vi.fn(() => defaultGameState()),
 }));
 
 vi.mock('@helpers/state-options', () => ({
@@ -77,6 +79,7 @@ vi.mock('@helpers/world-location', () => ({
 }));
 
 // Import the mocked functions and the functions under test
+import { defaultGameState } from '@helpers/defaults';
 import {
   gameloop,
   gameloopShouldRun,
@@ -93,7 +96,7 @@ import { debug } from '@helpers/logging';
 import { isSetup } from '@helpers/setup';
 import type { gamestate } from '@helpers/state-game';
 import {
-  beginGameStateCommits,
+  gamestateTickStart,
   isGameStateReady,
   saveGameState,
   updateGamestate,
@@ -206,6 +209,7 @@ describe('Gameloop Functions', () => {
       vi.mocked(updateGamestate).mockImplementation((callback) =>
         callback({
           actionClock: { numTicks: 0, timers: {} },
+          meta: { lastSaveTick: 0 },
         } as ReturnType<typeof gamestate>),
       );
     });
@@ -218,7 +222,7 @@ describe('Gameloop Functions', () => {
 
         expect(isSetup).toHaveBeenCalledTimes(1);
         expect(isGameStateReady).not.toHaveBeenCalled();
-        expect(beginGameStateCommits).not.toHaveBeenCalled();
+        expect(gamestateTickStart).not.toHaveBeenCalled();
         expect(gameloopAutoTravel).not.toHaveBeenCalled();
       });
 
@@ -230,7 +234,7 @@ describe('Gameloop Functions', () => {
 
         expect(isSetup).toHaveBeenCalledTimes(1);
         expect(isGameStateReady).toHaveBeenCalledTimes(1);
-        expect(beginGameStateCommits).not.toHaveBeenCalled();
+        expect(gamestateTickStart).not.toHaveBeenCalled();
         expect(gameloopAutoTravel).not.toHaveBeenCalled();
       });
 
@@ -247,7 +251,7 @@ describe('Gameloop Functions', () => {
         expect(isSetup).toHaveBeenCalledTimes(1);
         expect(isGameStateReady).toHaveBeenCalledTimes(1);
         expect(getOption).toHaveBeenCalledWith('gameloopPaused');
-        expect(beginGameStateCommits).not.toHaveBeenCalled();
+        expect(gamestateTickStart).not.toHaveBeenCalled();
         expect(gameloopAutoTravel).not.toHaveBeenCalled();
       });
     });
@@ -263,7 +267,7 @@ describe('Gameloop Functions', () => {
         expect(victoryHasWonForFirstTime).toHaveBeenCalledTimes(1);
         expect(victoryClaim).toHaveBeenCalledTimes(1);
         expect(setOption).toHaveBeenCalledWith('gameloopPaused', true);
-        expect(beginGameStateCommits).not.toHaveBeenCalled();
+        expect(gamestateTickStart).not.toHaveBeenCalled();
         expect(gameloopAutoTravel).not.toHaveBeenCalled();
       });
 
@@ -277,7 +281,7 @@ describe('Gameloop Functions', () => {
         expect(victoryHasWonForFirstTime).toHaveBeenCalledTimes(1);
         expect(victoryClaim).not.toHaveBeenCalled();
         expect(setOption).not.toHaveBeenCalledWith('gameloopPaused', true);
-        expect(beginGameStateCommits).toHaveBeenCalledTimes(1);
+        expect(gamestateTickStart).toHaveBeenCalledTimes(1);
       });
 
       it('should not claim victory when not all locations claimed', () => {
@@ -290,7 +294,7 @@ describe('Gameloop Functions', () => {
         expect(victoryHasWonForFirstTime).not.toHaveBeenCalled();
         expect(victoryClaim).not.toHaveBeenCalled();
         expect(setOption).not.toHaveBeenCalledWith('gameloopPaused', true);
-        expect(beginGameStateCommits).toHaveBeenCalledTimes(1);
+        expect(gamestateTickStart).toHaveBeenCalledTimes(1);
       });
     });
 
@@ -397,7 +401,7 @@ describe('Gameloop Functions', () => {
 
         // Verify function call order
         const calls = [
-          vi.mocked(beginGameStateCommits).mock.invocationCallOrder[0],
+          vi.mocked(gamestateTickStart).mock.invocationCallOrder[0],
           vi.mocked(gameloopAutoTravel).mock.invocationCallOrder[0],
           vi.mocked(gameloopCurrency).mock.invocationCallOrder[0],
           vi.mocked(gameloopTown).mock.invocationCallOrder[0],
@@ -466,7 +470,7 @@ describe('Gameloop Functions', () => {
         expect(() => gameloop(5)).toThrow(error);
 
         // Should have called functions up to the error
-        expect(beginGameStateCommits).toHaveBeenCalledTimes(1);
+        expect(gamestateTickStart).toHaveBeenCalledTimes(1);
         expect(gameloopAutoTravel).toHaveBeenCalledTimes(1);
         expect(gameloopCurrency).toHaveBeenCalledTimes(1);
         expect(gameloopTown).not.toHaveBeenCalled();
@@ -508,6 +512,7 @@ describe('Gameloop Functions', () => {
       it('should update numTicks in game state', () => {
         const mockState = {
           actionClock: { numTicks: 100, timers: {} },
+          meta: { lastSaveTick: 0 },
         };
 
         vi.mocked(updateGamestate).mockImplementation((callback) => {
@@ -516,7 +521,7 @@ describe('Gameloop Functions', () => {
 
         gameloop(5);
 
-        expect(updateGamestate).toHaveBeenCalledTimes(1);
+        expect(updateGamestate).toHaveBeenCalledTimes(2); // Called for numTicks update and for saving
         expect(updateGamestate).toHaveBeenCalledWith(expect.any(Function));
 
         // Verify the state was modified correctly
@@ -533,6 +538,7 @@ describe('Gameloop Functions', () => {
 
         const mockState = {
           actionClock: { numTicks: 50, timers: {} },
+          meta: { lastSaveTick: 0 },
         };
 
         vi.mocked(updateGamestate).mockImplementation((callback) => {
@@ -550,12 +556,12 @@ describe('Gameloop Functions', () => {
       it('should properly manage game state commits', () => {
         gameloop(5);
 
-        expect(beginGameStateCommits).toHaveBeenCalledTimes(1);
+        expect(gamestateTickStart).toHaveBeenCalledTimes(1);
         expect(saveGameState).toHaveBeenCalledTimes(1);
 
         // Verify beginGameStateCommits is called before any gameloop functions
-        const beginOrder = vi.mocked(beginGameStateCommits).mock
-          .invocationCallOrder[0];
+        const beginOrder =
+          vi.mocked(gamestateTickStart).mock.invocationCallOrder[0];
         const gameloopOrder =
           vi.mocked(gameloopAutoTravel).mock.invocationCallOrder[0];
         const endOrder = vi.mocked(saveGameState).mock.invocationCallOrder[0];
@@ -571,7 +577,7 @@ describe('Gameloop Functions', () => {
 
         expect(() => gameloop(5)).toThrow('Town gameloop failed');
 
-        expect(beginGameStateCommits).toHaveBeenCalledTimes(1);
+        expect(gamestateTickStart).toHaveBeenCalledTimes(1);
         // endGameStateCommits should NOT be called when error occurs
         expect(saveGameState).not.toHaveBeenCalled();
       });

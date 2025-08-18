@@ -18,6 +18,7 @@ const createMockGameState = (
     hasDismissedWinNotification: false,
     wonAtTick: 0,
     createdAt: Date.now(),
+    lastSaveTick: 0,
   },
   gameId: 'test-game-id' as GameState['gameId'],
   world: {
@@ -383,7 +384,7 @@ describe('Festival Helper', () => {
 
       expect(getEntry).toHaveBeenCalledWith('test-festival');
       expect(clockGetTickTimer).toHaveBeenCalledWith(10000);
-      expect(notify).toHaveBeenCalledWith('A test festival', 'Festival');
+      expect(notify).toHaveBeenCalledWith('Festival', 'A test festival');
       expect(updateGamestate).toHaveBeenCalled();
       expect(timerAddFestivalEndAction).toHaveBeenCalledWith(
         mockFestival.id,
@@ -433,7 +434,7 @@ describe('Festival Helper', () => {
 
       festivalStart('test-festival');
 
-      expect(notify).toHaveBeenCalledWith('', 'Festival');
+      expect(notify).toHaveBeenCalledWith('Festival', '');
     });
   });
 
@@ -458,7 +459,7 @@ describe('Festival Helper', () => {
       festivalStop('test-festival');
 
       expect(getEntry).toHaveBeenCalledWith('test-festival');
-      expect(notify).toHaveBeenCalledWith('Test festival ends', 'Festival');
+      expect(notify).toHaveBeenCalledWith('Festival', 'Test festival ends');
       expect(updateGamestate).toHaveBeenCalled();
 
       expect(
@@ -486,7 +487,7 @@ describe('Festival Helper', () => {
 
       festivalStop('test-festival');
 
-      expect(notify).toHaveBeenCalledWith('', 'Festival');
+      expect(notify).toHaveBeenCalledWith('Festival', '');
     });
 
     it('should properly delete festival from state', () => {
@@ -676,7 +677,7 @@ describe('Festival Helper', () => {
 
       expect(rngSucceedsChance).toHaveBeenCalledWith(3); // Math.floor(3000 / 1000) = 3
       expect(getEntriesByType).toHaveBeenCalledWith('festival');
-      expect(notify).toHaveBeenCalledWith('A test festival', 'Festival');
+      expect(notify).toHaveBeenCalledWith('Festival', 'A test festival');
     });
 
     it('should not start festival when chance succeeds but no festival is available', () => {
@@ -771,7 +772,7 @@ describe('Festival Helper', () => {
       expect(rngChoiceRarity).toHaveBeenCalledWith([mockFestival]);
       expect(getEntry).toHaveBeenCalledWith('test-festival');
       expect(clockGetTickTimer).toHaveBeenCalledWith(10000);
-      expect(notify).toHaveBeenCalledWith('A test festival', 'Festival');
+      expect(notify).toHaveBeenCalledWith('Festival', 'A test festival');
       expect(updateGamestate).toHaveBeenCalled();
       expect(timerAddFestivalEndAction).toHaveBeenCalled();
     });

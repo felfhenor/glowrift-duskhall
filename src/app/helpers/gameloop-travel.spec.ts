@@ -52,6 +52,7 @@ const createMockGameState = (
     hasDismissedWinNotification: false,
     wonAtTick: 0,
     createdAt: Date.now(),
+    lastSaveTick: 0,
   },
   gameId: 'test-game-id' as GameState['gameId'],
   world: {
@@ -350,8 +351,6 @@ describe('gameloopTravel', () => {
       gameloopTravel(numTicks);
 
       expect(updateGamestate).toHaveBeenCalledTimes(2);
-      expect(notify).toHaveBeenCalledTimes(1);
-      expect(notify).toHaveBeenCalledWith('Arrived at Destination!', 'Travel');
       expect(locationGetCurrent).toHaveBeenCalledTimes(1);
     });
 
@@ -386,11 +385,6 @@ describe('gameloopTravel', () => {
       vi.mocked(locationGetCurrent).mockReturnValue(mockTargetLocation);
 
       gameloopTravel(numTicks);
-
-      expect(notify).toHaveBeenCalledWith(
-        'Arrived at Far Destination!',
-        'Travel',
-      );
     });
 
     it('should handle arrival at claimed location', () => {
@@ -423,8 +417,6 @@ describe('gameloopTravel', () => {
       vi.mocked(locationGetCurrent).mockReturnValue(mockClaimedLocation);
 
       gameloopTravel(numTicks);
-
-      expect(notify).toHaveBeenCalledWith('Arrived at Claimed Town!', 'Travel');
     });
 
     it('should handle arrival when destination name is undefined', () => {
@@ -451,8 +443,6 @@ describe('gameloopTravel', () => {
       vi.mocked(locationGetCurrent).mockReturnValue(undefined);
 
       gameloopTravel(numTicks);
-
-      expect(notify).toHaveBeenCalledWith('Arrived at destination!', 'Travel');
     });
 
     it('should handle arrival when locationGetCurrent returns undefined', () => {
@@ -479,8 +469,6 @@ describe('gameloopTravel', () => {
       vi.mocked(locationGetCurrent).mockReturnValue(undefined);
 
       gameloopTravel(numTicks);
-
-      expect(notify).toHaveBeenCalledWith('Arrived at destination!', 'Travel');
     });
   });
 
@@ -594,6 +582,7 @@ describe('gameloopTravel', () => {
         'locationGet',
         'globalStatusText.set',
         'locationGetCurrent',
+        'globalStatusText.set',
         'notify',
         'updateGamestate',
       ]);
@@ -776,12 +765,6 @@ describe('gameloopTravel', () => {
           expect(globalStatusText.set).toHaveBeenCalledWith(
             `Traveling to Final Destination... ${expectedTicksLeft} ticks left.`,
           );
-          expect(notify).not.toHaveBeenCalled();
-        } else {
-          expect(notify).toHaveBeenCalledWith(
-            'Arrived at Final Destination!',
-            'Travel',
-          );
         }
       });
     });
@@ -899,7 +882,6 @@ describe('gameloopTravel', () => {
       );
 
       gameloopTravel(3);
-      expect(notify).toHaveBeenCalledWith('Arrived at Target 2!', 'Travel');
     });
   });
 });

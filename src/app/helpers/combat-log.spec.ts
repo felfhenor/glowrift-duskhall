@@ -72,11 +72,13 @@ vi.mock('mustache', () => ({
 
 // Import functions after mocking
 import {
+  beginCombatLogCommits,
   combatFormatMessage,
   combatLog,
   combatLogHealthColor,
   combatLogReset,
   combatMessageLog,
+  endCombatLogCommits,
 } from '@helpers/combat-log';
 import { rngUuid } from '@helpers/rng';
 
@@ -210,13 +212,15 @@ describe('Combat Log', () => {
     });
 
     afterEach(() => {
-      vi.restoreAllMocks();
+      vi.clearAllMocks();
     });
 
     it('should create and add a new combat log entry with actor', () => {
       const message = 'Test combat message';
 
+      beginCombatLogCommits();
       combatMessageLog(mockCombat, message, mockCombatant);
+      endCombatLogCommits();
 
       expect(rngUuid).toHaveBeenCalled();
       expect(combatLog.update).toHaveBeenCalledWith(expect.any(Function));
@@ -230,7 +234,9 @@ describe('Combat Log', () => {
         sprite: 'guardian-sprite',
       };
 
+      beginCombatLogCommits();
       combatMessageLog(mockCombat, message, enemyCombatant);
+      endCombatLogCommits();
 
       expect(rngUuid).toHaveBeenCalled();
       expect(combatLog.update).toHaveBeenCalledWith(expect.any(Function));
@@ -239,7 +245,9 @@ describe('Combat Log', () => {
     it('should create log entry without actor', () => {
       const message = 'Combat starts';
 
+      beginCombatLogCommits();
       combatMessageLog(mockCombat, message);
+      endCombatLogCommits();
 
       expect(rngUuid).toHaveBeenCalled();
       expect(combatLog.update).toHaveBeenCalledWith(expect.any(Function));
@@ -248,19 +256,8 @@ describe('Combat Log', () => {
     it('should limit log entries to 500 items', () => {
       const message = 'Test message';
 
-      // Create a mock update function that we can inspect
-      let capturedUpdater: ((logs: CombatLog[]) => CombatLog[]) | undefined;
-      vi.mocked(combatLog.update).mockImplementation((updater) => {
-        capturedUpdater = updater as (logs: CombatLog[]) => CombatLog[];
-        return [];
-      });
-
-      combatMessageLog(mockCombat, message);
-
-      expect(capturedUpdater).toBeDefined();
-
-      // Test the updater function with more than 500 logs
-      const existingLogs: CombatLog[] = Array.from({ length: 500 }, (_, i) => ({
+      // Set up the signal to have 499 existing logs initially
+      const existingLogs: CombatLog[] = Array.from({ length: 499 }, (_, i) => ({
         combatId: mockCombat.id,
         messageId: `existing-${i}`,
         timestamp: 1000 + i,
@@ -268,11 +265,21 @@ describe('Combat Log', () => {
         message: `Old message ${i}`,
       }));
 
-      const result = capturedUpdater!(existingLogs);
+      // Mock the signal to return existing logs and capture the final result
+      let finalResult: CombatLog[] = [];
+      vi.mocked(combatLog.update).mockImplementation((updater) => {
+        const result = updater(existingLogs);
+        finalResult = result;
+        return result;
+      });
+
+      beginCombatLogCommits();
+      combatMessageLog(mockCombat, message);
+      endCombatLogCommits();
 
       // Should have exactly 500 logs (new one + 499 existing)
-      expect(result).toHaveLength(500);
-      expect(result[0].messageId).toBe('mock-uuid-123'); // New log should be first
+      expect(finalResult).toHaveLength(500);
+      expect(finalResult[0].messageId).toBe('mock-uuid-123'); // New log should be first
     });
 
     it('should handle actor without sprite', () => {
@@ -282,7 +289,9 @@ describe('Combat Log', () => {
         sprite: 'default-sprite', // Can't be undefined per Artable interface
       };
 
+      beginCombatLogCommits();
       combatMessageLog(mockCombat, message, actorWithoutSprite);
+      endCombatLogCommits();
 
       expect(rngUuid).toHaveBeenCalled();
       expect(combatLog.update).toHaveBeenCalledWith(expect.any(Function));
@@ -291,7 +300,9 @@ describe('Combat Log', () => {
     it('should handle empty message', () => {
       const message = '';
 
+      beginCombatLogCommits();
       combatMessageLog(mockCombat, message, mockCombatant);
+      endCombatLogCommits();
 
       expect(rngUuid).toHaveBeenCalled();
       expect(combatLog.update).toHaveBeenCalledWith(expect.any(Function));

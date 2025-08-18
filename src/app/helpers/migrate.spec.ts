@@ -17,6 +17,11 @@ vi.mock('@helpers/defaults', () => ({
   setGameState: vi.fn(),
 }));
 
+vi.mock('@helpers/state-game', () => ({
+  gamestate: vi.fn(),
+  setGameState: vi.fn(),
+}));
+
 vi.mock('@helpers/state-options', () => ({
   defaultOptions: vi.fn(),
   options: vi.fn(),
@@ -49,6 +54,19 @@ import { resetClaimedNodeCounts } from '@helpers/world-location';
 import { merge } from 'es-toolkit/compat';
 
 describe('migrate', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  // Get mocked function references that are used
+  const mockedGamestate = vi.mocked(gamestate);
+  const mockedDefaultGameState = vi.mocked(defaultGameState);
+  const mockedMerge = vi.mocked(merge);
+  const mockedSetGameState = vi.mocked(setGameState);
+  const mockedMigrateItems = vi.mocked(migrateItems);
+  const mockedMigrateSkills = vi.mocked(migrateSkills);
+  const mockedOptions = vi.mocked(options);
+  const mockedDefaultOptions = vi.mocked(defaultOptions);
   // Mock data factories
   const createMockGameState = (): GameState => ({
     meta: {
@@ -239,9 +257,9 @@ describe('migrate', () => {
       const mockBlankState = createMockGameState();
       const mockMergedState = { ...mockBlankState, ...mockCurrentState };
 
-      vi.mocked(gamestate).mockReturnValue(mockCurrentState);
-      vi.mocked(defaultGameState).mockReturnValue(mockBlankState);
-      vi.mocked(merge).mockReturnValue(mockMergedState);
+      mockedGamestate.mockReturnValue(mockCurrentState);
+      mockedDefaultGameState.mockReturnValue(mockBlankState);
+      mockedMerge.mockReturnValue(mockMergedState);
 
       // Act
       migrateGameState();
@@ -259,9 +277,9 @@ describe('migrate', () => {
       const mockBlankState = createMockGameState();
       const mockMergedState = { ...mockBlankState, ...mockCurrentState };
 
-      vi.mocked(gamestate).mockReturnValue(mockCurrentState);
-      vi.mocked(defaultGameState).mockReturnValue(mockBlankState);
-      vi.mocked(merge).mockReturnValue(mockMergedState);
+      mockedGamestate.mockReturnValue(mockCurrentState);
+      mockedDefaultGameState.mockReturnValue(mockBlankState);
+      mockedMerge.mockReturnValue(mockMergedState);
 
       // Act
       migrateGameState();
@@ -279,24 +297,28 @@ describe('migrate', () => {
       const mockBlankState = createMockGameState();
       const mockMergedState = { ...mockBlankState, ...mockCurrentState };
 
-      vi.mocked(gamestate).mockReturnValue(mockCurrentState);
-      vi.mocked(defaultGameState).mockReturnValue(mockBlankState);
-      vi.mocked(merge).mockReturnValue(mockMergedState);
+      mockedGamestate.mockReturnValue(mockCurrentState);
+      mockedDefaultGameState.mockReturnValue(mockBlankState);
+      mockedMerge.mockReturnValue(mockMergedState);
 
       const callOrder: string[] = [];
-      vi.mocked(setGameState).mockImplementation(() => {
+      mockedSetGameState.mockImplementation(() => {
         callOrder.push('setGameState');
       });
-      vi.mocked(migrateItems).mockImplementation(() => {
+      mockedMigrateItems.mockImplementation(() => {
         callOrder.push('migrateItems');
       });
-      vi.mocked(migrateSkills).mockImplementation(() => {
+      mockedMigrateSkills.mockImplementation(() => {
         callOrder.push('migrateSkills');
       });
-      vi.mocked(cleanupOldTimerEntries).mockImplementation(() => {
+      (
+        cleanupOldTimerEntries as unknown as ReturnType<typeof vi.fn>
+      ).mockImplementation(() => {
         callOrder.push('cleanupOldTimerEntries');
       });
-      vi.mocked(resetClaimedNodeCounts).mockImplementation(() => {
+      (
+        resetClaimedNodeCounts as unknown as ReturnType<typeof vi.fn>
+      ).mockImplementation(() => {
         callOrder.push('resetClaimedNodeCounts');
       });
 
@@ -331,9 +353,9 @@ describe('migrate', () => {
       const mockBlankState = createMockGameState();
       const mockMergedState = { ...mockBlankState, ...partialState };
 
-      vi.mocked(gamestate).mockReturnValue(partialState);
-      vi.mocked(defaultGameState).mockReturnValue(mockBlankState);
-      vi.mocked(merge).mockReturnValue(mockMergedState);
+      mockedGamestate.mockReturnValue(partialState);
+      mockedDefaultGameState.mockReturnValue(mockBlankState);
+      mockedMerge.mockReturnValue(mockMergedState);
 
       // Act
       migrateGameState();
@@ -358,9 +380,9 @@ describe('migrate', () => {
         ...mockCurrentOptions,
       };
 
-      vi.mocked(options).mockReturnValue(mockCurrentOptions);
-      vi.mocked(defaultOptions).mockReturnValue(mockDefaultOptions);
-      vi.mocked(merge).mockReturnValue(mockMergedOptions);
+      mockedOptions.mockReturnValue(mockCurrentOptions);
+      mockedDefaultOptions.mockReturnValue(mockDefaultOptions);
+      mockedMerge.mockReturnValue(mockMergedOptions);
 
       // Act
       migrateOptionsState();
@@ -386,9 +408,9 @@ describe('migrate', () => {
       const mockDefaultOptions = createMockOptions();
       const mockMergedOptions = { ...mockDefaultOptions, ...partialOptions };
 
-      vi.mocked(options).mockReturnValue(partialOptions);
-      vi.mocked(defaultOptions).mockReturnValue(mockDefaultOptions);
-      vi.mocked(merge).mockReturnValue(mockMergedOptions);
+      mockedOptions.mockReturnValue(partialOptions);
+      mockedDefaultOptions.mockReturnValue(mockDefaultOptions);
+      mockedMerge.mockReturnValue(mockMergedOptions);
 
       // Act
       migrateOptionsState();
@@ -404,9 +426,9 @@ describe('migrate', () => {
       const mockDefaultOptions = createMockOptions();
       const mockMergedOptions = mockDefaultOptions;
 
-      vi.mocked(options).mockReturnValue(emptyOptions);
-      vi.mocked(defaultOptions).mockReturnValue(mockDefaultOptions);
-      vi.mocked(merge).mockReturnValue(mockMergedOptions);
+      mockedOptions.mockReturnValue(emptyOptions);
+      mockedDefaultOptions.mockReturnValue(mockDefaultOptions);
+      mockedMerge.mockReturnValue(mockMergedOptions);
 
       // Act
       migrateOptionsState();
@@ -432,9 +454,9 @@ describe('migrate', () => {
       const mockDefaultOptions = createMockOptions();
       const mockMergedOptions = { ...mockDefaultOptions, ...customOptions };
 
-      vi.mocked(options).mockReturnValue(customOptions);
-      vi.mocked(defaultOptions).mockReturnValue(mockDefaultOptions);
-      vi.mocked(merge).mockReturnValue(mockMergedOptions);
+      mockedOptions.mockReturnValue(customOptions);
+      mockedDefaultOptions.mockReturnValue(mockDefaultOptions);
+      mockedMerge.mockReturnValue(mockMergedOptions);
 
       // Act
       migrateOptionsState();
@@ -457,9 +479,9 @@ describe('migrate', () => {
         ...optionsWithDifferentCategories,
       };
 
-      vi.mocked(options).mockReturnValue(optionsWithDifferentCategories);
-      vi.mocked(defaultOptions).mockReturnValue(mockDefaultOptions);
-      vi.mocked(merge).mockReturnValue(mockMergedOptions);
+      mockedOptions.mockReturnValue(optionsWithDifferentCategories);
+      mockedDefaultOptions.mockReturnValue(mockDefaultOptions);
+      mockedMerge.mockReturnValue(mockMergedOptions);
 
       // Act
       migrateOptionsState();
@@ -491,9 +513,9 @@ describe('migrate', () => {
         ...debugEnabledOptions,
       };
 
-      vi.mocked(options).mockReturnValue(debugEnabledOptions);
-      vi.mocked(defaultOptions).mockReturnValue(mockDefaultOptions);
-      vi.mocked(merge).mockReturnValue(mockMergedOptions);
+      mockedOptions.mockReturnValue(debugEnabledOptions);
+      mockedDefaultOptions.mockReturnValue(mockDefaultOptions);
+      mockedMerge.mockReturnValue(mockMergedOptions);
 
       // Act
       migrateOptionsState();

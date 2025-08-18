@@ -22,5 +22,6 @@ export default defineConfig({
     include: ['src/app/helpers/**/*.spec.ts'],
     exclude: excludedFilesFromTesting,
     environment: 'jsdom',
+    setupFiles: ['src/test-setup.ts'],
   },
 });

@@ -17,6 +17,7 @@ export function gameloopAutoTravel(): void {
   if (isExploring()) return;
   if (isTraveling()) return;
   if (heroAreAllDead()) {
+    globalStatusText.set('All heroes are defeated; cannot travel.');
     travelHome();
     return;
   }

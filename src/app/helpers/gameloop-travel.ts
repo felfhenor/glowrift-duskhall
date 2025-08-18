@@ -1,3 +1,4 @@
+import { notify } from '@helpers/notify';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { isTraveling } from '@helpers/travel';
 import { globalStatusText } from '@helpers/ui';
@@ -41,6 +42,7 @@ export function gameloopTravel(numTicks: number): void {
     const newNode = locationGetCurrent();
 
     globalStatusText.set(`Arrived at ${newNode?.name ?? 'destination'}!`);
+    notify('Travel', `Arrived at ${newNode?.name ?? 'destination'}!`);
     updateGamestate((state) => {
       const exploreTicks = newNode?.currentlyClaimed
         ? 0

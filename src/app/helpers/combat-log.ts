@@ -43,6 +43,7 @@ export function combatMessageLog(
 
 export function combatLogReset(): void {
   combatLog.set([]);
+  pendingCombatLogMessages = [];
 }
 
 export function combatLogHealthColor(

@@ -15,6 +15,7 @@ vi.mock('@helpers/hero', () => ({
 vi.mock('@helpers/travel', () => ({
   isTraveling: vi.fn(),
   travelToNode: vi.fn(),
+  travelHome: vi.fn(),
 }));
 
 vi.mock('@helpers/ui', () => ({
