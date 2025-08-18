@@ -46,3 +46,10 @@
     padding: 0.5rem;
   }
 }
+
+::ng-deep .panel-card .card-body {
+  @media (max-height: 900px) {
+    max-height: 250px;
+    overflow-y: auto;
+  }
+}

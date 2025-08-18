@@ -3,8 +3,8 @@
 @let currencies = currencyRequirements();
 @let curCurrencies = currentCurrencies();
 
-<div class="card bg-base-100 foreground shadow-xl">
-  <div class="card-body">
+<div class="card bg-base-100 foreground shadow-xl panel-card">
+  <div class="card-body overflow-y-auto">
     <div class="card-title">
       @if (isMaxLevel()) {
         {{ building() }} is at max level
