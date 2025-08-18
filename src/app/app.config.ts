@@ -135,7 +135,9 @@ export const appConfig: ApplicationConfig = {
     {
       provide: ENVIRONMENT_INITIALIZER,
       multi: true,
-      useValue: async () => await inject(SoundService).init(),
+      useValue: async () => {
+        await inject(SoundService).init();
+      },
     },
   ],
 };
