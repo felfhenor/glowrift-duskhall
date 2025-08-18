@@ -583,7 +583,6 @@ describe('gameloopTravel', () => {
         'globalStatusText.set',
         'locationGetCurrent',
         'globalStatusText.set',
-        'notify',
         'updateGamestate',
       ]);
     });
