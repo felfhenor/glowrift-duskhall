@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
+
 import { notification$ } from '@helpers';
-import { HotToastService } from '@ngxpert/hot-toast';
 import { LoggerService } from '@services/logger.service';
 
 @Injectable({
@@ -8,14 +9,14 @@ import { LoggerService } from '@services/logger.service';
 })
 export class NotifyService {
   private logger = inject(LoggerService);
-  private toast = inject(HotToastService);
+  private toast = inject(ToastrService);
 
   async init() {
     notification$.subscribe((messageData) => {
       const { message, type } = messageData;
-      this.logger.debug('Notify', message);
+      this.logger.debug(`Notify:${type}`, message);
 
-      this.toast?.[type]?.(message, {});
+      this.toast?.[type]?.(message);
     });
   }
 }

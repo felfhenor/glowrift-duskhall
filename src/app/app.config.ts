@@ -7,6 +7,7 @@ import {
   inject,
   provideZonelessChangeDetection,
 } from '@angular/core';
+import { provideAnimations } from '@angular/platform-browser/animations';
 import {
   provideRouter,
   withComponentInputBinding,
@@ -15,7 +16,6 @@ import {
 } from '@angular/router';
 
 import { provideHttpClient } from '@angular/common/http';
-import { provideHotToastConfig } from '@ngxpert/hot-toast';
 
 import { provideNgIconsConfig } from '@ng-icons/core';
 import {
@@ -37,6 +37,7 @@ import { NotifyService } from '@services/notify.service';
 import { SoundService } from '@services/sound.service';
 import { ThemeService } from '@services/theme.service';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { provideToastr } from 'ngx-toastr';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -68,10 +69,13 @@ export const appConfig: ApplicationConfig = {
           ),
       }),
     ),
-    provideHotToastConfig({
-      position: 'bottom-right',
-      stacking: 'vertical',
-      visibleToasts: 10,
+    provideAnimations(),
+    provideToastr({
+      positionClass: 'toast-bottom-right',
+      timeOut: 3000,
+      autoDismiss: true,
+      closeButton: true,
+      maxOpened: 1,
     }),
     provideTippyLoader(() => import('tippy.js')),
     provideTippyConfig({
