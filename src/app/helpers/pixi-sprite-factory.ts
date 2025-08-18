@@ -192,7 +192,7 @@ export function pixiIndicatorNodeSpriteCreate(
   // Add debug text showing coordinates if debug mode is enabled
   if (debugMode) {
     const debugText = new Text({
-      text: `${x},${y}`,
+      text: `${nodeData.x},${nodeData.y}`,
       style: {
         fontSize: 10,
         fill: 0xffffff, // White text
