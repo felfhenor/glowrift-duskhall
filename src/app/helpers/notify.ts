@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 
 const notification = new Subject<{
   message: string;
-  type: 'show' | 'error' | 'success' | 'warning';
+  type: 'info' | 'error' | 'success' | 'warning';
   category: NotificationCategory;
 }>();
 export const notification$ = notification.asObservable();
@@ -21,7 +21,7 @@ export function notify(category: NotificationCategory, message: string): void {
   )
     return;
 
-  notification.next({ message, type: 'show', category });
+  notification.next({ message, type: 'info', category });
 }
 
 export function notifyError(message: string): void {

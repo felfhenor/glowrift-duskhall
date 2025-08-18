@@ -1,7 +1,7 @@
 import { signal } from '@angular/core';
 import { defaultGameState } from '@helpers/defaults';
 import { error } from '@helpers/logging';
-import { localStorageSignal } from '@helpers/signal';
+import { indexedDbSignal } from '@helpers/signal';
 import { type GameState } from '@interfaces';
 
 export const isGameStateReady = signal<boolean>(false);
@@ -14,7 +14,7 @@ export function gamestate() {
   return tickGamestate ?? _liveGameState();
 }
 
-const _savedGamestate = localStorageSignal<GameState>(
+const _savedGamestate = indexedDbSignal<GameState>(
   'gamestate',
   defaultGameState(),
   (state: GameState) => {
