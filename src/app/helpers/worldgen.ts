@@ -384,6 +384,150 @@ function addCornerNodes(
   });
 }
 
+function fillFogGaps(
+  config: WorldConfigContent,
+  nodes: Record<string, WorldLocation>,
+  rng: PRNG,
+  counts: Record<LocationType, number>,
+): void {
+  // Import revelation radius constants locally to avoid circular imports
+  const REVELATION_RADIUS: Record<LocationType, number> = {
+    cave: 1, // 3x3 area (radius 1)
+    dungeon: 2, // 5x5 area (radius 2)
+    village: 3, // 7x7 area (radius 3)
+    castle: 4, // 9x9 area (radius 4)
+    town: 5, // 11x11 area (radius 5)
+  };
+
+  // Calculate all revealed positions based on current nodes
+  const revealedPositions = new Set<string>();
+  
+  Object.values(nodes).forEach((node) => {
+    if (!node.nodeType) return;
+    
+    const radius = REVELATION_RADIUS[node.nodeType];
+    
+    // Add all positions within the revelation radius
+    for (let dx = -radius; dx <= radius; dx++) {
+      for (let dy = -radius; dy <= radius; dy++) {
+        const x = node.x + dx;
+        const y = node.y + dy;
+        // Only add positions within world bounds
+        if (x >= 0 && x < config.width && y >= 0 && y < config.height) {
+          revealedPositions.add(`${x},${y}`);
+        }
+      }
+    }
+  });
+
+  // Find unrevealed positions that need to be filled
+  const unrevealedPositions: Array<{ x: number; y: number }> = [];
+  
+  for (let x = 0; x < config.width; x++) {
+    for (let y = 0; y < config.height; y++) {
+      if (!revealedPositions.has(`${x},${y}`)) {
+        unrevealedPositions.push({ x, y });
+      }
+    }
+  }
+
+  // If there are no unrevealed positions, we're done
+  if (unrevealedPositions.length === 0) {
+    return;
+  }
+
+  // Group unrevealed positions into clusters to determine appropriate node types
+  // For simplicity, we'll add caves for isolated positions and dungeons for larger gaps
+  const processedPositions = new Set<string>();
+  
+  unrevealedPositions.forEach(({ x, y }) => {
+    const posKey = `${x},${y}`;
+    if (processedPositions.has(posKey)) return;
+    
+    // Check if this position already has a node
+    if (nodes[posKey]?.nodeType) return;
+    
+    // Find cluster size around this position
+    const clusterSize = getClusterSize(x, y, unrevealedPositions, processedPositions);
+    
+    // Determine node type based on cluster size and strategic considerations
+    let nodeType: LocationType;
+    if (clusterSize >= 8) {
+      // Large gaps get dungeons (radius 2)
+      nodeType = 'dungeon';
+    } else {
+      // Small gaps get caves (radius 1)
+      nodeType = 'cave';
+    }
+    
+    // Place the node
+    const newNode: WorldLocation = {
+      ...defaultLocation(),
+      id: rngUuid(),
+      x,
+      y,
+      nodeType,
+      name: `fill-gap ${nodeType} ${x}-${y}`,
+    };
+    
+    nodes[posKey] = newNode;
+    counts[nodeType]++;
+    
+    // Mark positions that would be revealed by this new node as processed
+    const radius = REVELATION_RADIUS[nodeType];
+    for (let dx = -radius; dx <= radius; dx++) {
+      for (let dy = -radius; dy <= radius; dy++) {
+        const newX = x + dx;
+        const newY = y + dy;
+        if (newX >= 0 && newX < config.width && newY >= 0 && newY < config.height) {
+          processedPositions.add(`${newX},${newY}`);
+        }
+      }
+    }
+  });
+}
+
+function getClusterSize(
+  startX: number,
+  startY: number,
+  unrevealedPositions: Array<{ x: number; y: number }>,
+  processedPositions: Set<string>,
+): number {
+  const visited = new Set<string>();
+  const queue = [{ x: startX, y: startY }];
+  let size = 0;
+  
+  while (queue.length > 0 && size < 20) { // Limit cluster size check for performance
+    const { x, y } = queue.shift()!;
+    const posKey = `${x},${y}`;
+    
+    if (visited.has(posKey) || processedPositions.has(posKey)) continue;
+    
+    // Check if this position is in the unrevealed list
+    const isUnrevealed = unrevealedPositions.some(pos => pos.x === x && pos.y === y);
+    if (!isUnrevealed) continue;
+    
+    visited.add(posKey);
+    size++;
+    
+    // Add adjacent positions to check
+    for (let dx = -1; dx <= 1; dx++) {
+      for (let dy = -1; dy <= 1; dy++) {
+        if (dx === 0 && dy === 0) continue;
+        const newX = x + dx;
+        const newY = y + dy;
+        const newPosKey = `${newX},${newY}`;
+        
+        if (!visited.has(newPosKey) && !processedPositions.has(newPosKey)) {
+          queue.push({ x: newX, y: newY });
+        }
+      }
+    }
+  }
+  
+  return size;
+}
+
 function cleanUpEmptyNodes(nodes: Record<string, WorldLocation>): void {
   Object.keys(nodes).forEach((nodePos) => {
     if (!nodes[nodePos].nodeType) {
@@ -640,6 +784,9 @@ export async function worldgenGenerateWorld(
 
     setWorldGenStatus(`Giving treasure to the world...`);
     fillSpacesWithLoot(nodes);
+
+    setWorldGenStatus(`Filling fog gaps...`);
+    fillFogGaps(config, nodes, rng, counts);
 
     setWorldGenStatus(`Finalizing the world...`);
     cleanUpEmptyNodes(nodes);
