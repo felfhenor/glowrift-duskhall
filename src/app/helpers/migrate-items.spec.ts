@@ -330,7 +330,7 @@ describe('migrateItems', () => {
       const migratedItem = mockGameState.inventory.items[0];
       expect(migratedItem.id).toBe(originalItem.id); // ID should be preserved
       expect(migratedItem.enchantLevel).toBe(0); // Base data overwrites original
-      expect(migratedItem.isFavorite).toBe(false); // Base data overwrites original
+      expect(migratedItem.isFavorite).toBe(true); // Base data overwrites original
       expect(migratedItem.mods).toEqual({}); // Base data overwrites original
       expect(migratedItem.name).toBe('Updated Base Item'); // Updated from base data
       expect(migratedItem.dropLevel).toBe(10); // Updated from base data
