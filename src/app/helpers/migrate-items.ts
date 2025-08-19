@@ -7,7 +7,8 @@ import type { EquipmentItem } from '@interfaces';
 function getUpdatedItem(item: EquipmentItem): EquipmentItem {
   return Object.assign(item, getEntry(droppableGetBaseId(item)) ?? {}, {
     id: item.id,
-  } as Partial<EquipmentItem>);
+    isFavorite: item.isFavorite,
+  });
 }
 
 export function migrateItems() {

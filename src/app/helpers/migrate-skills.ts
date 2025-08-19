@@ -7,6 +7,7 @@ import type { EquipmentSkill } from '@interfaces';
 function getUpdatedSkill(skill: EquipmentSkill): EquipmentSkill {
   return Object.assign(skill, getEntry(droppableGetBaseId(skill)), {
     id: skill.id,
+    isFavorite: skill.isFavorite,
   });
 }
 

@@ -2,7 +2,11 @@ import { signal } from '@angular/core';
 import { defaultGameState } from '@helpers/defaults';
 import { error } from '@helpers/logging';
 import { indexedDbSignal } from '@helpers/signal';
-import { type GameState } from '@interfaces';
+import {
+  type EquipmentItem,
+  type EquipmentSkill,
+  type GameState,
+} from '@interfaces';
 
 export const isGameStateReady = signal<boolean>(false);
 
@@ -66,7 +70,67 @@ export function resetGameState(): void {
 }
 
 export function saveGameState(): void {
-  _savedGamestate.set(structuredClone(_liveGameState()));
+  _savedGamestate.set(formatGameStateForSave(_liveGameState()));
+}
+
+export function formatGameStateForSave(gameState: GameState): GameState {
+  const optimized = structuredClone(gameState);
+
+  // Strip default/empty properties from inventory items
+  optimized.inventory.items = optimized.inventory.items.map((item) => {
+    const result: Partial<EquipmentItem> = { ...item };
+
+    delete result.elementMultipliers;
+    delete result.traitIds;
+    delete result.talentBoosts;
+    delete result.skillIds;
+    delete result.unableToUpgrade;
+    delete result.enchantLevel;
+    delete result.preventModification;
+    delete result.preventDrop;
+    delete result.baseStats;
+    delete result.dropLevel;
+    delete result.name;
+    delete result.rarity;
+    delete result.sprite;
+    delete result.__type;
+
+    // Remove empty mods object
+    if (item.mods && Object.keys(item.mods).length === 0) delete result.mods;
+    if (item.isFavorite === false) delete result.isFavorite;
+
+    return result as EquipmentItem;
+  });
+
+  // Strip default/empty properties from inventory skills
+  optimized.inventory.skills = optimized.inventory.skills.map((skill) => {
+    const result: Partial<EquipmentSkill> = { ...skill };
+
+    delete result.techniques;
+    delete result.unableToUpgrade;
+    delete result.enchantLevel;
+    delete result.usesPerCombat;
+    delete result.numTargets;
+    delete result.frames;
+    delete result.damageScaling;
+    delete result.statusEffectChanceBoost;
+    delete result.preventDrop;
+    delete result.disableUpgrades;
+    delete result.statusEffectDurationBoost;
+    delete result.preventModification;
+    delete result.__type;
+    delete result.rarity;
+    delete result.name;
+    delete result.dropLevel;
+    delete result.sprite;
+
+    if (skill.mods && Object.keys(skill.mods).length === 0) delete result.mods;
+    if (skill.isFavorite === false) delete result.isFavorite;
+
+    return result as EquipmentSkill;
+  });
+
+  return optimized;
 }
 
 export function gamestateTickStart(): void {
