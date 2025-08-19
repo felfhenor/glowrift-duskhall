@@ -7,6 +7,8 @@ import { droppableMakeReal } from '@helpers/droppable';
 import { allHeroes } from '@helpers/hero';
 import { skillEquip } from '@helpers/inventory-skill';
 import { gamestate, updateGamestate } from '@helpers/state-game';
+import { timerAddMerchantRefreshAction, timerGetRegisterTick } from '@helpers/timer';
+import { merchantGenerateItems } from '@helpers/town-merchant';
 import { locationGet } from '@helpers/world-location';
 import type { EquipmentSkill } from '@interfaces/content-skill';
 
@@ -42,4 +44,8 @@ export function setupFinish(): void {
   currencyClaimsMerge(claims);
 
   giveHeroesDefaultItems();
+
+  // Generate initial merchant items and schedule the first refresh
+  merchantGenerateItems();
+  timerAddMerchantRefreshAction(timerGetRegisterTick(3600));
 }

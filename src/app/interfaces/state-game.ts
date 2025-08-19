@@ -79,7 +79,6 @@ export interface GameStateActionClock {
 }
 
 export interface GameStateTownMerchant {
-  ticksUntilRefresh: number;
   soldItems: (EquipmentItem | undefined)[];
 }
 

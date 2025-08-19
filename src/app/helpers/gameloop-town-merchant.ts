@@ -1,18 +1,5 @@
-import { gamestate, updateGamestate } from '@helpers/state-game';
-import {
-  merchantGenerateItems,
-  merchantResetTicks,
-} from '@helpers/town-merchant';
-
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function gameloopTownMerchant(numTicks: number): void {
-  updateGamestate((state) => {
-    state.town.merchant.ticksUntilRefresh -= numTicks;
-    return state;
-  });
-
-  const ticksLeft = gamestate().town.merchant.ticksUntilRefresh;
-  if (ticksLeft <= 0) {
-    merchantGenerateItems();
-    merchantResetTicks();
-  }
+  // Merchant refresh is now handled by the timer system
+  // This function is kept for compatibility but no longer needed
 }

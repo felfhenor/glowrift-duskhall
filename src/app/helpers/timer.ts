@@ -1,5 +1,6 @@
 import { rngUuid } from '@helpers/rng';
 import { gamestate, updateGamestate } from '@helpers/state-game';
+import { merchantGenerateItems } from '@helpers/town-merchant';
 import { locationGet, locationUnclaim } from '@helpers/world-location';
 import type {
   FestivalId,
@@ -8,6 +9,7 @@ import type {
   TimerData,
   TimerEndFestival,
   TimerId,
+  TimerMerchantRefresh,
   TimerUnclaimVillage,
   WorldLocation,
 } from '@interfaces';
@@ -91,6 +93,7 @@ function timerActionDoSingular(action: Timer) {
     UNKNOWN: () => {},
     UnclaimVillage: timerUnclaimVillage,
     EndFestival: timerEndFestival,
+    MerchantRefresh: timerMerchantRefresh,
   };
 
   actions[action.type](action);
@@ -101,6 +104,12 @@ export function timerEndFestival(action: TimerEndFestival): void {
     delete state.festival.festivals[action.festivalId];
     return state;
   });
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function timerMerchantRefresh(action: TimerMerchantRefresh): void {
+  merchantGenerateItems();
+  timerAddMerchantRefreshAction(timerGetRegisterTick(3600));
 }
 
 export function timerUnclaimVillage(action: TimerUnclaimVillage): void {
@@ -146,6 +155,15 @@ export function timerAddFestivalEndAction(
     {
       type: 'EndFestival',
       festivalId,
+    },
+    atTicks,
+  );
+}
+
+export function timerAddMerchantRefreshAction(atTicks: number): void {
+  timerActionAdd(
+    {
+      type: 'MerchantRefresh',
     },
     atTicks,
   );

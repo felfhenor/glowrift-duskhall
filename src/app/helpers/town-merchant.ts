@@ -9,6 +9,7 @@ import { itemInventoryAdd } from '@helpers/inventory-equipment';
 import { rngSucceedsChance } from '@helpers/rng';
 import { updateGamestate } from '@helpers/state-game';
 import { talentTownStatTotalForAllHeroes } from '@helpers/talent';
+import { timerAddMerchantRefreshAction, timerGetRegisterTick } from '@helpers/timer';
 import { townBuildingLevel } from '@helpers/town';
 import { traitAddToEquipment } from '@helpers/trait-equipment';
 import type { EquipmentItem } from '@interfaces';
@@ -61,11 +62,8 @@ export function merchantGenerateItems(): void {
   });
 }
 
-export function merchantResetTicks(): void {
-  updateGamestate((state) => {
-    state.town.merchant.ticksUntilRefresh = 3600;
-    return state;
-  });
+export function merchantScheduleNextRefresh(): void {
+  timerAddMerchantRefreshAction(timerGetRegisterTick(3600));
 }
 
 export function merchantBuy(item: EquipmentItem): void {
