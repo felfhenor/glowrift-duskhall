@@ -12,7 +12,8 @@ export type GameOption =
   | 'debugDisableFogOfWar'
   | 'audioPlay'
   | 'gameloopPaused'
-  | 'canSendNotifications';
+  | 'canSendNotifications'
+  | 'followHeroesOnMap';
 
 export type NotificationCategory =
   | 'Error'

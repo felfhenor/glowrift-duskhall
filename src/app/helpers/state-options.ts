@@ -15,6 +15,7 @@ export function defaultOptions(): GameOptions {
     debugSaveInterval: 30,
 
     audioPlay: true,
+    followHeroesOnMap: true,
 
     uiTheme: 'dark',
 
