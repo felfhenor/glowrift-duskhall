@@ -1,5 +1,6 @@
 import { rngUuid } from '@helpers/rng';
 import { gamestate, updateGamestate } from '@helpers/state-game';
+import { merchantGenerateItems } from '@helpers/town-merchant';
 import { locationGet, locationUnclaim } from '@helpers/world-location';
 import type {
   FestivalId,
@@ -8,6 +9,7 @@ import type {
   TimerData,
   TimerEndFestival,
   TimerId,
+  TimerMerchantRefresh,
   TimerUnclaimVillage,
   WorldLocation,
 } from '@interfaces';
@@ -91,6 +93,7 @@ function timerActionDoSingular(action: Timer) {
     UNKNOWN: () => {},
     UnclaimVillage: timerUnclaimVillage,
     EndFestival: timerEndFestival,
+    MerchantRefresh: timerMerchantRefresh,
   };
 
   actions[action.type](action);
@@ -101,6 +104,12 @@ export function timerEndFestival(action: TimerEndFestival): void {
     delete state.festival.festivals[action.festivalId];
     return state;
   });
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function timerMerchantRefresh(action: TimerMerchantRefresh): void {
+  merchantGenerateItems();
+  timerAddMerchantRefreshAction(timerGetRegisterTick(3600));
 }
 
 export function timerUnclaimVillage(action: TimerUnclaimVillage): void {
@@ -151,6 +160,15 @@ export function timerAddFestivalEndAction(
   );
 }
 
+export function timerAddMerchantRefreshAction(atTicks: number): void {
+  timerActionAdd(
+    {
+      type: 'MerchantRefresh',
+    },
+    atTicks,
+  );
+}
+
 export function timerGetUnclaimActionForLocation(
   location: WorldLocation,
 ): TimerUnclaimVillage | undefined {
@@ -176,4 +194,30 @@ export function timerRemoveActionById(id: TimerId, tick: number): void {
 
     return state;
   });
+}
+
+export function timerGetMerchantRefreshTicksRemaining(): number {
+  const currentTick = timerTicksElapsed();
+  const allTimers = gamestate().actionClock.timers;
+  
+  // Find the next MerchantRefresh timer
+  let nextRefreshTick: number | undefined;
+  
+  for (const [tickStr, timers] of Object.entries(allTimers)) {
+    const tick = parseInt(tickStr, 10);
+    if (tick <= currentTick) continue; // Skip past timers
+    
+    const hasMerchantRefresh = timers.some(timer => timer.type === 'MerchantRefresh');
+    if (hasMerchantRefresh) {
+      if (nextRefreshTick === undefined || tick < nextRefreshTick) {
+        nextRefreshTick = tick;
+      }
+    }
+  }
+  
+  if (nextRefreshTick === undefined) {
+    return 0; // No refresh timer found, return 0
+  }
+  
+  return Math.max(0, nextRefreshTick - currentTick);
 }

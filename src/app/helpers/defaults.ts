@@ -89,7 +89,6 @@ export function defaultGameState(): GameState {
       },
       merchant: {
         soldItems: [],
-        ticksUntilRefresh: 0,
       },
       townUpgrades: {},
     },
