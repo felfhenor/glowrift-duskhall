@@ -70,7 +70,7 @@ export function saveGameState(): void {
 }
 
 export function gamestateTickStart(): void {
-  tickGamestate = structuredClone(_liveGameState());
+  tickGamestate = Object.assign({}, _liveGameState());
 }
 
 export function gamestateTickEnd(): void {
