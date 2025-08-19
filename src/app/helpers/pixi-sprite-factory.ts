@@ -234,27 +234,32 @@ export function pixiIndicatorNodePlayerAtLocationCreate(
 
   let alpha = 1;
   let direction = -1;
-  let animationId: number | null = null;
+  let lastTime = performance.now();
+  const animationSpeed = 0.002; // Slower animation speed
 
-  const animate = () => {
-    alpha += direction * 0.01;
+  // Use a more efficient animation that's frame-rate independent
+  const animate = (currentTime: number) => {
+    const deltaTime = currentTime - lastTime;
+    lastTime = currentTime;
+
+    alpha += direction * animationSpeed * deltaTime;
     if (alpha <= 0.4) direction = 1;
     if (alpha >= 0.8) direction = -1;
-    graphics.alpha = alpha;
 
-    // Schedule next frame during idle time
-    animationId = requestIdleCallback(animate);
+    // Clamp alpha to valid range
+    alpha = Math.max(0.4, Math.min(0.8, alpha));
+    graphics.alpha = alpha;
   };
 
-  // Start animation
-  animationId = requestIdleCallback(animate);
+  // Use a simpler interval-based animation instead of requestIdleCallback
+  const animationInterval = setInterval(() => {
+    animate(performance.now());
+  }, 32); // ~30 FPS for the animation, much lighter than 60 FPS
+
   container.addChild(graphics);
 
   const cleanup = () => {
-    if (animationId !== null) {
-      cancelIdleCallback(animationId);
-      animationId = null;
-    }
+    clearInterval(animationInterval);
     container.removeChild(graphics);
     graphics.destroy();
   };

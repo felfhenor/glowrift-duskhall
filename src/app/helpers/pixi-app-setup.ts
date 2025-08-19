@@ -19,9 +19,19 @@ export async function pixiAppInitialize(
     height: config.height,
     backgroundAlpha: config.backgroundAlpha ?? 0,
     antialias: config.antialias ?? false,
+    // Performance optimizations to reduce GPU load
+    powerPreference: 'high-performance',
+    sharedTicker: true,
+    resolution: 1, // Avoid high DPI rendering unless needed
+    autoDensity: false, // Disable auto density scaling
   });
 
-  app.ticker.maxFPS = 60;
+  // Reduce maximum FPS to decrease GPU load
+  app.ticker.maxFPS = 30; // Reduced from 60 to 30
+
+  // Stop the ticker when not needed
+  app.ticker.autoStart = false;
+  app.ticker.stop();
 
   // Add WebGL context loss and restoration handlers
   const canvas = app.canvas as HTMLCanvasElement;
@@ -32,6 +42,9 @@ export async function pixiAppInitialize(
   });
 
   container.appendChild(app.canvas);
+
+  // Start ticker only when canvas is actually visible and being used
+  app.ticker.start();
 
   return app;
 }
