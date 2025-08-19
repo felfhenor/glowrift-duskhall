@@ -21,11 +21,21 @@ vi.mock('@helpers/ui', () => ({
   globalStatusText: {
     set: vi.fn(),
   },
+  windowWidthTiles: vi.fn(),
+  windowHeightTiles: vi.fn(),
 }));
 
 vi.mock('@helpers/world-location', () => ({
   locationGet: vi.fn(),
   locationGetCurrent: vi.fn(),
+}));
+
+vi.mock('@helpers/camera', () => ({
+  cameraCenterOnPlayer: vi.fn(),
+}));
+
+vi.mock('@helpers/state-options', () => ({
+  getOption: vi.fn(),
 }));
 
 // Import the mocked functions and the function under test
@@ -35,6 +45,8 @@ import { gamestate, updateGamestate } from '@helpers/state-game';
 import { isTraveling } from '@helpers/travel';
 import { globalStatusText } from '@helpers/ui';
 import { locationGet, locationGetCurrent } from '@helpers/world-location';
+import { cameraCenterOnPlayer } from '@helpers/camera';
+import { getOption } from '@helpers/state-options';
 
 // Helper function to create a minimal GameState for testing
 const createMockGameState = (
@@ -167,6 +179,9 @@ const createMockLocation = (
 describe('gameloopTravel', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    
+    // Set up default mock return values
+    vi.mocked(getOption).mockReturnValue(true);
   });
 
   describe('not traveling', () => {
@@ -183,6 +198,8 @@ describe('gameloopTravel', () => {
       expect(globalStatusText.set).not.toHaveBeenCalled();
       expect(notify).not.toHaveBeenCalled();
       expect(locationGetCurrent).not.toHaveBeenCalled();
+      expect(cameraCenterOnPlayer).not.toHaveBeenCalled();
+      expect(getOption).not.toHaveBeenCalled();
     });
 
     it('should return void when not traveling', () => {
@@ -469,6 +486,60 @@ describe('gameloopTravel', () => {
       vi.mocked(locationGetCurrent).mockReturnValue(undefined);
 
       gameloopTravel(numTicks);
+    });
+
+    it('should center camera on player when followHeroesOnMap option is enabled', () => {
+      const numTicks = 5;
+      const travelData = {
+        nodeId: 'target-node',
+        x: 100,
+        y: 200,
+        ticksLeft: numTicks,
+      };
+
+      const mockState = createMockGameState(travelData);
+      vi.mocked(gamestate).mockReturnValue(mockState);
+      vi.mocked(isTraveling).mockReturnValue(true);
+      vi.mocked(updateGamestate).mockImplementation((callback) => {
+        const state = createMockGameState(travelData);
+        callback(state);
+      });
+      vi.mocked(locationGetCurrent).mockReturnValue(
+        createMockLocation('target-node', 'Target Location', 100, 200),
+      );
+      vi.mocked(getOption).mockReturnValue(true); // followHeroesOnMap enabled
+
+      gameloopTravel(numTicks);
+
+      expect(getOption).toHaveBeenCalledWith('followHeroesOnMap');
+      expect(cameraCenterOnPlayer).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not center camera when followHeroesOnMap option is disabled', () => {
+      const numTicks = 5;
+      const travelData = {
+        nodeId: 'target-node',
+        x: 100,
+        y: 200,
+        ticksLeft: numTicks,
+      };
+
+      const mockState = createMockGameState(travelData);
+      vi.mocked(gamestate).mockReturnValue(mockState);
+      vi.mocked(isTraveling).mockReturnValue(true);
+      vi.mocked(updateGamestate).mockImplementation((callback) => {
+        const state = createMockGameState(travelData);
+        callback(state);
+      });
+      vi.mocked(locationGetCurrent).mockReturnValue(
+        createMockLocation('target-node', 'Target Location', 100, 200),
+      );
+      vi.mocked(getOption).mockReturnValue(false); // followHeroesOnMap disabled
+
+      gameloopTravel(numTicks);
+
+      expect(getOption).toHaveBeenCalledWith('followHeroesOnMap');
+      expect(cameraCenterOnPlayer).not.toHaveBeenCalled();
     });
   });
 

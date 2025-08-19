@@ -79,6 +79,18 @@
 
         <div class="form-control">
           <label class="label cursor-pointer label-checkbox">
+            <input
+              type="checkbox"
+              [checked]="getOption('followHeroesOnMap')"
+              class="checkbox checkbox-secondary"
+              (click)="setOption('followHeroesOnMap', !getOption('followHeroesOnMap'))"
+            />
+            <span class="label-text">Follow heroes on map</span>
+          </label>
+        </div>
+
+        <div class="form-control">
+          <label class="label cursor-pointer label-checkbox">
             <span class="label-text !ml-0 mr-2">SFX Volume</span>
             <input
               #sfxVolume
