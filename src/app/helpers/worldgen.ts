@@ -697,73 +697,101 @@ export async function worldgenGenerateWorld(
     timer(0, 5).pipe(takeUntil(cancelWorldGen)),
   );
 
-  worldGen$.subscribe(([nodeData]) => {
-    const {
-      node,
-      nodeCount,
-      worldGenDisplayType: nodeType,
-      nodeNum,
-      minDist,
-      maxDist,
-    } = nodeData;
-    const { x, y } = findUnusedPosition(minDist, maxDist);
+  let processedNodes = 0;
+  const totalNodes = nodesToAdd.length;
 
-    node.x = x;
-    node.y = y;
+  return new Promise<GameStateWorld & { didFinish?: boolean }>((resolve) => {
+    worldGen$.subscribe({
+      next: ([nodeData]) => {
+        const {
+          node,
+          nodeCount,
+          worldGenDisplayType: nodeType,
+          nodeNum,
+          minDist,
+          maxDist,
+        } = nodeData;
+        const { x, y } = findUnusedPosition(minDist, maxDist);
 
-    if (node.x === -1 || node.y === -1) return;
+        node.x = x;
+        node.y = y;
 
-    setWorldGenStatus(`Generating ${nodeType} ${nodeNum + 1}/${nodeCount}...`);
+        processedNodes++;
 
-    addNode(node);
+        if (node.x === -1 || node.y === -1) {
+          console.warn(`Could not find position for ${nodeType} ${nodeNum + 1}/${nodeCount}, skipping...`);
+        } else {
+          setWorldGenStatus(`Generating ${nodeType} ${nodeNum + 1}/${nodeCount}...`);
+          addNode(node);
+        }
+
+        // Check if this is the last node to be processed
+        if (processedNodes === totalNodes) {
+          setWorldGenStatus(`Filling empty space...`);
+          fillEmptySpaceWithEmptyNodes(config, nodes);
+
+          setWorldGenStatus('Adding corner nodes...');
+          addCornerNodes(config, nodes, rng, counts);
+
+          setWorldGenStatus(`Filling fog gaps...`);
+          fillFogGaps(config, nodes, rng, counts);
+
+          setWorldGenStatus('Adding spice to the world...');
+          addTraitsToLocations(nodes, rng);
+
+          setWorldGenStatus(`Setting encounter levels...`);
+          setEncounterLevels(config, nodes, firstTown);
+
+          setWorldGenStatus(`Giving elements to the world...`);
+          addElementsToWorld(config, nodes);
+
+          setWorldGenStatus(`Giving darkness to the world...`);
+          fillSpacesWithGuardians(nodes, centerPosition, maxDistance);
+
+          setWorldGenStatus(`Giving treasure to the world...`);
+          fillSpacesWithLoot(nodes);
+
+          setWorldGenStatus(`Finalizing the world...`);
+          cleanUpEmptyNodes(nodes);
+
+          didWorldGenFinish = true;
+
+          // Resolve the promise with the completed world
+          resolve({
+            didFinish: didWorldGenFinish,
+            config,
+            nodes,
+            homeBase: {
+              x: firstTown.x,
+              y: firstTown.y,
+            },
+            nodeCounts: counts,
+            claimedCounts: {
+              ...defaultNodeCountBlock(),
+              town: 1,
+            },
+          });
+        }
+      },
+      error: (error) => {
+        console.error('World generation error:', error);
+        resolve({
+          didFinish: false,
+          config,
+          nodes,
+          homeBase: {
+            x: firstTown.x,
+            y: firstTown.y,
+          },
+          nodeCounts: counts,
+          claimedCounts: {
+            ...defaultNodeCountBlock(),
+            town: 1,
+          },
+        });
+      }
+    });
   });
-
-  const [node] = await lastValueFrom(worldGen$);
-  if (node.isLast) {
-    setWorldGenStatus(`Filling empty space...`);
-    fillEmptySpaceWithEmptyNodes(config, nodes);
-
-    setWorldGenStatus('Adding corner nodes...');
-    addCornerNodes(config, nodes, rng, counts);
-
-    setWorldGenStatus(`Filling fog gaps...`);
-    fillFogGaps(config, nodes, rng, counts);
-
-    setWorldGenStatus('Adding spice to the world...');
-    addTraitsToLocations(nodes, rng);
-
-    setWorldGenStatus(`Setting encounter levels...`);
-    setEncounterLevels(config, nodes, firstTown);
-
-    setWorldGenStatus(`Giving elements to the world...`);
-    addElementsToWorld(config, nodes);
-
-    setWorldGenStatus(`Giving darkness to the world...`);
-    fillSpacesWithGuardians(nodes, centerPosition, maxDistance);
-
-    setWorldGenStatus(`Giving treasure to the world...`);
-    fillSpacesWithLoot(nodes);
-
-    setWorldGenStatus(`Finalizing the world...`);
-    cleanUpEmptyNodes(nodes);
-
-    didWorldGenFinish = true;
-  }
-
-  return {
-    didFinish: didWorldGenFinish,
-    config,
-    nodes,
-    homeBase: {
-      x: firstTown.x,
-      y: firstTown.y,
-    },
-    nodeCounts: counts,
-    claimedCounts: {
-      ...defaultNodeCountBlock(),
-      town: 1,
-    },
-  };
 }
 
 function populateLocationWithLoot(location: WorldLocation): void {

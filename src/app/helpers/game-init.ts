@@ -16,7 +16,15 @@ export async function gameStart(): Promise<void> {
   setWorld(world);
   heroPositionSet(config.width / 2, config.height / 2);
   cameraCenterOnPlayer();
-  setupFinish();
+  
+  // Use await to ensure setupFinish completes before continuing
+  await new Promise<void>((resolve) => {
+    setupFinish();
+    // Give Angular time to process the state update
+    setTimeout(() => {
+      resolve();
+    }, 0);
+  });
 }
 
 export function gameReset(): void {
