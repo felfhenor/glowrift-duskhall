@@ -13,11 +13,6 @@ vi.mock('logger-timer', () => ({
   })),
 }));
 
-// Mock Angular core
-vi.mock('@angular/core', () => ({
-  computed: vi.fn((fn) => fn),
-}));
-
 // Mock all gameloop dependencies
 vi.mock('@helpers/gameloop-autotravel', () => ({
   gameloopAutoTravel: vi.fn(),

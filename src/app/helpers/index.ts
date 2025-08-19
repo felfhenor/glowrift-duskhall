@@ -38,7 +38,6 @@ export * from './gameloop-explore';
 export * from './gameloop-festival';
 export * from './gameloop-timers';
 export * from './gameloop-town';
-export * from './gameloop-town-merchant';
 export * from './gameloop-travel';
 export * from './guardian';
 export * from './hero';

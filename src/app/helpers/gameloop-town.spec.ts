@@ -3,10 +3,6 @@ import type { WorldLocation } from '@interfaces/world';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock the dependencies
-vi.mock('@helpers/gameloop-town-merchant', () => ({
-  gameloopTownMerchant: vi.fn(),
-}));
-
 vi.mock('@helpers/hero', () => ({
   heroHealAll: vi.fn(),
 }));
@@ -21,7 +17,6 @@ vi.mock('@helpers/world-location', () => ({
 
 // Import the mocked functions and the function under test
 import { gameloopTown } from '@helpers/gameloop-town';
-import { gameloopTownMerchant } from '@helpers/gameloop-town-merchant';
 import { heroHealAll } from '@helpers/hero';
 import { heroAllGainXp } from '@helpers/hero-xp';
 import { locationGetCurrent } from '@helpers/world-location';
@@ -51,39 +46,6 @@ describe('gameloopTown', () => {
     vi.clearAllMocks();
   });
 
-  describe('basic functionality', () => {
-    it('should always call gameloopTownMerchant with numTicks', () => {
-      const numTicks = 5;
-      vi.mocked(locationGetCurrent).mockReturnValue(undefined);
-
-      gameloopTown(numTicks);
-
-      expect(gameloopTownMerchant).toHaveBeenCalledTimes(1);
-      expect(gameloopTownMerchant).toHaveBeenCalledWith(numTicks);
-    });
-
-    it('should call gameloopTownMerchant even when current location is not a town', () => {
-      const numTicks = 3;
-      const mockLocation = createMockLocation('village');
-      vi.mocked(locationGetCurrent).mockReturnValue(mockLocation);
-
-      gameloopTown(numTicks);
-
-      expect(gameloopTownMerchant).toHaveBeenCalledTimes(1);
-      expect(gameloopTownMerchant).toHaveBeenCalledWith(numTicks);
-    });
-
-    it('should call gameloopTownMerchant even when currentNode is undefined', () => {
-      const numTicks = 7;
-      vi.mocked(locationGetCurrent).mockReturnValue(undefined);
-
-      gameloopTown(numTicks);
-
-      expect(gameloopTownMerchant).toHaveBeenCalledTimes(1);
-      expect(gameloopTownMerchant).toHaveBeenCalledWith(numTicks);
-    });
-  });
-
   describe('town-specific behavior', () => {
     it('should call heroAllGainXp and heroHealAll when current location is a town', () => {
       const numTicks = 10;
@@ -92,8 +54,6 @@ describe('gameloopTown', () => {
 
       gameloopTown(numTicks);
 
-      expect(gameloopTownMerchant).toHaveBeenCalledTimes(1);
-      expect(gameloopTownMerchant).toHaveBeenCalledWith(numTicks);
       expect(locationGetCurrent).toHaveBeenCalledTimes(1);
       expect(heroAllGainXp).toHaveBeenCalledTimes(1);
       expect(heroAllGainXp).toHaveBeenCalledWith(numTicks);
@@ -108,8 +68,6 @@ describe('gameloopTown', () => {
 
       gameloopTown(numTicks);
 
-      expect(gameloopTownMerchant).toHaveBeenCalledTimes(1);
-      expect(gameloopTownMerchant).toHaveBeenCalledWith(numTicks);
       expect(locationGetCurrent).toHaveBeenCalledTimes(1);
       expect(heroAllGainXp).not.toHaveBeenCalled();
       expect(heroHealAll).not.toHaveBeenCalled();
@@ -121,8 +79,6 @@ describe('gameloopTown', () => {
 
       gameloopTown(numTicks);
 
-      expect(gameloopTownMerchant).toHaveBeenCalledTimes(1);
-      expect(gameloopTownMerchant).toHaveBeenCalledWith(numTicks);
       expect(locationGetCurrent).toHaveBeenCalledTimes(1);
       expect(heroAllGainXp).not.toHaveBeenCalled();
       expect(heroHealAll).not.toHaveBeenCalled();
@@ -135,8 +91,6 @@ describe('gameloopTown', () => {
 
       gameloopTown(numTicks);
 
-      expect(gameloopTownMerchant).toHaveBeenCalledTimes(1);
-      expect(gameloopTownMerchant).toHaveBeenCalledWith(numTicks);
       expect(locationGetCurrent).toHaveBeenCalledTimes(1);
       expect(heroAllGainXp).not.toHaveBeenCalled();
       expect(heroHealAll).not.toHaveBeenCalled();
@@ -163,8 +117,6 @@ describe('gameloopTown', () => {
 
         gameloopTown(numTicks);
 
-        expect(gameloopTownMerchant).toHaveBeenCalledTimes(1);
-        expect(gameloopTownMerchant).toHaveBeenCalledWith(numTicks);
         expect(locationGetCurrent).toHaveBeenCalledTimes(1);
 
         if (locationType === 'town') {
@@ -181,44 +133,9 @@ describe('gameloopTown', () => {
   });
 
   describe('function call order', () => {
-    it('should call gameloopTownMerchant before locationGetCurrent', () => {
-      const numTicks = 1;
-      const callOrder: string[] = [];
-
-      vi.mocked(gameloopTownMerchant).mockImplementation(() => {
-        callOrder.push('gameloopTownMerchant');
-      });
-
-      vi.mocked(locationGetCurrent).mockImplementation(() => {
-        callOrder.push('locationGetCurrent');
-        return createMockLocation('town');
-      });
-
-      vi.mocked(heroAllGainXp).mockImplementation(() => {
-        callOrder.push('heroAllGainXp');
-      });
-
-      vi.mocked(heroHealAll).mockImplementation(() => {
-        callOrder.push('heroHealAll');
-      });
-
-      gameloopTown(numTicks);
-
-      expect(callOrder).toEqual([
-        'gameloopTownMerchant',
-        'locationGetCurrent',
-        'heroAllGainXp',
-        'heroHealAll',
-      ]);
-    });
-
     it('should call locationGetCurrent before hero functions when in town', () => {
       const numTicks = 1;
       const callOrder: string[] = [];
-
-      vi.mocked(gameloopTownMerchant).mockImplementation(() => {
-        callOrder.push('gameloopTownMerchant');
-      });
 
       vi.mocked(locationGetCurrent).mockImplementation(() => {
         callOrder.push('locationGetCurrent');
@@ -315,32 +232,15 @@ describe('gameloopTown', () => {
   });
 
   describe('error handling and resilience', () => {
-    it('should propagate errors from gameloopTownMerchant', () => {
-      const numTicks = 1;
-      const error = new Error('Town merchant failed');
-
-      vi.mocked(gameloopTownMerchant).mockImplementation(() => {
-        throw error;
-      });
-
-      expect(() => gameloopTown(numTicks)).toThrow(error);
-      expect(gameloopTownMerchant).toHaveBeenCalledTimes(1);
-      expect(locationGetCurrent).not.toHaveBeenCalled();
-      expect(heroAllGainXp).not.toHaveBeenCalled();
-      expect(heroHealAll).not.toHaveBeenCalled();
-    });
-
     it('should propagate errors from locationGetCurrent', () => {
       const numTicks = 1;
       const error = new Error('Location get failed');
 
-      vi.mocked(gameloopTownMerchant).mockImplementation(() => {});
       vi.mocked(locationGetCurrent).mockImplementation(() => {
         throw error;
       });
 
       expect(() => gameloopTown(numTicks)).toThrow(error);
-      expect(gameloopTownMerchant).toHaveBeenCalledTimes(1);
       expect(locationGetCurrent).toHaveBeenCalledTimes(1);
       expect(heroAllGainXp).not.toHaveBeenCalled();
       expect(heroHealAll).not.toHaveBeenCalled();
@@ -350,14 +250,12 @@ describe('gameloopTown', () => {
       const numTicks = 1;
       const error = new Error('Hero XP gain failed');
 
-      vi.mocked(gameloopTownMerchant).mockImplementation(() => {});
       vi.mocked(locationGetCurrent).mockReturnValue(createMockLocation('town'));
       vi.mocked(heroAllGainXp).mockImplementation(() => {
         throw error;
       });
 
       expect(() => gameloopTown(numTicks)).toThrow(error);
-      expect(gameloopTownMerchant).toHaveBeenCalledTimes(1);
       expect(locationGetCurrent).toHaveBeenCalledTimes(1);
       expect(heroAllGainXp).toHaveBeenCalledTimes(1);
       expect(heroHealAll).not.toHaveBeenCalled();
@@ -367,7 +265,6 @@ describe('gameloopTown', () => {
       const numTicks = 1;
       const error = new Error('Hero heal failed');
 
-      vi.mocked(gameloopTownMerchant).mockImplementation(() => {});
       vi.mocked(locationGetCurrent).mockReturnValue(createMockLocation('town'));
       vi.mocked(heroAllGainXp).mockImplementation(() => {});
       vi.mocked(heroHealAll).mockImplementation(() => {
@@ -375,23 +272,9 @@ describe('gameloopTown', () => {
       });
 
       expect(() => gameloopTown(numTicks)).toThrow(error);
-      expect(gameloopTownMerchant).toHaveBeenCalledTimes(1);
       expect(locationGetCurrent).toHaveBeenCalledTimes(1);
       expect(heroAllGainXp).toHaveBeenCalledTimes(1);
       expect(heroHealAll).toHaveBeenCalledTimes(1);
-    });
-
-    it('should not call hero functions if error occurs before town check', () => {
-      const numTicks = 1;
-      const error = new Error('Early failure');
-
-      vi.mocked(gameloopTownMerchant).mockImplementation(() => {
-        throw error;
-      });
-
-      expect(() => gameloopTown(numTicks)).toThrow(error);
-      expect(heroAllGainXp).not.toHaveBeenCalled();
-      expect(heroHealAll).not.toHaveBeenCalled();
     });
   });
 
@@ -406,15 +289,12 @@ describe('gameloopTown', () => {
 
       testSequence.forEach(({ numTicks, location }) => {
         vi.clearAllMocks();
-        vi.mocked(gameloopTownMerchant).mockImplementation(() => {});
         vi.mocked(heroAllGainXp).mockImplementation(() => {});
         vi.mocked(heroHealAll).mockImplementation(() => {});
         vi.mocked(locationGetCurrent).mockReturnValue(location);
 
         gameloopTown(numTicks);
 
-        expect(gameloopTownMerchant).toHaveBeenCalledTimes(1);
-        expect(gameloopTownMerchant).toHaveBeenCalledWith(numTicks);
         expect(locationGetCurrent).toHaveBeenCalledTimes(1);
 
         if (location?.nodeType === 'town') {
@@ -430,7 +310,6 @@ describe('gameloopTown', () => {
     });
 
     it('should maintain correct behavior across multiple calls without clearing mocks', () => {
-      vi.mocked(gameloopTownMerchant).mockImplementation(() => {});
       vi.mocked(heroAllGainXp).mockImplementation(() => {});
       vi.mocked(heroHealAll).mockImplementation(() => {});
 
@@ -451,11 +330,6 @@ describe('gameloopTown', () => {
         createMockLocation('town'),
       );
       gameloopTown(8);
-
-      expect(gameloopTownMerchant).toHaveBeenCalledTimes(3);
-      expect(gameloopTownMerchant).toHaveBeenNthCalledWith(1, 10);
-      expect(gameloopTownMerchant).toHaveBeenNthCalledWith(2, 5);
-      expect(gameloopTownMerchant).toHaveBeenNthCalledWith(3, 8);
 
       expect(locationGetCurrent).toHaveBeenCalledTimes(3);
 
@@ -478,7 +352,6 @@ describe('gameloopTown', () => {
         { numTicks: 10, location: 'town' as LocationType },
       ];
 
-      vi.mocked(gameloopTownMerchant).mockImplementation(() => {});
       vi.mocked(heroAllGainXp).mockImplementation(() => {});
       vi.mocked(heroHealAll).mockImplementation(() => {});
 
@@ -489,7 +362,6 @@ describe('gameloopTown', () => {
         gameloopTown(numTicks);
       });
 
-      expect(gameloopTownMerchant).toHaveBeenCalledTimes(5);
       expect(locationGetCurrent).toHaveBeenCalledTimes(5);
 
       // Should call hero functions only for town locations (1st, 3rd, 5th calls)

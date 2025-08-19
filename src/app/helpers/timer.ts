@@ -106,10 +106,9 @@ export function timerEndFestival(action: TimerEndFestival): void {
   });
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function timerMerchantRefresh(action: TimerMerchantRefresh): void {
   merchantGenerateItems();
-  timerAddMerchantRefreshAction(timerGetRegisterTick(3600));
+  timerAddMerchantRefreshAction(timerGetRegisterTick(action.nextTicks ?? 3600));
 }
 
 export function timerUnclaimVillage(action: TimerUnclaimVillage): void {
@@ -164,6 +163,7 @@ export function timerAddMerchantRefreshAction(atTicks: number): void {
   timerActionAdd(
     {
       type: 'MerchantRefresh',
+      nextTicks: 3600,
     },
     atTicks,
   );
@@ -199,25 +199,27 @@ export function timerRemoveActionById(id: TimerId, tick: number): void {
 export function timerGetMerchantRefreshTicksRemaining(): number {
   const currentTick = timerTicksElapsed();
   const allTimers = gamestate().actionClock.timers;
-  
+
   // Find the next MerchantRefresh timer
   let nextRefreshTick: number | undefined;
-  
+
   for (const [tickStr, timers] of Object.entries(allTimers)) {
     const tick = parseInt(tickStr, 10);
     if (tick <= currentTick) continue; // Skip past timers
-    
-    const hasMerchantRefresh = timers.some(timer => timer.type === 'MerchantRefresh');
+
+    const hasMerchantRefresh = timers.some(
+      (timer) => timer.type === 'MerchantRefresh',
+    );
     if (hasMerchantRefresh) {
       if (nextRefreshTick === undefined || tick < nextRefreshTick) {
         nextRefreshTick = tick;
       }
     }
   }
-  
+
   if (nextRefreshTick === undefined) {
     return 0; // No refresh timer found, return 0
   }
-  
+
   return Math.max(0, nextRefreshTick - currentTick);
 }

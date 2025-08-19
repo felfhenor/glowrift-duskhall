@@ -4,7 +4,11 @@ import type { WorldPosition } from '@interfaces/world';
 
 export type TimerId = Branded<string, 'TimerId'>;
 
-export type TimerAction = 'UNKNOWN' | 'UnclaimVillage' | 'EndFestival' | 'MerchantRefresh';
+export type TimerAction =
+  | 'UNKNOWN'
+  | 'UnclaimVillage'
+  | 'EndFestival'
+  | 'MerchantRefresh';
 
 export interface TimerData {
   type: TimerAction;
@@ -24,6 +28,10 @@ export type TimerEndFestival = TimerData & {
 
 export type TimerMerchantRefresh = TimerData & {
   type: 'MerchantRefresh';
+  nextTicks: number;
 };
 
-export type Timer = TimerUnclaimVillage | TimerEndFestival | TimerMerchantRefresh;
+export type Timer =
+  | TimerUnclaimVillage
+  | TimerEndFestival
+  | TimerMerchantRefresh;
