@@ -1,5 +1,4 @@
 import { locationGetAll } from '@helpers/world-location';
-import type { LocationType } from '@interfaces';
 import { REVELATION_RADIUS } from '@interfaces/world';
 
 // Cache for revealed positions to avoid recalculating on every check
