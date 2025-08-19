@@ -51,6 +51,7 @@ import {
   type WorldConfigContent,
   type WorldLocation,
   type WorldPosition,
+  REVELATION_RADIUS,
 } from '@interfaces';
 import { clamp } from 'es-toolkit/compat';
 import { from, lastValueFrom, Subject, takeUntil, timer, zip } from 'rxjs';
@@ -390,14 +391,6 @@ function fillFogGaps(
   rng: PRNG,
   counts: Record<LocationType, number>,
 ): void {
-  // Import revelation radius constants locally to avoid circular imports
-  const REVELATION_RADIUS: Record<LocationType, number> = {
-    cave: 1, // 3x3 area (radius 1)
-    dungeon: 2, // 5x5 area (radius 2)
-    village: 3, // 7x7 area (radius 3)
-    castle: 4, // 9x9 area (radius 4)
-    town: 5, // 11x11 area (radius 5)
-  };
 
   // Calculate all revealed positions based on current nodes
   const revealedPositions = new Set<string>();
@@ -742,14 +735,14 @@ export async function worldgenGenerateWorld(
     setWorldGenStatus(`Giving elements to the world...`);
     addElementsToWorld(config, nodes);
 
+    setWorldGenStatus(`Filling fog gaps...`);
+    fillFogGaps(config, nodes, rng, counts);
+
     setWorldGenStatus(`Giving darkness to the world...`);
     fillSpacesWithGuardians(nodes, centerPosition, maxDistance);
 
     setWorldGenStatus(`Giving treasure to the world...`);
     fillSpacesWithLoot(nodes);
-
-    setWorldGenStatus(`Filling fog gaps...`);
-    fillFogGaps(config, nodes, rng, counts);
 
     setWorldGenStatus(`Finalizing the world...`);
     cleanUpEmptyNodes(nodes);

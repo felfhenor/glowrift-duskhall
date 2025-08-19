@@ -44,3 +44,14 @@ export type WorldLocation = WorldPosition &
 
     locationUpgrades: Record<LocationUpgradeId, number>;
   };
+
+/**
+ * Revelation radius for each location type when claimed
+ */
+export const REVELATION_RADIUS: Record<LocationType, number> = {
+  cave: 1, // 3x3 area (radius 1)
+  dungeon: 2, // 5x5 area (radius 2)
+  village: 3, // 7x7 area (radius 3)
+  castle: 4, // 9x9 area (radius 4)
+  town: 5, // 11x11 area (radius 5)
+};
