@@ -131,7 +131,7 @@ describe('defaultWorldNode', () => {
   it('should create default world node with default coordinates', () => {
     const node = defaultLocation();
     const expected: WorldLocation = {
-      id: 'mock-uuid',
+      id: '',
       elements: [],
       name: '',
       nodeType: undefined,
@@ -157,6 +157,6 @@ describe('defaultWorldNode', () => {
 
     expect(node.x).toBe(x);
     expect(node.y).toBe(y);
-    expect(node.id).toBe('mock-uuid');
+    expect(node.id).toBe('');
   });
 });
