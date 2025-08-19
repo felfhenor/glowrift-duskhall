@@ -1,6 +1,7 @@
 import { signal } from '@angular/core';
 import { defaultGameState } from '@helpers/defaults';
 import { error } from '@helpers/logging';
+import { schedulerYield } from '@helpers/scheduler';
 import { indexedDbSignal } from '@helpers/signal';
 import {
   type EquipmentItem,
@@ -34,7 +35,9 @@ export function setGameState(state: GameState, commit = true): void {
   }
 }
 
-export function updateGamestate(func: (state: GameState) => GameState): void {
+export async function updateGamestate(
+  func: (state: GameState) => GameState,
+): Promise<void> {
   if (tickGamestate) {
     const uncommitted = tickGamestate;
     const res = func(uncommitted);
@@ -51,6 +54,7 @@ export function updateGamestate(func: (state: GameState) => GameState): void {
     return;
   }
 
+  await schedulerYield();
   const uncommitted = _liveGameState();
   const res = func(uncommitted);
   if (!res) {

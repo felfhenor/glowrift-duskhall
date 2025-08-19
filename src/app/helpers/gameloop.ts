@@ -9,6 +9,7 @@ import { gameloopTimers } from '@helpers/gameloop-timers';
 import { gameloopTown } from '@helpers/gameloop-town';
 import { gameloopTravel } from '@helpers/gameloop-travel';
 import { debug } from '@helpers/logging';
+import { schedulerYield } from '@helpers/scheduler';
 import { isSetup } from '@helpers/setup';
 import {
   gamestateTickEnd,
@@ -28,7 +29,7 @@ export function gameloopShouldRun(): boolean {
   return window.location.toString().includes('/game');
 }
 
-export function gameloop(totalTicks: number): void {
+export async function gameloop(totalTicks: number): Promise<void> {
   if (!isSetup()) return;
   if (!isGameStateReady()) return;
   if (isGameloopPaused()) return;
@@ -95,6 +96,7 @@ export function gameloop(totalTicks: number): void {
       return state;
     });
 
+    await schedulerYield();
     saveGameState();
     debug('Gameloop:Save', `Saving @ tick ${currentTick}`);
   }

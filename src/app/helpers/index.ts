@@ -62,6 +62,7 @@ export * from './pixi-sprite-factory';
 export * from './pixi-texture-loader';
 export * from './quadtree';
 export * from './rng';
+export * from './scheduler';
 export * from './setup';
 export * from './signal';
 export * from './skill';
