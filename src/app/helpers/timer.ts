@@ -195,3 +195,29 @@ export function timerRemoveActionById(id: TimerId, tick: number): void {
     return state;
   });
 }
+
+export function timerGetMerchantRefreshTicksRemaining(): number {
+  const currentTick = timerTicksElapsed();
+  const allTimers = gamestate().actionClock.timers;
+  
+  // Find the next MerchantRefresh timer
+  let nextRefreshTick: number | undefined;
+  
+  for (const [tickStr, timers] of Object.entries(allTimers)) {
+    const tick = parseInt(tickStr, 10);
+    if (tick <= currentTick) continue; // Skip past timers
+    
+    const hasMerchantRefresh = timers.some(timer => timer.type === 'MerchantRefresh');
+    if (hasMerchantRefresh) {
+      if (nextRefreshTick === undefined || tick < nextRefreshTick) {
+        nextRefreshTick = tick;
+      }
+    }
+  }
+  
+  if (nextRefreshTick === undefined) {
+    return 0; // No refresh timer found, return 0
+  }
+  
+  return Math.max(0, nextRefreshTick - currentTick);
+}

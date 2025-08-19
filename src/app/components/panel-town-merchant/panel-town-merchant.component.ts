@@ -8,6 +8,7 @@ import {
   gamestate,
   merchantBuy,
   notifyError,
+  timerGetMerchantRefreshTicksRemaining,
 } from '@helpers';
 import type { EquipmentItem } from '@interfaces';
 import type { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
@@ -26,7 +27,7 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 })
 export class PanelTownMerchantComponent {
   public shopResetTicks = computed(
-    () => gamestate().town.merchant.ticksUntilRefresh,
+    () => timerGetMerchantRefreshTicksRemaining(),
   );
   public shopItems = computed(() => gamestate().town.merchant.soldItems);
 

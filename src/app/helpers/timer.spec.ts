@@ -1,4 +1,5 @@
 import {
+  timerGetMerchantRefreshTicksRemaining,
   timerGetRegisterTick,
   timerGetTickActions,
   timerTicksElapsed,
@@ -126,6 +127,78 @@ describe('Timer Functions', () => {
       timerUnclaimVillage(mockTimer);
 
       expect(locationUnclaim).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('timerGetMerchantRefreshTicksRemaining', () => {
+    it('should return ticks remaining until next merchant refresh', () => {
+      const merchantRefreshTimer = {
+        type: 'MerchantRefresh' as const,
+        id: 'merchant-timer' as TimerId,
+        tick: 1000,
+      };
+
+      vi.mocked(gamestate).mockReturnValue({
+        actionClock: {
+          numTicks: 500,
+          timers: { 1000: [merchantRefreshTimer] },
+        },
+      } as unknown as ReturnType<typeof gamestate>);
+
+      expect(timerGetMerchantRefreshTicksRemaining()).toBe(500);
+    });
+
+    it('should return 0 when no merchant refresh timer exists', () => {
+      vi.mocked(gamestate).mockReturnValue({
+        actionClock: {
+          numTicks: 500,
+          timers: {},
+        },
+      } as unknown as ReturnType<typeof gamestate>);
+
+      expect(timerGetMerchantRefreshTicksRemaining()).toBe(0);
+    });
+
+    it('should return 0 when merchant refresh timer is in the past', () => {
+      const merchantRefreshTimer = {
+        type: 'MerchantRefresh' as const,
+        id: 'merchant-timer' as TimerId,
+        tick: 100,
+      };
+
+      vi.mocked(gamestate).mockReturnValue({
+        actionClock: {
+          numTicks: 500,
+          timers: { 100: [merchantRefreshTimer] },
+        },
+      } as unknown as ReturnType<typeof gamestate>);
+
+      expect(timerGetMerchantRefreshTicksRemaining()).toBe(0);
+    });
+
+    it('should return ticks for the next merchant refresh when multiple exist', () => {
+      const merchantRefreshTimer1 = {
+        type: 'MerchantRefresh' as const,
+        id: 'merchant-timer-1' as TimerId,
+        tick: 1000,
+      };
+      const merchantRefreshTimer2 = {
+        type: 'MerchantRefresh' as const,
+        id: 'merchant-timer-2' as TimerId,
+        tick: 800,
+      };
+
+      vi.mocked(gamestate).mockReturnValue({
+        actionClock: {
+          numTicks: 500,
+          timers: { 
+            1000: [merchantRefreshTimer1],
+            800: [merchantRefreshTimer2]
+          },
+        },
+      } as unknown as ReturnType<typeof gamestate>);
+
+      expect(timerGetMerchantRefreshTicksRemaining()).toBe(300); // 800 - 500
     });
   });
 });
