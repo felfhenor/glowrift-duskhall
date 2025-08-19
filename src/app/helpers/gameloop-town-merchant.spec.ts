@@ -1,15 +1,20 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import type { TimerId } from '@interfaces';
 
-// Mock the dependencies properly
+// Mock all dependencies for isolation
 vi.mock('@helpers/state-game', () => ({
   gamestate: vi.fn(() => ({
-    actionClock: { numTicks: 3600 },
+    actionClock: { 
+      numTicks: 3600,
+      timers: {
+        7200: [],
+      },
+    },
     town: { merchant: { soldItems: [] } },
   })),
   updateGamestate: vi.fn((fn) => {
-    // Simple mock that calls the function with the mocked state
     const mockState = {
-      actionClock: { timers: {} },
+      actionClock: { timers: { 7200: [] } },
     };
     return fn(mockState);
   }),
@@ -59,25 +64,14 @@ describe('gameloopTownMerchant', () => {
     it('should generate merchant items when called', () => {
       const mockAction = {
         type: 'MerchantRefresh' as const,
-        id: 'test-timer-id' as any,
+        id: 'test-timer-id' as TimerId,
         tick: 3600,
       };
 
-      timerMerchantRefresh(mockAction);
-
+      // Just test that it calls merchantGenerateItems and doesn't throw
+      expect(() => timerMerchantRefresh(mockAction)).not.toThrow();
       expect(merchantGenerateItems).toHaveBeenCalledTimes(1);
       expect(merchantGenerateItems).toHaveBeenCalledWith();
-    });
-
-    it('should not throw errors when scheduling next timer', () => {
-      const mockAction = {
-        type: 'MerchantRefresh' as const,
-        id: 'test-timer-id' as any,
-        tick: 3600,
-      };
-
-      // The function should run without throwing errors
-      expect(() => timerMerchantRefresh(mockAction)).not.toThrow();
     });
 
     it('should propagate errors from merchantGenerateItems', () => {
@@ -88,7 +82,7 @@ describe('gameloopTownMerchant', () => {
 
       const mockAction = {
         type: 'MerchantRefresh' as const,
-        id: 'test-timer-id' as any,
+        id: 'test-timer-id' as TimerId,
         tick: 3600,
       };
 
