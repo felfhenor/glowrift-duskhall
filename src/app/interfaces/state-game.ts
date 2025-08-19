@@ -43,6 +43,7 @@ export interface GameStateWorld {
 export type GameStateHeroesTraveling = WorldPosition & {
   nodeId: string;
   ticksLeft: number;
+  ticksTotal: number;
 };
 
 export type GameStateHeroesLocation = {

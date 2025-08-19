@@ -50,7 +50,7 @@ import { getOption } from '@helpers/state-options';
 
 // Helper function to create a minimal GameState for testing
 const createMockGameState = (
-  travelData: { nodeId: string; x: number; y: number; ticksLeft: number },
+  travelData: { nodeId: string; x: number; y: number; ticksLeft: number; ticksTotal?: number },
   locationData: { ticksTotal: number; ticksLeft: number } = {
     ticksTotal: 0,
     ticksLeft: 0,
@@ -120,7 +120,7 @@ const createMockGameState = (
     },
     heroes: [],
     position: { x: 0, y: 0, nodeId: 'current-node' },
-    travel: travelData,
+    travel: { ...travelData, ticksTotal: travelData.ticksTotal ?? travelData.ticksLeft },
     location: locationData,
     respawnTicks: 0,
     tooHardNodes: [],

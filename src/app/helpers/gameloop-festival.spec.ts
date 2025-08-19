@@ -84,7 +84,7 @@ const createMockGameState = (festivalData: {
     },
     heroes: [],
     position: { x: 0, y: 0, nodeId: 'test-node' },
-    travel: { x: 0, y: 0, nodeId: 'test-node', ticksLeft: 0 },
+    travel: { x: 0, y: 0, nodeId: 'test-node', ticksLeft: 0, ticksTotal: 0 },
     location: { ticksTotal: 0, ticksLeft: 0 },
     respawnTicks: 0,
     tooHardNodes: [],
