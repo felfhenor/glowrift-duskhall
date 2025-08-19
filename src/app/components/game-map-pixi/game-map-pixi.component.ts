@@ -303,28 +303,10 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
         spriteData.object.destroy();
       }
     }
-    if (spriteData.claimIndicator) {
-      this.mapContainer?.removeChild(spriteData.claimIndicator);
-      if (!spriteData.claimIndicator.destroyed) {
-        spriteData.claimIndicator.destroy();
-      }
-    }
     if (spriteData.debugText) {
       this.mapContainer?.removeChild(spriteData.debugText);
       if (!spriteData.debugText.destroyed) {
         spriteData.debugText.destroy();
-      }
-    }
-    if (spriteData.levelIndicator) {
-      this.mapContainer?.removeChild(spriteData.levelIndicator);
-      if (!spriteData.levelIndicator.destroyed) {
-        spriteData.levelIndicator.destroy();
-      }
-    }
-    if (spriteData.upgradeIndicator) {
-      this.mapContainer?.removeChild(spriteData.upgradeIndicator);
-      if (!spriteData.upgradeIndicator.destroyed) {
-        spriteData.upgradeIndicator.destroy();
       }
     }
 
@@ -569,21 +551,9 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
         this.mapContainer?.removeChild(spriteData.object);
         spriteData.object.destroy();
       }
-      if (spriteData.claimIndicator) {
-        this.mapContainer?.removeChild(spriteData.claimIndicator);
-        spriteData.claimIndicator.destroy();
-      }
       if (spriteData.debugText) {
         this.mapContainer?.removeChild(spriteData.debugText);
         spriteData.debugText.destroy();
-      }
-      if (spriteData.levelIndicator) {
-        this.mapContainer?.removeChild(spriteData.levelIndicator);
-        spriteData.levelIndicator.destroy();
-      }
-      if (spriteData.upgradeIndicator) {
-        this.mapContainer?.removeChild(spriteData.upgradeIndicator);
-        spriteData.upgradeIndicator.destroy();
       }
     });
     this.nodeSprites = {};
@@ -719,11 +689,6 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       if (!isRevealed && spriteData.object) {
         spriteData.object.interactive = false;
         spriteData.object.cursor = 'default';
-      }
-
-      // Hide level indicator for unrevealed nodes
-      if (!isRevealed && spriteData.levelIndicator) {
-        spriteData.levelIndicator.visible = false;
       }
 
       this.nodeSprites[nodeKey] = spriteData;

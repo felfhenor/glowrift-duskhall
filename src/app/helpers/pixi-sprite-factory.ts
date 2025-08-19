@@ -25,14 +25,7 @@ const RARITY_COLORS: Record<DropRarity, number> = {
  * @param location World location data
  * @returns Text sprite for the level indicator
  */
-export function pixiIndicatorNodeLevelCreate(
-  x: number,
-  y: number,
-  location: WorldLocation,
-): Text {
-  const pixelX = x * 64;
-  const pixelY = y * 64;
-
+export function pixiIndicatorNodeLevelCreate(location: WorldLocation): Text {
   const highestRarity = locationGetHighestLootRarity(location);
   const color = highestRarity ? RARITY_COLORS[highestRarity] : 0xffffff; // Default to white
 
@@ -48,8 +41,8 @@ export function pixiIndicatorNodeLevelCreate(
   });
 
   // Position text at bottom left of tile
-  levelText.x = pixelX + 2;
-  levelText.y = pixelY + 64 - 22; // 14px from bottom for 12px font
+  levelText.x = 2;
+  levelText.y = 64 - 22; // 14px from bottom for 12px font
   levelText.cullable = true;
 
   return levelText;
@@ -63,13 +56,8 @@ export function pixiIndicatorNodeLevelCreate(
  * @returns Text sprite for the level indicator
  */
 export function pixiIndicatorNodeUpgradeLevelCreate(
-  x: number,
-  y: number,
   upgradeLevel: number,
 ): Text {
-  const pixelX = x * 64;
-  const pixelY = y * 64;
-
   const upgradeText = new Text({
     text: `+${upgradeLevel}`,
     style: {
@@ -82,8 +70,8 @@ export function pixiIndicatorNodeUpgradeLevelCreate(
   });
 
   // Position text at bottom right of tile
-  upgradeText.x = pixelX + 64 - 22;
-  upgradeText.y = pixelY + 64 - 22; // 14px from bottom for 12px font
+  upgradeText.x = 64 - 22;
+  upgradeText.y = 64 - 22; // 14px from bottom for 12px font
   upgradeText.cullable = true;
 
   return upgradeText;
@@ -140,6 +128,7 @@ export function pixiIndicatorNodeSpriteCreate(
       objectSprite.interactive = true;
       objectSprite.cursor = 'pointer';
       objectSprite.cullable = true;
+      objectSprite.interactiveChildren = false;
 
       if (onObjectClick) {
         objectSprite.on('pointerdown', () => {
@@ -154,39 +143,30 @@ export function pixiIndicatorNodeSpriteCreate(
 
   const upgradeLevel = locationLevel(nodeData);
   if (
-    objectSprite &&
+    spriteData.object &&
     checkTexture &&
     xTexture &&
     (upgradeLevel === 0 || !nodeData.currentlyClaimed)
   ) {
     const claimIndicator = pixiInidicatorNodeClaimCreate(
       nodeData.currentlyClaimed,
-      x,
-      y,
       checkTexture,
       xTexture,
     );
     claimIndicator.cullable = true;
-    mapContainer.addChild(claimIndicator);
-    spriteData.claimIndicator = claimIndicator;
+    spriteData.object.addChild(claimIndicator);
   }
 
   // Add upgrade level indicator if it makes sense to
-  if (nodeData.currentlyClaimed && upgradeLevel >= 1) {
-    const upgradeIndicator = pixiIndicatorNodeUpgradeLevelCreate(
-      x,
-      y,
-      upgradeLevel,
-    );
-    mapContainer.addChild(upgradeIndicator);
-    spriteData.upgradeIndicator = upgradeIndicator;
+  if (spriteData.object && nodeData.currentlyClaimed && upgradeLevel >= 1) {
+    const upgradeIndicator = pixiIndicatorNodeUpgradeLevelCreate(upgradeLevel);
+    spriteData.object.addChild(upgradeIndicator);
   }
 
   // Add level indicator showing encounter level with rarity-based color
-  if (nodeData.encounterLevel >= 1) {
-    const levelIndicator = pixiIndicatorNodeLevelCreate(x, y, nodeData);
-    mapContainer.addChild(levelIndicator);
-    spriteData.levelIndicator = levelIndicator;
+  if (spriteData.object && nodeData.encounterLevel >= 1) {
+    const levelIndicator = pixiIndicatorNodeLevelCreate(nodeData);
+    spriteData.object.addChild(levelIndicator);
   }
 
   // Add debug text showing coordinates if debug mode is enabled
@@ -278,21 +258,17 @@ export function pixiIndicatorNodePlayerAtLocationCreate(
  */
 export function pixiInidicatorNodeClaimCreate(
   isClaimed: boolean,
-  x: number,
-  y: number,
   checkTexture: Texture,
   xTexture: Texture,
 ): Sprite {
-  const pixelX = x * 64;
-  const pixelY = y * 64;
-
   const texture = isClaimed ? checkTexture : xTexture;
   const sprite = new Sprite(texture);
 
-  sprite.x = pixelX + 44;
-  sprite.y = pixelY + 64 - 24;
+  sprite.x = 44;
+  sprite.y = 64 - 24;
   sprite.width = 20;
   sprite.height = 20;
+  sprite.interactive = false;
 
   return sprite;
 }
