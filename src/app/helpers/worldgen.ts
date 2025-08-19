@@ -401,10 +401,12 @@ function fillFogGaps(
 
   // Calculate all revealed positions based on current nodes
   const revealedPositions = new Set<string>();
+  const existingNodes: Array<{ x: number; y: number; nodeType: LocationType }> = [];
   
   Object.values(nodes).forEach((node) => {
     if (!node.nodeType) return;
     
+    existingNodes.push({ x: node.x, y: node.y, nodeType: node.nodeType });
     const radius = REVELATION_RADIUS[node.nodeType];
     
     // Add all positions within the revelation radius
@@ -436,8 +438,7 @@ function fillFogGaps(
     return;
   }
 
-  // Group unrevealed positions into clusters to determine appropriate node types
-  // For simplicity, we'll add caves for isolated positions and dungeons for larger gaps
+  // Process unrevealed positions more strategically
   const processedPositions = new Set<string>();
   
   unrevealedPositions.forEach(({ x, y }) => {
@@ -447,16 +448,18 @@ function fillFogGaps(
     // Check if this position already has a node
     if (nodes[posKey]?.nodeType) return;
     
-    // Find cluster size around this position
-    const clusterSize = getClusterSize(x, y, unrevealedPositions, processedPositions);
+    // Determine node type based on distance to nearest existing node
+    const distanceToNearestNode = Math.min(...existingNodes.map(node => 
+      Math.sqrt((x - node.x) ** 2 + (y - node.y) ** 2)
+    ));
     
-    // Determine node type based on cluster size and strategic considerations
+    // Use dungeon for isolated areas (far from existing nodes), cave for smaller gaps
     let nodeType: LocationType;
-    if (clusterSize >= 8) {
-      // Large gaps get dungeons (radius 2)
+    if (distanceToNearestNode > 5) {
+      // Far from existing nodes - use dungeon (radius 2) for better coverage
       nodeType = 'dungeon';
     } else {
-      // Small gaps get caves (radius 1)
+      // Close to existing nodes - use cave (radius 1) for small gaps
       nodeType = 'cave';
     }
     
@@ -472,6 +475,7 @@ function fillFogGaps(
     
     nodes[posKey] = newNode;
     counts[nodeType]++;
+    existingNodes.push({ x, y, nodeType });
     
     // Mark positions that would be revealed by this new node as processed
     const radius = REVELATION_RADIUS[nodeType];
@@ -485,47 +489,6 @@ function fillFogGaps(
       }
     }
   });
-}
-
-function getClusterSize(
-  startX: number,
-  startY: number,
-  unrevealedPositions: Array<{ x: number; y: number }>,
-  processedPositions: Set<string>,
-): number {
-  const visited = new Set<string>();
-  const queue = [{ x: startX, y: startY }];
-  let size = 0;
-  
-  while (queue.length > 0 && size < 20) { // Limit cluster size check for performance
-    const { x, y } = queue.shift()!;
-    const posKey = `${x},${y}`;
-    
-    if (visited.has(posKey) || processedPositions.has(posKey)) continue;
-    
-    // Check if this position is in the unrevealed list
-    const isUnrevealed = unrevealedPositions.some(pos => pos.x === x && pos.y === y);
-    if (!isUnrevealed) continue;
-    
-    visited.add(posKey);
-    size++;
-    
-    // Add adjacent positions to check
-    for (let dx = -1; dx <= 1; dx++) {
-      for (let dy = -1; dy <= 1; dy++) {
-        if (dx === 0 && dy === 0) continue;
-        const newX = x + dx;
-        const newY = y + dy;
-        const newPosKey = `${newX},${newY}`;
-        
-        if (!visited.has(newPosKey) && !processedPositions.has(newPosKey)) {
-          queue.push({ x: newX, y: newY });
-        }
-      }
-    }
-  }
-  
-  return size;
 }
 
 function cleanUpEmptyNodes(nodes: Record<string, WorldLocation>): void {
