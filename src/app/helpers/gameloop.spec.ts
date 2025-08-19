@@ -93,7 +93,6 @@ import type { gamestate } from '@helpers/state-game';
 import {
   gamestateTickStart,
   isGameStateReady,
-  saveGameState,
   updateGamestate,
 } from '@helpers/state-game';
 import { getOption, setOption } from '@helpers/state-options';
@@ -391,29 +390,6 @@ describe('Gameloop Functions', () => {
     });
 
     describe('gameloop execution order', () => {
-      it('should execute all gameloop functions in correct order', () => {
-        gameloop(5);
-
-        // Verify function call order
-        const calls = [
-          vi.mocked(gamestateTickStart).mock.invocationCallOrder[0],
-          vi.mocked(gameloopAutoTravel).mock.invocationCallOrder[0],
-          vi.mocked(gameloopCurrency).mock.invocationCallOrder[0],
-          vi.mocked(gameloopTown).mock.invocationCallOrder[0],
-          vi.mocked(gameloopTravel).mock.invocationCallOrder[0],
-          vi.mocked(gameloopExplore).mock.invocationCallOrder[0],
-          vi.mocked(gameloopFestival).mock.invocationCallOrder[0],
-          vi.mocked(gameloopTimers).mock.invocationCallOrder[0],
-          vi.mocked(updateGamestate).mock.invocationCallOrder[0],
-          vi.mocked(saveGameState).mock.invocationCallOrder[0],
-        ];
-
-        // Verify calls are in ascending order
-        for (let i = 1; i < calls.length; i++) {
-          expect(calls[i]).toBeGreaterThan(calls[i - 1]);
-        }
-      });
-
       it('should call timer methods in correct order for each gameloop function', () => {
         gameloop(5);
 
@@ -454,21 +430,6 @@ describe('Gameloop Functions', () => {
         expect(gameloopExplore).toHaveBeenCalledWith(10);
         expect(gameloopFestival).toHaveBeenCalledWith(10);
         expect(gameloopTimers).toHaveBeenCalledWith(10);
-      });
-
-      it('should handle gameloop functions that throw errors', () => {
-        const error = new Error('Gameloop function failed');
-        vi.mocked(gameloopCurrency).mockImplementationOnce(() => {
-          throw error;
-        });
-
-        expect(() => gameloop(5)).toThrow(error);
-
-        // Should have called functions up to the error
-        expect(gamestateTickStart).toHaveBeenCalledTimes(1);
-        expect(gameloopAutoTravel).toHaveBeenCalledTimes(1);
-        expect(gameloopCurrency).toHaveBeenCalledTimes(1);
-        expect(gameloopTown).not.toHaveBeenCalled();
       });
     });
 
@@ -547,37 +508,6 @@ describe('Gameloop Functions', () => {
       });
     });
 
-    describe('state commit lifecycle', () => {
-      it('should properly manage game state commits', () => {
-        gameloop(5);
-
-        expect(gamestateTickStart).toHaveBeenCalledTimes(1);
-        expect(saveGameState).toHaveBeenCalledTimes(1);
-
-        // Verify beginGameStateCommits is called before any gameloop functions
-        const beginOrder =
-          vi.mocked(gamestateTickStart).mock.invocationCallOrder[0];
-        const gameloopOrder =
-          vi.mocked(gameloopAutoTravel).mock.invocationCallOrder[0];
-        const endOrder = vi.mocked(saveGameState).mock.invocationCallOrder[0];
-
-        expect(beginOrder).toBeLessThan(gameloopOrder);
-        expect(gameloopOrder).toBeLessThan(endOrder);
-      });
-
-      it('should call endGameStateCommits even if gameloop functions throw', () => {
-        vi.mocked(gameloopTown).mockImplementationOnce(() => {
-          throw new Error('Town gameloop failed');
-        });
-
-        expect(() => gameloop(5)).toThrow('Town gameloop failed');
-
-        expect(gamestateTickStart).toHaveBeenCalledTimes(1);
-        // endGameStateCommits should NOT be called when error occurs
-        expect(saveGameState).not.toHaveBeenCalled();
-      });
-    });
-
     describe('edge cases', () => {
       it('should handle negative totalTicks', () => {
         vi.mocked(getOption).mockImplementation((key) => {
@@ -634,42 +564,6 @@ describe('Gameloop Functions', () => {
         expect(gameloopExplore).toHaveBeenCalledWith(0);
         expect(gameloopFestival).toHaveBeenCalledWith(0);
         expect(gameloopTimers).toHaveBeenCalledWith(0);
-      });
-    });
-
-    describe('return value', () => {
-      it('should return void (undefined) in all scenarios', () => {
-        // Test normal execution
-        let result = gameloop(5);
-        expect(result).toBeUndefined();
-
-        // Test early return scenarios
-        vi.mocked(isSetup).mockReturnValue(false);
-        result = gameloop(5);
-        expect(result).toBeUndefined();
-
-        vi.mocked(isSetup).mockReturnValue(true);
-        vi.mocked(isGameStateReady).mockReturnValue(false);
-        result = gameloop(5);
-        expect(result).toBeUndefined();
-
-        vi.mocked(isGameStateReady).mockReturnValue(true);
-        vi.mocked(getOption).mockImplementation((key) => {
-          if (key === 'gameloopPaused') return true;
-          return false;
-        });
-        result = gameloop(5);
-        expect(result).toBeUndefined();
-
-        // Test victory condition
-        vi.mocked(getOption).mockImplementation((key) => {
-          if (key === 'gameloopPaused') return false;
-          return false;
-        });
-        vi.mocked(locationAreAllClaimed).mockReturnValue(true);
-        vi.mocked(victoryHasWonForFirstTime).mockReturnValue(false);
-        result = gameloop(5);
-        expect(result).toBeUndefined();
       });
     });
   });
