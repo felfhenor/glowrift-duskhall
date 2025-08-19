@@ -58,6 +58,24 @@
         </div>
       </div>
     </div>
+
+    <div class="card bg-base-100 foreground shadow-xl mt-3">
+      <div class="card-body">
+        <div class="card-title">Options</div>
+
+        <div class="form-control">
+          <label class="label cursor-pointer label-checkbox">
+            <input
+              type="checkbox"
+              [checked]="getOption('followHeroesOnMap')"
+              class="checkbox checkbox-secondary"
+              (click)="setOption('followHeroesOnMap', !getOption('followHeroesOnMap'))"
+            />
+            <span class="label-text">Follow heroes on map</span>
+          </label>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="flex-1">

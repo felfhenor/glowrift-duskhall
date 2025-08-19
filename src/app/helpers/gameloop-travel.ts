@@ -1,4 +1,6 @@
+import { cameraCenterOnPlayer } from '@helpers/camera';
 import { gamestate, updateGamestate } from '@helpers/state-game';
+import { getOption } from '@helpers/state-options';
 import { isTraveling } from '@helpers/travel';
 import { globalStatusText } from '@helpers/ui';
 import { locationGet, locationGetCurrent } from '@helpers/world-location';
@@ -49,5 +51,10 @@ export function gameloopTravel(numTicks: number): void {
       state.hero.location.ticksLeft = exploreTicks;
       return state;
     });
+
+    // Center camera on hero if follow option is enabled
+    if (getOption('followHeroesOnMap')) {
+      cameraCenterOnPlayer();
+    }
   }
 }
