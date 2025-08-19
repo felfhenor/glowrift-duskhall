@@ -257,12 +257,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       ) {
         needsCleanup = true;
       }
-      if (
-        spriteData.object &&
-        (spriteData.object.destroyed ||
-          !spriteData.object.texture ||
-          spriteData.object.texture.destroyed)
-      ) {
+      if (spriteData.objectContainer && spriteData.objectContainer.destroyed) {
         needsCleanup = true;
       }
 
@@ -297,10 +292,10 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
         spriteData.terrain.destroy();
       }
     }
-    if (spriteData.object) {
-      this.mapContainer?.removeChild(spriteData.object);
-      if (!spriteData.object.destroyed) {
-        spriteData.object.destroy();
+    if (spriteData.objectContainer) {
+      this.mapContainer?.removeChild(spriteData.objectContainer);
+      if (!spriteData.objectContainer.destroyed) {
+        spriteData.objectContainer.destroy();
       }
     }
     if (spriteData.debugText) {
@@ -547,9 +542,9 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
         this.mapContainer?.removeChild(spriteData.terrain);
         spriteData.terrain.destroy();
       }
-      if (spriteData.object) {
-        this.mapContainer?.removeChild(spriteData.object);
-        spriteData.object.destroy();
+      if (spriteData.objectContainer) {
+        this.mapContainer?.removeChild(spriteData.objectContainer);
+        spriteData.objectContainer.destroy();
       }
       if (spriteData.debugText) {
         this.mapContainer?.removeChild(spriteData.debugText);
@@ -686,9 +681,9 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
 
     if (spriteData) {
       // Disable interactivity for unrevealed nodes
-      if (!isRevealed && spriteData.object) {
-        spriteData.object.interactive = false;
-        spriteData.object.cursor = 'default';
+      if (!isRevealed && spriteData.objectContainer) {
+        spriteData.objectContainer.interactiveChildren = false;
+        spriteData.objectContainer.cursor = 'default';
       }
 
       this.nodeSprites[nodeKey] = spriteData;

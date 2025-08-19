@@ -3,8 +3,8 @@ import { locationLevel } from '@helpers/world-location-upgrade';
 import type { WorldLocation } from '@interfaces';
 import type { DropRarity } from '@interfaces/droppable';
 import type { NodeSpriteData } from '@interfaces/sprite';
-import type { Container, Texture } from 'pixi.js';
-import { Graphics, Sprite, Text } from 'pixi.js';
+import type { Texture } from 'pixi.js';
+import { Container, Graphics, Sprite, Text } from 'pixi.js';
 
 /**
  * Maps rarity levels to their display colors
@@ -122,13 +122,16 @@ export function pixiIndicatorNodeSpriteCreate(
   if (objectSprite) {
     const objectTexture = objectTextures[objectSprite];
     if (objectTexture) {
+      const spriteContainer = new Container();
+      spriteData.objectContainer = spriteContainer;
+      mapContainer.addChild(spriteContainer);
+      spriteContainer.x = pixelX;
+      spriteContainer.y = pixelY;
+
       const objectSprite = new Sprite(objectTexture);
-      objectSprite.x = pixelX;
-      objectSprite.y = pixelY;
       objectSprite.interactive = true;
       objectSprite.cursor = 'pointer';
       objectSprite.cullable = true;
-      objectSprite.interactiveChildren = false;
 
       if (onObjectClick) {
         objectSprite.on('pointerdown', () => {
@@ -136,14 +139,13 @@ export function pixiIndicatorNodeSpriteCreate(
         });
       }
 
-      mapContainer.addChild(objectSprite);
-      spriteData.object = objectSprite;
+      spriteData.objectContainer.addChild(objectSprite);
     }
   }
 
   const upgradeLevel = locationLevel(nodeData);
   if (
-    spriteData.object &&
+    spriteData.objectContainer &&
     checkTexture &&
     xTexture &&
     (upgradeLevel === 0 || !nodeData.currentlyClaimed)
@@ -153,20 +155,29 @@ export function pixiIndicatorNodeSpriteCreate(
       checkTexture,
       xTexture,
     );
+    claimIndicator.eventMode = 'none';
     claimIndicator.cullable = true;
-    spriteData.object.addChild(claimIndicator);
+    spriteData.objectContainer.addChild(claimIndicator);
   }
 
   // Add upgrade level indicator if it makes sense to
-  if (spriteData.object && nodeData.currentlyClaimed && upgradeLevel >= 1) {
+  if (
+    spriteData.objectContainer &&
+    nodeData.currentlyClaimed &&
+    upgradeLevel >= 1
+  ) {
     const upgradeIndicator = pixiIndicatorNodeUpgradeLevelCreate(upgradeLevel);
-    spriteData.object.addChild(upgradeIndicator);
+    upgradeIndicator.eventMode = 'none';
+    upgradeIndicator.cullable = true;
+    spriteData.objectContainer.addChild(upgradeIndicator);
   }
 
   // Add level indicator showing encounter level with rarity-based color
-  if (spriteData.object && nodeData.encounterLevel >= 1) {
+  if (spriteData.objectContainer && nodeData.encounterLevel >= 1) {
     const levelIndicator = pixiIndicatorNodeLevelCreate(nodeData);
-    spriteData.object.addChild(levelIndicator);
+    levelIndicator.eventMode = 'none';
+    levelIndicator.cullable = true;
+    spriteData.objectContainer.addChild(levelIndicator);
   }
 
   // Add debug text showing coordinates if debug mode is enabled
@@ -184,6 +195,7 @@ export function pixiIndicatorNodeSpriteCreate(
     debugText.x = pixelX + 64 - 30; // 30px from right edge
     debugText.y = pixelY + 2; // 2px from top
     debugText.cullable = true;
+    debugText.eventMode = 'none'; // Disable interaction
 
     mapContainer.addChild(debugText);
     spriteData.debugText = debugText;

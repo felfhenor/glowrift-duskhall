@@ -1,8 +1,8 @@
-import type { Sprite, Text } from 'pixi.js';
+import type { Container, Sprite, Text } from 'pixi.js';
 
 export interface NodeSpriteData {
   terrain: Sprite;
-  object?: Sprite;
+  objectContainer?: Container;
   debugText?: Text;
 }
 
