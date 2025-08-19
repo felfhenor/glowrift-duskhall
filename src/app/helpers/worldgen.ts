@@ -726,6 +726,9 @@ export async function worldgenGenerateWorld(
     setWorldGenStatus('Adding corner nodes...');
     addCornerNodes(config, nodes, rng, counts);
 
+    setWorldGenStatus(`Filling fog gaps...`);
+    fillFogGaps(config, nodes, rng, counts);
+
     setWorldGenStatus('Adding spice to the world...');
     addTraitsToLocations(nodes, rng);
 
@@ -734,12 +737,6 @@ export async function worldgenGenerateWorld(
 
     setWorldGenStatus(`Giving elements to the world...`);
     addElementsToWorld(config, nodes);
-
-    setWorldGenStatus(`Filling fog gaps...`);
-    fillFogGaps(config, nodes, rng, counts);
-
-    // Set encounter levels for any newly created fog gap nodes
-    setEncounterLevels(config, nodes, firstTown);
 
     setWorldGenStatus(`Giving darkness to the world...`);
     fillSpacesWithGuardians(nodes, centerPosition, maxDistance);
