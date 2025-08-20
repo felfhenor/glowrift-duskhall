@@ -40,6 +40,7 @@ import {
   type Guardian,
 } from '@interfaces';
 import { sortBy } from 'es-toolkit/compat';
+import { ClickOutsideDirective } from '@directives/click-outside.directive';
 
 @Component({
   selector: 'app-panel-location',
@@ -59,6 +60,7 @@ import { sortBy } from 'es-toolkit/compat';
     ButtonCloseComponent,
     BlankSlateComponent,
     LocationUpgradeDisplayComponent,
+    ClickOutsideDirective,
   ],
   templateUrl: './panel-location.component.html',
   styleUrl: './panel-location.component.scss',

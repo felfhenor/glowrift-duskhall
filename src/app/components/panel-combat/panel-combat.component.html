@@ -1,6 +1,6 @@
 @let currentTab = activeTab();
 
-<app-card-page>
+<app-card-page appClickOutside (appClickOutside)="closeMenu()">
   <span header>Combat</span>
 
   <div pageactions>

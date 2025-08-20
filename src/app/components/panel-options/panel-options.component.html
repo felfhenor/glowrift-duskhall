@@ -1,6 +1,6 @@
 @let currentTab = activeTab();
 
-<app-card-page>
+<app-card-page appClickOutside (appClickOutside)="closeMenu()">
   <span header>Options</span>
 
   <div pageactions class="flex items-center gap-2">
