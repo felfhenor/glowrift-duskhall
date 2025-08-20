@@ -28,31 +28,21 @@ export function itemInventoryAdd(item: EquipmentItem): void {
     const items = itemGroups[itemType] || [];
 
     // If we're at capacity for this item type, find a non-favorited item to remove
-    if (items.length >= itemInventoryMaxSize()) {
+    while (items.length >= itemInventoryMaxSize()) {
       const sortedItems = droppableSortedRarityList(items);
-
-      // Find the worst non-favorited item
-      let worstItemIndex = -1;
-      for (let i = sortedItems.length - 1; i >= 0; i--) {
-        if (!sortedItems[i].isFavorite) {
-          worstItemIndex = i;
-          break;
-        }
-      }
+      const worstItem = sortedItems.reverse().find((i) => !i.isFavorite);
 
       // If no non-favorited items found, reject the new item
-      if (worstItemIndex === -1) {
-        // Auto-salvage the new item and show error
-        const value = actionItemSalvageValue(item);
-        currencyGain('Mana', value);
+      if (!worstItem) {
+        lostItems.push(item);
         notifyError('Could not add item to inventory as there is no space');
-        return state; // Don't add the item to inventory
+        break;
       }
 
       // Remove the worst non-favorited item
-      const worstItem = sortedItems.splice(worstItemIndex, 1)[0];
       lostItems.push(worstItem);
-      itemGroups[itemType] = sortedItems;
+      items.splice(items.indexOf(worstItem), 1);
+      itemGroups[itemType] = items;
     }
 
     // Now add the new item
