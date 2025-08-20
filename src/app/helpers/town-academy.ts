@@ -15,8 +15,21 @@ import type {
   StatusEffectId,
 } from '@interfaces/content-statuseffect';
 import type { GameStat } from '@interfaces/stat';
+import type { GameState } from '@interfaces/state-game';
 import type { AcademyEnchant } from '@interfaces/town';
 import { uniq } from 'es-toolkit/compat';
+
+function findSkillInState(
+  state: GameState,
+  item: EquipmentSkill,
+): EquipmentSkill | undefined {
+  const heroSkills = state.hero.heroes.flatMap((h) => h.skills);
+  const updateItem = [...heroSkills, ...state.inventory.skills]
+    .filter(Boolean)
+    .find((i) => i!.id === item.id);
+
+  return updateItem;
+}
 
 export function academyMaxEnchantLevel(): number {
   return townBuildingLevel('Academy');
@@ -25,6 +38,7 @@ export function academyMaxEnchantLevel(): number {
 export function academyCanEnchantSkill(item: EquipmentSkill): boolean {
   return skillEnchantLevel(item) < academyMaxEnchantLevel();
 }
+
 export function academyNextSkillEnchants(
   skill: EquipmentSkill,
 ): AcademyEnchant[] {
@@ -267,7 +281,7 @@ export function academyEnchantSkill(
   }
 
   updateGamestate((state) => {
-    const updateSkill = state.inventory.skills.find((i) => i.id === skill.id);
+    const updateSkill = findSkillInState(state, skill);
     if (!updateSkill) return state;
 
     updateSkill.mods = structuredClone(skill.mods);

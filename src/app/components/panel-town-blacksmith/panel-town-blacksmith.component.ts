@@ -71,12 +71,16 @@ export class PanelTownBlacksmithComponent {
   public enchantItem(item: EquipmentItem, enchant: BlacksmithEnchant) {
     blacksmithEnchantItem(item, enchant);
 
-    this.selectedItem.set(itemGetById(item.id));
+    setTimeout(() => {
+      this.selectedItem.set(itemGetById(item.id));
+    }, 0);
   }
 
   public rerollTrait(item: EquipmentItem) {
     blacksmithRerollItemTrait(item);
 
-    this.selectedItem.set(itemGetById(item.id));
+    setTimeout(() => {
+      this.selectedItem.set(itemGetById(item.id));
+    }, 0);
   }
 }

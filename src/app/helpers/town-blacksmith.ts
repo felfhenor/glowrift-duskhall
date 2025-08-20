@@ -21,8 +21,21 @@ import type { TraitEquipmentContent } from '@interfaces/content-trait-equipment'
 import type { DropRarity } from '@interfaces/droppable';
 import type { GameElement } from '@interfaces/element';
 import type { GameStat } from '@interfaces/stat';
+import type { GameState } from '@interfaces/state-game';
 import type { BlacksmithEnchant } from '@interfaces/town';
 import { sumBy } from 'es-toolkit/compat';
+
+function findItemInState(
+  state: GameState,
+  item: EquipmentItem,
+): EquipmentItem | undefined {
+  const heroItems = state.hero.heroes.map((h) => h.equipment[item.__type]);
+  const updateItem = [...heroItems, ...state.inventory.items]
+    .filter(Boolean)
+    .find((i) => i!.id === item.id);
+
+  return updateItem;
+}
 
 export function blacksmithMaxEnchantLevel(): number {
   return townBuildingLevel('Blacksmith');
@@ -55,7 +68,7 @@ export function blacksmithRerollItemTrait(item: EquipmentItem): void {
   const allTraits = getEntriesByType<TraitEquipmentContent>('traitequipment');
 
   updateGamestate((state) => {
-    const updateItem = state.inventory.items.find((i) => i.id === item.id);
+    const updateItem = findItemInState(state, item);
     if (!updateItem) return state;
 
     updateItem.mods ??= {};
@@ -313,8 +326,9 @@ export function blacksmithEnchantItem(
       item.mods!.talentBoosts!.push({ talentId: tal, value: 1 });
     });
   }
+
   updateGamestate((state) => {
-    const updateItem = state.inventory.items.find((i) => i.id === item.id);
+    const updateItem = findItemInState(state, item);
     if (!updateItem) return state;
 
     updateItem.mods = structuredClone(item.mods);

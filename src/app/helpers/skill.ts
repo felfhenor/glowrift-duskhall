@@ -28,7 +28,13 @@ export function skillEnchantLevel(skill: EquipmentSkill): number {
 export function skillGetById(
   skillId: EquipmentSkillId,
 ): EquipmentSkill | undefined {
-  return gamestate().inventory.skills.find((i) => i.id === skillId);
+  const state = gamestate();
+  return [
+    ...state.hero.heroes.flatMap((h) => h.skills),
+    ...state.inventory.skills,
+  ]
+    .filter(Boolean)
+    .find((i) => i!.id === skillId);
 }
 
 export function skillUses(skill: EquipmentSkill): number {

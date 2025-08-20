@@ -53,6 +53,8 @@ export class PanelTownAcademyComponent {
   public enchantSkill(skill: EquipmentSkill, enchant: AcademyEnchant) {
     academyEnchantSkill(skill, enchant);
 
-    this.selectedSkill.set(skillGetById(skill.id));
+    setTimeout(() => {
+      this.selectedSkill.set(skillGetById(skill.id));
+    }, 0);
   }
 }

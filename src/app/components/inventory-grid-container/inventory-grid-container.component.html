@@ -15,22 +15,47 @@
   class="flex flex-row overflow-y-auto p-2"
   [style.max-height.px]="containerHeight()"
 >
-  @if (currentItemType() !== 'skill') {
-    <app-inventory-grid-item
-      [items]="items()"
-      [disabledItemIds]="disabledItemIds()"
-      [allowedActions]="allowedItemActions()"
-      (itemClicked)="itemClicked.emit($event)"
-      [compareWithEquippedHero]="compareItemToHero()"
-    ></app-inventory-grid-item>
-  } @else {
-    <app-inventory-grid-skill
-      [skills]="skills()"
-      [disabledSkillIds]="disabledSkillIds()"
-      [allowedActions]="allowedSkillActions()"
-      (skillClicked)="skillClicked.emit($event)"
-      [compareWithEquippedHero]="compareSkillToHero()"
-      [compareWithEquippedHeroSlot]="compareSkillToHeroSlot()"
-    ></app-inventory-grid-skill>
+  @switch (currentItemType()) {
+    @case ('skill') {
+      <app-inventory-grid-skill
+        [skills]="skills()"
+        [disabledSkillIds]="disabledSkillIds()"
+        [allowedActions]="allowedSkillActions()"
+        (skillClicked)="skillClicked.emit($event)"
+        [compareWithEquippedHero]="compareSkillToHero()"
+        [compareWithEquippedHeroSlot]="compareSkillToHeroSlot()"
+      ></app-inventory-grid-skill>
+    }
+
+    @case ('equipped-skill') {
+      <app-inventory-grid-skill
+        [skills]="equippedSkills()"
+        [disabledSkillIds]="disabledSkillIds()"
+        [allowedActions]="allowedSkillActions()"
+        (skillClicked)="skillClicked.emit($event)"
+        [compareWithEquippedHero]="compareSkillToHero()"
+        [compareWithEquippedHeroSlot]="compareSkillToHeroSlot()"
+      ></app-inventory-grid-skill>
+    }
+
+    @case ('equipped-item') {
+      <app-inventory-grid-item
+        [items]="equippedItems()"
+        [disabledItemIds]="disabledItemIds()"
+        [allowedActions]="allowedItemActions()"
+        (itemClicked)="itemClicked.emit($event)"
+        [compareWithEquippedHero]="compareItemToHero()"
+      ></app-inventory-grid-item>
+    }
+
+    @default {
+      <app-inventory-grid-item
+        [items]="items()"
+        [disabledItemIds]="disabledItemIds()"
+        [allowedActions]="allowedItemActions()"
+        (itemClicked)="itemClicked.emit($event)"
+        [compareWithEquippedHero]="compareItemToHero()"
+      ></app-inventory-grid-item>
+    }
   }
 </div>

@@ -39,4 +39,8 @@ export type EquipmentItem = EquipmentItemContent & {
   mods?: Partial<EquipmentModifiable>;
 };
 
-export type InventorySlotType = EquipmentSlot | 'skill';
+export type InventorySlotType =
+  | EquipmentSlot
+  | 'skill'
+  | 'equipped-item'
+  | 'equipped-skill';

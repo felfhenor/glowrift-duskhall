@@ -10,6 +10,7 @@ import {
 import { InventoryGridItemComponent } from '@components/inventory-grid-item/inventory-grid-item.component';
 import { InventoryGridSkillComponent } from '@components/inventory-grid-skill/inventory-grid-skill.component';
 import { droppableSortedRarityList } from '@helpers/droppable';
+import { allHeroes } from '@helpers/hero';
 import { gamestate } from '@helpers/state-game';
 import type {
   EquipmentItem,
@@ -58,10 +59,25 @@ export class InventoryGridContainerComponent implements OnInit {
   public itemClicked = output<EquipmentItem>();
   public skillClicked = output<EquipmentSkill>();
 
+  public equippedItems = computed(
+    () =>
+      allHeroes()
+        .flatMap((h) => Object.values(h.equipment))
+        .filter(Boolean) as EquipmentItem[],
+  );
+  public equippedSkills = computed(
+    () =>
+      allHeroes()
+        .flatMap((h) => h.skills)
+        .filter(Boolean) as EquipmentSkill[],
+  );
+
   public readonly allItemTypes: Array<{
     name: string;
     type: InventorySlotType;
   }> = [
+    { name: 'Equipped Items', type: 'equipped-item' },
+    { name: 'Equipped Skills', type: 'equipped-skill' },
     { name: 'Accessories', type: 'accessory' },
     { name: 'Armor', type: 'armor' },
     { name: 'Trinkets', type: 'trinket' },
@@ -81,6 +97,8 @@ export class InventoryGridContainerComponent implements OnInit {
       trinket: 0,
       weapon: 0,
       skill: 0,
+      'equipped-item': 0,
+      'equipped-skill': 0,
     };
 
     items.forEach((item: EquipmentItem) => {
@@ -91,6 +109,8 @@ export class InventoryGridContainerComponent implements OnInit {
     });
 
     counts.skill = gamestate().inventory.skills.length;
+    counts['equipped-item'] = this.equippedItems().length;
+    counts['equipped-skill'] = this.equippedSkills().length;
 
     return counts;
   });

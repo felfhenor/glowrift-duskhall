@@ -32,7 +32,13 @@ export function itemIsEquipment(
 export function itemGetById(
   itemId: EquipmentItemId,
 ): EquipmentItem | undefined {
-  return gamestate().inventory.items.find((i) => i.id === itemId);
+  const state = gamestate();
+  return [
+    ...state.hero.heroes.flatMap((h) => Object.values(h.equipment)),
+    ...state.inventory.items,
+  ]
+    .filter(Boolean)
+    .find((i) => i!.id === itemId);
 }
 
 export function itemStat(item: EquipmentItemContent, stat: GameStat): number {

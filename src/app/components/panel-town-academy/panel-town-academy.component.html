@@ -64,7 +64,7 @@
   <span header>Choose Skill To Upgrade</span>
 
   <app-inventory-grid-container
-    [allowedItemTypes]="['skill']"
+    [allowedItemTypes]="['equipped-skill', 'skill']"
     (skillClicked)="selectedSkill.set($event)"
     [allowItemClicks]="true"
     [containerHeight]="220"

@@ -83,7 +83,13 @@
   <span header>Choose Item To Upgrade</span>
 
   <app-inventory-grid-container
-    [allowedItemTypes]="['accessory', 'armor', 'trinket', 'weapon']"
+    [allowedItemTypes]="[
+      'equipped-item',
+      'accessory',
+      'armor',
+      'trinket',
+      'weapon',
+    ]"
     (itemClicked)="selectedItem.set($event)"
     [allowItemClicks]="true"
     [containerHeight]="220"
