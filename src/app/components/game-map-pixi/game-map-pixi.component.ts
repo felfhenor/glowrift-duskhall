@@ -35,7 +35,8 @@ import {
   worldClearNodeChanges,
   worldGetNodeChanges,
 } from '@helpers';
-import type { WorldLocation } from '@interfaces';
+import type { WorldNodeChangeEvent } from '@interfaces';
+import { REVELATION_RADIUS, type WorldLocation } from '@interfaces';
 import type { NodeSpriteData } from '@interfaces/sprite';
 import type { LoadedTextures } from '@interfaces/texture';
 import { ContentService } from '@services/content.service';
@@ -132,6 +133,13 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
         // Process each change and update specific nodes
         changes.forEach((change) => {
           this.updateSingleNode(change.worldX, change.worldY, change.node);
+
+          if (
+            change.node.nodeType &&
+            (change.type === 'claim' || change.type === 'unclaim')
+          ) {
+            this.updateFoWForSurroundingNodes(change);
+          }
         });
 
         // Clear the changes after processing
@@ -158,6 +166,26 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
 
       this.updatePlayerIndicators();
     });
+  }
+
+  private updateFoWForSurroundingNodes(change: WorldNodeChangeEvent) {
+    if (!change.node.nodeType) return;
+
+    const radiusToUpdate = REVELATION_RADIUS[change.node.nodeType];
+
+    for (
+      let x = change.worldX - radiusToUpdate;
+      x <= change.worldX + radiusToUpdate;
+      x++
+    ) {
+      for (
+        let y = change.worldY - radiusToUpdate;
+        y <= change.worldY + radiusToUpdate;
+        y++
+      ) {
+        this.updateSingleNode(x, y, change.node);
+      }
+    }
   }
 
   async ngOnInit() {
