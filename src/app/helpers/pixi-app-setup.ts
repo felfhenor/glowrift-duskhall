@@ -24,6 +24,7 @@ export async function pixiAppInitialize(
     sharedTicker: true,
     resolution: 1, // Avoid high DPI rendering unless needed
     autoDensity: false, // Disable auto density scaling
+    preference: 'webgpu',
   });
 
   // Reduce maximum FPS to decrease GPU load
@@ -75,23 +76,23 @@ export function pixiResponsiveCanvasSetup(
  */
 export function pixiGameMapContainersCreate(app: Application): {
   mapContainer: Container;
-  fogContainer: Container;
   playerIndicatorContainer: Container;
   travelVisualizationContainer: Container;
 } {
   const mapContainer = new Container();
-  const fogContainer = new Container();
   const playerIndicatorContainer = new Container();
   const travelVisualizationContainer = new Container();
 
   app.stage.addChild(mapContainer);
-  app.stage.addChild(fogContainer);
-  app.stage.addChild(travelVisualizationContainer);
   app.stage.addChild(playerIndicatorContainer);
+  app.stage.addChild(travelVisualizationContainer);
+
+  mapContainer.cullable = true;
+  playerIndicatorContainer.cullable = false;
+  travelVisualizationContainer.cullable = false;
 
   return {
     mapContainer,
-    fogContainer,
     playerIndicatorContainer,
     travelVisualizationContainer,
   };

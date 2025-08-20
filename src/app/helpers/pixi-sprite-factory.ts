@@ -1,81 +1,15 @@
-import { locationGetHighestLootRarity } from '@helpers/world-location';
+import { fogIsPositionRevealed } from '@helpers/fog-of-war';
+import {
+  pixiIndicatorNodeLevelCreate,
+  pixiIndicatorNodeUpgradeLevelCreate,
+  pixiInidicatorNodeClaimCreate,
+} from '@helpers/pixi-indicators-node';
+import { getOption } from '@helpers/state-options';
 import { locationLevel } from '@helpers/world-location-upgrade';
 import type { WorldLocation } from '@interfaces';
-import type { DropRarity } from '@interfaces/droppable';
 import type { NodeSpriteData } from '@interfaces/sprite';
 import type { Texture } from 'pixi.js';
-import { Container, Graphics, Sprite, Text } from 'pixi.js';
-
-/**
- * Maps rarity levels to their display colors
- */
-const RARITY_COLORS: Record<DropRarity, number> = {
-  Common: 0xffffff, // White
-  Uncommon: 0x1eff00, // Green
-  Rare: 0x0070dd, // Blue
-  Mystical: 0xa335ee, // Purple
-  Legendary: 0xff8000, // Orange
-  Unique: 0xe6cc80, // Gold
-};
-
-/**
- * Creates a level indicator sprite showing the location level and rarity color
- * @param x Grid x position
- * @param y Grid y position
- * @param location World location data
- * @returns Text sprite for the level indicator
- */
-export function pixiIndicatorNodeLevelCreate(location: WorldLocation): Text {
-  const highestRarity = locationGetHighestLootRarity(location);
-  const color = highestRarity ? RARITY_COLORS[highestRarity] : 0xffffff; // Default to white
-
-  const levelText = new Text({
-    text: `Lv.${location.encounterLevel}`,
-    style: {
-      fontSize: 12,
-      fill: color,
-      fontFamily: 'Arial',
-      fontWeight: 'bold',
-      stroke: { color: 0x000000, width: 1 }, // Black outline for better visibility
-    },
-  });
-
-  // Position text at bottom left of tile
-  levelText.x = 2;
-  levelText.y = 64 - 22; // 14px from bottom for 12px font
-  levelText.cullable = true;
-
-  return levelText;
-}
-
-/**
- * Creates a node level indicator sprite showing the upgrade level of the location
- * @param x Grid x position
- * @param y Grid y position
- * @param location World location data
- * @returns Text sprite for the level indicator
- */
-export function pixiIndicatorNodeUpgradeLevelCreate(
-  upgradeLevel: number,
-): Text {
-  const upgradeText = new Text({
-    text: `+${upgradeLevel}`,
-    style: {
-      fontSize: 12,
-      fill: '#16a34a',
-      fontFamily: 'Arial',
-      fontWeight: 'bold',
-      stroke: { color: 0x000000, width: 1 }, // Black outline for better visibility
-    },
-  });
-
-  // Position text at bottom right of tile
-  upgradeText.x = 64 - 22;
-  upgradeText.y = 64 - 22; // 14px from bottom for 12px font
-  upgradeText.cullable = true;
-
-  return upgradeText;
-}
+import { Container, Sprite, Text } from 'pixi.js';
 
 /**
  * Creates terrain and object sprites for a single map node
@@ -180,6 +114,20 @@ export function pixiIndicatorNodeSpriteCreate(
     spriteData.objectContainer.addChild(levelIndicator);
   }
 
+  if (
+    !getOption('debugDisableFogOfWar') &&
+    !fogIsPositionRevealed(nodeData.x, nodeData.y)
+  ) {
+    const fogOfWarSprite = new Sprite(objectTextures['0027']);
+    fogOfWarSprite.x = pixelX;
+    fogOfWarSprite.y = pixelY;
+    fogOfWarSprite.width = 64;
+    fogOfWarSprite.height = 64;
+    fogOfWarSprite.interactive = false;
+    fogOfWarSprite.alpha = 0.65;
+    mapContainer.addChild(fogOfWarSprite);
+  }
+
   // Add debug text showing coordinates if debug mode is enabled
   if (debugMode) {
     const debugText = new Text({
@@ -202,175 +150,4 @@ export function pixiIndicatorNodeSpriteCreate(
   }
 
   return spriteData;
-}
-
-/**
- * Creates an animated player indicator at the specified position
- * @param x Grid x position
- * @param y Grid y position
- * @param container Container to add indicator to
- * @returns Object with graphics and cleanup function
- */
-export function pixiIndicatorNodePlayerAtLocationCreate(
-  x: number,
-  y: number,
-  container: Container,
-): { graphics: Graphics; cleanup: () => void } {
-  const pixelX = x * 64;
-  const pixelY = y * 64;
-
-  const graphics = new Graphics();
-  graphics.setStrokeStyle({ width: 4, color: 0xffffff, alpha: 1 });
-  graphics.rect(pixelX, pixelY, 64, 64);
-  graphics.stroke();
-
-  let alpha = 1;
-  let direction = -1;
-  let lastTime = performance.now();
-  const animationSpeed = 0.002; // Slower animation speed
-
-  // Use a more efficient animation that's frame-rate independent
-  const animate = (currentTime: number) => {
-    const deltaTime = currentTime - lastTime;
-    lastTime = currentTime;
-
-    alpha += direction * animationSpeed * deltaTime;
-    if (alpha <= 0.4) direction = 1;
-    if (alpha >= 0.8) direction = -1;
-
-    // Clamp alpha to valid range
-    alpha = Math.max(0.4, Math.min(0.8, alpha));
-    graphics.alpha = alpha;
-  };
-
-  // Use a simpler interval-based animation instead of requestIdleCallback
-  const animationInterval = setInterval(() => {
-    animate(performance.now());
-  }, 32); // ~30 FPS for the animation, much lighter than 60 FPS
-
-  container.addChild(graphics);
-
-  const cleanup = () => {
-    clearInterval(animationInterval);
-    container.removeChild(graphics);
-    graphics.destroy();
-  };
-
-  return { graphics, cleanup };
-}
-
-/**
- * Creates claim status indicator sprite (check or x)
- * @param isClaimed Whether the location is claimed
- * @param x Grid x position
- * @param y Grid y position
- * @param checkTexture Texture for claimed indicator
- * @param xTexture Texture for unclaimed indicator
- * @returns Sprite for the claim indicator
- */
-export function pixiInidicatorNodeClaimCreate(
-  isClaimed: boolean,
-  checkTexture: Texture,
-  xTexture: Texture,
-): Sprite {
-  const texture = isClaimed ? checkTexture : xTexture;
-  const sprite = new Sprite(texture);
-
-  sprite.x = 44;
-  sprite.y = 64 - 24;
-  sprite.width = 20;
-  sprite.height = 20;
-  sprite.interactive = false;
-
-  return sprite;
-}
-
-/**
- * Creates a travel line between two positions
- * @param fromX Start grid x position
- * @param fromY Start grid y position
- * @param toX End grid x position
- * @param toY End grid y position
- * @param container Container to add line to
- * @returns Object with graphics and cleanup function
- */
-export function pixiIndicatorTravelLineCreate(
-  fromX: number,
-  fromY: number,
-  toX: number,
-  toY: number,
-  container: Container,
-): { graphics: Graphics; cleanup: () => void } {
-  const graphics = new Graphics();
-
-  const fromPixelX = fromX * 64 + 32; // Center of tile
-  const fromPixelY = fromY * 64 + 32; // Center of tile
-  const toPixelX = toX * 64 + 32; // Center of tile
-  const toPixelY = toY * 64 + 32; // Center of tile
-
-  graphics.setStrokeStyle({ width: 3, color: 0xffffff, alpha: 0.8 });
-  graphics.moveTo(fromPixelX, fromPixelY);
-  graphics.lineTo(toPixelX, toPixelY);
-  graphics.stroke();
-
-  container.addChild(graphics);
-
-  const cleanup = () => {
-    container.removeChild(graphics);
-    graphics.destroy();
-  };
-
-  return { graphics, cleanup };
-}
-
-/**
- * Creates a hero sprite indicator at the interpolated travel position
- * @param x Interpolated x position (can be fractional)
- * @param y Interpolated y position (can be fractional)
- * @param heroTexture Texture for the hero sprite
- * @param container Container to add sprite to
- * @returns Object with sprite and cleanup function
- */
-export function pixiIndicatorHeroTravelCreate(
-  x: number,
-  y: number,
-  heroTexture: Texture,
-  container: Container,
-): { sprite: Sprite; cleanup: () => void } {
-  const pixelX = x * 64 + 16; // Offset to center the sprite
-  const pixelY = y * 64 + 16; // Offset to center the sprite
-
-  const sprite = new Sprite(heroTexture);
-  sprite.x = pixelX;
-  sprite.y = pixelY;
-  sprite.width = 32; // Smaller than full tile
-  sprite.height = 32; // Smaller than full tile
-  sprite.anchor.set(0.5, 0.5);
-
-  // Add a subtle bobbing animation
-  let bobOffset = 0;
-  let animationId: number | null = null;
-
-  const animate = () => {
-    bobOffset += 0.2;
-    sprite.y = pixelY + Math.sin(bobOffset) * 2;
-
-    // Schedule next frame during idle time
-    animationId = requestIdleCallback(animate);
-  };
-
-  // Start animation
-  animationId = requestIdleCallback(animate);
-  container.addChild(sprite);
-
-  const cleanup = () => {
-    if (animationId !== null) {
-      cancelIdleCallback(animationId);
-      animationId = null;
-    }
-    container.removeChild(sprite);
-    sprite.destroy();
-  };
-
-  return { sprite, cleanup };
 }

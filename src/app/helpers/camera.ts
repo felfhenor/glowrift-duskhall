@@ -1,7 +1,12 @@
 import { heroPositionGet } from '@helpers/hero';
-import { gamestate, updateGamestate } from '@helpers/state-game';
+import { localStorageSignal } from '@helpers/signal';
+import { gamestate } from '@helpers/state-game';
 import { windowHeightTiles, windowWidthTiles } from '@helpers/ui';
+import type { WorldPosition } from '@interfaces/world';
 import { clamp } from 'es-toolkit/compat';
+
+const _camera = localStorageSignal<WorldPosition>('camera', { x: 0, y: 0 });
+export const camera = _camera.asReadonly();
 
 export function cameraPositionSet(x: number, y: number) {
   const worldWidth = gamestate().world.config.width;
@@ -10,13 +15,14 @@ export function cameraPositionSet(x: number, y: number) {
   const tileWidth = windowWidthTiles();
   const tileHeight = windowHeightTiles();
 
-  updateGamestate((state) => {
-    x = clamp(Math.floor(x), 0, Math.floor(worldWidth - tileWidth));
-    y = clamp(Math.floor(y), 0, Math.floor(worldHeight - tileHeight));
-    state.camera.x = x;
-    state.camera.y = y;
-    return state;
+  _camera.set({
+    x: clamp(Math.floor(x), 0, Math.floor(worldWidth - tileWidth)),
+    y: clamp(Math.floor(y), 0, Math.floor(worldHeight - tileHeight)),
   });
+}
+
+export function cameraPosition(): { x: number; y: number } {
+  return _camera();
 }
 
 export function cameraCenterOn(x: number, y: number): void {

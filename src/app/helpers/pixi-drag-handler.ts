@@ -1,10 +1,10 @@
+import { cameraPosition, cameraPositionSet } from '@helpers/camera';
 import {
   cameraCalculateBounds,
-  cameraPositionUpdate,
   cameraProcessDrag,
 } from '@helpers/camera-controller';
-import { gamestate } from '@helpers/index';
 import { pixiGameMapContainersPositionReset } from '@helpers/pixi-app-setup';
+import { gamestate } from '@helpers/state-game';
 import type { DragState } from '@interfaces/camera';
 import type { DragHandlerConfig } from '@interfaces/pixi-config';
 import type { FederatedPointerEvent } from 'pixi.js';
@@ -49,7 +49,7 @@ export function pixiDragSetup(config: DragHandlerConfig): DragState {
     dragState.accumulatedDrag.x += deltaX;
     dragState.accumulatedDrag.y += deltaY;
 
-    const currentCamera = gamestate().camera;
+    const currentCamera = cameraPosition();
     const world = gamestate().world;
     const bounds = cameraCalculateBounds(
       world.config.width,
@@ -65,7 +65,7 @@ export function pixiDragSetup(config: DragHandlerConfig): DragState {
       tileSize,
     );
 
-    cameraPositionUpdate(result.newCamera);
+    cameraPositionSet(result.newCamera.x, result.newCamera.y);
     dragState.accumulatedDrag = result.remainingDrag;
     dragState.lastPointerPosition = currentPosition;
   });

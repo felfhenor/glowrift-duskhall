@@ -27,8 +27,6 @@ export interface GameStateMeta {
   createdAt: number;
 }
 
-export type GameStateCamera = WorldPosition;
-
 export type GameStateHeroesPosition = WorldPosition & { nodeId: string };
 
 export interface GameStateWorld {
@@ -97,7 +95,6 @@ export interface GameState {
   meta: GameStateMeta;
   gameId: GameId;
   world: GameStateWorld;
-  camera: GameStateCamera;
   hero: GameStateHeroes;
   inventory: GameStateInventory;
   currency: GameStateCurrency;

@@ -1,4 +1,3 @@
-import { gamestate, updateGamestate } from '@helpers/index';
 import type { CameraBounds, CameraState } from '@interfaces/camera';
 
 /**
@@ -82,20 +81,4 @@ export function cameraProcessDrag(
   }
 
   return { newCamera, remainingDrag };
-}
-
-/**
- * Updates the game state camera position
- * @param newCamera New camera position
- */
-export function cameraPositionUpdate(newCamera: CameraState): void {
-  const currentCamera = gamestate().camera;
-
-  if (newCamera.x !== currentCamera.x || newCamera.y !== currentCamera.y) {
-    updateGamestate((state) => {
-      state.camera.x = newCamera.x;
-      state.camera.y = newCamera.y;
-      return state;
-    });
-  }
 }

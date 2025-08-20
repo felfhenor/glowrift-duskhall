@@ -65,7 +65,7 @@ export async function pixiTextureGameMapLoad(
  * @param size Size of the icon in pixels
  * @returns PIXI Texture
  */
-export function pixiTexdtureClaimCreate(
+export function pixiTextureClaimCreate(
   iconText: string,
   color: string = '#ffffff',
   size: number = 20,
@@ -110,70 +110,7 @@ export function pixiIconTextureClaimCreate(): {
   xTexture: Texture;
 } {
   return {
-    checkTexture: pixiTexdtureClaimCreate('✓', '#16a34a', 20),
-    xTexture: pixiTexdtureClaimCreate('✗', '#dc2626', 20),
+    checkTexture: pixiTextureClaimCreate('✓', '#16a34a', 20),
+    xTexture: pixiTextureClaimCreate('✗', '#dc2626', 20),
   };
-}
-
-// Singleton fog texture instance
-let globalFogTexture: Texture | null = null;
-
-/**
- * Creates a new fog texture from canvas
- * @returns PIXI Texture for fog overlay
- */
-function createFogTexture(): Texture {
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d')!;
-
-  // Use standard fog settings: 64x64 size, 0.8 opacity
-  canvas.width = 64;
-  canvas.height = 64;
-
-  // Create translucent white fog
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-  ctx.fillRect(0, 0, 64, 64);
-
-  try {
-    return Texture.from(canvas);
-  } catch (err) {
-    error('PixiMap', 'Failed to create fog texture, creating fallback:', err);
-    // Create a minimal fallback texture
-    const fallbackCanvas = document.createElement('canvas');
-    fallbackCanvas.width = 64;
-    fallbackCanvas.height = 64;
-    const fallbackCtx = fallbackCanvas.getContext('2d')!;
-    fallbackCtx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-    fallbackCtx.fillRect(0, 0, 64, 64);
-    return Texture.from(fallbackCanvas);
-  }
-}
-
-/**
- * Gets the global fog texture instance, creating it if it doesn't exist
- * Always returns the same texture instance for memory efficiency
- * @returns PIXI Texture for fog overlay
- */
-export function pixiTextureFogGet(): Texture {
-  if (globalFogTexture === null || globalFogTexture.destroyed) {
-    // Clean up the old texture if it was destroyed due to context loss
-    if (globalFogTexture?.destroyed) {
-      globalFogTexture = null;
-    }
-
-    globalFogTexture = createFogTexture();
-  }
-
-  return globalFogTexture;
-}
-
-/**
- * Clears the global fog texture and destroys it
- * Should only be called when shutting down the entire application
- */
-export function pixiTextureFogDestroy(): void {
-  if (globalFogTexture) {
-    globalFogTexture.destroy(true);
-    globalFogTexture = null;
-  }
 }

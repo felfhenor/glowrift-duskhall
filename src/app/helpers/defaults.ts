@@ -38,7 +38,6 @@ export function defaultGameState(): GameState {
       nodeCounts: defaultNodeCountBlock(),
       claimedCounts: defaultNodeCountBlock(),
     },
-    camera: defaultPosition(),
     hero: {
       respawnTicks: 0,
       riskTolerance: 'medium',

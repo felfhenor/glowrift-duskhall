@@ -12,6 +12,10 @@ export function isTraveling() {
   return gamestate().hero.travel.ticksLeft > 0;
 }
 
+export function travelCurrentPosition() {
+  return gamestate().hero.position;
+}
+
 export function travelTimeBetweenNodes(
   a: WorldPosition,
   b: WorldPosition,
@@ -20,7 +24,7 @@ export function travelTimeBetweenNodes(
 }
 
 export function travelTimeFromCurrentLocationTo(node: WorldLocation): number {
-  const currentLocation = gamestate().hero.position;
+  const currentLocation = travelCurrentPosition();
   const travelTimeMultiplier =
     festivalExplorationTickMultiplier() +
     locationTraitExplorationMultiplier(node);
@@ -48,7 +52,7 @@ export function travelToNode(node: WorldLocation): void {
 }
 
 export function travelIsAtNode(node: WorldLocation): boolean {
-  const currentLocation = gamestate().hero.position;
+  const currentLocation = travelCurrentPosition();
   return currentLocation.nodeId === node.id;
 }
 
@@ -57,7 +61,7 @@ export function isTravelingToNode(node: WorldLocation): boolean {
 }
 
 export function travelHome(): void {
-  const currentPosition = gamestate().hero.position;
+  const currentPosition = travelCurrentPosition();
   const nearestTown = locationGetNearestTown(currentPosition);
 
   if (!nearestTown) {
