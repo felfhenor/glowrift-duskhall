@@ -57,6 +57,7 @@ export function defaultGameState(): GameState {
         nodeId: '',
         ...defaultPosition(),
         ticksLeft: 0,
+        ticksTotal: 0,
       },
       location: {
         ticksLeft: 0,

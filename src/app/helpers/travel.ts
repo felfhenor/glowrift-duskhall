@@ -47,6 +47,7 @@ export function travelToNode(node: WorldLocation): void {
     state.hero.travel.x = node.x;
     state.hero.travel.y = node.y;
     state.hero.travel.ticksLeft = travelTime;
+    state.hero.travel.ticksTotal = travelTime;
     return state;
   });
 }

@@ -22,6 +22,7 @@ export function gameloopTravel(numTicks: number): void {
 
     state.hero.travel.nodeId = '';
     state.hero.travel.ticksLeft = 0;
+    state.hero.travel.ticksTotal = 0;
     state.hero.travel.x = 0;
     state.hero.travel.y = 0;
 
