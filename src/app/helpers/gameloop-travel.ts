@@ -5,7 +5,7 @@ import { isTraveling } from '@helpers/travel';
 import { globalStatusText } from '@helpers/ui';
 import { locationGet, locationGetCurrent } from '@helpers/world-location';
 
-export function gameloopTravel(numTicks: number): void {
+export function gameloopTravel(): void {
   if (!isTraveling()) return;
 
   const travel = gamestate().hero.travel;
@@ -13,7 +13,7 @@ export function gameloopTravel(numTicks: number): void {
   let didFinishTravel = false;
 
   updateGamestate((state) => {
-    state.hero.travel.ticksLeft -= numTicks;
+    state.hero.travel.ticksLeft -= 1;
     if (state.hero.travel.ticksLeft > 0) return state;
 
     state.hero.position.nodeId = travel.nodeId;

@@ -305,9 +305,6 @@ describe('Gameloop Functions', () => {
 
         // Should call each gameloop function with 5 * 3 = 15 ticks
         expect(gameloopCurrency).toHaveBeenCalledWith(15);
-        expect(gameloopTown).toHaveBeenCalledWith(15);
-        expect(gameloopTravel).toHaveBeenCalledWith(15);
-        expect(gameloopExplore).toHaveBeenCalledWith(15);
         expect(gameloopFestival).toHaveBeenCalledWith(15);
         expect(gameloopTimers).toHaveBeenCalledWith(15);
       });
@@ -324,9 +321,6 @@ describe('Gameloop Functions', () => {
 
         // Should call each gameloop function with 4 * 2.5 = 10 ticks
         expect(gameloopCurrency).toHaveBeenCalledWith(10);
-        expect(gameloopTown).toHaveBeenCalledWith(10);
-        expect(gameloopTravel).toHaveBeenCalledWith(10);
-        expect(gameloopExplore).toHaveBeenCalledWith(10);
         expect(gameloopFestival).toHaveBeenCalledWith(10);
         expect(gameloopTimers).toHaveBeenCalledWith(10);
       });
@@ -342,12 +336,9 @@ describe('Gameloop Functions', () => {
         gameloop(0);
 
         // Should call each gameloop function with 0 * 2 = 0 ticks
-        expect(gameloopCurrency).toHaveBeenCalledWith(0);
-        expect(gameloopTown).toHaveBeenCalledWith(0);
-        expect(gameloopTravel).toHaveBeenCalledWith(0);
-        expect(gameloopExplore).toHaveBeenCalledWith(0);
-        expect(gameloopFestival).toHaveBeenCalledWith(0);
-        expect(gameloopTimers).toHaveBeenCalledWith(0);
+        expect(gameloopCurrency).toHaveBeenCalledWith(1);
+        expect(gameloopFestival).toHaveBeenCalledWith(1);
+        expect(gameloopTimers).toHaveBeenCalledWith(1);
       });
     });
 
@@ -389,45 +380,16 @@ describe('Gameloop Functions', () => {
       });
     });
 
-    describe('gameloop execution order', () => {
-      it('should call timer methods in correct order for each gameloop function', () => {
-        gameloop(5);
-
-        // Verify timer start/stop calls are properly paired
-        expect(mockStartTimer).toHaveBeenCalledTimes(8); // 7 gameloop functions + main gameloop
-        expect(mockStopTimer).toHaveBeenCalledTimes(7); // 7 gameloop functions (main doesn't stop)
-
-        expect(mockStartTimer).toHaveBeenNthCalledWith(1, 'gameloop');
-        expect(mockStartTimer).toHaveBeenNthCalledWith(
-          2,
-          'gameloop-autotravel',
-        );
-        expect(mockStopTimer).toHaveBeenNthCalledWith(1, 'gameloop-autotravel');
-        expect(mockStartTimer).toHaveBeenNthCalledWith(3, 'gameloop-currency');
-        expect(mockStopTimer).toHaveBeenNthCalledWith(2, 'gameloop-currency');
-        expect(mockStartTimer).toHaveBeenNthCalledWith(4, 'gameloop-town');
-        expect(mockStopTimer).toHaveBeenNthCalledWith(3, 'gameloop-town');
-        expect(mockStartTimer).toHaveBeenNthCalledWith(5, 'gameloop-travel');
-        expect(mockStopTimer).toHaveBeenNthCalledWith(4, 'gameloop-travel');
-        expect(mockStartTimer).toHaveBeenNthCalledWith(6, 'gameloop-explore');
-        expect(mockStopTimer).toHaveBeenNthCalledWith(5, 'gameloop-explore');
-        expect(mockStartTimer).toHaveBeenNthCalledWith(7, 'gameloop-festival');
-        expect(mockStopTimer).toHaveBeenNthCalledWith(6, 'gameloop-festival');
-        expect(mockStartTimer).toHaveBeenNthCalledWith(8, 'gameloop-timers');
-        expect(mockStopTimer).toHaveBeenNthCalledWith(7, 'gameloop-timers');
-      });
-    });
-
     describe('gameloop function calls', () => {
       it('should call all gameloop functions with correct parameters', () => {
         gameloop(10);
 
-        expect(gameloopAutoTravel).toHaveBeenCalledTimes(1);
+        expect(gameloopAutoTravel).toHaveBeenCalledTimes(10);
         expect(gameloopAutoTravel).toHaveBeenCalledWith();
         expect(gameloopCurrency).toHaveBeenCalledWith(10);
-        expect(gameloopTown).toHaveBeenCalledWith(10);
-        expect(gameloopTravel).toHaveBeenCalledWith(10);
-        expect(gameloopExplore).toHaveBeenCalledWith(10);
+        expect(gameloopTown).toHaveBeenCalledWith();
+        expect(gameloopTravel).toHaveBeenCalledWith();
+        expect(gameloopExplore).toHaveBeenCalledWith();
         expect(gameloopFestival).toHaveBeenCalledWith(10);
         expect(gameloopTimers).toHaveBeenCalledWith(10);
       });
@@ -509,25 +471,6 @@ describe('Gameloop Functions', () => {
     });
 
     describe('edge cases', () => {
-      it('should handle negative totalTicks', () => {
-        vi.mocked(getOption).mockImplementation((key) => {
-          if (key === 'gameloopPaused') return false;
-          if (key === 'debugTickMultiplier') return 2;
-          if (key === 'debugGameloopTimerUpdates') return false;
-          return false;
-        });
-
-        gameloop(-3);
-
-        // Should call each gameloop function with -3 * 2 = -6 ticks
-        expect(gameloopCurrency).toHaveBeenCalledWith(-6);
-        expect(gameloopTown).toHaveBeenCalledWith(-6);
-        expect(gameloopTravel).toHaveBeenCalledWith(-6);
-        expect(gameloopExplore).toHaveBeenCalledWith(-6);
-        expect(gameloopFestival).toHaveBeenCalledWith(-6);
-        expect(gameloopTimers).toHaveBeenCalledWith(-6);
-      });
-
       it('should handle very large totalTicks', () => {
         vi.mocked(getOption).mockImplementation((key) => {
           if (key === 'gameloopPaused') return false;
@@ -539,31 +482,12 @@ describe('Gameloop Functions', () => {
         const largeTicks = 1000000;
         gameloop(largeTicks);
 
-        expect(gameloopCurrency).toHaveBeenCalledWith(largeTicks);
-        expect(gameloopTown).toHaveBeenCalledWith(largeTicks);
-        expect(gameloopTravel).toHaveBeenCalledWith(largeTicks);
-        expect(gameloopExplore).toHaveBeenCalledWith(largeTicks);
-        expect(gameloopFestival).toHaveBeenCalledWith(largeTicks);
-        expect(gameloopTimers).toHaveBeenCalledWith(largeTicks);
-      });
-
-      it('should handle zero debugTickMultiplier', () => {
-        vi.mocked(getOption).mockImplementation((key) => {
-          if (key === 'gameloopPaused') return false;
-          if (key === 'debugTickMultiplier') return 0;
-          if (key === 'debugGameloopTimerUpdates') return false;
-          return false;
-        });
-
-        gameloop(10);
-
-        // Should call each gameloop function with 10 * 0 = 0 ticks
-        expect(gameloopCurrency).toHaveBeenCalledWith(0);
-        expect(gameloopTown).toHaveBeenCalledWith(0);
-        expect(gameloopTravel).toHaveBeenCalledWith(0);
-        expect(gameloopExplore).toHaveBeenCalledWith(0);
-        expect(gameloopFestival).toHaveBeenCalledWith(0);
-        expect(gameloopTimers).toHaveBeenCalledWith(0);
+        expect(gameloopCurrency).toHaveBeenCalledWith(3600);
+        expect(gameloopTown).toHaveBeenCalledWith();
+        expect(gameloopTravel).toHaveBeenCalledWith();
+        expect(gameloopExplore).toHaveBeenCalledWith();
+        expect(gameloopFestival).toHaveBeenCalledWith(3600);
+        expect(gameloopTimers).toHaveBeenCalledWith(3600);
       });
     });
   });

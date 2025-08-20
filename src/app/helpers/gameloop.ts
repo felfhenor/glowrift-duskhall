@@ -22,6 +22,7 @@ import { getOption, setOption } from '@helpers/state-options';
 import { timerLastSaveTick, timerTicksElapsed } from '@helpers/timer';
 import { victoryClaim, victoryHasWonForFirstTime } from '@helpers/victory';
 import { locationAreAllClaimed } from '@helpers/world-location';
+import { clamp } from 'es-toolkit/compat';
 
 export const isGameloopPaused = computed(() => getOption('gameloopPaused'));
 
@@ -42,7 +43,8 @@ export async function gameloop(totalTicks: number): Promise<void> {
 
   gamestateTickStart();
 
-  const numTicks = totalTicks * getOption('debugTickMultiplier');
+  const ticksToCalculate = totalTicks * getOption('debugTickMultiplier');
+  const numTicks = clamp(ticksToCalculate, 1, 3600);
 
   const timer = new LoggerTimer({
     dumpThreshold: 100,
@@ -69,15 +71,15 @@ export async function gameloop(totalTicks: number): Promise<void> {
     timer.stopTimer(`gameloop-autotravel-${i}`);
 
     timer.startTimer(`gameloop-town-${i}`);
-    gameloopTown(1);
+    gameloopTown();
     timer.stopTimer(`gameloop-town-${i}`);
 
     timer.startTimer(`gameloop-travel-${i}`);
-    gameloopTravel(1);
+    gameloopTravel();
     timer.stopTimer(`gameloop-travel-${i}`);
 
     timer.startTimer(`gameloop-explore-${i}`);
-    gameloopExplore(1);
+    gameloopExplore();
     timer.stopTimer(`gameloop-explore-${i}`);
   }
 

@@ -13,7 +13,7 @@ import {
   locationRewardsGain,
 } from '@helpers/world-location';
 
-export function gameloopExplore(numTicks: number): void {
+export function gameloopExplore(): void {
   if (isTraveling()) return;
 
   const node = locationGetCurrent();
@@ -49,7 +49,7 @@ export function gameloopExplore(numTicks: number): void {
       `Exploring ${node.name}... fighting ${node.guardianIds.length} guardian(s).`,
     );
 
-    for (let i = 0; i < numTicks; i++) {
+    for (let i = 0; i < 1; i++) {
       combatDoCombatIteration();
     }
     return;
