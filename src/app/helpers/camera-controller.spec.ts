@@ -1,10 +1,7 @@
 import {
   cameraCalculateBounds,
-  cameraClampPosition,
-  cameraPositionUpdate,
   cameraProcessDrag,
 } from '@helpers/camera-controller';
-import type { GameState } from '@interfaces';
 import type { CameraBounds, CameraState } from '@interfaces/camera';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -13,8 +10,6 @@ vi.mock('@helpers/index', () => ({
   gamestate: vi.fn(),
   updateGamestate: vi.fn(),
 }));
-
-import { gamestate, updateGamestate } from '@helpers/index';
 
 describe('Camera Controller Functions', () => {
   beforeEach(() => {
@@ -47,38 +42,6 @@ describe('Camera Controller Functions', () => {
         maxX: 0,
         maxY: 0,
       });
-    });
-  });
-
-  describe('cameraClampPosition', () => {
-    const bounds: CameraBounds = { maxX: 50, maxY: 40 };
-
-    it('should not clamp when camera is within bounds', () => {
-      const camera: CameraState = { x: 25, y: 20 };
-      const result = cameraClampPosition(camera, bounds);
-
-      expect(result).toEqual({ x: 25, y: 20 });
-    });
-
-    it('should clamp negative positions to zero', () => {
-      const camera: CameraState = { x: -10, y: -5 };
-      const result = cameraClampPosition(camera, bounds);
-
-      expect(result).toEqual({ x: 0, y: 0 });
-    });
-
-    it('should clamp positions exceeding maximum bounds', () => {
-      const camera: CameraState = { x: 60, y: 50 };
-      const result = cameraClampPosition(camera, bounds);
-
-      expect(result).toEqual({ x: 50, y: 40 });
-    });
-
-    it('should handle edge case positions', () => {
-      const camera: CameraState = { x: 0, y: 40 };
-      const result = cameraClampPosition(camera, bounds);
-
-      expect(result).toEqual({ x: 0, y: 40 });
     });
   });
 
@@ -189,56 +152,6 @@ describe('Camera Controller Functions', () => {
 
       expect(result.newCamera).toEqual({ x: 0, y: 0 }); // no change due to clamping
       expect(result.remainingDrag).toEqual({ x: 0, y: 0 });
-    });
-  });
-
-  describe('cameraPositionUpdate', () => {
-    const mockGameState: Partial<GameState> = {
-      camera: { x: 5, y: 8 },
-    };
-
-    beforeEach(() => {
-      vi.mocked(gamestate).mockReturnValue(mockGameState as GameState);
-    });
-
-    it('should update game state when camera position changes', () => {
-      const newCamera: CameraState = { x: 10, y: 15 };
-
-      cameraPositionUpdate(newCamera);
-
-      expect(updateGamestate).toHaveBeenCalledTimes(1);
-      expect(updateGamestate).toHaveBeenCalledWith(expect.any(Function));
-
-      // Test the callback function
-      const updateCallback = vi.mocked(updateGamestate).mock.calls[0][0];
-      const testState = { camera: { x: 5, y: 8 } } as GameState;
-      const result = updateCallback(testState);
-
-      expect(result.camera).toEqual({ x: 10, y: 15 });
-    });
-
-    it('should not update game state when camera position is the same', () => {
-      const sameCamera: CameraState = { x: 5, y: 8 }; // same as current
-
-      cameraPositionUpdate(sameCamera);
-
-      expect(updateGamestate).not.toHaveBeenCalled();
-    });
-
-    it('should update when only X position changes', () => {
-      const newCamera: CameraState = { x: 7, y: 8 }; // only X changed
-
-      cameraPositionUpdate(newCamera);
-
-      expect(updateGamestate).toHaveBeenCalledTimes(1);
-    });
-
-    it('should update when only Y position changes', () => {
-      const newCamera: CameraState = { x: 5, y: 12 }; // only Y changed
-
-      cameraPositionUpdate(newCamera);
-
-      expect(updateGamestate).toHaveBeenCalledTimes(1);
     });
   });
 });

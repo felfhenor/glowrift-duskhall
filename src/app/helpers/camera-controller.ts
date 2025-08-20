@@ -21,22 +21,6 @@ export function cameraCalculateBounds(
 }
 
 /**
- * Clamps camera position within world bounds
- * @param camera Current camera position
- * @param bounds Camera bounds
- * @returns Clamped camera position
- */
-export function cameraClampPosition(
-  camera: CameraState,
-  bounds: CameraBounds,
-): CameraState {
-  return {
-    x: Math.max(0, Math.min(bounds.maxX, camera.x)),
-    y: Math.max(0, Math.min(bounds.maxY, camera.y)),
-  };
-}
-
-/**
  * Handles camera movement based on drag input
  * @param dragDelta Accumulated drag delta
  * @param currentCamera Current camera position
