@@ -548,13 +548,37 @@ export async function worldgenGenerateWorld(
     castle: maxDistance * 0.7,
   };
 
+  const isPositionValidForVillageTown = (
+    x: number,
+    y: number,
+    nodeType: LocationType,
+  ): boolean => {
+    // Only apply spacing constraints to villages and towns
+    if (nodeType !== 'village' && nodeType !== 'town') return true;
+
+    // Check distance to all existing villages and towns
+    const existingVillagesAndTowns = nodeList.filter(
+      (node) => node.nodeType === 'village' || node.nodeType === 'town'
+    );
+
+    for (const existingNode of existingVillagesAndTowns) {
+      const distance = distanceBetweenNodes({ x, y }, existingNode);
+      if (distance < 7) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+
   const findUnusedPosition: (
     distMin: number,
     distMax: number,
+    nodeType?: LocationType,
   ) => {
     x: number;
     y: number;
-  } = (distMin: number, distMax: number) => {
+  } = (distMin: number, distMax: number, nodeType?: LocationType) => {
     // Query a large area that could contain positions within our distance range
     // We use a conservative bounds that covers the maximum possible area
     const queryX = Math.max(0, firstTown.x - distMax);
@@ -571,6 +595,12 @@ export async function worldgenGenerateWorld(
       const dist = distanceBetweenNodes(n, firstTown);
       if (dist < distMin || dist > distMax) return false;
       if (n.taken) return false;
+      
+      // Apply village/town spacing constraint if nodeType is provided
+      if (nodeType && !isPositionValidForVillageTown(n.x, n.y, nodeType)) {
+        return false;
+      }
+      
       return true;
     });
 
@@ -706,7 +736,22 @@ export async function worldgenGenerateWorld(
       minDist,
       maxDist,
     } = nodeData;
-    const { x, y } = findUnusedPosition(minDist, maxDist);
+    
+    // First try to find a position with spacing constraints for villages/towns
+    let { x, y } = findUnusedPosition(minDist, maxDist, node.nodeType);
+
+    // If no position found for a village due to spacing, skip it
+    if ((x === -1 || y === -1) && node.nodeType === 'village') {
+      setWorldGenStatus(`Skipping ${nodeType} ${nodeNum + 1}/${nodeCount} - insufficient spacing...`);
+      return;
+    }
+    
+    // If no position found for a town, try again without spacing constraints (towns must be placed)
+    if ((x === -1 || y === -1) && node.nodeType === 'town') {
+      const fallbackPosition = findUnusedPosition(minDist, maxDist);
+      x = fallbackPosition.x;
+      y = fallbackPosition.y;
+    }
 
     node.x = x;
     node.y = y;
