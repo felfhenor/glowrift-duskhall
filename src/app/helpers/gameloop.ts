@@ -51,25 +51,9 @@ export async function gameloop(totalTicks: number): Promise<void> {
 
   timer.startTimer('gameloop');
 
-  timer.startTimer('gameloop-autotravel');
-  gameloopAutoTravel();
-  timer.stopTimer('gameloop-autotravel');
-
   timer.startTimer('gameloop-currency');
   gameloopCurrency(numTicks);
   timer.stopTimer('gameloop-currency');
-
-  timer.startTimer('gameloop-town');
-  gameloopTown(numTicks);
-  timer.stopTimer('gameloop-town');
-
-  timer.startTimer('gameloop-travel');
-  gameloopTravel(numTicks);
-  timer.stopTimer('gameloop-travel');
-
-  timer.startTimer('gameloop-explore');
-  gameloopExplore(numTicks);
-  timer.stopTimer('gameloop-explore');
 
   timer.startTimer('gameloop-festival');
   gameloopFestival(numTicks);
@@ -78,6 +62,24 @@ export async function gameloop(totalTicks: number): Promise<void> {
   timer.startTimer('gameloop-timers');
   gameloopTimers(numTicks);
   timer.stopTimer('gameloop-timers');
+
+  for (let i = 0; i < numTicks; i++) {
+    timer.startTimer(`gameloop-autotravel-${i}`);
+    gameloopAutoTravel();
+    timer.stopTimer(`gameloop-autotravel-${i}`);
+
+    timer.startTimer(`gameloop-town-${i}`);
+    gameloopTown(1);
+    timer.stopTimer(`gameloop-town-${i}`);
+
+    timer.startTimer(`gameloop-travel-${i}`);
+    gameloopTravel(1);
+    timer.stopTimer(`gameloop-travel-${i}`);
+
+    timer.startTimer(`gameloop-explore-${i}`);
+    gameloopExplore(1);
+    timer.stopTimer(`gameloop-explore-${i}`);
+  }
 
   timer.dumpTimers((timers) => debug('Gameloop:Timers', timers));
 
