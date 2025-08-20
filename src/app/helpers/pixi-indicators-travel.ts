@@ -1,4 +1,4 @@
-import type { Texture, Ticker } from 'pixi.js';
+import type { Texture } from 'pixi.js';
 import { Graphics, Sprite } from 'pixi.js';
 
 /**
@@ -43,8 +43,7 @@ export function pixiIndicatorHeroTravelCreate(
   x: number,
   y: number,
   heroTexture: Texture,
-  ticker: Ticker,
-): Sprite {
+): { sprite: Sprite; ticker: () => void } {
   const pixelX = x * 64 + 16; // Offset to center the sprite
   const pixelY = y * 64 + 16; // Offset to center the sprite
 
@@ -58,10 +57,10 @@ export function pixiIndicatorHeroTravelCreate(
   // Add a subtle bobbing animation
   let bobOffset = 0;
 
-  ticker.add(() => {
+  const ticker = () => {
     bobOffset += 0.4;
     sprite.y = pixelY + Math.sin(bobOffset) * 2;
-  });
+  };
 
-  return sprite;
+  return { sprite, ticker };
 }

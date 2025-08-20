@@ -218,7 +218,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       '4',
       '5',
       '6',
-      '7',
+      'f',
       'space',
       'escape',
       'q',

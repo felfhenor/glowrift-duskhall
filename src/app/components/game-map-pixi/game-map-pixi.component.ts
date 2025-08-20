@@ -70,6 +70,9 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
   private resizeObserver?: ResizeObserver;
   private intersectionObserver?: IntersectionObserver;
 
+  private travelVisualizerTickerUpdate?: () => void;
+  private heroTickerUpdate?: () => void;
+
   // Local computed properties for component functionality
   private debugMapNodePositions = computed(() =>
     getOption('debugMapNodePositions'),
@@ -201,6 +204,8 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     // Stop the ticker to save GPU resources
     if (this.app?.ticker) {
       this.app.ticker.stop();
+      this.app.ticker.remove(this.travelVisualizerTickerUpdate!);
+      this.app.ticker.destroy();
     }
 
     // Clean up all sprites properly before destroying app
@@ -530,8 +535,11 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
   private setupPlayerIndicators() {
     if (!this.playerIndicatorContainer || !this.app) return;
 
-    const indicator = pixiIndicatorNodePlayerAtLocationCreate(this.app.ticker);
-    this.playerIndicatorContainer.addChild(indicator);
+    const { graphics, ticker } = pixiIndicatorNodePlayerAtLocationCreate();
+    this.playerIndicatorContainer.addChild(graphics);
+
+    this.travelVisualizerTickerUpdate = ticker;
+    this.app.ticker.add(ticker);
 
     const heroPosition = this.heroPosition();
     const camera = cameraPosition();
@@ -587,19 +595,24 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     // Show traveling hero sprite at interpolated position using relative coordinates
     const partyLeader = this.firstHero();
     if (partyLeader && this.heroTextures[partyLeader.sprite]) {
-      const travelingHero = pixiIndicatorHeroTravelCreate(
+      const { sprite, ticker } = pixiIndicatorHeroTravelCreate(
         relativeInterpolatedX,
         relativeInterpolatedY,
         this.heroTextures[partyLeader.sprite],
-        this.app.ticker,
       );
 
-      this.travelVisualizationContainer.addChild(travelingHero);
+      this.heroTickerUpdate = ticker;
+      this.travelVisualizationContainer.addChild(sprite);
+
+      this.app.ticker.add(ticker);
     }
   }
 
   private clearTravelVisualization() {
     this.travelVisualizationContainer?.removeChildren();
+
+    this.app?.ticker.remove(this.heroTickerUpdate!);
+    this.heroTickerUpdate = undefined;
   }
 
   private investigateLocation(nodeData: WorldLocation) {

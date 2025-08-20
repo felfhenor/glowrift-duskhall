@@ -1,4 +1,3 @@
-import type { Ticker } from 'pixi.js';
 import { Graphics } from 'pixi.js';
 
 /**
@@ -6,9 +5,10 @@ import { Graphics } from 'pixi.js';
  *
  * @returns Object with graphics and cleanup function
  */
-export function pixiIndicatorNodePlayerAtLocationCreate(
-  ticker: Ticker,
-): Graphics {
+export function pixiIndicatorNodePlayerAtLocationCreate(): {
+  graphics: Graphics;
+  ticker: () => void;
+} {
   const graphics = new Graphics()
     .rect(0, 0, 64, 64)
     .fill(0xffffff)
@@ -22,7 +22,7 @@ export function pixiIndicatorNodePlayerAtLocationCreate(
   let lastTime = performance.now();
   const animationSpeed = 0.002; // Slower animation speed
 
-  ticker.add(() => {
+  const ticker = () => {
     const now = performance.now();
 
     const deltaTime = now - lastTime;
@@ -35,7 +35,7 @@ export function pixiIndicatorNodePlayerAtLocationCreate(
     // Clamp alpha to valid range
     alpha = Math.max(0.4, Math.min(0.8, alpha));
     graphics.alpha = alpha;
-  });
+  };
 
-  return graphics;
+  return { graphics, ticker };
 }
