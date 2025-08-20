@@ -5,6 +5,7 @@ import type { GameElement } from '@interfaces/element';
 import type { Branded } from '@interfaces/identifiable';
 import type { StatBlock } from '@interfaces/stat';
 import type { AcademyEnchant } from '@interfaces/town';
+import type { HasDescription } from '@interfaces/traits';
 
 export type EquipmentSkillTargetBehavior =
   | 'Always'
@@ -61,7 +62,8 @@ export type EquipmentSkillContentTechnique = {
 
 export type EquipmentSkillContent = DroppableEquippable &
   Animatable &
-  EquipmentSkillContentModifiable & {
+  EquipmentSkillContentModifiable &
+  HasDescription & {
     __type: 'skill';
     id: EquipmentSkillId;
 

@@ -206,6 +206,7 @@ function ensureSkill(
   return {
     id: skill.id ?? ('UNKNOWN' as EquipmentSkillId),
     name: skill.name ?? 'UNKNOWN',
+    description: skill.description ?? '',
     __type: skill.__type ?? 'skill',
     disableUpgrades: skill.disableUpgrades ?? false,
     unableToUpgrade: skill.unableToUpgrade ?? [],
@@ -232,6 +233,7 @@ function ensureItem(
   return {
     id: item.id ?? ('UNKNOWN' as EquipmentItemId),
     name: item.name ?? 'UNKNOWN',
+    description: item.description ?? '',
     __type: item.__type ?? 'trinket',
     unableToUpgrade: item.unableToUpgrade ?? [],
     sprite: item.sprite ?? '0000',

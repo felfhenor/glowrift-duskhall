@@ -138,6 +138,7 @@
 - id: 53c2a8d6-7a8c-4c25-8eb7-da2163e603f1
   name: Elemental Core
   sprite: '0011'
+  description: Fire and ice make something nice!
 
   rarity: Legendary
   dropLevel: 25

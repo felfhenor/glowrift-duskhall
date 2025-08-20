@@ -99,6 +99,7 @@
 
 - id: a0ec6af3-cf62-48b8-8d79-90a8d3f79109
   name: Windshear I
+  description: It's not friendly fire if it's wind!
 
   sprite: '0532'
   frames: 9
@@ -131,6 +132,7 @@
 
 - id: 5e00e5c7-cd4d-4f73-87e3-fd6e2899dbaf
   name: Windshear II
+  description: It's not friendly fire if it's wind!
 
   sprite: '0532'
   frames: 9
@@ -163,6 +165,7 @@
 
 - id: eac590ba-52c3-4d40-9f15-5f44ba2cd1bf
   name: Windshear III
+  description: It's not friendly fire if it's wind!
 
   sprite: '0532'
   frames: 9

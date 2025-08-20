@@ -285,6 +285,7 @@
 
 - id: c65b9821-0633-43af-89fe-3062686f8fd8
   name: Legendary Meat Drumstick of Ultimate Power
+  description: Neither wall chicken nor floor beef
   sprite: '0017'
 
   rarity: Legendary

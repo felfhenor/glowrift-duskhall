@@ -6,6 +6,7 @@ import type { GameElement } from '@interfaces/element';
 import type { Branded } from '@interfaces/identifiable';
 import type { StatBlock } from '@interfaces/stat';
 import type { BlacksmithEnchant } from '@interfaces/town';
+import type { HasDescription } from '@interfaces/traits';
 
 export type EquipmentSlot = 'accessory' | 'armor' | 'trinket' | 'weapon';
 
@@ -28,7 +29,8 @@ export type EquipmentModifiable = {
 };
 
 export type EquipmentItemContent = DroppableEquippable &
-  EquipmentModifiable & {
+  EquipmentModifiable &
+  HasDescription & {
     __type: EquipmentSlot;
     id: EquipmentItemId;
 

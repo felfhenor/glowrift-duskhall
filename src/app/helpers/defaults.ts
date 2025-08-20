@@ -299,6 +299,7 @@ export function defaultEquipment(): EquipmentItem {
   return {
     id: 'UNKNOWN' as EquipmentItemId,
     name: '',
+    description: '',
     __type: 'trinket',
     sprite: 'item-sprite',
     rarity: 'Common',
