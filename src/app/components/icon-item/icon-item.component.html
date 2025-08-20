@@ -9,11 +9,12 @@
 ></div>
 
 <app-atlas-image
-  class="z-10 absolute"
+  class="z-10 absolute context-menu-enabled"
   [assetName]="itemData.sprite"
   [spritesheet]="itemData.__type"
   [tp]="itemInfo"
   [tpMaxWidth]="800"
+  (contextmenu)="onContextMenu($event)"
 ></app-atlas-image>
 
 @if (showLevel()) {

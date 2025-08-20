@@ -5,6 +5,7 @@ import { IconComponent } from '@components/icon/icon.component';
 import { StatsItemCompareComponent } from '@components/stats-item-compare/stats-item-compare.component';
 import { StatsItemComponent } from '@components/stats-item/stats-item.component';
 import { actionItemBuyValue, itemEnchantLevel } from '@helpers';
+import { findEquippedItem, showContextMenuStats } from '@helpers/ui';
 import type { EquipmentItem, EquipmentItemContent } from '@interfaces';
 import { TippyDirective } from '@ngneat/helipopper';
 import { GameCurrencyPipe } from '@pipes/game-currency.pipe';
@@ -36,4 +37,23 @@ export class IconItemComponent {
   public showPrice = input<boolean>(false);
 
   public shopPrice = computed(() => actionItemBuyValue(this.item()));
+
+  public onContextMenu(event: MouseEvent): void {
+    event.preventDefault();
+    
+    const equippedData = findEquippedItem(this.item().id);
+    if (!equippedData) {
+      return; // Only show context menu for equipped items
+    }
+
+    // Find what item is currently in the same slot to compare with
+    const currentItem = equippedData.hero.equipment[equippedData.slot];
+    
+    showContextMenuStats({
+      x: event.clientX,
+      y: event.clientY,
+      itemData: this.item(),
+      compareItem: currentItem !== this.item() ? currentItem : undefined,
+    });
+  }
 }

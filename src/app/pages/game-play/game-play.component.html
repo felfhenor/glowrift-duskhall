@@ -48,6 +48,23 @@
       ></app-panel-location>
     </app-panel-container>
   }
+
+  @if (contextMenu().visible) {
+    <div
+      class="fixed z-[1000] pointer-events-none"
+      [style.left.px]="contextMenu().x"
+      [style.top.px]="contextMenu().y"
+    >
+      <app-context-menu-stats-compare
+        class="pointer-events-auto"
+        [itemData]="contextMenu().itemData"
+        [compareItem]="contextMenu().compareItem"
+        [skillData]="contextMenu().skillData"
+        [compareSkill]="contextMenu().compareSkill"
+        [equippingHero]="contextMenu().equippingHero"
+      ></app-context-menu-stats-compare>
+    </div>
+  }
 </div>
 
 @if (isCatchingUp()) {

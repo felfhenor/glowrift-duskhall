@@ -9,12 +9,13 @@
 ></div>
 
 <app-atlas-animation
-  class="z-10 absolute"
+  class="z-10 absolute context-menu-enabled"
   [assetName]="skillData.sprite"
   [spritesheet]="'skill'"
   [frames]="skillData.frames"
   [tp]="itemInfo"
   [tpMaxWidth]="800"
+  (contextmenu)="onContextMenu($event)"
 ></app-atlas-animation>
 
 <div

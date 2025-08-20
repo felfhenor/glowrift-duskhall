@@ -1,0 +1,25 @@
+<div class="absolute bg-base-100 shadow-xl border border-base-300 rounded-lg p-2 z-50 min-w-[600px]">
+  @if (itemData() && compareItem()) {
+    <app-stats-item-compare
+      [item]="itemData()!"
+      [compareWith]="compareItem()!"
+    ></app-stats-item-compare>
+  } @else if (skillData() && compareSkill()) {
+    <app-stats-skill-compare
+      [skill]="skillData()!"
+      [compareWith]="compareSkill()!"
+      [equippingHero]="equippingHero()"
+    ></app-stats-skill-compare>
+  } @else if (itemData()) {
+    <div class="min-w-[300px]">
+      <app-stats-item [item]="itemData()!"></app-stats-item>
+    </div>
+  } @else if (skillData()) {
+    <div class="min-w-[300px]">
+      <app-stats-skill
+        [skill]="skillData()!"
+        [equippingHero]="equippingHero()"
+      ></app-stats-skill>
+    </div>
+  }
+</div>
