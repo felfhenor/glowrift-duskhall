@@ -1,6 +1,7 @@
 import { getEntry } from '@helpers/content';
 import { defaultCurrencyBlock } from '@helpers/defaults';
 import { festivalProductionMultiplier } from '@helpers/festival-production';
+import { error } from '@helpers/logging';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { locationTraitCurrencyAllGenerateModifiers } from '@helpers/trait-location-currency';
 import { locationGetClaimed } from '@helpers/world-location';
@@ -33,10 +34,17 @@ export function currencyGainMultiple(currencies: Partial<CurrencyBlock>): void {
       const multiplier = 1 + festivalProductionMultiplier(key);
       const gainedCurrency = (currencies[key] ?? 0) * multiplier;
 
-      state.currency.currencies[key] = Math.max(
-        0,
-        state.currency.currencies[key] + gainedCurrency,
-      );
+      const newValue = state.currency.currencies[key] + gainedCurrency;
+      if (isNaN(newValue)) {
+        error(
+          'Currency',
+          `Invalid currency value for ${key}: ${newValue}`,
+          new Error().stack,
+        );
+        return;
+      }
+
+      state.currency.currencies[key] = Math.max(0, newValue);
     });
     return state;
   });
