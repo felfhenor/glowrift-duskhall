@@ -2,7 +2,7 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { environment } from '@environments/environment.development';
 import { liveVersion, localVersion, versionInfoToSemver } from '@helpers';
 import { LoggerService } from '@services/logger.service';
-import { marked } from 'marked';
+import { marked, Renderer } from 'marked';
 import { interval } from 'rxjs';
 
 @Injectable({
@@ -39,6 +39,22 @@ export class MetaService {
     () => this.changelogAll() && this.changelogCurrent(),
   );
 
+  private get renderer() {
+    const renderer = new Renderer();
+    renderer.heading = ({ tokens, depth }) => {
+      const text = renderer.parser.parseInline(tokens);
+
+      const sizeClass = [1, 2].includes(depth) ? 'text-xl' : 'text-lg';
+
+      return `
+          <h${depth} class="${sizeClass}">
+            ${text}
+          </h${depth}>`;
+    };
+
+    return renderer;
+  }
+
   async init() {
     try {
       const response = await fetch('version.json');
@@ -51,7 +67,9 @@ export class MetaService {
     try {
       const changelog = await fetch('CHANGELOG.md');
       const changelogData = await changelog.text();
-      this.changelogAll.set(await marked(changelogData));
+      this.changelogAll.set(
+        await marked(changelogData, { renderer: this.renderer }),
+      );
     } catch {
       this.logger.error(
         'Meta:Changelog',
@@ -62,7 +80,9 @@ export class MetaService {
     try {
       const changelog = await fetch('CHANGELOG-current.md');
       const changelogData = await changelog.text();
-      this.changelogCurrent.set(await marked(changelogData));
+      this.changelogCurrent.set(
+        await marked(changelogData, { renderer: this.renderer }),
+      );
     } catch {
       this.logger.error(
         'Meta:Changelog',
