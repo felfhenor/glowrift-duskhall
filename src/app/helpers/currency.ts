@@ -12,6 +12,7 @@ import type {
   GameCurrency,
   WorldLocation,
 } from '@interfaces';
+import { sortBy } from 'es-toolkit/compat';
 
 /**
  * Canonical currency ordering as specified in the requirements:
@@ -54,11 +55,7 @@ export const CURRENCY_ORDER: GameCurrency[] = [
 export function currencySortByOrder(currencies: GameCurrency[]): GameCurrency[] {
   const orderMap = new Map(CURRENCY_ORDER.map((currency, index) => [currency, index]));
   
-  return currencies.sort((a, b) => {
-    const orderA = orderMap.get(a) ?? Number.MAX_SAFE_INTEGER;
-    const orderB = orderMap.get(b) ?? Number.MAX_SAFE_INTEGER;
-    return orderA - orderB;
-  });
+  return sortBy(currencies, (currency) => orderMap.get(currency) ?? Number.MAX_SAFE_INTEGER);
 }
 
 export function currencyGet(currency: GameCurrency): number {
