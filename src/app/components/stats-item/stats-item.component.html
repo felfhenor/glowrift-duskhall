@@ -11,6 +11,12 @@
   @if (enchantLevel() > 0) {
     +{{ enchantLevel() }}
   }
+
+  <app-marker-symmetry
+    class="ml-2"
+    [orientation]="'horizontal'"
+    [level]="symmetryLevel()"
+  ></app-marker-symmetry>
 </h3>
 
 <div class="mt-3">
@@ -19,6 +25,10 @@
   <div>
     <span [ngClass]="['text-' + itemData.rarity]">{{ itemData.rarity }}</span>
     {{ itemData.__type }}
+  </div>
+
+  <div>
+    {{ symmetryText() }}
   </div>
 
   <div class="mt-2 items-center flex gap-2">

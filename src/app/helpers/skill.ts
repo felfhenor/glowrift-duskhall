@@ -1,5 +1,6 @@
 import { getEntry } from '@helpers/content';
-import { gamestate } from '@helpers/state-game';
+import { gamestate, updateGamestate } from '@helpers/state-game';
+import { symmetryLevel } from '@helpers/symmetry';
 import {
   talentAddedTechniques,
   talentsForHero,
@@ -19,6 +20,7 @@ import type { StatusEffectContent } from '@interfaces/content-statuseffect';
 import type { GameElement } from '@interfaces/element';
 import type { Hero } from '@interfaces/hero';
 import type { GameStat } from '@interfaces/stat';
+import type { GameState } from '@interfaces/state-game';
 import { intersection, sortBy, uniq } from 'es-toolkit/compat';
 
 export function skillEnchantLevel(skill: EquipmentSkill): number {
@@ -107,10 +109,40 @@ export function skillDisplayElement(skill: EquipmentSkill): string {
   return elements.join(', ');
 }
 
-export function skillCreateForHero(
-  hero: Hero,
+export function skillCreateWithSymmetry(
   skillData: EquipmentSkill,
 ): EquipmentSkill {
+  const skill = structuredClone(skillData);
+
+  const allSkillTechniques = skill.techniques;
+  const copyTechniques = structuredClone(allSkillTechniques);
+
+  const skillSymmetry = symmetryLevel(skill);
+  let copyStatValue = 0;
+  if (skillSymmetry >= 3) copyStatValue = 0.25;
+  if (skillSymmetry >= 5) copyStatValue = 0.5;
+
+  if (copyStatValue > 0) {
+    copyTechniques.forEach((t) => {
+      Object.keys(t.damageScaling).forEach((stat) => {
+        t.damageScaling[stat as GameStat] *= copyStatValue;
+      });
+    });
+
+    allSkillTechniques.push(...copyTechniques);
+  }
+
+  skill.techniques = allSkillTechniques;
+
+  return skill;
+}
+
+export function skillCreateForHero(
+  hero: Hero,
+  skillBeforeSymmetry: EquipmentSkill,
+): EquipmentSkill {
+  const skillData = skillCreateWithSymmetry(skillBeforeSymmetry);
+
   const talents = talentsForHero(hero);
   const skill = structuredClone(skillData);
 
@@ -158,4 +190,27 @@ export function skillCreateForHero(
   });
 
   return skill;
+}
+
+export function skillFindInState(
+  state: GameState,
+  skill: EquipmentSkill,
+): EquipmentSkill | undefined {
+  const heroSkills = state.hero.heroes.flatMap((h) => h.skills);
+  const updateItem = [...heroSkills, ...state.inventory.skills]
+    .filter(Boolean)
+    .find((i) => i!.id === skill.id);
+
+  return updateItem;
+}
+
+export function skillUpdateInState(skill: EquipmentSkill): void {
+  updateGamestate((state) => {
+    const updateItem = skillFindInState(state, skill);
+    if (!updateItem) return state;
+
+    updateItem.mods = structuredClone(skill.mods);
+
+    return state;
+  });
 }

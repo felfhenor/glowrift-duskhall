@@ -72,6 +72,9 @@ export function droppableSortedRarityList<T extends DroppableEquippable>(
   items: T[],
 ): T[] {
   return sortBy(items, [
+    (i) => {
+      return i.isFavorite ? -1 : 1;
+    },
     (i) => -i.dropLevel,
     (i) => {
       const rarityOrder: Record<DropRarity, number> = {
@@ -83,6 +86,12 @@ export function droppableSortedRarityList<T extends DroppableEquippable>(
         Unique: -5,
       };
       return rarityOrder[i.rarity] ?? 0;
+    },
+    (i) => {
+      return -(
+        (i as unknown as EquipmentItem | EquipmentSkill).mods?.symmetryCount ??
+        0
+      );
     },
   ]);
 }

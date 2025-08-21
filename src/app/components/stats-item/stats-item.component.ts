@@ -2,6 +2,7 @@ import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 import { MarkerElementComponent } from '@components/marker-element/marker-element.component';
 import { MarkerStatComponent } from '@components/marker-stat/marker-stat.component';
+import { MarkerSymmetryComponent } from '@components/marker-symmetry/marker-symmetry.component';
 import { MarkerTraitComponent } from '@components/marker-trait/marker-trait.component';
 import {
   getEntry,
@@ -11,8 +12,17 @@ import {
   itemStat,
   itemTalents,
   itemTraits,
+  symmetryCopiesRequired,
+  symmetryItemBonusDescription,
+  symmetryLevel,
+  symmetryLevelDescription,
 } from '@helpers';
-import type { ElementBlock, GameElement, TalentContent } from '@interfaces';
+import type {
+  ElementBlock,
+  GameElement,
+  SymmetryLevel,
+  TalentContent,
+} from '@interfaces';
 import {
   type EquipmentItem,
   type EquipmentItemContent,
@@ -26,6 +36,7 @@ import {
     NgClass,
     MarkerElementComponent,
     MarkerTraitComponent,
+    MarkerSymmetryComponent,
   ],
   templateUrl: './stats-item.component.html',
   styleUrl: './stats-item.component.scss',
@@ -39,6 +50,11 @@ export class StatsItemComponent {
   public enchantLevel = computed(() =>
     itemEnchantLevel(this.item() as EquipmentItem),
   );
+
+  public symmetryLevel = computed(() => {
+    const item = this.item() as EquipmentItem;
+    return symmetryLevel(item);
+  });
 
   public itemAura = computed(() => itemStat(this.item(), 'Aura'));
   public itemForce = computed(() => itemStat(this.item(), 'Force'));
@@ -73,4 +89,23 @@ export class StatsItemComponent {
       }))
       .filter((e) => e.multiplier !== 0),
   );
+
+  public symmetryText = computed(() => {
+    const item = this.item() as EquipmentItem;
+    const itemSymmetryLevel = this.symmetryLevel();
+    const desc = symmetryLevelDescription(itemSymmetryLevel);
+    const itemSymmetryCount = item.mods?.symmetryCount ?? 0;
+    const copiesRequiredForNextLevel = symmetryCopiesRequired(
+      (itemSymmetryLevel + 1) as SymmetryLevel,
+    );
+
+    if (itemSymmetryLevel === 0)
+      return `${desc} (${itemSymmetryCount}/${copiesRequiredForNextLevel})`;
+
+    const bonusDesc = symmetryItemBonusDescription(itemSymmetryLevel);
+    if (itemSymmetryLevel >= 5) return `${desc}: ${bonusDesc}`;
+
+    const adjuster = symmetryCopiesRequired(itemSymmetryLevel);
+    return `${desc} (${itemSymmetryCount - adjuster}/${copiesRequiredForNextLevel - adjuster}): ${bonusDesc}`;
+  });
 }

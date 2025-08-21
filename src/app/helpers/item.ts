@@ -1,9 +1,11 @@
 import { getEntry } from '@helpers/content';
 import { defaultStats } from '@helpers/defaults';
-import { gamestate } from '@helpers/state-game';
+import { gamestate, updateGamestate } from '@helpers/state-game';
+import { symmetryLevel } from '@helpers/symmetry';
 import type {
   EquipmentItemId,
   EquipmentSkillContent,
+  GameState,
   TalentBoost,
   TalentId,
   TraitEquipmentContent,
@@ -42,10 +44,14 @@ export function itemGetById(
 }
 
 export function itemStat(item: EquipmentItemContent, stat: GameStat): number {
+  const overallMultiplier = 1 + symmetryLevel(item as EquipmentItem) * 0.05;
   return (
-    (item.baseStats[stat] ?? 0) +
-    ((item as EquipmentItem)?.mods?.baseStats?.[stat] ?? 0) +
-    sum(itemTraits(item as EquipmentItem).map((t) => t?.baseStats?.[stat] ?? 0))
+    overallMultiplier *
+    ((item.baseStats[stat] ?? 0) +
+      ((item as EquipmentItem)?.mods?.baseStats?.[stat] ?? 0) +
+      sum(
+        itemTraits(item as EquipmentItem).map((t) => t?.baseStats?.[stat] ?? 0),
+      ))
   );
 }
 
@@ -146,4 +152,27 @@ export function itemSkills(item: EquipmentItem): EquipmentSkillContent[] {
   return [...item.skillIds, ...(item.mods?.skillIds ?? [])].map(
     (t) => getEntry<EquipmentSkillContent>(t)!,
   );
+}
+
+export function itemFindInState(
+  state: GameState,
+  item: EquipmentItem,
+): EquipmentItem | undefined {
+  const heroItems = state.hero.heroes.map((h) => h.equipment[item.__type]);
+  const updateItem = [...heroItems, ...state.inventory.items]
+    .filter(Boolean)
+    .find((i) => i!.id === item.id);
+
+  return updateItem;
+}
+
+export function itemUpdateInState(item: EquipmentItem): void {
+  updateGamestate((state) => {
+    const updateItem = itemFindInState(state, item);
+    if (!updateItem) return state;
+
+    updateItem.mods = structuredClone(item.mods);
+
+    return state;
+  });
 }

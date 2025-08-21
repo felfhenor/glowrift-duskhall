@@ -1,0 +1,25 @@
+@if (orientation() === 'horizontal') {
+  <span class="inline relative text-{{ rarity() }}">
+    @for (level of level() | repeat: 1; track $index) {
+      <span
+        class="absolute drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]"
+        [style.left.px]="$index * 8"
+      >
+        ★
+      </span>
+    }
+  </span>
+}
+
+@if (orientation() === 'vertical') {
+  <span class="inline relative text-{{ rarity() }}">
+    @for (level of level() | repeat: 1; track $index) {
+      <span
+        class="absolute drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]"
+        [style.bottom.px]="$index * 8"
+      >
+        ★
+      </span>
+    }
+  </span>
+}

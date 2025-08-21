@@ -37,6 +37,12 @@
   </div>
 }
 
+<app-marker-symmetry
+  class="absolute bottom-[-6px] right-[10px] z-30"
+  orientation="vertical"
+  [level]="symmetryLevel()"
+></app-marker-symmetry>
+
 <ng-template #itemInfo let-hide>
   @if (compareSkill(); as compareWith) {
     <app-stats-skill-compare

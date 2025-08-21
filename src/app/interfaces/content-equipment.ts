@@ -1,7 +1,7 @@
 import type { EquipmentSkillId } from '@interfaces/content-skill';
 import type { TalentBoost } from '@interfaces/content-talent';
 import type { TraitEquipmentId } from '@interfaces/content-trait-equipment';
-import type { DroppableEquippable } from '@interfaces/droppable';
+import type { DroppableEquippable, HasSymmetry } from '@interfaces/droppable';
 import type { GameElement } from '@interfaces/element';
 import type { Branded } from '@interfaces/identifiable';
 import type { StatBlock } from '@interfaces/stat';
@@ -19,7 +19,7 @@ export type EquipmentElement = {
   multiplier: number;
 };
 
-export type EquipmentModifiable = {
+export type EquipmentModifiable = HasSymmetry & {
   enchantLevel: number;
   baseStats: StatBlock;
   talentBoosts: TalentBoost[];

@@ -237,6 +237,7 @@ describe('content-initializers', () => {
           statusEffectChanceBoost: {},
           statusEffectDurationBoost: {},
           techniques: [],
+          symmetryCount: 0,
         });
       });
 
@@ -310,6 +311,7 @@ describe('content-initializers', () => {
           elementMultipliers: [],
           traitIds: [],
           skillIds: [],
+          symmetryCount: 0,
         });
       });
 
@@ -581,6 +583,7 @@ describe('content-initializers', () => {
           skillIds: [],
           traitIds: [],
           talentBoosts: [],
+          symmetryCount: 0,
         });
       });
 
@@ -596,6 +599,7 @@ describe('content-initializers', () => {
           elementMultipliers: [],
           skillIds: ['life-drain' as EquipmentSkillId],
           traitIds: [],
+          symmetryCount: 0,
           talentBoosts: [
             {
               talentId: 'life-steal' as TalentId,

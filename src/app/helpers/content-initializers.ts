@@ -224,6 +224,7 @@ function ensureSkill(
     statusEffectChanceBoost: skill.statusEffectChanceBoost ?? {},
     statusEffectDurationBoost: skill.statusEffectDurationBoost ?? {},
     techniques: (skill.techniques ?? []).map(ensureTechnique),
+    symmetryCount: skill.symmetryCount ?? 0,
   };
 }
 
@@ -251,6 +252,7 @@ function ensureItem(
     ),
     traitIds: item.traitIds ?? [],
     skillIds: item.skillIds ?? [],
+    symmetryCount: item.symmetryCount ?? 0,
   };
 }
 
@@ -365,6 +367,7 @@ function ensureTraitEquipment(
     skillIds: traitEquipment.skillIds ?? [],
     traitIds: traitEquipment.traitIds ?? [],
     talentBoosts: (traitEquipment.talentBoosts ?? []).map(ensureTalentBoost),
+    symmetryCount: traitEquipment.symmetryCount ?? 0,
   };
 }
 

@@ -21,6 +21,12 @@ export interface HasRarity {
   rarity: DropRarity;
 }
 
+export type SymmetryLevel = 0 | 1 | 2 | 3 | 4 | 5;
+
+export type HasSymmetry = {
+  symmetryCount: number;
+};
+
 export type Droppable = HasRarity & {
   preventModification?: boolean;
   preventDrop?: boolean;

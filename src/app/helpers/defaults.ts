@@ -311,5 +311,6 @@ export function defaultEquipment(): EquipmentItem {
     talentBoosts: [],
     traitIds: [],
     unableToUpgrade: [],
+    symmetryCount: 0,
   };
 }

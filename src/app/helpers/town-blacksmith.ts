@@ -1,4 +1,4 @@
-import { getEntriesByType, getEntry } from '@helpers/content';
+import { getEntry } from '@helpers/content';
 import {
   currencyHasAmount,
   currencyHasMultipleAmounts,
@@ -11,31 +11,32 @@ import {
   defaultStats,
 } from '@helpers/defaults';
 import { droppableGetBaseId } from '@helpers/droppable';
-import { itemEnchantLevel, itemTalents } from '@helpers/item';
+import { itemInventoryRemove } from '@helpers/inventory-equipment';
+import {
+  itemEnchantLevel,
+  itemTalents,
+  itemUpdateInState,
+} from '@helpers/item';
 import { rngChoiceRarity, rngSeeded } from '@helpers/rng';
-import { updateGamestate } from '@helpers/state-game';
+import {
+  symmetryCanIncreaseCount,
+  symmetryIncreaseCount,
+  symmetryItemsMatchingItem,
+  symmetryLevel,
+} from '@helpers/symmetry';
 import { townBuildingLevel } from '@helpers/town';
+import {
+  traitAddToEquipment,
+  traitMaxForEquipment,
+} from '@helpers/trait-equipment';
 import type { EquipmentItem } from '@interfaces/content-equipment';
 import type { TalentContent } from '@interfaces/content-talent';
 import type { TraitEquipmentContent } from '@interfaces/content-trait-equipment';
 import type { DropRarity } from '@interfaces/droppable';
 import type { GameElement } from '@interfaces/element';
 import type { GameStat } from '@interfaces/stat';
-import type { GameState } from '@interfaces/state-game';
 import type { BlacksmithEnchant } from '@interfaces/town';
 import { sumBy } from 'es-toolkit/compat';
-
-function findItemInState(
-  state: GameState,
-  item: EquipmentItem,
-): EquipmentItem | undefined {
-  const heroItems = state.hero.heroes.map((h) => h.equipment[item.__type]);
-  const updateItem = [...heroItems, ...state.inventory.items]
-    .filter(Boolean)
-    .find((i) => i!.id === item.id);
-
-  return updateItem;
-}
 
 export function blacksmithMaxEnchantLevel(): number {
   return townBuildingLevel('Blacksmith');
@@ -65,17 +66,14 @@ export function blacksmithRerollItemTrait(item: EquipmentItem): void {
 
   currencyLose('Mana', cost);
 
-  const allTraits = getEntriesByType<TraitEquipmentContent>('traitequipment');
+  item.mods ??= {};
+  item.mods.traitIds = [];
+  const traitsToAdd = traitMaxForEquipment(item);
+  for (let i = 0; i < traitsToAdd; i++) {
+    traitAddToEquipment(item);
+  }
 
-  updateGamestate((state) => {
-    const updateItem = findItemInState(state, item);
-    if (!updateItem) return state;
-
-    updateItem.mods ??= {};
-    updateItem.mods.traitIds = [rngChoiceRarity(allTraits)!.id];
-
-    return state;
-  });
+  itemUpdateInState(item);
 }
 
 export function blacksmithCanEnchantItem(item: EquipmentItem): boolean {
@@ -327,12 +325,28 @@ export function blacksmithEnchantItem(
     });
   }
 
-  updateGamestate((state) => {
-    const updateItem = findItemInState(state, item);
-    if (!updateItem) return state;
+  itemUpdateInState(item);
+}
 
-    updateItem.mods = structuredClone(item.mods);
+export function blacksmithIncreaseSymmetry(item: EquipmentItem): void {
+  if (!symmetryCanIncreaseCount(item)) return;
 
-    return state;
-  });
+  const matching = symmetryItemsMatchingItem(item);
+  if (matching.length === 0) return;
+
+  itemInventoryRemove(matching[0]);
+
+  const oldSymmetryLevel = symmetryLevel(item);
+  symmetryIncreaseCount(item, 1 + (matching[0].mods?.symmetryCount ?? 0));
+  const newSymmetryLevel = symmetryLevel(item);
+
+  if (oldSymmetryLevel < 3 && newSymmetryLevel >= 3) {
+    traitAddToEquipment(item);
+  }
+
+  if (oldSymmetryLevel < 5 && newSymmetryLevel >= 5) {
+    traitAddToEquipment(item);
+  }
+
+  itemUpdateInState(item);
 }

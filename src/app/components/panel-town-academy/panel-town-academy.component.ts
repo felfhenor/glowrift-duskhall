@@ -9,8 +9,13 @@ import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
 import { currencyHasMultipleAmounts } from '@helpers/currency';
 import { skillGetById } from '@helpers/skill';
 import {
+  symmetryCanIncreaseCount,
+  symmetrySkillsMatchingSkill,
+} from '@helpers/symmetry';
+import {
   academyCanEnchantSkill,
   academyEnchantSkill,
+  academyIncreaseSymmetry,
   academyNextSkillEnchants,
 } from '@helpers/town-academy';
 import type { GameCurrency } from '@interfaces/content-currency';
@@ -50,11 +55,33 @@ export class PanelTownAcademyComponent {
     }));
   });
 
-  public enchantSkill(skill: EquipmentSkill, enchant: AcademyEnchant) {
-    academyEnchantSkill(skill, enchant);
+  public symmetrySkillCount = computed(() => {
+    const skill = this.selectedSkill();
+    if (!skill) return 0;
 
+    return symmetrySkillsMatchingSkill(skill).length;
+  });
+
+  public canIncreaseSymmetry = computed(() => {
+    const skill = this.selectedSkill();
+    if (!skill) return false;
+
+    return this.symmetrySkillCount() > 0 && symmetryCanIncreaseCount(skill);
+  });
+
+  private reselectSkillFromState(skill: EquipmentSkill) {
     setTimeout(() => {
       this.selectedSkill.set(skillGetById(skill.id));
     }, 0);
+  }
+
+  public enchantSkill(skill: EquipmentSkill, enchant: AcademyEnchant) {
+    academyEnchantSkill(skill, enchant);
+    this.reselectSkillFromState(skill);
+  }
+
+  public increaseSymmetry(skill: EquipmentSkill) {
+    academyIncreaseSymmetry(skill);
+    this.reselectSkillFromState(skill);
   }
 }

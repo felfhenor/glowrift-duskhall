@@ -1,8 +1,10 @@
 import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
+import { MarkerSymmetryComponent } from '@components/marker-symmetry/marker-symmetry.component';
 import {
   getEntry,
   skillCreateForHero,
+  skillCreateWithSymmetry,
   skillDisplayElement,
   skillEnchantLevel,
   skillTechniqueDamageScalingStat,
@@ -10,6 +12,10 @@ import {
   skillTechniqueStatusEffectChance,
   skillTechniqueStatusEffectDuration,
   skillUses,
+  symmetryCopiesRequired,
+  symmetryLevel,
+  symmetryLevelDescription,
+  symmetrySkillBonusDescription,
   talentsForHero,
 } from '@helpers';
 import type {
@@ -18,17 +24,22 @@ import type {
   GameStat,
   Hero,
   StatusEffectContent,
+  SymmetryLevel,
 } from '@interfaces';
 
 @Component({
   selector: 'app-stats-skill',
-  imports: [NgClass],
+  imports: [NgClass, MarkerSymmetryComponent],
   templateUrl: './stats-skill.component.html',
   styleUrl: './stats-skill.component.scss',
 })
 export class StatsSkillComponent {
   public skill = input.required<EquipmentSkillContent>();
   public equippingHero = input<Hero>();
+
+  private skillWithSymmetry = computed(() =>
+    skillCreateWithSymmetry(this.skill()),
+  );
 
   public heroTalents = computed(() => {
     const hero = this.equippingHero();
@@ -44,6 +55,11 @@ export class StatsSkillComponent {
     return skillCreateForHero(hero, this.skill() as EquipmentSkill);
   });
 
+  public symmetryLevel = computed(() => {
+    const skill = this.skill() as EquipmentSkill;
+    return symmetryLevel(skill);
+  });
+
   public enchantLevel = computed(() =>
     skillEnchantLevel(this.skill() as EquipmentSkill),
   );
@@ -53,7 +69,7 @@ export class StatsSkillComponent {
   public element = computed(() => skillDisplayElement(this.skill()));
 
   public techniqueTexts = computed(() => {
-    const skillRef = this.skillRef() ?? this.skill();
+    const skillRef = this.skillRef() ?? this.skillWithSymmetry();
 
     return skillRef.techniques.map((t) => {
       const statString = Object.keys(t.damageScaling)
@@ -95,5 +111,24 @@ export class StatsSkillComponent {
         statusString,
       };
     });
+  });
+
+  public symmetryText = computed(() => {
+    const skill = this.skill() as EquipmentSkill;
+    const skillSymmetryLevel = this.symmetryLevel();
+    const desc = symmetryLevelDescription(skillSymmetryLevel);
+    const skillSymmetryCount = skill.mods?.symmetryCount ?? 0;
+    const copiesRequiredForNextLevel = symmetryCopiesRequired(
+      (skillSymmetryLevel + 1) as SymmetryLevel,
+    );
+
+    if (skillSymmetryLevel === 0)
+      return `${desc} (${skillSymmetryCount}/${copiesRequiredForNextLevel})`;
+
+    const bonusDesc = symmetrySkillBonusDescription(skillSymmetryLevel);
+    if (skillSymmetryLevel >= 5) return `${desc}: ${bonusDesc}`;
+
+    const adjuster = symmetryCopiesRequired(skillSymmetryLevel);
+    return `${desc} (${skillSymmetryCount - adjuster}/${copiesRequiredForNextLevel - adjuster}): ${bonusDesc}`;
   });
 }

@@ -13,8 +13,13 @@ import {
 } from '@helpers/currency';
 import { itemGetById } from '@helpers/item';
 import {
+  symmetryCanIncreaseCount,
+  symmetryItemsMatchingItem,
+} from '@helpers/symmetry';
+import {
   blacksmithCanEnchantItem,
   blacksmithEnchantItem,
+  blacksmithIncreaseSymmetry,
   blacksmithNextItemEnchants,
   blacksmithRerollItemTrait,
   blacksmithRerollItemTraitCost,
@@ -68,19 +73,38 @@ export class PanelTownBlacksmithComponent {
     return blacksmithRerollItemTraitCost(item);
   });
 
-  public enchantItem(item: EquipmentItem, enchant: BlacksmithEnchant) {
-    blacksmithEnchantItem(item, enchant);
+  public symmetryItemCount = computed(() => {
+    const item = this.selectedItem();
+    if (!item) return 0;
 
+    return symmetryItemsMatchingItem(item).length;
+  });
+
+  public canIncreaseSymmetry = computed(() => {
+    const item = this.selectedItem();
+    if (!item) return false;
+
+    return this.symmetryItemCount() > 0 && symmetryCanIncreaseCount(item);
+  });
+
+  private reselectItemFromState(item: EquipmentItem) {
     setTimeout(() => {
       this.selectedItem.set(itemGetById(item.id));
     }, 0);
   }
 
+  public enchantItem(item: EquipmentItem, enchant: BlacksmithEnchant) {
+    blacksmithEnchantItem(item, enchant);
+    this.reselectItemFromState(item);
+  }
+
   public rerollTrait(item: EquipmentItem) {
     blacksmithRerollItemTrait(item);
+    this.reselectItemFromState(item);
+  }
 
-    setTimeout(() => {
-      this.selectedItem.set(itemGetById(item.id));
-    }, 0);
+  public increaseSymmetry(item: EquipmentItem) {
+    blacksmithIncreaseSymmetry(item);
+    this.reselectItemFromState(item);
   }
 }

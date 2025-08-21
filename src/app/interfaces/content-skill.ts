@@ -1,6 +1,6 @@
 import type { Animatable } from '@interfaces/artable';
 import type { StatusEffectId } from '@interfaces/content-statuseffect';
-import type { DroppableEquippable } from '@interfaces/droppable';
+import type { DroppableEquippable, HasSymmetry } from '@interfaces/droppable';
 import type { GameElement } from '@interfaces/element';
 import type { Branded } from '@interfaces/identifiable';
 import type { StatBlock } from '@interfaces/stat';
@@ -26,7 +26,7 @@ export type EquipmentSkillTargetType = 'Allies' | 'Enemies' | 'Self' | 'All';
 
 export type EquipmentSkillId = Branded<string, 'EquipmentSkillId'>;
 
-export type EquipmentSkillContentModifiable = {
+export type EquipmentSkillContentModifiable = HasSymmetry & {
   enchantLevel: number;
   techniques: EquipmentSkillContentTechnique[];
   usesPerCombat: -1 | number;

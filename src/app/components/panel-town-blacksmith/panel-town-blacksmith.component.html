@@ -43,12 +43,25 @@
                 chosen.name
               }}"
             >
-              Reroll Trait
+              Reroll Traits
 
               <app-marker-currency-inline
                 [currency]="'Mana'"
                 [value]="traitRerollCost()"
               ></app-marker-currency-inline>
+            </button>
+          </li>
+
+          <li class="list-row">
+            <button
+              class="btn btn-block btn-info list-col-grow"
+              [disabled]="!canIncreaseSymmetry()"
+              (click)="increaseSymmetry(chosen)"
+              appAnalyticsClick="Game:Town:Blacksmith:IncreaseSymmetry:{{
+                chosen.name
+              }}"
+            >
+              Increase Symmetry ({{ symmetryItemCount() }} matching)
             </button>
           </li>
         </ul>

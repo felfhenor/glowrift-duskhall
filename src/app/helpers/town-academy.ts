@@ -5,9 +5,14 @@ import {
 } from '@helpers/currency';
 import { defaultCurrencyBlock, defaultStats } from '@helpers/defaults';
 import { droppableGetBaseId } from '@helpers/droppable';
+import { skillInventoryRemove } from '@helpers/inventory-skill';
 import { rngChoiceRarity, rngSeeded } from '@helpers/rng';
-import { skillEnchantLevel } from '@helpers/skill';
-import { updateGamestate } from '@helpers/state-game';
+import { skillEnchantLevel, skillUpdateInState } from '@helpers/skill';
+import {
+  symmetryCanIncreaseCount,
+  symmetryIncreaseCount,
+  symmetrySkillsMatchingSkill,
+} from '@helpers/symmetry';
 import { townBuildingLevel } from '@helpers/town';
 import type { EquipmentSkill } from '@interfaces/content-skill';
 import type {
@@ -15,21 +20,8 @@ import type {
   StatusEffectId,
 } from '@interfaces/content-statuseffect';
 import type { GameStat } from '@interfaces/stat';
-import type { GameState } from '@interfaces/state-game';
 import type { AcademyEnchant } from '@interfaces/town';
 import { uniq } from 'es-toolkit/compat';
-
-function findSkillInState(
-  state: GameState,
-  item: EquipmentSkill,
-): EquipmentSkill | undefined {
-  const heroSkills = state.hero.heroes.flatMap((h) => h.skills);
-  const updateItem = [...heroSkills, ...state.inventory.skills]
-    .filter(Boolean)
-    .find((i) => i!.id === item.id);
-
-  return updateItem;
-}
 
 export function academyMaxEnchantLevel(): number {
   return townBuildingLevel('Academy');
@@ -280,12 +272,18 @@ export function academyEnchantSkill(
     });
   }
 
-  updateGamestate((state) => {
-    const updateSkill = findSkillInState(state, skill);
-    if (!updateSkill) return state;
+  skillUpdateInState(skill);
+}
 
-    updateSkill.mods = structuredClone(skill.mods);
+export function academyIncreaseSymmetry(skill: EquipmentSkill): void {
+  if (!symmetryCanIncreaseCount(skill)) return;
 
-    return state;
-  });
+  const matching = symmetrySkillsMatchingSkill(skill);
+  if (matching.length === 0) return;
+
+  skillInventoryRemove(matching[0]);
+
+  symmetryIncreaseCount(skill, 1 + (matching[0].mods?.symmetryCount ?? 0));
+
+  skillUpdateInState(skill);
 }
