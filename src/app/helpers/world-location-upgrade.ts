@@ -15,7 +15,10 @@ import {
 import { townBuildingLevel, townHasUpgrade } from '@helpers/town';
 import { worldNodeGetAccessId } from '@helpers/world';
 import { worldNotifyUpdated } from '@helpers/world-change-notifications';
-import { locationGetClaimed } from '@helpers/world-location';
+import {
+  locationGetClaimed,
+  locationNodesAround,
+} from '@helpers/world-location';
 import type { CurrencyBlock, GameCurrency } from '@interfaces/content-currency';
 import type {
   LocationUpgradeContent,
@@ -23,7 +26,7 @@ import type {
   LocationUpgradeId,
 } from '@interfaces/content-locationupgrade';
 import type { TownUpgradeContent } from '@interfaces/content-townupgrade';
-import type { WorldLocation } from '@interfaces/world';
+import { REVELATION_RADIUS, type WorldLocation } from '@interfaces/world';
 import { sortBy, sum, sumBy, uniq } from 'es-toolkit/compat';
 
 export function locationEncounterLevel(location: WorldLocation): number {
@@ -135,6 +138,23 @@ export function locationUpgradeCosts(
   }, {} as CurrencyBlock);
 }
 
+function upgradePermanentlyClaimNearbyClaimedNodes(
+  location: WorldLocation,
+): void {
+  const type = location.nodeType;
+  if (!type || !['town'].includes(type)) return;
+
+  const radius = REVELATION_RADIUS[type];
+
+  updateGamestate((state) => {
+    locationNodesAround(location.x, location.y, radius).forEach((node) => {
+      state.world.nodes[worldNodeGetAccessId(node)].unclaimTime = -1;
+    });
+
+    return state;
+  });
+}
+
 export function locationUpgrade(
   location: WorldLocation,
   upgrade: LocationUpgradeContent,
@@ -152,6 +172,7 @@ export function locationUpgrade(
 
   if (upgrade.boostedUnclaimableCount) {
     location.unclaimTime = -1;
+    upgradePermanentlyClaimNearbyClaimedNodes(location);
   }
 
   if (upgrade.boostedProductionValuePercentPerLevel) {

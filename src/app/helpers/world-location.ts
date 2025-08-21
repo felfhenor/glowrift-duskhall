@@ -127,7 +127,7 @@ export function locationNodesAround(
       const tx = x + dx;
       const ty = y + dy;
       const node = locationGet(tx, ty);
-      if (node) nodes.push(node);
+      if (node?.nodeType) nodes.push(node);
     }
   }
 
