@@ -391,17 +391,17 @@ function fillFogGaps(
   rng: PRNG,
   counts: Record<LocationType, number>,
 ): void {
-
   // Calculate all revealed positions based on current nodes
   const revealedPositions = new Set<string>();
-  const existingNodes: Array<{ x: number; y: number; nodeType: LocationType }> = [];
-  
+  const existingNodes: Array<{ x: number; y: number; nodeType: LocationType }> =
+    [];
+
   Object.values(nodes).forEach((node) => {
     if (!node.nodeType) return;
-    
+
     existingNodes.push({ x: node.x, y: node.y, nodeType: node.nodeType });
     const radius = REVELATION_RADIUS[node.nodeType];
-    
+
     // Add all positions within the revelation radius
     for (let dx = -radius; dx <= radius; dx++) {
       for (let dy = -radius; dy <= radius; dy++) {
@@ -417,7 +417,7 @@ function fillFogGaps(
 
   // Find unrevealed positions that need to be filled
   const unrevealedPositions: Array<{ x: number; y: number }> = [];
-  
+
   for (let x = 0; x < config.width; x++) {
     for (let y = 0; y < config.height; y++) {
       if (!revealedPositions.has(`${x},${y}`)) {
@@ -433,19 +433,21 @@ function fillFogGaps(
 
   // Process unrevealed positions more strategically
   const processedPositions = new Set<string>();
-  
+
   unrevealedPositions.forEach(({ x, y }) => {
     const posKey = `${x},${y}`;
     if (processedPositions.has(posKey)) return;
-    
+
     // Check if this position already has a node
     if (nodes[posKey]?.nodeType) return;
-    
+
     // Determine node type based on distance to nearest existing node
-    const distanceToNearestNode = Math.min(...existingNodes.map(node => 
-      Math.sqrt((x - node.x) ** 2 + (y - node.y) ** 2)
-    ));
-    
+    const distanceToNearestNode = Math.min(
+      ...existingNodes.map((node) =>
+        Math.sqrt((x - node.x) ** 2 + (y - node.y) ** 2),
+      ),
+    );
+
     // Use dungeon for isolated areas (far from existing nodes), cave for smaller gaps
     let nodeType: LocationType;
     if (distanceToNearestNode > 5) {
@@ -455,7 +457,7 @@ function fillFogGaps(
       // Close to existing nodes - use cave (radius 1) for small gaps
       nodeType = 'cave';
     }
-    
+
     // Place the node
     const newNode: WorldLocation = {
       ...defaultLocation(),
@@ -465,18 +467,23 @@ function fillFogGaps(
       nodeType,
       name: `fill-gap ${nodeType} ${x}-${y}`,
     };
-    
+
     nodes[posKey] = newNode;
     counts[nodeType]++;
     existingNodes.push({ x, y, nodeType });
-    
+
     // Mark positions that would be revealed by this new node as processed
     const radius = REVELATION_RADIUS[nodeType];
     for (let dx = -radius; dx <= radius; dx++) {
       for (let dy = -radius; dy <= radius; dy++) {
         const newX = x + dx;
         const newY = y + dy;
-        if (newX >= 0 && newX < config.width && newY >= 0 && newY < config.height) {
+        if (
+          newX >= 0 &&
+          newX < config.width &&
+          newY >= 0 &&
+          newY < config.height
+        ) {
           processedPositions.add(`${newX},${newY}`);
         }
       }
@@ -548,13 +555,37 @@ export async function worldgenGenerateWorld(
     castle: maxDistance * 0.7,
   };
 
+  const isPositionValidForVillageTown = (
+    x: number,
+    y: number,
+    nodeType: LocationType,
+  ): boolean => {
+    // Only apply spacing constraints to villages and towns
+    if (nodeType !== 'village' && nodeType !== 'town') return true;
+
+    // Check distance to all existing villages and towns
+    const existingVillagesAndTowns = nodeList.filter(
+      (node) => node.nodeType === 'village' || node.nodeType === 'town',
+    );
+
+    for (const existingNode of existingVillagesAndTowns) {
+      const distance = distanceBetweenNodes({ x, y }, existingNode);
+      if (distance < 7) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+
   const findUnusedPosition: (
     distMin: number,
     distMax: number,
+    nodeType?: LocationType,
   ) => {
     x: number;
     y: number;
-  } = (distMin: number, distMax: number) => {
+  } = (distMin: number, distMax: number, nodeType?: LocationType) => {
     // Query a large area that could contain positions within our distance range
     // We use a conservative bounds that covers the maximum possible area
     const queryX = Math.max(0, firstTown.x - distMax);
@@ -571,6 +602,11 @@ export async function worldgenGenerateWorld(
       const dist = distanceBetweenNodes(n, firstTown);
       if (dist < distMin || dist > distMax) return false;
       if (n.taken) return false;
+
+      if (nodeType && !isPositionValidForVillageTown(n.x, n.y, nodeType)) {
+        return false;
+      }
+
       return true;
     });
 
@@ -706,7 +742,22 @@ export async function worldgenGenerateWorld(
       minDist,
       maxDist,
     } = nodeData;
-    const { x, y } = findUnusedPosition(minDist, maxDist);
+    let { x, y } = findUnusedPosition(minDist, maxDist, node.nodeType);
+
+    // If no position found for a village due to spacing, skip it
+    if ((x === -1 || y === -1) && node.nodeType === 'village') {
+      setWorldGenStatus(
+        `Skipping ${nodeType} ${nodeNum + 1}/${nodeCount} - insufficient spacing...`,
+      );
+      return;
+    }
+
+    // If no position found for a town, try again without spacing constraints (towns must be placed)
+    if ((x === -1 || y === -1) && node.nodeType === 'town') {
+      const fallbackPosition = findUnusedPosition(minDist, maxDist);
+      x = fallbackPosition.x;
+      y = fallbackPosition.y;
+    }
 
     node.x = x;
     node.y = y;
