@@ -55,6 +55,7 @@ vi.mock('@angular/common', () => ({
   NgSwitch: vi.fn(),
   DecimalPipe: vi.fn(),
   TitleCasePipe: vi.fn(),
+  formatDate: vi.fn(),
 }));
 
 // Mock Angular platform-browser to prevent DOM issues
@@ -99,4 +100,61 @@ Object.defineProperty(window, 'localStorage', {
     clear: vi.fn(),
   },
   writable: true,
+});
+
+// Mock indexedDB for tests
+Object.defineProperty(window, 'indexedDB', {
+  value: {
+    open: vi.fn(() => ({
+      onsuccess: null,
+      onerror: null,
+      onupgradeneeded: null,
+      result: {
+        transaction: vi.fn(() => ({
+          objectStore: vi.fn(() => ({
+            get: vi.fn(() => ({
+              onsuccess: null,
+              onerror: null,
+              result: undefined,
+            })),
+            put: vi.fn(() => ({
+              onsuccess: null,
+              onerror: null,
+            })),
+          })),
+        })),
+        objectStoreNames: {
+          contains: vi.fn(() => false),
+        },
+        createObjectStore: vi.fn(),
+      },
+    })),
+  },
+  writable: true,
+});
+
+// Mock signal helpers
+vi.mock('@helpers/signal', () => {
+  const mockSignal = (value: unknown) => {
+    const signal = () => value;
+    signal.set = vi.fn((newValue: unknown) => {
+      value = newValue;
+      return value;
+    });
+    signal.update = vi.fn((updater: (prev: unknown) => unknown) => {
+      value = updater(value);
+      return value;
+    });
+    signal.asReadonly = vi.fn(() => signal);
+    return signal;
+  };
+
+  return {
+    localStorageSignal: vi.fn((key: string, initialValue: unknown) =>
+      mockSignal(initialValue),
+    ),
+    indexedDbSignal: vi.fn((key: string, initialValue: unknown) =>
+      mockSignal(initialValue),
+    ),
+  };
 });

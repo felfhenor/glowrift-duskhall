@@ -98,6 +98,8 @@ export function formatGameStateForSave(gameState: GameState): GameState {
     delete result.rarity;
     delete result.sprite;
     delete result.__type;
+    delete result.description;
+    delete result.symmetryCount;
 
     // Remove empty mods object
     if (item.mods && Object.keys(item.mods).length === 0) delete result.mods;
@@ -123,10 +125,12 @@ export function formatGameStateForSave(gameState: GameState): GameState {
     delete result.statusEffectDurationBoost;
     delete result.preventModification;
     delete result.__type;
+    delete result.description;
     delete result.rarity;
     delete result.name;
     delete result.dropLevel;
     delete result.sprite;
+    delete result.symmetryCount;
 
     if (skill.mods && Object.keys(skill.mods).length === 0) delete result.mods;
     if (skill.isFavorite === false) delete result.isFavorite;

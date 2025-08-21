@@ -15,6 +15,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 vi.mock('@helpers/defaults', () => ({
   defaultEquipment: vi.fn(),
   defaultStats: vi.fn(),
+  defaultGameState: vi.fn(),
 }));
 
 vi.mock('@helpers/content', () => ({

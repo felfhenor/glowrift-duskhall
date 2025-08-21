@@ -17,7 +17,7 @@ export function symmetryCopiesRequired(forLevel: SymmetryLevel): number {
     5: 124, // 4 + 8 + 16 + 32 + 64
   };
 
-  return requirements[forLevel] || -1;
+  return requirements[forLevel] ?? -1;
 }
 
 export function symmetryLevel(

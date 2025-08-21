@@ -1,12 +1,15 @@
 import { describe, expect, it } from 'vitest';
 
-import type { LocationType, WorldConfigContent, WorldLocation } from '@interfaces';
+import type {
+  LocationType,
+  WorldConfigContent,
+  WorldLocation,
+} from '@interfaces';
 import { REVELATION_RADIUS } from '@interfaces/world';
 
 // Access the private function by importing the module and calling it directly
 // We'll need to temporarily expose the function for testing
 describe('World Generation Fog Gap Filling', () => {
-
   function createTestLocation(x: number, y: number): WorldLocation {
     return {
       id: `test-${x}-${y}`,
@@ -15,11 +18,13 @@ describe('World Generation Fog Gap Filling', () => {
       nodeType: undefined,
       name: '',
       currentlyClaimed: false,
-      isValidMapNode: true,
       claimCount: 0,
+      encounterLevel: 0,
+      locationUpgrades: {},
+      unclaimTime: 0,
       claimLootIds: [],
       guardianIds: [],
-      traits: [],
+      traitIds: [],
       elements: [],
     };
   }
@@ -120,7 +125,8 @@ describe('World Generation Fog Gap Filling', () => {
     const config: WorldConfigContent = {
       id: 'test',
       name: 'Test',
-      description: 'Test world',
+      __type: 'worldconfig',
+      maxLevel: 25,
       width: 5,
       height: 5,
       nodeCount: {
@@ -155,7 +161,8 @@ describe('World Generation Fog Gap Filling', () => {
     const config: WorldConfigContent = {
       id: 'test',
       name: 'Test',
-      description: 'Test world',
+      __type: 'worldconfig',
+      maxLevel: 25,
       width: 10,
       height: 10,
       nodeCount: {
@@ -207,7 +214,8 @@ describe('World Generation Fog Gap Filling', () => {
     const config: WorldConfigContent = {
       id: 'test',
       name: 'Test',
-      description: 'Test world',
+      __type: 'worldconfig',
+      maxLevel: 25,
       width: 7,
       height: 7,
       nodeCount: {
@@ -254,7 +262,8 @@ describe('World Generation Fog Gap Filling', () => {
     const config: WorldConfigContent = {
       id: 'test',
       name: 'Test',
-      description: 'Test world',
+      __type: 'worldconfig',
+      maxLevel: 25,
       width: 5,
       height: 5,
       nodeCount: {
@@ -298,7 +307,8 @@ describe('World Generation Fog Gap Filling', () => {
     const config: WorldConfigContent = {
       id: 'test',
       name: 'Test',
-      description: 'Test world',
+      __type: 'worldconfig',
+      maxLevel: 25,
       width: 3,
       height: 3,
       nodeCount: {
