@@ -194,6 +194,11 @@ export function defaultPosition(): WorldPosition {
 
 export function defaultCurrencyBlock(): CurrencyBlock {
   return {
+    Mana: 0,
+    'Earth Sliver': 0,
+    'Earth Shard': 0,
+    'Earth Crystal': 0,
+    'Earth Core': 0,
     'Fire Sliver': 0,
     'Fire Shard': 0,
     'Fire Crystal': 0,
@@ -206,18 +211,13 @@ export function defaultCurrencyBlock(): CurrencyBlock {
     'Air Shard': 0,
     'Air Crystal': 0,
     'Air Core': 0,
-    'Earth Sliver': 0,
-    'Earth Shard': 0,
-    'Earth Crystal': 0,
-    'Earth Core': 0,
-    'Soul Essence': 0,
     'Common Dust': 0,
     'Uncommon Dust': 0,
     'Rare Dust': 0,
-    'Legendary Dust': 0,
     'Mystical Dust': 0,
+    'Legendary Dust': 0,
     'Unique Dust': 0,
-    Mana: 0,
+    'Soul Essence': 0,
   };
 }
 

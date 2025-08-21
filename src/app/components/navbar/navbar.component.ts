@@ -8,6 +8,7 @@ import { SFXDirective } from '@directives/sfx.directive';
 import {
   cameraCenterOnPlayer,
   closeAllMenus,
+  currencySortByOrder,
   gamestate,
   getOption,
   globalStatusText,
@@ -56,10 +57,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   public displayedCurrencies = computed(() => {
     const currentCurrencies = gamestate().currency.currencies;
-    return Object.keys(currentCurrencies).filter(
+    const availableCurrencies = Object.keys(currentCurrencies).filter(
       (c) =>
         c !== 'Mana' && Math.floor(currentCurrencies[c as GameCurrency]) > 0,
     ) as GameCurrency[];
+    return currencySortByOrder(availableCurrencies);
   });
 
   public readonly panelConfigs: Array<{

@@ -1,8 +1,8 @@
 import { Component, computed, model } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { getEntriesByType } from '@helpers';
-import type { CurrencyContent } from '@interfaces';
+import { getEntriesByType, currencySortByOrder } from '@helpers';
+import type { CurrencyContent, GameCurrency } from '@interfaces';
 import { IconItemComponent } from '@components/icon-currency/icon-currency.component';
 
 @Component({
@@ -14,7 +14,13 @@ import { IconItemComponent } from '@components/icon-currency/icon-currency.compo
 export class SelectorCurrencyComponent {
   public currency = model<CurrencyContent>();
 
-  public allCurrencies = computed(() =>
-    getEntriesByType<CurrencyContent>('currency'),
-  );
+  public allCurrencies = computed(() => {
+    const currencies = getEntriesByType<CurrencyContent>('currency');
+    const currencyNames = currencies.map(c => c.name as GameCurrency);
+    const sortedNames = currencySortByOrder(currencyNames);
+    
+    return sortedNames
+      .map(name => currencies.find(c => c.name === name))
+      .filter(Boolean) as CurrencyContent[];
+  });
 }

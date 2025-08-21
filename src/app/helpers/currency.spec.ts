@@ -13,6 +13,7 @@ import {
   currencyHasMultipleAmounts,
   currencyLose,
   currencyLoseMultiple,
+  currencySortByOrder,
 } from '@helpers/currency';
 import type { CurrencyBlock, GameCurrency, WorldLocation } from '@interfaces';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -563,6 +564,106 @@ describe('Currency Helper Functions', () => {
 
       currencyClaimsUpdate(claims);
       expect(updateGamestate).toHaveBeenCalled();
+    });
+  });
+
+  describe('currencySortByOrder', () => {
+    it('should sort currencies in the correct order', () => {
+      const unsortedCurrencies = [
+        'Soul Essence',
+        'Fire Sliver',
+        'Air Crystal',
+        'Mana',
+        'Common Dust',
+        'Earth Shard',
+        'Water Core',
+      ] as GameCurrency[];
+
+      const sorted = currencySortByOrder(unsortedCurrencies);
+
+      expect(sorted).toEqual([
+        'Mana',
+        'Earth Shard',
+        'Fire Sliver',
+        'Water Core',
+        'Air Crystal',
+        'Common Dust',
+        'Soul Essence',
+      ]);
+    });
+
+    it('should handle empty array', () => {
+      const result = currencySortByOrder([]);
+      expect(result).toEqual([]);
+    });
+
+    it('should handle single currency', () => {
+      const result = currencySortByOrder(['Mana']);
+      expect(result).toEqual(['Mana']);
+    });
+
+    it('should put unknown currencies at the end', () => {
+      const currencies = [
+        'Unknown Currency',
+        'Mana',
+        'Fire Sliver',
+      ] as GameCurrency[];
+
+      const sorted = currencySortByOrder(currencies);
+
+      expect(sorted).toEqual([
+        'Mana',
+        'Fire Sliver',
+        'Unknown Currency',
+      ]);
+    });
+
+    it('should maintain order of elements correctly', () => {
+      const allElementalCurrencies = [
+        'Air Core',
+        'Earth Sliver',
+        'Fire Crystal',
+        'Water Shard',
+        'Air Sliver',
+        'Earth Core',
+        'Fire Shard',
+        'Water Crystal',
+      ] as GameCurrency[];
+
+      const sorted = currencySortByOrder(allElementalCurrencies);
+
+      expect(sorted).toEqual([
+        'Earth Sliver',
+        'Earth Core',
+        'Fire Shard',
+        'Fire Crystal',
+        'Water Shard',
+        'Water Crystal',
+        'Air Sliver',
+        'Air Core',
+      ]);
+    });
+
+    it('should maintain order of dusts correctly', () => {
+      const dustCurrencies = [
+        'Legendary Dust',
+        'Common Dust',
+        'Mystical Dust',
+        'Rare Dust',
+        'Unique Dust',
+        'Uncommon Dust',
+      ] as GameCurrency[];
+
+      const sorted = currencySortByOrder(dustCurrencies);
+
+      expect(sorted).toEqual([
+        'Common Dust',
+        'Uncommon Dust',
+        'Rare Dust',
+        'Mystical Dust',
+        'Legendary Dust',
+        'Unique Dust',
+      ]);
     });
   });
 });
