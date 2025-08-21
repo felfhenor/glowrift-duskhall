@@ -13,6 +13,54 @@ import type {
   WorldLocation,
 } from '@interfaces';
 
+/**
+ * Canonical currency ordering as specified in the requirements:
+ * 1. Mana
+ * 2. Elemental currencies in order: Earth, Fire, Water, Air
+ * 3. Within each element: Sliver, Shard, Crystal, Core
+ * 4. Dusts in rarity order: Common, Uncommon, Rare, Mystical, Legendary, Unique
+ * 5. Soul Essence
+ */
+export const CURRENCY_ORDER: GameCurrency[] = [
+  'Mana',
+  'Earth Sliver',
+  'Earth Shard', 
+  'Earth Crystal',
+  'Earth Core',
+  'Fire Sliver',
+  'Fire Shard',
+  'Fire Crystal', 
+  'Fire Core',
+  'Water Sliver',
+  'Water Shard',
+  'Water Crystal',
+  'Water Core',
+  'Air Sliver',
+  'Air Shard',
+  'Air Crystal',
+  'Air Core',
+  'Common Dust',
+  'Uncommon Dust',
+  'Rare Dust',
+  'Mystical Dust',
+  'Legendary Dust',
+  'Unique Dust',
+  'Soul Essence',
+];
+
+/**
+ * Sort currencies according to the canonical ordering
+ */
+export function currencySortByOrder(currencies: GameCurrency[]): GameCurrency[] {
+  const orderMap = new Map(CURRENCY_ORDER.map((currency, index) => [currency, index]));
+  
+  return currencies.sort((a, b) => {
+    const orderA = orderMap.get(a) ?? Number.MAX_SAFE_INTEGER;
+    const orderB = orderMap.get(b) ?? Number.MAX_SAFE_INTEGER;
+    return orderA - orderB;
+  });
+}
+
 export function currencyGet(currency: GameCurrency): number {
   return gamestate().currency.currencies[currency] ?? 0;
 }
