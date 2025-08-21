@@ -7,14 +7,16 @@ import { droppableMakeReal } from '@helpers/droppable';
 import { allHeroes } from '@helpers/hero';
 import { skillEquip } from '@helpers/inventory-skill';
 import { gamestate, updateGamestate } from '@helpers/state-game';
-import { timerAddMerchantRefreshAction, timerGetRegisterTick } from '@helpers/timer';
+import {
+  timerAddMerchantRefreshAction,
+  timerGetRegisterTick,
+} from '@helpers/timer';
 import { merchantGenerateItems } from '@helpers/town-merchant';
 import { locationGet } from '@helpers/world-location';
 import type { EquipmentSkill } from '@interfaces/content-skill';
 
 export function isSetup(): boolean {
-  const state = gamestate();
-  return state.meta.isSetup;
+  return gamestate().meta.isSetup;
 }
 
 function giveHeroesDefaultItems(): void {

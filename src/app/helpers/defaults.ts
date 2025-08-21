@@ -44,10 +44,10 @@ export function defaultGameState(): GameState {
       nodeTypePreferences: defaultNodeTypePreferences(),
       lootRarityPreferences: defaultLootRarityPreferences(),
       heroes: [
+        defaultHero({ name: 'Terrus', sprite: '0060' }),
         defaultHero({ name: 'Ignatius', sprite: '0004' }),
         defaultHero({ name: 'Aquara', sprite: '0000' }),
         defaultHero({ name: 'Zephyra', sprite: '0036' }),
-        defaultHero({ name: 'Terrus', sprite: '0060' }),
       ],
       position: {
         nodeId: '',

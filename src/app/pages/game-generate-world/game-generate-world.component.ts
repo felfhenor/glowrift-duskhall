@@ -1,5 +1,5 @@
 import type { AfterViewInit, OnDestroy } from '@angular/core';
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, effect, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { gameStart } from '@helpers/game-init';
 import { isSetup } from '@helpers/setup';
@@ -19,13 +19,18 @@ export class GameGenerateWorldComponent implements AfterViewInit, OnDestroy {
 
   public worldGenStatus = computed(() => currentWorldGenStatus());
 
+  constructor() {
+    effect(() => {
+      const isReady = isSetup();
+      if (isReady) {
+        this.router.navigate(['/game']);
+      }
+    });
+  }
+
   ngAfterViewInit() {
     setTimeout(async () => {
       await gameStart();
-
-      if (isSetup()) {
-        this.router.navigate(['/game']);
-      }
     }, 100);
   }
 
