@@ -7,7 +7,6 @@ import { PanelOptionsSavefileComponent } from '@components/panel-options-savefil
 import { PanelOptionsUIComponent } from '@components/panel-options-ui/panel-options-ui.component';
 import { OptionsBaseComponent } from '@components/panel-options/option-base-page.component';
 import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
-import { ClickOutsideDirective } from '@directives/click-outside.directive';
 import { options, showOptionsMenu } from '@helpers';
 import type { OptionsTab, OptionsTabLink } from '@interfaces';
 
@@ -17,7 +16,6 @@ import type { OptionsTab, OptionsTabLink } from '@interfaces';
     CardPageComponent,
     ConnectButtonsComponent,
     AnalyticsClickDirective,
-    ClickOutsideDirective,
     PanelOptionsDebugComponent,
     PanelOptionsSavefileComponent,
     PanelOptionsUIComponent,

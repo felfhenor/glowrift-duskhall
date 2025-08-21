@@ -6,7 +6,6 @@ import { PanelWorldClaimsComponent } from '@components/panel-world-claims/panel-
 import { PanelWorldFestivalsComponent } from '@components/panel-world-festivals/panel-world-festivals.component';
 import { PanelWorldResourceGenerationComponent } from '@components/panel-world-resource-generation/panel-world-resource-generation.component';
 import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
-import { ClickOutsideDirective } from '@directives/click-outside.directive';
 import { getOption, setOption } from '@helpers/state-options';
 import { showWorldMenu } from '@helpers/ui';
 import type { WorldTab } from '@interfaces/state-options';
@@ -17,7 +16,6 @@ import type { WorldTab } from '@interfaces/state-options';
     AnalyticsClickDirective,
     ButtonCloseComponent,
     CardPageComponent,
-    ClickOutsideDirective,
     PanelWorldClaimsComponent,
     PanelWorldFestivalsComponent,
     PanelWorldResourceGenerationComponent,

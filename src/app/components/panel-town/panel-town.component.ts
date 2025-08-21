@@ -10,7 +10,6 @@ import { PanelTownMerchantComponent } from '@components/panel-town-merchant/pane
 import { PanelTownRallyPointComponent } from '@components/panel-town-rallypoint/panel-town-rallypoint.component';
 import { PanelTownSalvagerComponent } from '@components/panel-town-salvager/panel-town-salvager.component';
 import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
-import { ClickOutsideDirective } from '@directives/click-outside.directive';
 import {
   getOption,
   setOption,
@@ -26,7 +25,6 @@ import { TeleportOutletDirective } from '@ngneat/overview';
     CardPageComponent,
     ButtonCloseComponent,
     AnalyticsClickDirective,
-    ClickOutsideDirective,
     PanelTownMarketComponent,
     PanelTownBlacksmithComponent,
     PanelTownMerchantComponent,

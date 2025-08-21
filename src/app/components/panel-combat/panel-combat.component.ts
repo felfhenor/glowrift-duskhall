@@ -13,7 +13,6 @@ import {
   showCombatMenu,
 } from '@helpers';
 import type { CombatTab, CombatTabLink } from '@interfaces';
-import { ClickOutsideDirective } from '@directives/click-outside.directive';
 
 @Component({
   selector: 'app-panel-combat',
@@ -22,7 +21,6 @@ import { ClickOutsideDirective } from '@directives/click-outside.directive';
     PanelCombatPreferencesComponent,
     PanelCombatCombatlogComponent,
     ButtonCloseComponent,
-    ClickOutsideDirective,
   ],
   templateUrl: './panel-combat.component.html',
   styleUrl: './panel-combat.component.scss',
