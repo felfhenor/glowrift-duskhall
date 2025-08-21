@@ -87,7 +87,7 @@ export class PanelOptionsUIComponent extends OptionsBaseComponent {
     { name: 'valentine', type: 'light' },
     { name: 'winter', type: 'light' },
     { name: 'wireframe', type: 'light' },
-  ];
+  ].filter((t) => t.type !== 'light');
 
   public changeTheme(theme: string): void {
     this.setOption('uiTheme', theme);
