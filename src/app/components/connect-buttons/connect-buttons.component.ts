@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { ModalChangelogComponent } from '@components/modal-changelog/modal-changelog.component';
+import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import {
   tablerBrandDiscord,
@@ -7,8 +9,6 @@ import {
   tablerRss,
 } from '@ng-icons/tabler-icons';
 import { TippyDirective } from '@ngneat/helipopper';
-import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
-import { ModalChangelogComponent } from '@components/modal-changelog/modal-changelog.component';
 
 @Component({
   selector: 'app-connect-buttons',
@@ -40,7 +40,7 @@ export class ConnectButtonsComponent {
     },
     {
       name: 'GitHub',
-      link: 'https://github.com/seiyria/glowrift-duskhall',
+      link: 'https://github.com/felfhenor/glowrift-duskhall',
       color: '#fff',
       currentColor: '#ccc',
       icon: 'tablerBrandGithub',
