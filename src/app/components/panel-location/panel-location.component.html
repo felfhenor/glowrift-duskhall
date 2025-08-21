@@ -1,6 +1,6 @@
 @let locationData = location();
 
-<app-card-page>
+<app-card-page appClickOutside (appClickOutside)="closeMenu()">
   <span header class="flex gap-2 items-center">
     <div class="relative w-[64px] h-[64px]">
       <app-atlas-image
