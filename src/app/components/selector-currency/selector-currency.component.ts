@@ -19,10 +19,8 @@ export class SelectorCurrencyComponent {
     const currencyNames = currencies.map(c => c.name as GameCurrency);
     const sortedNames = currencySortByOrder(currencyNames);
     
-    return sortedNames.map(name => 
-      currencies.find(c => c.name === name)!
     return sortedNames
       .map(name => currencies.find(c => c.name === name))
-      .filter(Boolean);
+      .filter(Boolean) as CurrencyContent[];
   });
 }
