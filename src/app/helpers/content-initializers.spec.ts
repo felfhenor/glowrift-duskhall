@@ -220,6 +220,7 @@ describe('content-initializers', () => {
           id: 'test-skill',
           name: 'UNKNOWN',
           __type: 'skill',
+          description: '',
           disableUpgrades: false,
           unableToUpgrade: [],
           sprite: '0000',
@@ -294,6 +295,7 @@ describe('content-initializers', () => {
         expect(result).toEqual({
           id: 'test-trinket',
           name: 'UNKNOWN',
+          description: '',
           __type: 'trinket',
           unableToUpgrade: [],
           sprite: '0000',
