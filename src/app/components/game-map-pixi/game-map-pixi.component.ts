@@ -22,6 +22,7 @@ import {
   pixiIndicatorHeroTravelCreate,
   pixiIndicatorNodePlayerAtLocationCreate,
   pixiIndicatorNodeSpriteCreate,
+  pixiIndicatorNodeTerritoryOwnershipCreate,
   pixiIndicatorTravelLineCreate,
   pixiResponsiveCanvasSetup,
   pixiTextureGameMapLoad,
@@ -41,7 +42,7 @@ import type { NodeSpriteData } from '@interfaces/sprite';
 import type { LoadedTextures } from '@interfaces/texture';
 import { ContentService } from '@services/content.service';
 import { LoggerService } from '@services/logger.service';
-import type { Application, Container, Texture } from 'pixi.js';
+import type { Application, Container, Graphics, Texture } from 'pixi.js';
 
 @Component({
   selector: 'app-game-map-pixi',
@@ -60,17 +61,22 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
 
   private app?: Application;
   private mapContainer?: Container;
+  private ownershipVisualizationContainer?: Container;
+  private playerIndicatorContainer?: Container;
+  private travelVisualizationContainer?: Container;
   private terrainTextures: LoadedTextures = {};
   private objectTextures: LoadedTextures = {};
   private heroTextures: LoadedTextures = {};
   private checkTexture?: Texture;
   private xTexture?: Texture;
   private nodeSprites: Record<string, NodeSpriteData> = {};
-  private playerIndicatorContainer?: Container;
-  private travelVisualizationContainer?: Container;
   private resizeObserver?: ResizeObserver;
   private intersectionObserver?: IntersectionObserver;
 
+  private ownershipVisualizerTickerUpdates: Record<
+    string,
+    { graphics: Graphics; ticker: () => void }
+  > = {};
   private travelVisualizerTickerUpdate?: () => void;
   private heroTickerUpdate?: () => void;
 
@@ -132,7 +138,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
 
         // Process each change and update specific nodes
         changes.forEach((change) => {
-          this.updateSingleNode(change.worldX, change.worldY, change.node);
+          this.updateSingleNode(change.worldX, change.worldY);
 
           if (
             change.node.nodeType &&
@@ -183,7 +189,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
         y <= change.worldY + radiusToUpdate;
         y++
       ) {
-        this.updateSingleNode(x, y, change.node);
+        this.updateSingleNode(x, y);
       }
     }
   }
@@ -199,17 +205,9 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
   /**
    * Clean up a single node sprite and all its components
    */
-  private cleanupNodeSprite(nodeKey: string) {
-    const spriteData = this.nodeSprites[nodeKey];
+  private cleanupNodeSprite(positionalKey: string) {
+    const spriteData = this.nodeSprites[positionalKey];
     if (!spriteData) return;
-
-    // Clean up all sprite components
-    if (spriteData.terrain) {
-      this.mapContainer?.removeChild(spriteData.terrain);
-      if (!spriteData.terrain.destroyed) {
-        spriteData.terrain.destroy();
-      }
-    }
 
     if (spriteData.objectContainer) {
       this.mapContainer?.removeChild(spriteData.objectContainer);
@@ -218,22 +216,20 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       }
     }
 
-    if (spriteData.debugText) {
-      this.mapContainer?.removeChild(spriteData.debugText);
-      if (!spriteData.debugText.destroyed) {
-        spriteData.debugText.destroy();
-      }
-    }
-
-    delete this.nodeSprites[nodeKey];
+    delete this.nodeSprites[positionalKey];
   }
 
   ngOnDestroy() {
     // Stop the ticker to save GPU resources
-    if (this.app?.ticker) {
-      this.app.ticker.stop();
-      this.app.ticker.remove(this.travelVisualizerTickerUpdate!);
-      this.app.ticker.destroy();
+    const ticker = this.app?.ticker;
+    if (ticker) {
+      ticker.stop();
+      ticker.remove(this.travelVisualizerTickerUpdate!);
+      Object.values(this.ownershipVisualizerTickerUpdates).forEach((update) => {
+        ticker.remove(update.ticker);
+      });
+
+      ticker.destroy();
     }
 
     // Clean up all sprites properly before destroying app
@@ -258,6 +254,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
 
     // Clean up containers
     this.mapContainer?.removeChildren();
+    this.ownershipVisualizationContainer?.removeChildren();
     this.playerIndicatorContainer?.removeChildren();
     this.travelVisualizationContainer?.removeChildren();
 
@@ -287,6 +284,8 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
 
     const containers = pixiGameMapContainersCreate(this.app);
     this.mapContainer = containers.mapContainer;
+    this.ownershipVisualizationContainer =
+      containers.ownershipVisualizationContainer;
     this.playerIndicatorContainer = containers.playerIndicatorContainer;
     this.travelVisualizationContainer = containers.travelVisualizationContainer;
 
@@ -311,6 +310,9 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     this.setupMouseDragging();
 
     this.setupPlayerIndicators();
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (window as any).__PIXI_APP__ = this.app;
   }
 
   private setupVisibilityOptimization() {
@@ -418,19 +420,9 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
   private clearAllSprites() {
     // Clear node sprites with comprehensive cleanup
     Object.values(this.nodeSprites).forEach((spriteData) => {
-      if (spriteData.terrain) {
-        this.mapContainer?.removeChild(spriteData.terrain);
-        spriteData.terrain.destroy();
-      }
-
       if (spriteData.objectContainer) {
         this.mapContainer?.removeChild(spriteData.objectContainer);
         spriteData.objectContainer.destroy();
-      }
-
-      if (spriteData.debugText) {
-        this.mapContainer?.removeChild(spriteData.debugText);
-        spriteData.debugText.destroy();
       }
     });
 
@@ -457,18 +449,15 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       worldConfig.height,
     );
 
+    this.ownershipVisualizationContainer?.removeChildren();
     mapData.tiles.forEach((row) => {
-      row.forEach(({ x, y, nodeData, tileSprite }) => {
-        this.createOrUpdateNodeSprites(x, y, nodeData, tileSprite);
+      row.forEach(({ x, y, tileSprite }) => {
+        this.createOrUpdateNodeSprites(x, y, tileSprite);
       });
     });
   }
 
-  private updateSingleNode(
-    worldX: number,
-    worldY: number,
-    updatedNode: WorldLocation,
-  ) {
+  private updateSingleNode(worldX: number, worldY: number) {
     if (!this.mapContainer) return;
 
     const camera = cameraPosition();
@@ -482,10 +471,10 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       relativeY >= 0 &&
       relativeY < this.nodeHeight()
     ) {
-      const nodeKey = `${relativeX}-${relativeY}`;
+      const positionalKey = `${relativeX}-${relativeY}`;
 
       // Remove existing sprite if it exists
-      const existingSprite = this.nodeSprites[nodeKey];
+      const existingSprite = this.nodeSprites[positionalKey];
       if (existingSprite) {
         this.loggerService.debug(
           'PixiMap',
@@ -493,7 +482,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
         );
 
         // Use the centralized cleanup method
-        this.cleanupNodeSprite(nodeKey);
+        this.cleanupNodeSprite(positionalKey);
       }
 
       // Create new sprite with updated data
@@ -504,22 +493,29 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
 
       // Get the correct tile sprite for this world position
       const tileSprite = spriteGetForPosition(worldX, worldY);
-      this.createOrUpdateNodeSprites(
-        relativeX,
-        relativeY,
-        updatedNode,
-        tileSprite,
-      );
+      this.createOrUpdateNodeSprites(relativeX, relativeY, tileSprite);
     }
   }
 
-  private createOrUpdateNodeSprites(
-    x: number,
-    y: number,
-    nodeData: WorldLocation,
-    tileSprite: string,
-  ) {
-    if (!this.mapContainer) return;
+  private cleanupOwnershipVisualizer(nodeKey: string): void {
+    if (!this.app || !this.ownershipVisualizationContainer) return;
+
+    const hasPreviousOwnership = this.ownershipVisualizerTickerUpdates[nodeKey];
+    if (hasPreviousOwnership) {
+      this.ownershipVisualizationContainer.removeChild(
+        hasPreviousOwnership.graphics,
+      );
+      this.app.ticker.remove(hasPreviousOwnership.ticker);
+    }
+  }
+
+  private createOrUpdateNodeSprites(x: number, y: number, tileSprite: string) {
+    if (
+      !this.app ||
+      !this.mapContainer ||
+      !this.ownershipVisualizationContainer
+    )
+      return;
 
     const camera = cameraPosition();
     const worldX = Math.floor(camera.x) + x;
@@ -531,7 +527,12 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       getOption('debugDisableFogOfWar') ||
       fogIsPositionRevealed(worldX, worldY);
 
-    const nodeKey = `${x}-${y}`;
+    const positionalKey = `${x}-${y}`;
+    const nodeKey = currentNodeData.id;
+
+    this.cleanupOwnershipVisualizer(currentNodeData.id);
+    this.nodeSprites[positionalKey]?.objectContainer?.destroy();
+
     const spriteData = pixiIndicatorNodeSpriteCreate(
       x,
       y,
@@ -556,7 +557,22 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
         spriteData.objectContainer.cursor = 'default';
       }
 
-      this.nodeSprites[nodeKey] = spriteData;
+      this.nodeSprites[positionalKey] = spriteData;
+
+      if (currentNodeData.currentlyClaimed) {
+        const res = pixiIndicatorNodeTerritoryOwnershipCreate(currentNodeData);
+        if (res) {
+          this.ownershipVisualizerTickerUpdates[nodeKey] = res;
+
+          this.ownershipVisualizationContainer.addChild(res.graphics);
+          this.app.ticker.add(res.ticker);
+
+          res.graphics.x =
+            spriteData.objectContainer.x - res.graphics.width / 2 + 32;
+          res.graphics.y =
+            spriteData.objectContainer.y - res.graphics.height / 2 + 32;
+        }
+      }
     }
   }
 

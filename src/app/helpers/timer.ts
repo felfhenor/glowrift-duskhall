@@ -22,7 +22,7 @@ function createBaseTimer(tick: number): TimerData {
   };
 }
 
-export function cleanupOldTimerEntries(): void {
+export function migrateCleanupOldTimerEntries(): void {
   const allKeys = Object.keys(gamestate().actionClock.timers);
   const currentTick = timerTicksElapsed();
   const editState = gamestate();

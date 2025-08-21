@@ -65,7 +65,7 @@ export async function pixiTextureGameMapLoad(
  * @param size Size of the icon in pixels
  * @returns PIXI Texture
  */
-export function pixiTextureClaimCreate(
+function pixiTextureClaimCreate(
   iconText: string,
   color: string = '#ffffff',
   size: number = 20,

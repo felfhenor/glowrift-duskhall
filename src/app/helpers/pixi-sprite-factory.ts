@@ -30,7 +30,7 @@ export function pixiIndicatorNodeSpriteCreate(
   y: number,
   nodeData: WorldLocation,
   tileSprite: string,
-  objectSprite: string,
+  objectSpriteName: string,
   terrainTextures: Record<string, Texture>,
   objectTextures: Record<string, Texture>,
   mapContainer: Container,
@@ -45,41 +45,39 @@ export function pixiIndicatorNodeSpriteCreate(
   const terrainTexture = terrainTextures[tileSprite];
   if (!terrainTexture) return null;
 
+  const spriteContainer = new Container();
+  const spriteData: NodeSpriteData = { objectContainer: spriteContainer };
+
+  spriteData.objectContainer = spriteContainer;
+  spriteContainer.x = pixelX;
+  spriteContainer.y = pixelY;
+  mapContainer.addChild(spriteContainer);
+
   const terrainSprite = new Sprite(terrainTexture);
-  terrainSprite.x = pixelX;
-  terrainSprite.y = pixelY;
   terrainSprite.cullable = true;
-  mapContainer.addChild(terrainSprite);
+  spriteContainer.addChild(terrainSprite);
 
-  const spriteData: NodeSpriteData = { terrain: terrainSprite };
-
-  if (objectSprite) {
-    const objectTexture = objectTextures[objectSprite];
+  if (objectSpriteName) {
+    const objectTexture = objectTextures[objectSpriteName];
     if (objectTexture) {
-      const spriteContainer = new Container();
-      spriteData.objectContainer = spriteContainer;
-      mapContainer.addChild(spriteContainer);
-      spriteContainer.x = pixelX;
-      spriteContainer.y = pixelY;
-
       const objectSprite = new Sprite(objectTexture);
       objectSprite.interactive = true;
       objectSprite.cursor = 'pointer';
       objectSprite.cullable = true;
 
       if (onObjectClick) {
-        objectSprite.on('pointerdown', () => {
+        objectSprite.on('click', () => {
           onObjectClick(nodeData);
         });
       }
 
-      spriteData.objectContainer.addChild(objectSprite);
+      spriteContainer.addChild(objectSprite);
     }
   }
 
   const upgradeLevel = locationLevel(nodeData);
   if (
-    spriteData.objectContainer &&
+    nodeData.nodeType &&
     checkTexture &&
     xTexture &&
     (upgradeLevel === 0 || !nodeData.currentlyClaimed)
@@ -91,27 +89,23 @@ export function pixiIndicatorNodeSpriteCreate(
     );
     claimIndicator.eventMode = 'none';
     claimIndicator.cullable = true;
-    spriteData.objectContainer.addChild(claimIndicator);
+    spriteContainer.addChild(claimIndicator);
   }
 
   // Add upgrade level indicator if it makes sense to
-  if (
-    spriteData.objectContainer &&
-    nodeData.currentlyClaimed &&
-    upgradeLevel >= 1
-  ) {
+  if (nodeData.currentlyClaimed && upgradeLevel >= 1) {
     const upgradeIndicator = pixiIndicatorNodeUpgradeLevelCreate(upgradeLevel);
     upgradeIndicator.eventMode = 'none';
     upgradeIndicator.cullable = true;
-    spriteData.objectContainer.addChild(upgradeIndicator);
+    spriteContainer.addChild(upgradeIndicator);
   }
 
   // Add level indicator showing encounter level with rarity-based color
-  if (spriteData.objectContainer && nodeData.encounterLevel >= 1) {
+  if (nodeData.encounterLevel >= 1) {
     const levelIndicator = pixiIndicatorNodeLevelCreate(nodeData);
     levelIndicator.eventMode = 'none';
     levelIndicator.cullable = true;
-    spriteData.objectContainer.addChild(levelIndicator);
+    spriteContainer.addChild(levelIndicator);
   }
 
   if (
@@ -119,13 +113,11 @@ export function pixiIndicatorNodeSpriteCreate(
     !fogIsPositionRevealed(nodeData.x, nodeData.y)
   ) {
     const fogOfWarSprite = new Sprite(objectTextures['0027']);
-    fogOfWarSprite.x = pixelX;
-    fogOfWarSprite.y = pixelY;
     fogOfWarSprite.width = 64;
     fogOfWarSprite.height = 64;
     fogOfWarSprite.interactive = false;
     fogOfWarSprite.alpha = 0.65;
-    mapContainer.addChild(fogOfWarSprite);
+    spriteContainer.addChild(fogOfWarSprite);
   }
 
   // Add debug text showing coordinates if debug mode is enabled
@@ -140,13 +132,12 @@ export function pixiIndicatorNodeSpriteCreate(
     });
 
     // Position text at top right of tile to avoid conflict with level indicator
-    debugText.x = pixelX + 64 - 30; // 30px from right edge
-    debugText.y = pixelY + 2; // 2px from top
+    debugText.x = 64 - 30; // 30px from right edge
+    debugText.y = 2; // 2px from top
     debugText.cullable = true;
     debugText.eventMode = 'none'; // Disable interaction
 
-    mapContainer.addChild(debugText);
-    spriteData.debugText = debugText;
+    spriteContainer.addChild(debugText);
   }
 
   return spriteData;

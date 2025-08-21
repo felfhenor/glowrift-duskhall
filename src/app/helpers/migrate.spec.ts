@@ -49,8 +49,8 @@ import { migrateItems } from '@helpers/migrate-items';
 import { migrateSkills } from '@helpers/migrate-skills';
 import { gamestate, setGameState } from '@helpers/state-game';
 import { defaultOptions, options, setOptions } from '@helpers/state-options';
-import { cleanupOldTimerEntries } from '@helpers/timer';
-import { resetClaimedNodeCounts } from '@helpers/world-location';
+import { migrateCleanupOldTimerEntries } from '@helpers/timer';
+import { migrateResetClaimedNodeCounts } from '@helpers/world-location';
 import { merge } from 'es-toolkit/compat';
 
 describe('migrate', () => {
@@ -287,8 +287,8 @@ describe('migrate', () => {
       // Assert
       expect(migrateItems).toHaveBeenCalledOnce();
       expect(migrateSkills).toHaveBeenCalledOnce();
-      expect(cleanupOldTimerEntries).toHaveBeenCalledOnce();
-      expect(resetClaimedNodeCounts).toHaveBeenCalledOnce();
+      expect(migrateCleanupOldTimerEntries).toHaveBeenCalledOnce();
+      expect(migrateResetClaimedNodeCounts).toHaveBeenCalledOnce();
     });
 
     it('should perform migration steps in correct order', () => {
@@ -312,12 +312,12 @@ describe('migrate', () => {
         callOrder.push('migrateSkills');
       });
       (
-        cleanupOldTimerEntries as unknown as ReturnType<typeof vi.fn>
+        migrateCleanupOldTimerEntries as unknown as ReturnType<typeof vi.fn>
       ).mockImplementation(() => {
         callOrder.push('cleanupOldTimerEntries');
       });
       (
-        resetClaimedNodeCounts as unknown as ReturnType<typeof vi.fn>
+        migrateResetClaimedNodeCounts as unknown as ReturnType<typeof vi.fn>
       ).mockImplementation(() => {
         callOrder.push('resetClaimedNodeCounts');
       });
@@ -365,8 +365,8 @@ describe('migrate', () => {
       expect(setGameState).toHaveBeenCalledWith(mockMergedState);
       expect(migrateItems).toHaveBeenCalledOnce();
       expect(migrateSkills).toHaveBeenCalledOnce();
-      expect(cleanupOldTimerEntries).toHaveBeenCalledOnce();
-      expect(resetClaimedNodeCounts).toHaveBeenCalledOnce();
+      expect(migrateCleanupOldTimerEntries).toHaveBeenCalledOnce();
+      expect(migrateResetClaimedNodeCounts).toHaveBeenCalledOnce();
     });
   });
 

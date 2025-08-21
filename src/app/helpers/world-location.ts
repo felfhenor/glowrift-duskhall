@@ -7,7 +7,11 @@ import { droppableGain, droppableMakeReal } from '@helpers/droppable';
 import { itemElementAdd, itemIsEquipment } from '@helpers/item';
 import { distanceBetweenNodes } from '@helpers/math';
 import { gamestate, updateGamestate } from '@helpers/state-game';
-import { timerAddUnclaimAction, timerGetRegisterTick } from '@helpers/timer';
+import {
+  timerAddUnclaimAction,
+  timerGetRegisterTick,
+  timerTicksElapsed,
+} from '@helpers/timer';
 import { globalStatusText } from '@helpers/ui';
 import { worldMaxDistance, worldNodeGetAccessId } from '@helpers/world';
 import {
@@ -23,10 +27,20 @@ import type { EquipmentItemContent } from '@interfaces/content-equipment';
 import type { LocationType } from '@interfaces/content-worldconfig';
 import type { DroppableEquippable, DropRarity } from '@interfaces/droppable';
 import { RARITY_PRIORITY } from '@interfaces/droppable';
-import type { WorldLocation } from '@interfaces/world';
+import type { WorldPosition } from '@interfaces/world';
+import { REVELATION_RADIUS, type WorldLocation } from '@interfaces/world';
 import { isNumber, sortBy } from 'es-toolkit/compat';
 
-export function resetClaimedNodeCounts(): void {
+export function migrateUnclaimMissedNodes(): void {
+  locationGetClaimed().forEach((claimed) => {
+    if (claimed.unclaimTime <= 0 || claimed.unclaimTime > timerTicksElapsed())
+      return;
+
+    locationUnclaim(claimed);
+  });
+}
+
+export function migrateResetClaimedNodeCounts(): void {
   const baseNodeCount = defaultNodeCountBlock();
   locationGetClaimed().forEach((node) => baseNodeCount[node.nodeType!]++);
 
@@ -101,13 +115,59 @@ export function locationGetInOrderOfCloseness(
   );
 }
 
-export function locationGetNearestTown(position: {
-  x: number;
-  y: number;
-}): WorldLocation | undefined {
+export function locationNodesAround(
+  x: number,
+  y: number,
+  squareRadius: number,
+): WorldLocation[] {
+  const nodes: WorldLocation[] = [];
+
+  for (let dx = -squareRadius; dx <= squareRadius; dx++) {
+    for (let dy = -squareRadius; dy <= squareRadius; dy++) {
+      const tx = x + dx;
+      const ty = y + dy;
+      const node = locationGet(tx, ty);
+      if (node) nodes.push(node);
+    }
+  }
+
+  return nodes;
+}
+
+export function locationGetNearbySafeHaven(
+  position: WorldPosition,
+  requirePermanentlyOwned = false,
+): WorldLocation | undefined {
+  const nearest = locationGetNearest(position, ['town', 'village']);
+  if (!nearest) return undefined;
+  if (requirePermanentlyOwned && !locationIsPermanentlyClaimed(nearest))
+    return undefined;
+
+  const squareRadius = REVELATION_RADIUS[nearest.nodeType!];
+  const allNodesNearby = locationNodesAround(
+    position.x,
+    position.y,
+    squareRadius,
+  );
+  const amIContained = !!allNodesNearby.find((n) => n.id === nearest.id);
+
+  return amIContained ? nearest : undefined;
+}
+
+export function locationIsPermanentlyClaimed(node: WorldLocation): boolean {
+  return node.unclaimTime <= 0 && node.currentlyClaimed;
+}
+
+export function locationGetNearest(
+  position: {
+    x: number;
+    y: number;
+  },
+  types: LocationType[] = ['town'],
+): WorldLocation | undefined {
   const allNodes = locationGetAll();
   const towns = allNodes.filter(
-    (node) => node.nodeType === 'town' && node.currentlyClaimed,
+    (node) => types.includes(node.nodeType!) && node.currentlyClaimed,
   );
   if (towns.length === 0) return undefined;
 
@@ -190,9 +250,17 @@ export function locationClaim(node: WorldLocation): void {
 
   currencyClaimsGain(node);
 
-  const claimDuration = locationClaimDuration(node);
-  const unclaimTime = timerGetRegisterTick(claimDuration);
-  timerAddUnclaimAction(node, unclaimTime);
+  let unclaimTime = 0;
+
+  const nearbyPermanentNode = locationGetNearbySafeHaven(node, true);
+  if (!nearbyPermanentNode) {
+    // we can still buff ones even if we don't own the location
+    const nearbyTownishNode = locationGetNearbySafeHaven(node, false);
+    const claimDuration =
+      locationClaimDuration(node) * (nearbyTownishNode ? 2 : 1);
+    unclaimTime = timerGetRegisterTick(claimDuration);
+    timerAddUnclaimAction(node, unclaimTime);
+  }
 
   updateGamestate((state) => {
     const updateNodeData = locationGet(node.x, node.y, state);

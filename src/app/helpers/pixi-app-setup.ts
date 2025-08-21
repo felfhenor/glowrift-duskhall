@@ -76,23 +76,28 @@ export function pixiResponsiveCanvasSetup(
  */
 export function pixiGameMapContainersCreate(app: Application): {
   mapContainer: Container;
+  ownershipVisualizationContainer: Container;
   playerIndicatorContainer: Container;
   travelVisualizationContainer: Container;
 } {
   const mapContainer = new Container();
+  const ownershipVisualizationContainer = new Container();
   const playerIndicatorContainer = new Container();
   const travelVisualizationContainer = new Container();
 
   app.stage.addChild(mapContainer);
+  app.stage.addChild(ownershipVisualizationContainer);
   app.stage.addChild(playerIndicatorContainer);
   app.stage.addChild(travelVisualizationContainer);
 
   mapContainer.cullable = true;
+  ownershipVisualizationContainer.cullable = false;
   playerIndicatorContainer.cullable = false;
   travelVisualizationContainer.cullable = false;
 
   return {
     mapContainer,
+    ownershipVisualizationContainer,
     playerIndicatorContainer,
     travelVisualizationContainer,
   };
