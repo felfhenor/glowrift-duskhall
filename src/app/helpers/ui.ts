@@ -20,6 +20,18 @@ export const showCombatMenu = signal<boolean>(false);
 export const showTownMenu = signal<boolean>(false);
 export const showWorldMenu = signal<boolean>(false);
 
+export const isShowingAnyMenu = computed(
+  () =>
+    showCurrencyList() ||
+    showLocationMenu() ||
+    showOptionsMenu() ||
+    showInventoryMenu() ||
+    showHeroesMenu() ||
+    showCombatMenu() ||
+    showTownMenu() ||
+    showWorldMenu(),
+);
+
 export const isCatchingUp = signal<boolean>(false);
 
 export function isPageVisible(): boolean {

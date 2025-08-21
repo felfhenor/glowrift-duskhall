@@ -12,8 +12,10 @@ import { PanelTownComponent } from '@components/panel-town/panel-town.component'
 
 import { PanelWorldComponent } from '@components/panel-world/panel-world.component';
 import {
+  closeAllMenus,
   gamestate,
   isCatchingUp,
+  isShowingAnyMenu,
   showCombatMenu,
   showHeroesMenu,
   showInventoryMenu,
@@ -51,12 +53,18 @@ export class GamePlayComponent {
   public showTown = computed(() => showTownMenu());
   public showWorld = computed(() => showWorldMenu());
 
+  public isShowingAnyMenu = computed(() => isShowingAnyMenu());
+
   public isCatchingUp = computed(() => isCatchingUp());
   public showWinNotification = computed(
     () =>
       gamestate().meta.hasWon && !gamestate().meta.hasDismissedWinNotification,
   );
   public winTicks = computed(() => gamestate().meta.wonAtTick);
+
+  closeAllMenus() {
+    closeAllMenus();
+  }
 
   continuePlayingPostWin() {
     victoryDismissWinDialog();
