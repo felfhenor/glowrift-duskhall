@@ -21,6 +21,8 @@ export class SelectorCurrencyComponent {
     
     return sortedNames.map(name => 
       currencies.find(c => c.name === name)!
-    );
+    return sortedNames
+      .map(name => currencies.find(c => c.name === name))
+      .filter(Boolean);
   });
 }
