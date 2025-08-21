@@ -20,6 +20,7 @@ import {
   skillUnequip,
 } from '@helpers';
 import type { EquipmentItem, EquipmentSkill, EquipmentSlot } from '@interfaces';
+import { ClickOutsideDirective } from '@directives/click-outside.directive';
 
 @Component({
   selector: 'app-panel-heroes',
@@ -34,6 +35,7 @@ import type { EquipmentItem, EquipmentSkill, EquipmentSlot } from '@interfaces';
     PanelHeroesTargettingComponent,
     InventoryGridContainerComponent,
     ButtonCloseComponent,
+    ClickOutsideDirective,
   ],
   templateUrl: './panel-heroes.component.html',
   styleUrl: './panel-heroes.component.scss',
