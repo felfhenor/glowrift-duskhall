@@ -49,9 +49,19 @@ import { migrateItems } from '@helpers/migrate-items';
 import { migrateSkills } from '@helpers/migrate-skills';
 import { gamestate, setGameState } from '@helpers/state-game';
 import { defaultOptions, options, setOptions } from '@helpers/state-options';
+import { merge } from 'es-toolkit/compat';
+
+vi.mock('@helpers/timer', () => ({
+  migrateCleanupOldTimerEntries: vi.fn(),
+}));
+
+vi.mock('@helpers/world-location', () => ({
+  migrateResetClaimedNodeCounts: vi.fn(),
+  migrateUnclaimMissedNodes: vi.fn(),
+}));
+
 import { migrateCleanupOldTimerEntries } from '@helpers/timer';
 import { migrateResetClaimedNodeCounts } from '@helpers/world-location';
-import { merge } from 'es-toolkit/compat';
 
 describe('migrate', () => {
   beforeEach(() => {
@@ -67,6 +77,7 @@ describe('migrate', () => {
   const mockedMigrateSkills = vi.mocked(migrateSkills);
   const mockedOptions = vi.mocked(options);
   const mockedDefaultOptions = vi.mocked(defaultOptions);
+
   // Mock data factories
   const createMockGameState = (): GameState => ({
     meta: {

@@ -1,48 +1,21 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { mapGridGenerate } from '@helpers/map-grid-generator';
-import type { WorldLocation } from '@interfaces';
 
 // Mock the dependencies
 vi.mock('@helpers/sprite', () => ({
   spriteGetForPosition: vi.fn(),
 }));
 
-vi.mock('@helpers/world-location', () => ({
-  locationGet: vi.fn(),
-}));
-
 // Import the mocked functions
 import { spriteGetForPosition } from '@helpers/sprite';
-import { locationGet } from '@helpers/world-location';
 
 describe('Map Grid Generator', () => {
   describe('mapGridGenerate', () => {
-    // Helper function to create mock WorldLocation
-    const createMockLocation = (x: number, y: number): WorldLocation => ({
-      id: `location-${x}-${y}`,
-      name: `Location ${x},${y}`,
-      x,
-      y,
-      elements: [],
-      currentlyClaimed: false,
-      claimCount: 0,
-      encounterLevel: 1,
-      unclaimTime: 0,
-      guardianIds: [],
-      claimLootIds: [],
-      traitIds: [],
-      locationUpgrades: {},
-    });
-
     beforeEach(() => {
       vi.clearAllMocks();
 
-      // Setup default mock behaviors
-      vi.mocked(locationGet).mockImplementation((x: number, y: number) =>
-        createMockLocation(x, y),
-      );
-
+      // Setup default mock behavior
       vi.mocked(spriteGetForPosition).mockImplementation(
         (x: number, y: number) => `sprite-${x}-${y}`,
       );
@@ -83,17 +56,22 @@ describe('Map Grid Generator', () => {
       });
     });
 
-    it('should request world data at correct absolute positions based on camera', () => {
+    it('should request sprites at correct absolute positions based on camera', () => {
       const cameraX = 10;
       const cameraY = 15;
 
       mapGridGenerate(cameraX, cameraY, 2, 2, 50, 50);
 
-      // Should call locationGet with camera offset
-      expect(locationGet).toHaveBeenCalledWith(10, 15); // camera + (0,0)
-      expect(locationGet).toHaveBeenCalledWith(11, 15); // camera + (1,0)
-      expect(locationGet).toHaveBeenCalledWith(10, 16); // camera + (0,1)
-      expect(locationGet).toHaveBeenCalledWith(11, 16); // camera + (1,1)
+      // Should call spriteGetForPosition with camera offset
+      expect(spriteGetForPosition).toHaveBeenCalledWith(10, 15); // camera + (0,0)
+      expect(spriteGetForPosition).toHaveBeenCalledWith(11, 15); // camera + (1,0)
+      expect(spriteGetForPosition).toHaveBeenCalledWith(12, 15); // camera + (2,0)
+      expect(spriteGetForPosition).toHaveBeenCalledWith(10, 16); // camera + (0,1)
+      expect(spriteGetForPosition).toHaveBeenCalledWith(11, 16); // camera + (1,1)
+      expect(spriteGetForPosition).toHaveBeenCalledWith(12, 16); // camera + (2,1)
+      expect(spriteGetForPosition).toHaveBeenCalledWith(10, 17); // camera + (0,2)
+      expect(spriteGetForPosition).toHaveBeenCalledWith(11, 17); // camera + (1,2)
+      expect(spriteGetForPosition).toHaveBeenCalledWith(12, 17); // camera + (2,2)
     });
 
     it('should request sprites at correct absolute positions based on camera', () => {
@@ -109,13 +87,13 @@ describe('Map Grid Generator', () => {
       expect(spriteGetForPosition).toHaveBeenCalledWith(6, 9); // camera + (1,1)
     });
 
-    it('should include nodeData from locationGet in tiles', () => {
-      const mockLocation = createMockLocation(7, 12);
-      vi.mocked(locationGet).mockReturnValue(mockLocation);
+    it('should include tileSprite from spriteGetForPosition in tiles', () => {
+      const spriteId = 'test-sprite-123';
+      vi.mocked(spriteGetForPosition).mockReturnValue(spriteId);
 
       const result = mapGridGenerate(7, 12, 1, 1, 20, 20);
 
-      expect(result.tiles[0][0].nodeData).toBe(mockLocation);
+      expect(result.tiles[0][0].tileSprite).toBe(spriteId);
     });
 
     it('should include tileSprite from spriteGetForPosition in tiles', () => {
@@ -154,20 +132,20 @@ describe('Map Grid Generator', () => {
     it('should handle negative camera positions', () => {
       mapGridGenerate(-5, -3, 1, 1, 20, 20);
 
-      expect(locationGet).toHaveBeenCalledWith(-5, -3); // camera + (0,0)
-      expect(locationGet).toHaveBeenCalledWith(-4, -3); // camera + (1,0)
-      expect(locationGet).toHaveBeenCalledWith(-5, -2); // camera + (0,1)
-      expect(locationGet).toHaveBeenCalledWith(-4, -2); // camera + (1,1)
+      expect(spriteGetForPosition).toHaveBeenCalledWith(-5, -3); // camera + (0,0)
+      expect(spriteGetForPosition).toHaveBeenCalledWith(-4, -3); // camera + (1,0)
+      expect(spriteGetForPosition).toHaveBeenCalledWith(-5, -2); // camera + (0,1)
+      expect(spriteGetForPosition).toHaveBeenCalledWith(-4, -2); // camera + (1,1)
     });
 
     it('should handle floating point camera positions', () => {
       mapGridGenerate(2.7, 3.9, 1, 1, 10, 10);
 
       // Should use camera positions as-is (not rounded)
-      expect(locationGet).toHaveBeenCalledWith(2.7, 3.9);
-      expect(locationGet).toHaveBeenCalledWith(3.7, 3.9);
-      expect(locationGet).toHaveBeenCalledWith(2.7, 4.9);
-      expect(locationGet).toHaveBeenCalledWith(3.7, 4.9);
+      expect(spriteGetForPosition).toHaveBeenCalledWith(2.7, 3.9);
+      expect(spriteGetForPosition).toHaveBeenCalledWith(3.7, 3.9);
+      expect(spriteGetForPosition).toHaveBeenCalledWith(2.7, 4.9);
+      expect(spriteGetForPosition).toHaveBeenCalledWith(3.7, 4.9);
     });
 
     it('should generate grid with large dimensions', () => {
@@ -193,10 +171,8 @@ describe('Map Grid Generator', () => {
     });
 
     it('should generate tiles with correct MapTileData structure', () => {
-      const mockLocation = createMockLocation(1, 2);
       const mockSprite = 'test-sprite';
 
-      vi.mocked(locationGet).mockReturnValue(mockLocation);
       vi.mocked(spriteGetForPosition).mockReturnValue(mockSprite);
 
       const result = mapGridGenerate(1, 2, 1, 1, 10, 10);
@@ -206,13 +182,11 @@ describe('Map Grid Generator', () => {
       // Verify the structure matches MapTileData interface
       expect(tile).toHaveProperty('x');
       expect(tile).toHaveProperty('y');
-      expect(tile).toHaveProperty('nodeData');
       expect(tile).toHaveProperty('tileSprite');
 
       expect(typeof tile.x).toBe('number');
       expect(typeof tile.y).toBe('number');
       expect(typeof tile.tileSprite).toBe('string');
-      expect(typeof tile.nodeData).toBe('object');
     });
 
     it('should handle edge case where viewport equals world size', () => {
@@ -249,14 +223,13 @@ describe('Map Grid Generator', () => {
       expect(result.height).toBe(worldHeight); // min(8, 7 + 1) = 8
     });
 
-    it('should call locationGet and spriteGetForPosition the correct number of times', () => {
+    it('should call spriteGetForPosition the correct number of times', () => {
       const viewportWidth = 3;
       const viewportHeight = 2;
 
       mapGridGenerate(0, 0, viewportWidth, viewportHeight, 10, 10);
 
       const expectedCalls = (viewportWidth + 1) * (viewportHeight + 1);
-      expect(locationGet).toHaveBeenCalledTimes(expectedCalls);
       expect(spriteGetForPosition).toHaveBeenCalledTimes(expectedCalls);
     });
 
@@ -291,10 +264,10 @@ describe('Map Grid Generator', () => {
 
       mapGridGenerate(cameraX, cameraY, 5, 5, worldWidth, worldHeight);
 
-      // Should not crash and should call locationGet with positions beyond world bounds
-      expect(locationGet).toHaveBeenCalledWith(cameraX, cameraY);
-      expect(locationGet).toHaveBeenCalledWith(cameraX + 1, cameraY); // Beyond world width
-      expect(locationGet).toHaveBeenCalledWith(cameraX, cameraY + 1); // Beyond world height
+      // Should not crash and should call spriteGetForPosition with positions beyond world bounds
+      expect(spriteGetForPosition).toHaveBeenCalledWith(cameraX, cameraY);
+      expect(spriteGetForPosition).toHaveBeenCalledWith(cameraX + 1, cameraY); // Beyond world width
+      expect(spriteGetForPosition).toHaveBeenCalledWith(cameraX, cameraY + 1); // Beyond world height
     });
   });
 });
