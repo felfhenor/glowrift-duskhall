@@ -664,6 +664,8 @@ describe('content-initializers', () => {
         expect(result).toEqual({
           id: 'test-location-upgrade' as LocationUpgradeId,
           name: 'UNKNOWN',
+          pairedLocationUpgradeId: '',
+          requireClaimType: '',
           __type: 'locationupgrade',
           description: 'UNKNOWN',
           appliesToTypes: [],
@@ -674,8 +676,10 @@ describe('content-initializers', () => {
           boostedProductionValuePercentPerLevel: 0,
           boostedTicksPerLevel: 0,
           boostedUnclaimableCount: 0,
+          boostedDustProductionPerLevel: 0,
+          boostedRebellionPerLevel: 0,
           costScalePerTile: 1,
-          requiresTownUpgradeId: 'UNKNOWN' as TownUpgradeId,
+          requiresTownUpgradeId: '' as TownUpgradeId,
         } as LocationUpgradeContent);
       });
 
@@ -685,6 +689,7 @@ describe('content-initializers', () => {
           name: 'Monster Den',
           __type: 'locationupgrade',
           description: 'Attracts more powerful monsters',
+          pairedLocationUpgradeId: 'monster-den-upgrade' as LocationUpgradeId,
           appliesToTypes: ['cave'],
           baseCost: {
             ...defaultCurrencyBlock(),
@@ -694,7 +699,10 @@ describe('content-initializers', () => {
           boostedProductionValuePercentPerLevel: 0,
           boostedTicksPerLevel: 0,
           boostedUnclaimableCount: 0,
+          boostedDustProductionPerLevel: 0,
+          boostedRebellionPerLevel: 0,
           costScalePerTile: 0,
+          requireClaimType: '',
           requiresTownUpgradeId: 'monster-den-upgrade' as TownUpgradeId,
         };
 
