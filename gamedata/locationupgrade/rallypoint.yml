@@ -29,6 +29,7 @@
   description: 'Boost the loot generated at this location by +{value} level(s).'
 
   requiresTownUpgradeId: Stash Quality
+  requireClaimType: 'temporary'
   appliesToTypes: ['cave', 'dungeon', 'castle']
 
   costScalePerTile: 0.5
@@ -41,11 +42,32 @@
 
   boostedLootLevelPerLevel: 1
 
+- id: 77fa91e4-4fa0-4cad-90bf-e1f9ba635970
+  name: Dust Production
+  description: 'Boost the production of dust by +{value} per tick.'
+
+  requiresTownUpgradeId: Stash Quality
+  pairedLocationUpgradeId: Boosted Stash Quality
+  requireClaimType: 'permanent'
+  appliesToTypes: ['cave', 'dungeon', 'castle']
+
+  costScalePerTile: 0.5
+
+  baseCost:
+    Mana: 300
+    Common Dust: 3
+    Uncommon Dust: 2
+    Rare Dust: 1
+
+  boostedDustProductionPerLevel: 1
+
 - id: 0ce28255-0b9d-46bd-8d31-ef93c0f84f14
   name: Boosted Evil Resistance
   description: 'Boost the auto-unclaim time at this location by +{value} ticks.'
 
   requiresTownUpgradeId: Evil Resistance
+  pairedLocationUpgradeId: Rebellion from Evil
+  requireClaimType: 'temporary'
   appliesToTypes: ['cave', 'dungeon', 'castle', 'village']
 
   costScalePerTile: 3
@@ -55,6 +77,23 @@
     Soul Essence: 200
 
   boostedTicksPerLevel: 30
+
+- id: c8f809e0-6886-42a1-a040-c20c9e5be315
+  name: Rebellion from Evil
+  description: 'Boost the level of creatures this node will automatically repel by +{value} levels.'
+
+  requiresTownUpgradeId: Evil Resistance
+  pairedLocationUpgradeId: Boosted Evil Resistance
+  requireClaimType: 'permanent'
+  appliesToTypes: ['cave', 'dungeon', 'castle', 'village']
+
+  costScalePerTile: 3
+
+  baseCost:
+    Mana: 300
+    Soul Essence: 200
+
+  boostedRebellionPerLevel: 1
 
 - id: 41d6d427-cbe8-4583-8754-2631c2ca8f48
   name: Nullify Evil

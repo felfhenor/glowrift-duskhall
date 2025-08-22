@@ -11,6 +11,8 @@ export type LocationUpgradeContentNumerics = {
   boostedLootLevelPerLevel: number;
   boostedTicksPerLevel: number;
   boostedUnclaimableCount: number;
+  boostedRebellionPerLevel: number;
+  boostedDustProductionPerLevel: number;
 };
 
 export type LocationUpgradeContent = IsContentItem &
@@ -19,7 +21,9 @@ export type LocationUpgradeContent = IsContentItem &
     id: LocationUpgradeId;
 
     requiresTownUpgradeId: TownUpgradeId;
+    pairedLocationUpgradeId: LocationUpgradeId;
     appliesToTypes: LocationType[];
+    requireClaimType?: '' | 'temporary' | 'permanent';
 
     costScalePerTile: number;
     baseCost: CurrencyBlock;

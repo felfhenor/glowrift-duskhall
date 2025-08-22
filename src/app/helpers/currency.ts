@@ -25,12 +25,12 @@ import { sortBy } from 'es-toolkit/compat';
 export const CURRENCY_ORDER: GameCurrency[] = [
   'Mana',
   'Earth Sliver',
-  'Earth Shard', 
+  'Earth Shard',
   'Earth Crystal',
   'Earth Core',
   'Fire Sliver',
   'Fire Shard',
-  'Fire Crystal', 
+  'Fire Crystal',
   'Fire Core',
   'Water Sliver',
   'Water Shard',
@@ -52,10 +52,17 @@ export const CURRENCY_ORDER: GameCurrency[] = [
 /**
  * Sort currencies according to the canonical ordering
  */
-export function currencySortByOrder(currencies: GameCurrency[]): GameCurrency[] {
-  const orderMap = new Map(CURRENCY_ORDER.map((currency, index) => [currency, index]));
-  
-  return sortBy(currencies, (currency) => orderMap.get(currency) ?? Number.MAX_SAFE_INTEGER);
+export function currencySortByOrder(
+  currencies: GameCurrency[],
+): GameCurrency[] {
+  const orderMap = new Map(
+    CURRENCY_ORDER.map((currency, index) => [currency, index]),
+  );
+
+  return sortBy(
+    currencies,
+    (currency) => orderMap.get(currency) ?? Number.MAX_SAFE_INTEGER,
+  );
 }
 
 export function currencyGet(currency: GameCurrency): number {
@@ -164,6 +171,14 @@ export function currencyClaimsGetForNode(node: WorldLocation): CurrencyBlock {
 
     base[currency.name] += currency.value;
   });
+
+  const dustBoost = locationUpgradeStatTotal(
+    node,
+    'boostedDustProductionPerLevel',
+  );
+  if (dustBoost > 0) {
+    base['Common Dust'] += dustBoost;
+  }
 
   // factor in location upgrades
   const percentMultiplier =

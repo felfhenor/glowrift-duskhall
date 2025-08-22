@@ -42,8 +42,8 @@ export class LocationUpgradeDisplayComponent {
     ),
   );
 
-  public numPurchases = computed(
-    () => this.location().locationUpgrades?.[this.upgrade().id] ?? 0,
+  public numPurchases = computed(() =>
+    locationUpgradeLevel(this.location(), this.upgrade()),
   );
 
   public hasCurrency = computed(() =>

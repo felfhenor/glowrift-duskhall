@@ -393,7 +393,11 @@ function ensureLocationUpgrade(
     description: locationUpgrade.description ?? 'UNKNOWN',
     __type: 'locationupgrade',
     requiresTownUpgradeId:
-      locationUpgrade.requiresTownUpgradeId ?? ('UNKNOWN' as TownUpgradeId),
+      locationUpgrade.requiresTownUpgradeId ?? ('' as TownUpgradeId),
+    pairedLocationUpgradeId:
+      locationUpgrade.pairedLocationUpgradeId ?? ('' as LocationUpgradeId),
+    requireClaimType: locationUpgrade.requireClaimType ?? '',
+
     appliesToTypes: locationUpgrade.appliesToTypes ?? [],
 
     costScalePerTile: locationUpgrade.costScalePerTile ?? 1,
@@ -403,5 +407,8 @@ function ensureLocationUpgrade(
     boostedLootLevelPerLevel: locationUpgrade.boostedLootLevelPerLevel ?? 0,
     boostedTicksPerLevel: locationUpgrade.boostedTicksPerLevel ?? 0,
     boostedUnclaimableCount: locationUpgrade.boostedUnclaimableCount ?? 0,
+    boostedRebellionPerLevel: locationUpgrade.boostedRebellionPerLevel ?? 0,
+    boostedDustProductionPerLevel:
+      locationUpgrade.boostedDustProductionPerLevel ?? 0,
   };
 }

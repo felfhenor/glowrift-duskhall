@@ -33,7 +33,10 @@ import { isNumber, sortBy } from 'es-toolkit/compat';
 
 export function migrateUnclaimMissedNodes(): void {
   locationGetClaimed().forEach((claimed) => {
-    if (claimed.unclaimTime <= 0 || claimed.unclaimTime > timerTicksElapsed())
+    if (
+      locationIsPermanentlyClaimed(claimed) ||
+      claimed.unclaimTime > timerTicksElapsed()
+    )
       return;
 
     locationUnclaim(claimed);

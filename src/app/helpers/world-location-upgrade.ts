@@ -17,6 +17,7 @@ import { worldNodeGetAccessId } from '@helpers/world';
 import { worldNotifyUpdated } from '@helpers/world-change-notifications';
 import {
   locationGetClaimed,
+  locationIsPermanentlyClaimed,
   locationNodesAround,
 } from '@helpers/world-location';
 import type { CurrencyBlock, GameCurrency } from '@interfaces/content-currency';
@@ -52,7 +53,10 @@ export function locationUpgradeLevel(
   location: WorldLocation,
   upgrade: LocationUpgradeContent,
 ): number {
-  return location.locationUpgrades?.[upgrade.id] ?? 0;
+  return (
+    (location.locationUpgrades?.[upgrade.id] ?? 0) +
+    (location.locationUpgrades?.[upgrade.pairedLocationUpgradeId] ?? 0)
+  );
 }
 
 export function locationCanUpgrade(
@@ -78,7 +82,12 @@ export function locationAvailableUpgrades(
 
   return getEntriesByType<LocationUpgradeContent>('locationupgrade').filter(
     (upgrade) => {
-      if (location.unclaimTime <= 0 && upgrade.boostedUnclaimableCount)
+      const permanentClaimed = locationIsPermanentlyClaimed(location);
+      if (permanentClaimed && upgrade.boostedUnclaimableCount) return false;
+
+      if (permanentClaimed && upgrade.requireClaimType === 'temporary')
+        return false;
+      if (!permanentClaimed && upgrade.requireClaimType === 'permanent')
         return false;
 
       return (
@@ -175,7 +184,10 @@ export function locationUpgrade(
     upgradePermanentlyClaimNearbyClaimedNodes(location);
   }
 
-  if (upgrade.boostedProductionValuePercentPerLevel) {
+  if (
+    upgrade.boostedProductionValuePercentPerLevel ||
+    upgrade.boostedDustProductionPerLevel
+  ) {
     currencyClaimsUpdate();
   }
 
@@ -202,10 +214,18 @@ export function locationUpgradeStatTotal(
   location: WorldLocation,
   key: keyof LocationUpgradeContentNumerics,
 ): number {
-  return sumBy(
-    Object.keys(location.locationUpgrades ?? {}),
-    (upgKey) =>
+  return sumBy(Object.keys(location.locationUpgrades ?? {}), (upgKey) => {
+    const upgradeData = getEntry<LocationUpgradeContent>(upgKey)!;
+    const permanentlyClaimed = locationIsPermanentlyClaimed(location);
+
+    if (permanentlyClaimed && upgradeData.requireClaimType === 'temporary')
+      return 0;
+    if (!permanentlyClaimed && upgradeData.requireClaimType === 'permanent')
+      return 0;
+
+    return (
       (location.locationUpgrades[upgKey as LocationUpgradeId] ?? 0) *
-      (getEntry<LocationUpgradeContent>(upgKey)?.[key] ?? 0),
-  );
+      (upgradeData?.[key] ?? 0)
+    );
+  });
 }
