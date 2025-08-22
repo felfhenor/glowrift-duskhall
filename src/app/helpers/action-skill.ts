@@ -4,7 +4,7 @@ import { notifySuccess } from '@helpers/notify';
 import type { EquipmentSkill } from '@interfaces';
 
 export function actionSkillSalvageValue(item: EquipmentSkill): number {
-  return item.dropLevel * 100;
+  return (item.dropLevel ?? 1) * 100;
 }
 
 export function actionSkillSalvage(item: EquipmentSkill): void {
