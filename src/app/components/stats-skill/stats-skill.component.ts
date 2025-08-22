@@ -15,6 +15,7 @@ import {
   symmetryCopiesRequired,
   symmetryLevel,
   symmetryLevelDescription,
+  symmetryLevelRarity,
   symmetrySkillBonusDescription,
   talentsForHero,
 } from '@helpers';
@@ -112,6 +113,10 @@ export class StatsSkillComponent {
       };
     });
   });
+
+  public symmetryTextRarity = computed(() =>
+    symmetryLevelRarity(this.symmetryLevel()),
+  );
 
   public symmetryText = computed(() => {
     const skill = this.skill() as EquipmentSkill;

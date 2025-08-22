@@ -16,6 +16,7 @@ import {
   symmetryItemBonusDescription,
   symmetryLevel,
   symmetryLevelDescription,
+  symmetryLevelRarity,
 } from '@helpers';
 import type {
   ElementBlock,
@@ -88,6 +89,10 @@ export class StatsItemComponent {
         multiplier: itemElementMultiplier(this.item(), el),
       }))
       .filter((e) => e.multiplier !== 0),
+  );
+
+  public symmetryTextRarity = computed(() =>
+    symmetryLevelRarity(this.symmetryLevel()),
   );
 
   public symmetryText = computed(() => {

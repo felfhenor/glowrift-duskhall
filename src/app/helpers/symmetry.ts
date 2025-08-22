@@ -5,7 +5,7 @@ import {
 import { gamestate } from '@helpers/state-game';
 import type { EquipmentItem } from '@interfaces/content-equipment';
 import type { EquipmentSkill } from '@interfaces/content-skill';
-import type { SymmetryLevel } from '@interfaces/droppable';
+import type { DropRarity, SymmetryLevel } from '@interfaces/droppable';
 
 export function symmetryCopiesRequired(forLevel: SymmetryLevel): number {
   const requirements: Record<SymmetryLevel, number> = {
@@ -32,6 +32,19 @@ export function symmetryLevel(
   }
 
   return 0;
+}
+
+export function symmetryLevelRarity(forLevel: SymmetryLevel): string {
+  const rarities: Record<SymmetryLevel, DropRarity> = {
+    0: 'Common',
+    1: 'Common',
+    2: 'Uncommon',
+    3: 'Rare',
+    4: 'Mystical',
+    5: 'Legendary',
+  };
+
+  return rarities[forLevel] || '';
 }
 
 export function symmetryLevelDescription(forLevel: SymmetryLevel): string {
