@@ -42,6 +42,11 @@ vi.mock('@helpers/gameloop-travel', () => ({
   gameloopTravel: vi.fn(),
 }));
 
+vi.mock('@helpers/claim-log', () => ({
+  beginClaimLogCommits: vi.fn(),
+  endClaimLogCommits: vi.fn(),
+}));
+
 vi.mock('@helpers/logging', () => ({
   debug: vi.fn(),
 }));
@@ -74,6 +79,7 @@ vi.mock('@helpers/world-location', () => ({
 }));
 
 // Import the mocked functions and the functions under test
+import { beginClaimLogCommits, endClaimLogCommits } from '@helpers/claim-log';
 import { defaultGameState } from '@helpers/defaults';
 import {
   gameloop,
@@ -488,6 +494,14 @@ describe('Gameloop Functions', () => {
         expect(gameloopExplore).toHaveBeenCalledWith();
         expect(gameloopFestival).toHaveBeenCalledWith(3600);
         expect(gameloopTimers).toHaveBeenCalledWith(3600);
+      });
+    });
+
+    describe('claim log integration', () => {
+      it('should call beginClaimLogCommits at start of gameloop', () => {
+        gameloop(1);
+
+        expect(beginClaimLogCommits).toHaveBeenCalledTimes(1);
       });
     });
   });
