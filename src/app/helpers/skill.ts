@@ -115,13 +115,20 @@ export function skillCreateWithSymmetry(
   const skill = structuredClone(skillData);
 
   const allSkillTechniques = skill.techniques;
-  const copyTechniques = structuredClone(allSkillTechniques);
 
   const skillSymmetry = symmetryLevel(skill);
+  const symmetryStatBoost = 1 + skillSymmetry * 0.05;
+  skill.techniques.forEach((t) => {
+    Object.keys(t.damageScaling).forEach((stat) => {
+      t.damageScaling[stat as GameStat] *= symmetryStatBoost;
+    });
+  });
+
   let copyStatValue = 0;
   if (skillSymmetry >= 3) copyStatValue = 0.25;
   if (skillSymmetry >= 5) copyStatValue = 0.5;
 
+  const copyTechniques = structuredClone(allSkillTechniques);
   if (copyStatValue > 0) {
     copyTechniques.forEach((t) => {
       Object.keys(t.damageScaling).forEach((stat) => {
