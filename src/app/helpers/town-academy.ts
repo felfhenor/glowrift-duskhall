@@ -281,7 +281,7 @@ export function academyIncreaseSymmetry(skill: EquipmentSkill): void {
   const matching = symmetrySkillsMatchingSkill(skill);
   if (matching.length === 0) return;
 
-  skillInventoryRemove(matching[0]);
+  skillInventoryRemove([matching[0]]);
 
   symmetryIncreaseCount(skill, 1 + (matching[0].mods?.symmetryCount ?? 0));
 

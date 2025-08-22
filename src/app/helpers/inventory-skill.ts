@@ -43,10 +43,12 @@ export function skillInventoryAdd(item: EquipmentSkill): void {
   currencyGain('Mana', value);
 }
 
-export function skillInventoryRemove(item: EquipmentSkill): void {
+export function skillInventoryRemove(items: EquipmentSkill[]): void {
+  const itemIds = items.map((i) => i.id);
+
   updateGamestate((state) => {
     state.inventory.skills = state.inventory.skills.filter(
-      (i) => i.id !== item.id,
+      (i) => !itemIds.includes(i.id),
     );
     return state;
   });
@@ -66,7 +68,7 @@ export function skillEquip(
   heroSkills[slot] = item;
   heroUpdateData(hero);
 
-  skillInventoryRemove(item);
+  skillInventoryRemove([item]);
   heroRecalculateStats(hero.id);
 
   analyticsSendDesignEvent(`Game:Hero:EquipSkill:${item.name}`);

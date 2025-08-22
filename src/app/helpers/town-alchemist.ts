@@ -16,13 +16,14 @@ export function alchemistCurrencyMultiplier(): number {
 }
 
 export function alchemistSalvageSkills(items: EquipmentSkill[]): void {
-  items.forEach((item) => {
-    alchemistSalvageSkill(item);
-  });
+  skillInventoryRemove(items);
+
+  const currenciesGain = alchemistMultiSkillSalvageCurrencyGain(items);
+  currencyGainMultiple(currenciesGain);
 }
 
 export function alchemistSalvageSkill(skill: EquipmentSkill): void {
-  skillInventoryRemove(skill);
+  skillInventoryRemove([skill]);
 
   const currenciesGain = alchemistSkillSalvageCurrencyGain(skill);
   currencyGainMultiple(currenciesGain);
@@ -50,7 +51,7 @@ export function alchemistMultiSkillSalvageCurrencyGain(
   return result;
 }
 
-export function alchemistSkillSalvageCurrencyGain(
+function alchemistSkillSalvageCurrencyGain(
   skill: EquipmentSkill,
 ): Partial<Record<GameCurrency, number>> {
   const currencies: Partial<Record<GameCurrency, number>> = {};

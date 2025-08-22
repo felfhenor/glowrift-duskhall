@@ -66,10 +66,12 @@ export function itemInventoryAdd(item: EquipmentItem): void {
   }
 }
 
-export function itemInventoryRemove(item: EquipmentItem): void {
+export function itemInventoryRemove(items: EquipmentItem[]): void {
+  const itemIds = items.map((item) => item.id);
+
   updateGamestate((state) => {
     state.inventory.items = state.inventory.items.filter(
-      (i) => i.id !== item.id,
+      (i) => !itemIds.includes(i.id),
     );
     return state;
   });
@@ -84,7 +86,7 @@ export function itemEquip(hero: Hero, item: EquipmentItem): void {
   hero.equipment[itemSlotForItem(item)] = item;
   heroUpdateData(hero);
 
-  itemInventoryRemove(item);
+  itemInventoryRemove([item]);
 
   heroRecalculateStats(hero.id);
 

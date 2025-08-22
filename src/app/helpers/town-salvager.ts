@@ -17,13 +17,14 @@ export function salvagerCurrencyMultiplier(): number {
 }
 
 export function salvagerSalvageItems(items: EquipmentItem[]): void {
-  items.forEach((item) => {
-    salvagerSalvageItem(item);
-  });
+  itemInventoryRemove(items);
+
+  const currenciesGain = salvagerMultiItemSalvageCurrencyGain(items);
+  currencyGainMultiple(currenciesGain);
 }
 
 export function salvagerSalvageItem(item: EquipmentItem): void {
-  itemInventoryRemove(item);
+  itemInventoryRemove([item]);
 
   const currenciesGain = salvagerItemSalvageCurrencyGain(item);
   currencyGainMultiple(currenciesGain);
@@ -51,7 +52,7 @@ export function salvagerMultiItemSalvageCurrencyGain(
   return result;
 }
 
-export function salvagerItemSalvageCurrencyGain(
+function salvagerItemSalvageCurrencyGain(
   item: EquipmentItem,
 ): Partial<Record<GameCurrency, number>> {
   const currency: GameCurrency = `${item.rarity} Dust`;

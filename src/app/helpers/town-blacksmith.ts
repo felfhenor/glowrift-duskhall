@@ -334,7 +334,7 @@ export function blacksmithIncreaseSymmetry(item: EquipmentItem): void {
   const matching = symmetryItemsMatchingItem(item);
   if (matching.length === 0) return;
 
-  itemInventoryRemove(matching[0]);
+  itemInventoryRemove([matching[0]]);
 
   const oldSymmetryLevel = symmetryLevel(item);
   symmetryIncreaseCount(item, 1 + (matching[0].mods?.symmetryCount ?? 0));

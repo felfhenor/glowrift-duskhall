@@ -10,7 +10,7 @@ export function actionSkillSalvageValue(item: EquipmentSkill): number {
 export function actionSkillSalvage(item: EquipmentSkill): void {
   const manaGained = actionSkillSalvageValue(item);
 
-  skillInventoryRemove(item);
+  skillInventoryRemove([item]);
   currencyGain('Mana', manaGained);
 
   notifySuccess(`Salvaged ${item.name} for ${manaGained} mana!`);

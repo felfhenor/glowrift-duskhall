@@ -34,7 +34,7 @@ export function actionItemSalvageValue(item: EquipmentItemContent): number {
 export function actionItemSalvage(item: EquipmentItem): void {
   const manaGained = actionItemSalvageValue(item);
 
-  itemInventoryRemove(item);
+  itemInventoryRemove([item]);
   currencyGain('Mana', manaGained);
 
   notifySuccess(`Salvaged ${item.name} for ${manaGained} mana!`);
