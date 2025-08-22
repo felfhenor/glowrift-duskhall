@@ -62,6 +62,7 @@ export function heroRecalculateStats(heroId: HeroId): void {
   }
 
   const newStats = heroStats(thisHero);
+  newStats.Health = Math.floor(newStats.Health);
 
   heroUpdateData(thisHero.id, {
     totalStats: newStats,
