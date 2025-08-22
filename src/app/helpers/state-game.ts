@@ -1,6 +1,6 @@
 import { signal } from '@angular/core';
 import { defaultGameState } from '@helpers/defaults';
-import { error } from '@helpers/logging';
+import { debug, error } from '@helpers/logging';
 import { schedulerYield } from '@helpers/scheduler';
 import { indexedDbSignal } from '@helpers/signal';
 import {
@@ -31,6 +31,7 @@ export function setGameState(state: GameState, commit = true): void {
   _liveGameState.set(state);
 
   if (commit) {
+    debug('GameState:Commit', 'Committing game state changes.');
     saveGameState();
   }
 }
