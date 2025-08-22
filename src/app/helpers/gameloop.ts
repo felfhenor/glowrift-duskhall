@@ -1,6 +1,7 @@
 import { LoggerTimer } from 'logger-timer';
 
 import { computed } from '@angular/core';
+import { beginClaimLogCommits, endClaimLogCommits } from '@helpers/claim-log';
 import { gameloopAutoTravel } from '@helpers/gameloop-autotravel';
 import { gameloopCurrency } from '@helpers/gameloop-currency';
 import { gameloopExplore } from '@helpers/gameloop-explore';
@@ -42,6 +43,7 @@ export async function gameloop(totalTicks: number): Promise<void> {
   }
 
   gamestateTickStart();
+  beginClaimLogCommits();
 
   const ticksToCalculate = totalTicks * getOption('debugTickMultiplier');
   const numTicks = clamp(ticksToCalculate, 1, 3600);
@@ -101,6 +103,7 @@ export async function gameloop(totalTicks: number): Promise<void> {
     });
 
     await schedulerYield();
+    endClaimLogCommits();
     saveGameState();
     debug('Gameloop:Save', `Saving @ tick ${currentTick}`);
   }

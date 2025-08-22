@@ -6,6 +6,22 @@ import mustache from 'mustache';
 
 export const claimLog = localStorageSignal<ClaimLog[]>('claimLog', []);
 
+let pendingClaimLogMessages: ClaimLog[] = [];
+
+export function beginClaimLogCommits() {
+  pendingClaimLogMessages = [];
+}
+
+export function endClaimLogCommits() {
+  if (pendingClaimLogMessages.length > 0) {
+    claimLog.update((logs) =>
+      [...pendingClaimLogMessages, ...logs].slice(0, 500),
+    );
+  }
+
+  pendingClaimLogMessages = [];
+}
+
 export function claimFormatMessage(template: string, props: unknown): string {
   return mustache.render(template, props);
 }
@@ -22,9 +38,10 @@ export function claimMessageLog(node: WorldLocation, message: string): void {
     locationName: node.name,
   };
 
-  claimLog.update((logs) => [newLog, ...logs].slice(0, 500));
+  pendingClaimLogMessages.unshift(newLog);
 }
 
 export function claimLogReset(): void {
   claimLog.set([]);
+  pendingClaimLogMessages = [];
 }
