@@ -81,7 +81,7 @@ describe('Action Skill Functions', () => {
     it('should salvage skill and grant mana', () => {
       actionSkillSalvage(testSkill);
 
-      expect(vi.mocked(skillInventoryRemove)).toHaveBeenCalledWith(testSkill);
+      expect(vi.mocked(skillInventoryRemove)).toHaveBeenCalledWith([testSkill]);
       expect(vi.mocked(currencyGain)).toHaveBeenCalledWith('Mana', 500);
       expect(vi.mocked(notifySuccess)).toHaveBeenCalledWith(
         'Salvaged Test Skill for 500 mana!',

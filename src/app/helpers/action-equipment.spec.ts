@@ -68,6 +68,8 @@ describe('Action Equipment Functions', () => {
     traitIds: [] as TraitEquipmentId[],
     skillIds: [] as EquipmentSkillId[],
     unableToUpgrade: [],
+    description: '',
+    symmetryCount: 0,
     mods: {
       enchantLevel: 0,
       baseStats: {} as Record<GameStat, number>,
@@ -112,7 +114,7 @@ describe('Action Equipment Functions', () => {
 
       actionItemSalvage(testItem);
 
-      expect(itemInventoryRemove).toHaveBeenCalledWith(testItem);
+      expect(itemInventoryRemove).toHaveBeenCalledWith([testItem]);
       expect(currencyGain).toHaveBeenCalledWith('Mana', expectedValue);
       expect(notifySuccess).toHaveBeenCalledWith(
         `Salvaged ${testItem.name} for ${expectedValue} mana!`,
