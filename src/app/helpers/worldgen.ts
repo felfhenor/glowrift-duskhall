@@ -570,7 +570,7 @@ export async function worldgenGenerateWorld(
 
     for (const existingNode of existingVillagesAndTowns) {
       const distance = distanceBetweenNodes({ x, y }, existingNode);
-      if (distance < 7) {
+      if (distance < 9) {
         return false;
       }
     }
