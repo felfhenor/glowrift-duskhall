@@ -1,5 +1,5 @@
 import { DecimalPipe, TitleCasePipe } from '@angular/common';
-import { Component, computed } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed } from '@angular/core';
 import { AtlasImageComponent } from '@components/atlas-image/atlas-image.component';
 import { BlankSlateComponent } from '@components/blank-slate/blank-slate.component';
 import { ButtonCloseComponent } from '@components/button-close/button-close.component';
@@ -43,6 +43,7 @@ import { sortBy } from 'es-toolkit/compat';
 
 @Component({
   selector: 'app-panel-location',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CardPageComponent,
     IconComponent,
