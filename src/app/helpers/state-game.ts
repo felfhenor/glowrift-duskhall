@@ -45,12 +45,13 @@ export async function updateGamestate(
       error(
         'GameState:Update',
         `Failed to update game state. Would be set to a falsy value.`,
-        new Error().stack,
+        new Error(),
       );
       return;
     }
 
     tickGamestate = res;
+
     return;
   }
 
@@ -66,7 +67,7 @@ export async function updateGamestate(
     return;
   }
 
-  _liveGameState.set(structuredClone(res));
+  setGameState(structuredClone(res));
 }
 
 export function resetGameState(): void {
