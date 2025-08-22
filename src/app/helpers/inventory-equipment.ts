@@ -81,12 +81,8 @@ export function itemEquip(hero: Hero, item: EquipmentItem): void {
     itemUnequip(hero, existingItem);
   }
 
-  heroUpdateData(hero.id, {
-    equipment: {
-      ...hero.equipment,
-      [itemSlotForItem(item)]: item,
-    },
-  });
+  hero.equipment[itemSlotForItem(item)] = item;
+  heroUpdateData(hero);
 
   itemInventoryRemove(item);
 
@@ -96,12 +92,8 @@ export function itemEquip(hero: Hero, item: EquipmentItem): void {
 }
 
 export function itemUnequip(hero: Hero, item: EquipmentItem): void {
-  heroUpdateData(hero.id, {
-    equipment: {
-      ...hero.equipment,
-      [itemSlotForItem(item)]: undefined,
-    },
-  });
+  hero.equipment[itemSlotForItem(item)] = undefined;
+  heroUpdateData(hero);
 
   itemInventoryAdd(item);
   heroRecalculateStats(hero.id);

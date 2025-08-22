@@ -16,11 +16,11 @@ export function allHeroes(): Hero[] {
   return gamestate().hero.heroes;
 }
 
-export function heroUpdateData(heroId: HeroId, heroData: Partial<Hero>): void {
+export function heroUpdateData(heroData: Hero): void {
   updateGamestate((state) => {
-    const hero = state.hero.heroes.find((f) => f.id === heroId);
+    const hero = state.hero.heroes.find((f) => f.id === heroData.id);
     if (!hero) {
-      throw new Error(`Hero with ID ${heroId} not found`);
+      throw new Error(`Hero with ID ${heroData.id} not found`);
     }
 
     Object.assign(hero, heroData);

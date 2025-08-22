@@ -31,6 +31,8 @@ function migrateEquippedSkills() {
     const heroSkills = hero.skills
       .filter(Boolean)
       .map((s) => getUpdatedSkill(s!));
-    heroUpdateData(hero.id, { skills: heroSkills });
+
+    hero.skills = heroSkills;
+    heroUpdateData(hero);
   });
 }

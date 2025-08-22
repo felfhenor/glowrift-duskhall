@@ -7,7 +7,7 @@ import {
   exploreProgressPercent,
   exploringUpdateGlobalStatusText,
 } from '@helpers/explore';
-import { allHeroes, heroUpdateData } from '@helpers/hero';
+import { allHeroes, heroGet, heroUpdateData } from '@helpers/hero';
 import { heroAllGainXp } from '@helpers/hero-xp';
 import { locationTraitCurrencySpecialModifier } from '@helpers/trait-location-currency';
 import { travelHome } from '@helpers/travel';
@@ -36,9 +36,11 @@ export function combatantIsDead(combatant: Combatant): boolean {
 
 function updateHeroHealthAfterCombat(combat: Combat): void {
   combat.heroes.forEach((combatant) => {
-    heroUpdateData(combatant.id as HeroId, {
-      hp: combatant.hp,
-    });
+    const hero = heroGet(combatant.id as HeroId);
+    if (!hero) return;
+
+    hero.hp = combatant.hp;
+    heroUpdateData(hero);
   });
 }
 

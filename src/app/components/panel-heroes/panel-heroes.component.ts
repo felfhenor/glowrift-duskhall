@@ -98,6 +98,7 @@ export class PanelHeroesComponent {
   }
 
   equipItem(item: EquipmentItem) {
+    console.log('called');
     itemEquip(this.activeHero(), item);
   }
 

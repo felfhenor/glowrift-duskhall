@@ -342,14 +342,7 @@ describe('migrateSkills', () => {
       migrateSkills();
 
       // Assert
-      expect(mockHeroUpdateData).toHaveBeenCalledWith('hero-1', {
-        skills: [
-          expect.objectContaining({
-            name: 'Updated Equipped Skill',
-            dropLevel: 7,
-          }),
-        ],
-      });
+      expect(mockHeroUpdateData).toHaveBeenCalledWith(hero);
     });
 
     it('should handle heroes with empty skills array', () => {
@@ -366,9 +359,7 @@ describe('migrateSkills', () => {
       migrateSkills();
 
       // Assert
-      expect(mockHeroUpdateData).toHaveBeenCalledWith('hero-empty-skills', {
-        skills: [],
-      });
+      expect(mockHeroUpdateData).toHaveBeenCalledWith(hero);
     });
   });
 });

@@ -30,6 +30,9 @@ export class PanelHeroesTargettingComponent implements OnInit, OnChanges {
   }
 
   public setTargettingType(type: CombatantTargettingType): void {
-    heroUpdateData(this.hero().id, { targettingType: type });
+    const heroData = this.hero();
+    heroData.targettingType = type;
+
+    heroUpdateData(heroData);
   }
 }

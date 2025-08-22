@@ -86,11 +86,11 @@ export class GameSetupWorldComponent implements OnInit {
     setWorldConfig(this.selectedWorldSize());
 
     for (let h = 0; h < 4; h++) {
-      const heroId = gamestate().hero.heroes[h].id;
-      heroUpdateData(heroId, {
-        name: this.heroNames[h](),
-        sprite: this.heroSprites[h](),
-      });
+      const hero = gamestate().hero.heroes[h];
+      hero.name = this.heroNames[h]();
+      hero.sprite = this.heroSprites[h]();
+
+      heroUpdateData(hero);
     }
 
     await this.router.navigate(['/setup', 'generate']);

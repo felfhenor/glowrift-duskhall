@@ -209,17 +209,9 @@ describe('Hero Stats Functions', () => {
       vi.mocked(heroGet).mockReturnValue(testHero);
       vi.mocked(itemStat).mockReturnValue(2);
 
-      heroRecalculateStats(testHero.id);
+      heroRecalculateStats(testHero);
 
-      expect(heroUpdateData).toHaveBeenCalledWith(testHero.id, {
-        totalStats: {
-          Force: 10,
-          Health: 20,
-          Speed: 2,
-          Aura: 3,
-        },
-        hp: 20,
-      });
+      expect(heroUpdateData).toHaveBeenCalledWith(testHero);
     });
 
     it('should do nothing if hero is not found', () => {

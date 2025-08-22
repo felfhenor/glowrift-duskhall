@@ -14,12 +14,10 @@ export function heroRemainingTalentPoints(hero: Hero): number {
 }
 
 export function heroSpendTalentPoint(hero: Hero, talentId: string): void {
-  heroUpdateData(hero.id, {
-    talents: {
-      ...hero.talents,
-      [talentId]: (hero.talents[talentId] ?? 0) + 1,
-    },
-  });
+  if (heroRemainingTalentPoints(hero) <= 0) return;
+
+  hero.talents[talentId] = (hero.talents[talentId] ?? 0) + 1;
+  heroUpdateData(hero);
 }
 
 export function heroHasTalent(hero: Hero, talentId: string): boolean {

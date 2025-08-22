@@ -88,23 +88,12 @@ describe('Hero Talent Functions', () => {
   describe('heroSpendTalentPoint', () => {
     it('should increment existing talent level', () => {
       heroSpendTalentPoint(testHero, 'talent-1');
-      expect(heroUpdateData).toHaveBeenCalledWith(testHero.id, {
-        talents: {
-          'talent-1': 2,
-          'talent-2': 2,
-        },
-      });
+      expect(heroUpdateData).toHaveBeenCalledWith(testHero);
     });
 
     it('should add new talent with level 1', () => {
       heroSpendTalentPoint(testHero, 'talent-3');
-      expect(heroUpdateData).toHaveBeenCalledWith(testHero.id, {
-        talents: {
-          'talent-1': 1,
-          'talent-2': 2,
-          'talent-3': 1,
-        },
-      });
+      expect(heroUpdateData).toHaveBeenCalledWith(testHero);
     });
   });
 

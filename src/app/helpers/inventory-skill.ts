@@ -63,11 +63,8 @@ export function skillEquip(
     skillUnequip(hero, existingItem, slot);
   }
 
-  hero.skills[slot] = item;
-
-  heroUpdateData(hero.id, {
-    skills: heroSkills,
-  });
+  heroSkills[slot] = item;
+  heroUpdateData(hero);
 
   skillInventoryRemove(item);
   heroRecalculateStats(hero.id);
@@ -83,9 +80,7 @@ export function skillUnequip(
   const heroSkills = hero.skills;
   heroSkills[slot] = undefined;
 
-  heroUpdateData(hero.id, {
-    skills: heroSkills,
-  });
+  heroUpdateData(hero);
 
   skillInventoryAdd(item);
   heroRecalculateStats(hero.id);

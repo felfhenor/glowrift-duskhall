@@ -73,7 +73,7 @@ describe('Hero Helper Functions', () => {
       } as unknown as ReturnType<typeof gamestate>);
 
       expect(() =>
-        heroUpdateData('non-existent' as HeroId, { level: 2 }),
+        heroUpdateData({ id: 'non-existent' as HeroId, name: 'hero' } as Hero),
       ).toThrow('Hero with ID non-existent not found');
     });
   });

@@ -28,21 +28,23 @@ function migrateInventoryItems() {
 
 function migrateEquippedItems() {
   allHeroes().forEach((hero) => {
-    heroUpdateData(hero.id, {
-      equipment: {
-        accessory: hero.equipment.accessory
-          ? getUpdatedItem(hero.equipment.accessory)
-          : undefined,
-        armor: hero.equipment.armor
-          ? getUpdatedItem(hero.equipment.armor)
-          : undefined,
-        trinket: hero.equipment.trinket
-          ? getUpdatedItem(hero.equipment.trinket)
-          : undefined,
-        weapon: hero.equipment.weapon
-          ? getUpdatedItem(hero.equipment.weapon)
-          : undefined,
-      },
-    });
+    const heroEquipment = hero.equipment;
+    heroEquipment.accessory = heroEquipment.accessory
+      ? getUpdatedItem(heroEquipment.accessory)
+      : undefined;
+
+    heroEquipment.armor = heroEquipment.armor
+      ? getUpdatedItem(heroEquipment.armor)
+      : undefined;
+
+    heroEquipment.trinket = heroEquipment.trinket
+      ? getUpdatedItem(heroEquipment.trinket)
+      : undefined;
+
+    heroEquipment.weapon = heroEquipment.weapon
+      ? getUpdatedItem(heroEquipment.weapon)
+      : undefined;
+
+    heroUpdateData(hero);
   });
 }

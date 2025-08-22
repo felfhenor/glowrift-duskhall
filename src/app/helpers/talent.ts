@@ -39,9 +39,8 @@ export function talentsForHero(hero: Hero): TalentContent[] {
 }
 
 export function talentRespec(hero: Hero): void {
-  heroUpdateData(hero.id, {
-    talents: {},
-  });
+  hero.talents = {};
+  heroUpdateData(hero);
 }
 
 export function talentIdsInTalentTree(

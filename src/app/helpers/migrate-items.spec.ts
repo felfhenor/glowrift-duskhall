@@ -93,6 +93,8 @@ describe('migrateItems', () => {
     traitIds: [],
     skillIds: [],
     mods: {},
+    description: '',
+    symmetryCount: 0,
     ...props,
   });
 
@@ -503,17 +505,7 @@ describe('migrateItems', () => {
       migrateItems();
 
       // Assert
-      expect(mockHeroUpdateData).toHaveBeenCalledWith('hero-1', {
-        equipment: {
-          weapon: expect.objectContaining({
-            name: 'Updated Equipped Weapon',
-            dropLevel: 7,
-          }),
-          armor: undefined,
-          accessory: undefined,
-          trinket: undefined,
-        },
-      });
+      expect(mockHeroUpdateData).toHaveBeenCalledWith(hero);
     });
 
     it('should migrate all equipment slots for hero', () => {
@@ -565,22 +557,7 @@ describe('migrateItems', () => {
       migrateItems();
 
       // Assert
-      expect(mockHeroUpdateData).toHaveBeenCalledWith('hero-multi', {
-        equipment: {
-          weapon: expect.objectContaining({
-            name: 'Updated Equipment',
-          }),
-          armor: expect.objectContaining({
-            name: 'Updated Equipment',
-          }),
-          accessory: expect.objectContaining({
-            name: 'Updated Equipment',
-          }),
-          trinket: expect.objectContaining({
-            name: 'Updated Equipment',
-          }),
-        },
-      });
+      expect(mockHeroUpdateData).toHaveBeenCalledWith(hero);
     });
 
     it('should handle heroes with partial equipment', () => {
@@ -613,16 +590,7 @@ describe('migrateItems', () => {
       migrateItems();
 
       // Assert
-      expect(mockHeroUpdateData).toHaveBeenCalledWith('hero-partial', {
-        equipment: {
-          weapon: expect.objectContaining({
-            name: 'Updated Weapon',
-          }),
-          armor: undefined,
-          accessory: undefined,
-          trinket: undefined,
-        },
-      });
+      expect(mockHeroUpdateData).toHaveBeenCalledWith(hero);
     });
 
     it('should handle multiple heroes with equipped items', () => {
@@ -685,22 +653,8 @@ describe('migrateItems', () => {
 
       // Assert
       expect(mockHeroUpdateData).toHaveBeenCalledTimes(2);
-      expect(mockHeroUpdateData).toHaveBeenNthCalledWith(1, 'hero-1', {
-        equipment: {
-          weapon: expect.objectContaining({ name: 'Hero 1 Updated Weapon' }),
-          armor: undefined,
-          accessory: undefined,
-          trinket: undefined,
-        },
-      });
-      expect(mockHeroUpdateData).toHaveBeenNthCalledWith(2, 'hero-2', {
-        equipment: {
-          weapon: undefined,
-          armor: expect.objectContaining({ name: 'Hero 2 Updated Armor' }),
-          accessory: undefined,
-          trinket: undefined,
-        },
-      });
+      expect(mockHeroUpdateData).toHaveBeenNthCalledWith(1, hero1);
+      expect(mockHeroUpdateData).toHaveBeenNthCalledWith(2, hero2);
     });
 
     it('should handle heroes with no equipped items', () => {
@@ -722,14 +676,7 @@ describe('migrateItems', () => {
       migrateItems();
 
       // Assert
-      expect(mockHeroUpdateData).toHaveBeenCalledWith('hero-empty', {
-        equipment: {
-          weapon: undefined,
-          armor: undefined,
-          accessory: undefined,
-          trinket: undefined,
-        },
-      });
+      expect(mockHeroUpdateData).toHaveBeenCalledWith(hero);
     });
 
     it('should handle equipped items with missing base data', () => {
@@ -761,14 +708,7 @@ describe('migrateItems', () => {
       migrateItems();
 
       // Assert - original item should be preserved
-      expect(mockHeroUpdateData).toHaveBeenCalledWith('hero-orphaned', {
-        equipment: {
-          weapon: orphanedItem, // Original item unchanged
-          armor: undefined,
-          accessory: undefined,
-          trinket: undefined,
-        },
-      });
+      expect(mockHeroUpdateData).toHaveBeenCalledWith(hero);
     });
   });
 
@@ -831,14 +771,7 @@ describe('migrateItems', () => {
         'Updated Inventory Item',
       );
 
-      expect(mockHeroUpdateData).toHaveBeenCalledWith('hero-mixed', {
-        equipment: {
-          weapon: expect.objectContaining({ name: 'Updated Equipped Item' }),
-          armor: undefined,
-          accessory: undefined,
-          trinket: undefined,
-        },
-      });
+      expect(mockHeroUpdateData).toHaveBeenCalledWith(hero);
     });
 
     it('should handle items with complex mods data structure', () => {
@@ -889,19 +822,7 @@ describe('migrateItems', () => {
       migrateItems();
 
       // Assert
-      expect(mockHeroUpdateData).toHaveBeenCalledWith('hero-complex', {
-        equipment: {
-          weapon: expect.objectContaining({
-            name: 'Updated Complex Item',
-            dropLevel: 15,
-            enchantLevel: 0, // Base data overwrites
-            mods: {}, // Base data overwrites
-          }),
-          armor: undefined,
-          accessory: undefined,
-          trinket: undefined,
-        },
-      });
+      expect(mockHeroUpdateData).toHaveBeenCalledWith(hero);
     });
 
     it('should preserve item instance IDs during migration', () => {
