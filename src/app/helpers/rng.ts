@@ -41,7 +41,9 @@ export function rngShuffle<T>(choices: T[], rng = rngSeeded(rngUuid())): T[] {
 export function rngChoiceIdentifiable<T extends Identifiable>(
   choices: T[],
   rng = rngSeeded(rngUuid()),
-): string {
+): string | undefined {
+  if (choices.length === 0) return undefined;
+
   return choices[Math.floor(rng() * choices.length)].id;
 }
 

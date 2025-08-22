@@ -58,6 +58,7 @@ vi.mock('@helpers/timer', () => ({
 vi.mock('@helpers/world-location', () => ({
   migrateResetClaimedNodeCounts: vi.fn(),
   migrateUnclaimMissedNodes: vi.fn(),
+  migratePermanentlyClaimedNodes: vi.fn(),
 }));
 
 import { migrateCleanupOldTimerEntries } from '@helpers/timer';
@@ -145,7 +146,13 @@ describe('migrate', () => {
       },
       heroes: [],
       position: { nodeId: 'test-node', x: 50, y: 50 },
-      travel: { nodeId: 'test-travel-node', x: 45, y: 45, ticksLeft: 0 },
+      travel: {
+        nodeId: 'test-travel-node',
+        x: 45,
+        y: 45,
+        ticksLeft: 0,
+        ticksTotal: 0,
+      },
       location: { ticksLeft: 0, ticksTotal: 0 },
       tooHardNodes: [],
     },
@@ -243,6 +250,7 @@ describe('migrate', () => {
     debugTickMultiplier: 1,
     debugSaveInterval: 30,
     audioPlay: true,
+    followHeroesOnMap: false,
     uiTheme: 'dark',
     volume: 0.5,
     gameloopPaused: false,

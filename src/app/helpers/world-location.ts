@@ -43,6 +43,13 @@ export function migrateUnclaimMissedNodes(): void {
   });
 }
 
+export function migratePermanentlyClaimedNodes(): void {
+  locationGetClaimed().forEach((claimed) => {
+    if (claimed.unclaimTime > 0) return;
+    claimed.permanentlyClaimed = true;
+  });
+}
+
 export function migrateResetClaimedNodeCounts(): void {
   const baseNodeCount = defaultNodeCountBlock();
   locationGetClaimed().forEach((node) => baseNodeCount[node.nodeType!]++);
@@ -158,7 +165,7 @@ export function locationGetNearbySafeHaven(
 }
 
 export function locationIsPermanentlyClaimed(node: WorldLocation): boolean {
-  return node.unclaimTime <= 0 && node.currentlyClaimed;
+  return node.permanentlyClaimed;
 }
 
 export function locationGetNearest(

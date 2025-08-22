@@ -875,7 +875,9 @@ function populateLocationWithGuardians(
     location,
     worldCenter,
     maxDistance,
-  ).map((i) => i.id);
+  )
+    .filter(Boolean)
+    .map((i) => i.id);
 }
 
 export function worldgenGuardiansForLocation(
@@ -903,6 +905,8 @@ export function worldgenGuardiansForLocation(
       validGuardians,
       rng,
     );
+    if (!randomGuardianDataId) return undefined;
+
     const randomGuardianData = getEntry<GuardianContent>(randomGuardianDataId);
     if (!randomGuardianData) return undefined;
 

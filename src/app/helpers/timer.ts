@@ -115,11 +115,12 @@ export function timerUnclaimVillage(action: TimerUnclaimVillage): void {
   const node = locationGet(action.location.x, action.location.y);
   if (!node) return;
 
-  if (node.unclaimTime === -1) {
+  if (node.unclaimTime === -1 || node.permanentlyClaimed) {
     updateGamestate((state) => {
       const updateNodeData = locationGet(node.x, node.y, state);
       if (updateNodeData) {
         updateNodeData.unclaimTime = 0;
+        updateNodeData.permanentlyClaimed = true;
       }
       return state;
     });

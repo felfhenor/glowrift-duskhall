@@ -261,6 +261,7 @@ export function defaultLocation(x = -1, y = -1): WorldLocation {
     x,
     y,
     claimCount: 0,
+    permanentlyClaimed: false,
     currentlyClaimed: false,
     encounterLevel: 0,
     guardianIds: [],

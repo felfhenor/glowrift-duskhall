@@ -48,7 +48,7 @@
             label="Node Lost In"
           ></app-countdown>
         </div>
-      } @else {
+      } @else if (locationData.permanentlyClaimed) {
         <div class="badge badge-success">This node is permanently safe!</div>
       }
     }

@@ -145,6 +145,7 @@ describe('defaultWorldNode', () => {
       unclaimTime: 0,
       traitIds: [],
       locationUpgrades: {},
+      permanentlyClaimed: false,
     };
 
     expect(node).toEqual(expected);

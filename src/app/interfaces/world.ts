@@ -32,6 +32,7 @@ export type WorldLocation = WorldPosition &
     nodeType?: LocationType;
     elements: WorldLocationElement[];
 
+    permanentlyClaimed: boolean;
     currentlyClaimed: boolean;
     claimCount: number;
     encounterLevel: number;

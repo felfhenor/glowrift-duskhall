@@ -22,6 +22,7 @@ vi.mock('@helpers/guardian', () => ({
 
 vi.mock('@helpers/trait-location-worldgen', () => ({
   locationTraitGuardianCountModifier: vi.fn(() => 0),
+  locationTraitEncounterLevelModifier: vi.fn(() => 0),
 }));
 
 // Import the functions to test

@@ -5,6 +5,7 @@ import { gamestate, setGameState } from '@helpers/state-game';
 import { defaultOptions, options, setOptions } from '@helpers/state-options';
 import { migrateCleanupOldTimerEntries } from '@helpers/timer';
 import {
+  migratePermanentlyClaimedNodes,
   migrateResetClaimedNodeCounts,
   migrateUnclaimMissedNodes,
 } from '@helpers/world-location';
@@ -20,6 +21,7 @@ export function migrateGameState() {
 
   migrateCleanupOldTimerEntries();
   migrateUnclaimMissedNodes();
+  migratePermanentlyClaimedNodes();
   migrateResetClaimedNodeCounts();
 }
 

@@ -161,6 +161,7 @@ function upgradePermanentlyClaimNearbyClaimedNodes(
   updateGamestate((state) => {
     locationNodesAround(location.x, location.y, radius).forEach((node) => {
       state.world.nodes[worldNodeGetAccessId(node)].unclaimTime = -1;
+      state.world.nodes[worldNodeGetAccessId(node)].permanentlyClaimed = true;
     });
 
     return state;
@@ -184,6 +185,7 @@ export function locationUpgrade(
 
   if (upgrade.boostedUnclaimableCount) {
     location.unclaimTime = -1;
+    location.permanentlyClaimed = true;
     upgradePermanentlyClaimNearbyClaimedNodes(location);
   }
 
