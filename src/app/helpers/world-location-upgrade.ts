@@ -13,6 +13,7 @@ import {
   timerRemoveActionById,
 } from '@helpers/timer';
 import { townBuildingLevel, townHasUpgrade } from '@helpers/town';
+import { locationTraitEncounterLevelModifier } from '@helpers/trait-location-worldgen';
 import { worldNodeGetAccessId } from '@helpers/world';
 import { worldNotifyUpdated } from '@helpers/world-change-notifications';
 import {
@@ -31,7 +32,9 @@ import { REVELATION_RADIUS, type WorldLocation } from '@interfaces/world';
 import { sortBy, sum, sumBy, uniq } from 'es-toolkit/compat';
 
 export function locationEncounterLevel(location: WorldLocation): number {
-  return location.encounterLevel;
+  return (
+    location.encounterLevel + locationTraitEncounterLevelModifier(location)
+  );
 }
 
 export function locationLootLevel(location: WorldLocation): number {
