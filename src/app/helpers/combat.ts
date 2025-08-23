@@ -9,9 +9,7 @@ import {
   isCombatOver,
 } from '@helpers/combat-end';
 import {
-  beginCombatLogCommits,
   combatMessageLog,
-  endCombatLogCommits,
 } from '@helpers/combat-log';
 import {
   combatCanTakeTurn,
@@ -252,8 +250,6 @@ export function combatDoCombatIteration(): void {
 
   if (combatCheckIfOver(combat)) return;
 
-  beginCombatLogCommits();
-
   combatMessageLog(combat, `_Combat round ${combat.rounds + 1}._`);
 
   const turnOrder = orderCombatantsBySpeed(combat);
@@ -294,8 +290,6 @@ export function combatDoCombatIteration(): void {
   });
 
   combatCheckIfOver(combat);
-
-  endCombatLogCommits();
 }
 
 export function combatHandleFlee(): void {

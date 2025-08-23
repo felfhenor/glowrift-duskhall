@@ -47,6 +47,10 @@ vi.mock('@helpers/claim-log', () => ({
   endClaimLogCommits: vi.fn(),
 }));
 
+vi.mock('@helpers/combat-log', () => ({
+  endCombatLogCommits: vi.fn(),
+}));
+
 vi.mock('@helpers/logging', () => ({
   debug: vi.fn(),
 }));
@@ -78,8 +82,14 @@ vi.mock('@helpers/world-location', () => ({
   locationAreAllClaimed: vi.fn(),
 }));
 
+vi.mock('@helpers/timer', () => ({
+  timerLastSaveTick: vi.fn(),
+  timerTicksElapsed: vi.fn(),
+}));
+
 // Import the mocked functions and the functions under test
 import { beginClaimLogCommits, endClaimLogCommits } from '@helpers/claim-log';
+import { endCombatLogCommits } from '@helpers/combat-log';
 import { defaultGameState } from '@helpers/defaults';
 import {
   gameloop,
@@ -102,6 +112,7 @@ import {
   updateGamestate,
 } from '@helpers/state-game';
 import { getOption, setOption } from '@helpers/state-options';
+import { timerLastSaveTick, timerTicksElapsed } from '@helpers/timer';
 import { victoryClaim, victoryHasWonForFirstTime } from '@helpers/victory';
 import { locationAreAllClaimed } from '@helpers/world-location';
 import { LoggerTimer } from 'logger-timer';
@@ -445,7 +456,7 @@ describe('Gameloop Functions', () => {
 
         gameloop(5);
 
-        expect(updateGamestate).toHaveBeenCalledTimes(2); // Called for numTicks update and for saving
+        expect(updateGamestate).toHaveBeenCalledTimes(1); // Called for numTicks update only
         expect(updateGamestate).toHaveBeenCalledWith(expect.any(Function));
 
         // Verify the state was modified correctly
@@ -498,10 +509,76 @@ describe('Gameloop Functions', () => {
     });
 
     describe('claim log integration', () => {
-      it('should call beginClaimLogCommits at start of gameloop', () => {
+      it('should not call beginClaimLogCommits at start of regular gameloop', () => {
         gameloop(1);
 
-        expect(beginClaimLogCommits).toHaveBeenCalledTimes(1);
+        expect(beginClaimLogCommits).not.toHaveBeenCalled();
+      });
+
+      it('should call endClaimLogCommits when save interval is reached', async () => {
+        // Mock timer functions to trigger save
+        vi.mocked(timerTicksElapsed).mockReturnValue(100);
+        vi.mocked(timerLastSaveTick).mockReturnValue(50);
+        vi.mocked(getOption).mockImplementation((key) => {
+          if (key === 'debugSaveInterval') return 30; // 50 + 30 = 80, which is < 100
+          if (key === 'debugTickMultiplier') return 1;
+          if (key === 'debugGameloopTimerUpdates') return false;
+          return false;
+        });
+
+        await gameloop(1);
+
+        expect(endClaimLogCommits).toHaveBeenCalledTimes(1);
+      });
+
+      it('should not call endClaimLogCommits when save interval is not reached', async () => {
+        // Mock timer functions to NOT trigger save
+        vi.mocked(timerTicksElapsed).mockReturnValue(70);
+        vi.mocked(timerLastSaveTick).mockReturnValue(50);
+        vi.mocked(getOption).mockImplementation((key) => {
+          if (key === 'debugSaveInterval') return 30; // 50 + 30 = 80, which is > 70
+          if (key === 'debugTickMultiplier') return 1;
+          if (key === 'debugGameloopTimerUpdates') return false;
+          return false;
+        });
+
+        await gameloop(1);
+
+        expect(endClaimLogCommits).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('combat log integration', () => {
+      it('should call endCombatLogCommits when save interval is reached', async () => {
+        // Mock timer functions to trigger save
+        vi.mocked(timerTicksElapsed).mockReturnValue(100);
+        vi.mocked(timerLastSaveTick).mockReturnValue(50);
+        vi.mocked(getOption).mockImplementation((key) => {
+          if (key === 'debugSaveInterval') return 30; // 50 + 30 = 80, which is < 100
+          if (key === 'debugTickMultiplier') return 1;
+          if (key === 'debugGameloopTimerUpdates') return false;
+          return false;
+        });
+
+        await gameloop(1);
+
+        expect(endCombatLogCommits).toHaveBeenCalledTimes(1);
+      });
+
+      it('should not call endCombatLogCommits when save interval is not reached', async () => {
+        // Mock timer functions to NOT trigger save
+        vi.mocked(timerTicksElapsed).mockReturnValue(70);
+        vi.mocked(timerLastSaveTick).mockReturnValue(50);
+        vi.mocked(getOption).mockImplementation((key) => {
+          if (key === 'debugSaveInterval') return 30; // 50 + 30 = 80, which is > 70
+          if (key === 'debugTickMultiplier') return 1;
+          if (key === 'debugGameloopTimerUpdates') return false;
+          return false;
+        });
+
+        await gameloop(1);
+
+        expect(endCombatLogCommits).not.toHaveBeenCalled();
       });
     });
   });
