@@ -50,6 +50,8 @@
         </div>
       } @else if (locationData.permanentlyClaimed) {
         <div class="badge badge-success">This node is permanently safe!</div>
+      } @else {
+        <div class="badge badge-danger">Node error!</div>
       }
     }
 

@@ -33,6 +33,7 @@ export function gameloopShouldRun(): boolean {
 export async function gameloop(totalTicks: number): Promise<void> {
   if (!isSetup()) return;
   if (!isGameStateReady()) return;
+  if (!gameloopShouldRun()) return;
   if (isGameloopPaused()) return;
 
   if (locationAreAllClaimed() && !victoryHasWonForFirstTime()) {
