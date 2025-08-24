@@ -3,7 +3,11 @@ import { gamestate, updateGamestate } from '@helpers/state-game';
 import { getOption } from '@helpers/state-options';
 import { isTraveling } from '@helpers/travel';
 import { globalStatusText } from '@helpers/ui';
-import { locationGet, locationGetCurrent } from '@helpers/world-location';
+import {
+  locationArriveAt,
+  locationGet,
+  locationGetCurrent,
+} from '@helpers/world-location';
 
 export function gameloopTravel(): void {
   if (!isTraveling()) return;
@@ -56,6 +60,10 @@ export function gameloopTravel(): void {
     // Center camera on hero if follow option is enabled
     if (getOption('followHeroesOnMap')) {
       cameraCenterOnPlayer();
+    }
+
+    if (newNode) {
+      locationArriveAt(newNode);
     }
   }
 }

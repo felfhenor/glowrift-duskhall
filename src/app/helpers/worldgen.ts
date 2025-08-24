@@ -31,7 +31,7 @@ import {
   locationTraitGuardianCountModifier,
   locationTraitLootCountModifier,
 } from '@helpers/trait-location-worldgen';
-import { worldNodeGetAccessId } from '@helpers/world';
+import { worldMaxDistance, worldNodeGetAccessId } from '@helpers/world';
 import {
   locationEncounterLevel,
   locationLootLevel,
@@ -274,15 +274,11 @@ function setEncounterLevels(
   });
 }
 
-function fillSpacesWithGuardians(
-  nodes: Record<string, WorldLocation>,
-  worldCenter: WorldPosition,
-  maxDistance: number,
-): void {
+function fillSpacesWithEvil(nodes: Record<string, WorldLocation>): void {
   Object.values(nodes).forEach((node) => {
-    if (!node.nodeType) return;
+    if (!node.nodeType || node.currentlyClaimed) return;
 
-    populateLocationWithGuardians(node, worldCenter, maxDistance);
+    worldgenDetermineExploreTypeAndSetValues(node);
   });
 }
 
@@ -790,7 +786,7 @@ export async function worldgenGenerateWorld(
     addElementsToWorld(config, nodes);
 
     setWorldGenStatus(`Giving darkness to the world...`);
-    fillSpacesWithGuardians(nodes, centerPosition, maxDistance);
+    fillSpacesWithEvil(nodes);
 
     setWorldGenStatus(`Giving treasure to the world...`);
     fillSpacesWithLoot(nodes);
@@ -864,20 +860,26 @@ function numLootForLocation(location: WorldLocation): number {
   return Math.max(0, modifier + (nodeTypes[location.nodeType ?? 'cave'] ?? 0));
 }
 
-function populateLocationWithGuardians(
-  location: WorldLocation,
-  worldCenter: WorldPosition,
-  maxDistance: number,
+export function worldgenDetermineExploreTypeAndSetValues(
+  node: WorldLocation,
+  rng = rngSeeded(),
 ): void {
-  if (location.currentlyClaimed) return;
+  if (node.currentlyClaimed) return;
 
-  location.guardianIds = worldgenGuardiansForLocation(
-    location,
-    worldCenter,
-    maxDistance,
-  )
-    .filter(Boolean)
-    .map((i) => i.id);
+  if (rngSucceedsChance(90, rng)) {
+    node.captureType = 'guardians';
+
+    node.guardianIds = worldgenGuardiansForLocation(
+      node,
+      gamestate().world.homeBase,
+      worldMaxDistance(),
+    )
+      .filter(Boolean)
+      .map((i) => i.id);
+    return;
+  }
+
+  node.captureType = 'time';
 }
 
 export function worldgenGuardiansForLocation(

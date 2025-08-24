@@ -22,6 +22,7 @@ import {
   isTravelingToNode,
   locationAvailableUpgrades,
   locationEncounterLevel,
+  locationExploreTimeRequired,
   locationGet,
   locationLevel,
   locationLootLevel,
@@ -91,6 +92,10 @@ export class PanelLocationComponent {
 
     return travelTimeFromCurrentLocationTo(this.location());
   });
+
+  public captureTimeSeconds = computed(() =>
+    locationExploreTimeRequired(this.location()),
+  );
 
   public isTravelingToThisNode = computed(() =>
     isTravelingToNode(this.location()),

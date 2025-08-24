@@ -40,6 +40,7 @@ export function defaultGameState(): GameState {
     },
     hero: {
       respawnTicks: 0,
+      exploreTicks: 0,
       riskTolerance: 'medium',
       nodeTypePreferences: defaultNodeTypePreferences(),
       lootRarityPreferences: defaultLootRarityPreferences(),
@@ -255,6 +256,7 @@ export function defaultLootRarityPreferences(): Record<DropRarity, boolean> {
 export function defaultLocation(x = -1, y = -1): WorldLocation {
   return {
     id: '',
+    captureType: 'guardians',
     elements: [],
     name: '',
     nodeType: undefined,

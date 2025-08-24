@@ -128,18 +128,38 @@
         </div>
       } @else {
         <div class="flex flex-1 flex-col">
-          <div class="my-1 text-lg">Guardians ({{ guardians().length }})</div>
+          @switch (locationData.captureType) {
+            @case ('guardians') {
+              <div class="my-1 text-lg">
+                Guardians ({{ guardians().length }})
+              </div>
 
-          <div class="w-full grid grid-cols-7 max-w-[486px] gap-1">
-            @for (guardian of guardians(); track $index) {
-              <app-location-guardian-display
-                class="w-[68px] h-[68px]"
-                [guardian]="guardian"
-              ></app-location-guardian-display>
-            } @empty {
-              <div class="col-span-3">None</div>
+              <div class="w-full grid grid-cols-7 max-w-[486px] gap-1">
+                @for (guardian of guardians(); track $index) {
+                  <app-location-guardian-display
+                    class="w-[68px] h-[68px]"
+                    [guardian]="guardian"
+                  ></app-location-guardian-display>
+                } @empty {
+                  <div class="col-span-3">None</div>
+                }
+              </div>
             }
-          </div>
+
+            @case ('time') {
+              <div class="my-1 text-lg">Capture Time</div>
+
+              <div class="w-full">
+                {{ captureTimeSeconds() | number }} seconds
+              </div>
+            }
+
+            @default {
+              <app-blank-slate class="!h-48 col-span-3">
+                No specified capture type.
+              </app-blank-slate>
+            }
+          }
         </div>
 
         <div class="flex flex-1 flex-col">

@@ -4,6 +4,8 @@ import type { LocationType } from '@interfaces/content-worldconfig';
 import type { GameElement } from '@interfaces/element';
 import type { Identifiable } from '@interfaces/identifiable';
 
+export type WorldLocationCaptureType = 'guardians' | 'time';
+
 export interface QuadtreePoint {
   x: number;
   y: number;
@@ -30,6 +32,7 @@ export interface WorldLocationElement {
 export type WorldLocation = WorldPosition &
   Identifiable & {
     nodeType?: LocationType;
+    captureType: WorldLocationCaptureType;
     elements: WorldLocationElement[];
 
     permanentlyClaimed: boolean;

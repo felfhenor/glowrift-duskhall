@@ -28,6 +28,7 @@ vi.mock('@helpers/ui', () => ({
 vi.mock('@helpers/world-location', () => ({
   locationGet: vi.fn(),
   locationGetCurrent: vi.fn(),
+  locationArriveAt: vi.fn(),
 }));
 
 // Import mocked functions

@@ -1,4 +1,5 @@
 import { claimMessageLog } from '@helpers/claim-log';
+import { combatGenerateForLocation } from '@helpers/combat-create';
 import { getEntry } from '@helpers/content';
 import { currencyClaimsGain, currencyClaimsLose } from '@helpers/currency';
 import { defaultLocation, defaultNodeCountBlock } from '@helpers/defaults';
@@ -13,14 +14,14 @@ import {
   timerTicksElapsed,
 } from '@helpers/timer';
 import { globalStatusText } from '@helpers/ui';
-import { worldMaxDistance, worldNodeGetAccessId } from '@helpers/world';
+import { worldNodeGetAccessId } from '@helpers/world';
 import {
   worldNotifyClaim,
   worldNotifyUnclaimed,
 } from '@helpers/world-change-notifications';
 import { locationUpgradeStatTotal } from '@helpers/world-location-upgrade';
 import {
-  worldgenGuardiansForLocation,
+  worldgenDetermineExploreTypeAndSetValues,
   worldgenLootForLocation,
 } from '@helpers/worldgen';
 import type { EquipmentItemContent } from '@interfaces/content-equipment';
@@ -60,11 +61,34 @@ export function migrateResetClaimedNodeCounts(): void {
   });
 }
 
+export function locationExploreTimeRequired(location: WorldLocation): number {
+  return location.encounterLevel * 5;
+}
+
 export function locationClaimDuration(location: WorldLocation): number {
   return (
     (100 - location.encounterLevel) * 25 +
     locationUpgradeStatTotal(location, 'boostedTicksPerLevel')
   );
+}
+
+export function locationArriveAt(location: WorldLocation): void {
+  if (location.currentlyClaimed) return;
+
+  if (location.captureType === 'guardians') {
+    updateGamestate((state) => {
+      state.hero.combat = combatGenerateForLocation(location);
+      return state;
+    });
+  }
+
+  if (location.captureType === 'time') {
+    const timeNeeded = locationExploreTimeRequired(location);
+    updateGamestate((state) => {
+      state.hero.exploreTicks = timeNeeded;
+      return state;
+    });
+  }
 }
 
 /**
@@ -295,7 +319,6 @@ export function locationClaim(node: WorldLocation): void {
 
   discordUpdateStatus();
 }
-
 export function locationUnclaim(node: WorldLocation): void {
   currencyClaimsLose(node);
 
@@ -306,14 +329,13 @@ export function locationUnclaim(node: WorldLocation): void {
     const updateNodeData = locationGet(node.x, node.y, state);
     if (updateNodeData) {
       updateNodeData.currentlyClaimed = false;
-      updateNodeData.guardianIds = worldgenGuardiansForLocation(
-        updateNodeData,
-        gamestate().world.homeBase,
-        worldMaxDistance(),
-      ).map((i) => i.id);
+
+      worldgenDetermineExploreTypeAndSetValues(node);
+
       updateNodeData.claimLootIds = worldgenLootForLocation(updateNodeData).map(
         (i) => i.id,
       );
+
       updateNodeData.unclaimTime = 0;
 
       if (updateNodeData.nodeType) {

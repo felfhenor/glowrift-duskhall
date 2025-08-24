@@ -132,6 +132,7 @@ describe('defaultWorldNode', () => {
     const node = defaultLocation();
     const expected: WorldLocation = {
       id: '',
+      captureType: 'guardians',
       elements: [],
       name: '',
       nodeType: undefined,
