@@ -14,6 +14,7 @@ import type {
 } from '@interfaces/content-locationupgrade';
 import type { WorldLocation } from '@interfaces/world';
 import { sumBy } from 'es-toolkit/compat';
+import { debounce } from 'typescript-debounce-decorator';
 
 @Component({
   selector: 'app-location-upgrade-display',
@@ -58,6 +59,7 @@ export class LocationUpgradeDisplayComponent {
     locationUpgradeCosts(this.location(), this.upgrade()),
   );
 
+  @debounce(10)
   public buyUpgrade() {
     locationUpgrade(this.location(), this.upgrade());
   }

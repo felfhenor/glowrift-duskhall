@@ -22,6 +22,7 @@ import type { GameCurrency } from '@interfaces/content-currency';
 import type { EquipmentSkill } from '@interfaces/content-skill';
 import type { AcademyEnchant } from '@interfaces/town';
 import { TeleportDirective } from '@ngneat/overview';
+import { debounce } from 'typescript-debounce-decorator';
 
 @Component({
   selector: 'app-panel-town-academy',
@@ -75,11 +76,13 @@ export class PanelTownAcademyComponent {
     }, 0);
   }
 
+  @debounce(10)
   public enchantSkill(skill: EquipmentSkill, enchant: AcademyEnchant) {
     academyEnchantSkill(skill, enchant);
     this.reselectSkillFromState(skill);
   }
 
+  @debounce(10)
   public increaseSymmetry(skill: EquipmentSkill) {
     academyIncreaseSymmetry(skill);
     this.reselectSkillFromState(skill);

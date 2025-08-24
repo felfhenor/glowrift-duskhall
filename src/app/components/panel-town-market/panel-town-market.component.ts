@@ -15,6 +15,7 @@ import {
   currencyConversionOutputAmount,
 } from '@helpers/currency-conversion';
 import type { CurrencyContent } from '@interfaces';
+import { debounce } from 'typescript-debounce-decorator';
 
 @Component({
   selector: 'app-panel-town-market',
@@ -76,6 +77,7 @@ export class PanelTownMarketComponent {
     );
   }
 
+  @debounce(10)
   public trade() {
     const input = this.inputCurrency();
     const output = this.outputCurrency();

@@ -24,6 +24,7 @@ import {
   townUpgradeBuildingLevel,
 } from '@helpers';
 import type { GameCurrency, LocationType, TownBuilding } from '@interfaces';
+import { debounce } from 'typescript-debounce-decorator';
 
 @Component({
   selector: 'app-panel-town-building-upgrade',
@@ -99,6 +100,7 @@ export class PanelTownBuildingUpgradeComponent {
     return currencyHasAmount(type, num);
   }
 
+  @debounce(10)
   public upgrade() {
     townUpgradeBuildingLevel(this.building());
   }

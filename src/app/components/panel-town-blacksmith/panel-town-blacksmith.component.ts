@@ -28,6 +28,7 @@ import type { GameCurrency } from '@interfaces/content-currency';
 import type { EquipmentItem } from '@interfaces/content-equipment';
 import type { BlacksmithEnchant } from '@interfaces/town';
 import { TeleportDirective } from '@ngneat/overview';
+import { debounce } from 'typescript-debounce-decorator';
 
 @Component({
   selector: 'app-panel-town-blacksmith',
@@ -93,16 +94,19 @@ export class PanelTownBlacksmithComponent {
     }, 0);
   }
 
+  @debounce(10)
   public enchantItem(item: EquipmentItem, enchant: BlacksmithEnchant) {
     blacksmithEnchantItem(item, enchant);
     this.reselectItemFromState(item);
   }
 
+  @debounce(10)
   public rerollTrait(item: EquipmentItem) {
     blacksmithRerollItemTrait(item);
     this.reselectItemFromState(item);
   }
 
+  @debounce(10)
   public increaseSymmetry(item: EquipmentItem) {
     blacksmithIncreaseSymmetry(item);
     this.reselectItemFromState(item);
