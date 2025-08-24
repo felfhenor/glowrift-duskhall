@@ -8,13 +8,9 @@
       &lpar;
     }
 
-    <span class="countdown m">
-      <span [style.--value]="minutesUntilReset()"></span>
-    </span>
+    <span>{{ minutesUntilReset() }}m</span>
 
-    <span class="countdown s ml-1">
-      <span [style.--value]="secondsUntilReset()"></span>
-    </span>
+    <span class="ml-1">{{ secondsUntilReset() }}s</span>
 
     @if (parenthesize()) {
       &rpar;

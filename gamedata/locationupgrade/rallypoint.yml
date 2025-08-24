@@ -76,7 +76,7 @@
     Mana: 300
     Soul Essence: 200
 
-  boostedTicksPerLevel: 30
+  boostedTicksPerLevel: 120
 
 - id: c8f809e0-6886-42a1-a040-c20c9e5be315
   name: Rebellion from Evil
