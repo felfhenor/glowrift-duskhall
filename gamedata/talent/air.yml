@@ -141,6 +141,7 @@
   description: Air spells have a +25% chance to not consume a use.
   sprite: '0018'
 
+  requireTalentId: Winds of Change I
   applyToElements: [Air]
 
   chanceToIgnoreConsume: 25
