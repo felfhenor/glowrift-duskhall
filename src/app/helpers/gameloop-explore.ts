@@ -20,6 +20,11 @@ export function gameloopExplore(): void {
   if (!node || node.currentlyClaimed) return;
 
   if (!node.captureType || node.captureType === 'guardians') {
+    if (node.guardianIds.length === 0) {
+      locationRewardsGain(node);
+      return;
+    }
+
     if (currentCombat()?.locationName !== node.name) {
       combatReset();
     }

@@ -75,6 +75,11 @@ export function locationClaimDuration(location: WorldLocation): number {
 export function locationArriveAt(location: WorldLocation): void {
   if (location.currentlyClaimed) return;
 
+  updateGamestate((state) => {
+    state.hero.exploreTicks = 0;
+    return state;
+  });
+
   if (location.captureType === 'guardians') {
     updateGamestate((state) => {
       state.hero.combat = combatGenerateForLocation(location);
