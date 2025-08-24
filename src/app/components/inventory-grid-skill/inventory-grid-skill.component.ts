@@ -28,11 +28,10 @@ export class InventoryGridSkillComponent {
   public skills = input.required<EquipmentSkill[]>();
   public disabledSkillIds = input<EquipmentSkillId[]>([]);
   public clickableSkills = input<boolean>();
-
   public compareWithEquippedHero = input<Hero>();
   public compareWithEquippedHeroSlot = input<number>();
-
   public allowedActions = input<SkillAction[]>([]);
+  public showEquippedBy = input<boolean>(false);
 
   public skillClicked = output<EquipmentSkill>();
 

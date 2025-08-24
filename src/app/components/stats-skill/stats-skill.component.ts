@@ -2,6 +2,7 @@ import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 import { MarkerSymmetryComponent } from '@components/marker-symmetry/marker-symmetry.component';
 import {
+  allHeroes,
   getEntry,
   skillCreateForHero,
   skillCreateWithSymmetry,
@@ -37,6 +38,13 @@ import type {
 export class StatsSkillComponent {
   public skill = input.required<EquipmentSkillContent>();
   public equippingHero = input<Hero>();
+  public showEquippedBy = input<boolean>(false);
+
+  public equippedByText = computed(() => {
+    if (!this.showEquippedBy()) return '';
+
+    return allHeroes().find((h) => h.skills.includes(this.skill()))?.name ?? '';
+  });
 
   private skillWithSymmetry = computed(() =>
     skillCreateWithSymmetry(this.skill()),

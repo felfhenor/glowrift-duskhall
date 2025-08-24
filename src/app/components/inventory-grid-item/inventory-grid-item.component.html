@@ -16,6 +16,7 @@
         [class.cursor-pointer]="clickableItems()"
         [class.opacity-50]="disable.includes(item.id)"
         [class.pointer-events-none]="disable.includes(item.id)"
+        [showEquippedBy]="showEquippedBy()"
       ></app-icon-item>
     } @else {
       <app-icon-blank-slot>Bought</app-icon-blank-slot>

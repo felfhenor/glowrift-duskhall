@@ -35,6 +35,7 @@
         (skillClicked)="skillClicked.emit($event)"
         [compareWithEquippedHero]="compareSkillToHero()"
         [compareWithEquippedHeroSlot]="compareSkillToHeroSlot()"
+        [showEquippedBy]="true"
       ></app-inventory-grid-skill>
     }
 
@@ -45,6 +46,7 @@
         [allowedActions]="allowedItemActions()"
         (itemClicked)="itemClicked.emit($event)"
         [compareWithEquippedHero]="compareItemToHero()"
+        [showEquippedBy]="true"
       ></app-inventory-grid-item>
     }
 

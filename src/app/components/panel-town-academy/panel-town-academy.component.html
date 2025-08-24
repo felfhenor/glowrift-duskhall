@@ -16,7 +16,10 @@
       }
 
       @if (chosen) {
-        <app-stats-skill [skill]="chosen"></app-stats-skill>
+        <app-stats-skill
+          [skill]="chosen"
+          [showEquippedBy]="true"
+        ></app-stats-skill>
       }
     </div>
   </div>

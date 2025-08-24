@@ -28,6 +28,7 @@ import { GameCurrencyPipe } from '@pipes/game-currency.pipe';
 export class IconItemComponent {
   public item = input.required<EquipmentItemContent>();
   public compareItem = input<EquipmentItemContent>();
+  public showEquippedBy = input<boolean>(false);
 
   public itemEnchantLevel = computed(() =>
     itemEnchantLevel(this.item() as EquipmentItem),

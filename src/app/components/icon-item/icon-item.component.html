@@ -60,7 +60,10 @@
     ></app-stats-item-compare>
   } @else {
     <div class="min-w-[300px]">
-      <app-stats-item [item]="itemData"></app-stats-item>
+      <app-stats-item
+        [item]="itemData"
+        [showEquippedBy]="showEquippedBy()"
+      ></app-stats-item>
     </div>
   }
 </ng-template>

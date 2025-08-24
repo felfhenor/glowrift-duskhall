@@ -37,6 +37,7 @@ export class InventoryGridItemComponent {
   public allowedActions = input<ItemAction[]>([]);
   public compareWithEquippedHero = input<Hero>();
   public isShopList = input<boolean>(false);
+  public showEquippedBy = input<boolean>(false);
 
   public itemClicked = output<EquipmentItem>();
 

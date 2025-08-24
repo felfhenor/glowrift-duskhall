@@ -59,17 +59,19 @@ export class InventoryGridContainerComponent implements OnInit {
   public itemClicked = output<EquipmentItem>();
   public skillClicked = output<EquipmentSkill>();
 
-  public equippedItems = computed(
-    () =>
+  public equippedItems = computed(() =>
+    droppableSortedRarityList(
       allHeroes()
         .flatMap((h) => Object.values(h.equipment))
         .filter(Boolean) as EquipmentItem[],
+    ),
   );
-  public equippedSkills = computed(
-    () =>
+  public equippedSkills = computed(() =>
+    droppableSortedRarityList(
       allHeroes()
         .flatMap((h) => h.skills)
         .filter(Boolean) as EquipmentSkill[],
+    ),
   );
 
   public readonly allItemTypes: Array<{

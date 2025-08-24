@@ -29,6 +29,7 @@ export class IconSkillComponent {
   public compareSkill = input<EquipmentSkillContent>();
   public equippingHero = input<Hero>();
   public showEnchantLevel = input<boolean>(true);
+  public showEquippedBy = input<boolean>(false);
 
   public skillEnchantLevel = computed(() =>
     skillEnchantLevel(this.skill() as EquipmentSkill),

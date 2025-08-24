@@ -16,6 +16,7 @@
       (mouseleave)="animateItem.set('')"
       [class.opacity-50]="disable.includes(skill.id)"
       [class.pointer-events-none]="disable.includes(skill.id)"
+      [showEquippedBy]="showEquippedBy()"
     ></app-icon-skill>
 
     <ng-template #contextMenu let-hide let-item="data">

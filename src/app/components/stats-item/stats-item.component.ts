@@ -5,6 +5,7 @@ import { MarkerStatComponent } from '@components/marker-stat/marker-stat.compone
 import { MarkerSymmetryComponent } from '@components/marker-symmetry/marker-symmetry.component';
 import { MarkerTraitComponent } from '@components/marker-trait/marker-trait.component';
 import {
+  allHeroes,
   getEntry,
   itemElementMultiplier,
   itemEnchantLevel,
@@ -47,6 +48,16 @@ export class StatsItemComponent {
   public statDeltas = input<StatBlock>();
   public elementDeltas = input<ElementBlock>();
   public allowHorizontalCollapseOfStatBlocks = input<boolean>(false);
+  public showEquippedBy = input<boolean>(false);
+
+  public equippedByText = computed(() => {
+    if (!this.showEquippedBy()) return '';
+
+    return (
+      allHeroes().find((h) => Object.values(h.equipment).includes(this.item()))
+        ?.name ?? ''
+    );
+  });
 
   public enchantLevel = computed(() =>
     itemEnchantLevel(this.item() as EquipmentItem),
