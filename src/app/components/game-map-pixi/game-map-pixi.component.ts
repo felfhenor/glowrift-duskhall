@@ -97,6 +97,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
 
   private lastCameraX = signal<number>(0);
   private lastCameraY = signal<number>(0);
+  private lastDebugState = signal<boolean | undefined>(undefined);
 
   constructor() {
     effect(() => {
@@ -116,14 +117,17 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     });
 
     effect(() => {
-      this.debugMapNodePositions();
+      const newDebugState = this.debugMapNodePositions();
 
-      this.loggerService.debug(
-        'PixiMap:Regenerate',
-        `Toggled debugMapNodePositions`,
-      );
+      if (newDebugState !== this.lastDebugState()) {
+        this.loggerService.debug(
+          'PixiMap:Regenerate',
+          `Toggled debugMapNodePositions`,
+        );
 
-      this.updateMap();
+        this.lastDebugState.set(newDebugState);
+        this.updateMap();
+      }
     });
 
     // Effect for surgical node updates - watch for world node changes
