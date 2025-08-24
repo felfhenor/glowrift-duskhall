@@ -1,5 +1,10 @@
 import { TitleCasePipe } from '@angular/common';
-import { Component, computed, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  signal,
+} from '@angular/core';
 import { ButtonCloseComponent } from '@components/button-close/button-close.component';
 import { CardPageComponent } from '@components/card-page/card-page.component';
 import { IconHeroComponent } from '@components/icon-hero/icon-hero.component';
@@ -37,6 +42,7 @@ import type { EquipmentItem, EquipmentSkill, EquipmentSlot } from '@interfaces';
   ],
   templateUrl: './panel-heroes.component.html',
   styleUrl: './panel-heroes.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PanelHeroesComponent {
   public allHeroes = computed(() => gamestate().hero.heroes);
