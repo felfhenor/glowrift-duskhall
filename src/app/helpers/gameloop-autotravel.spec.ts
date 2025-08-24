@@ -342,7 +342,7 @@ describe('gameloopAutoTravel', () => {
         locationGetClosestUnclaimedClaimableLocation,
       ).toHaveBeenNthCalledWith(2, currentNode, []);
       expect(globalStatusText.set).toHaveBeenCalledWith(
-        'Hero party idle; adjust risk tolerance.',
+        'Hero party idle; adjust exploration preferences.',
       );
       expect(travelToNode).not.toHaveBeenCalled();
     });
@@ -392,7 +392,7 @@ describe('gameloopAutoTravel', () => {
         locationGetClosestUnclaimedClaimableLocation,
       ).toHaveBeenNthCalledWith(2, currentNode, preferredNodes);
       expect(globalStatusText.set).toHaveBeenCalledWith(
-        'Hero party idle; adjust risk tolerance.',
+        'Hero party idle; adjust exploration preferences.',
       );
       expect(travelToNode).not.toHaveBeenCalled();
     });

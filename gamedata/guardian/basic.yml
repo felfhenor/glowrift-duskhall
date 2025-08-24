@@ -735,12 +735,12 @@
   sprite: '0348'
   frames: 4
 
-  minLevel: 40
+  minLevel: 45
 
   targettingType: Random
 
   statScaling:
-    Force: 8.0
+    Force: 4.5
     Health: 80
     Speed: 2.0
     Aura: 6.0
@@ -1009,7 +1009,7 @@
   targettingType: Strongest
 
   statScaling:
-    Force: 6.0
+    Force: 4.5
     Health: 60
     Speed: 1.5
     Aura: 4.5
@@ -1028,7 +1028,6 @@
 
   skillIds:
     - Fireball II
-    - Meltdown
     - Static Gust
 
   talents:

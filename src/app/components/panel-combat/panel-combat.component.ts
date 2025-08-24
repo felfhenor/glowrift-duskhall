@@ -34,7 +34,7 @@ export class PanelCombatComponent extends OptionsBaseComponent {
 
   public readonly tabs: CombatTabLink[] = [
     {
-      name: 'Preferences',
+      name: 'Exploration Preferences',
       link: 'Preferences',
     },
     { name: 'Combat Log', link: 'CombatLog' },

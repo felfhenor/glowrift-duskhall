@@ -47,7 +47,7 @@ export function gameloopAutoTravel(): void {
       nodesWithinRiskTolerance,
     );
     if (!nextNode) {
-      globalStatusText.set('Hero party idle; adjust risk tolerance.');
+      globalStatusText.set('Hero party idle; adjust exploration preferences.');
       return;
     }
 

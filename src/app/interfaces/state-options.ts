@@ -32,7 +32,7 @@ export type CombatTab = 'Preferences' | 'CombatLog';
 export type OptionsTab = 'UI' | 'Savefile' | 'Debug';
 
 export interface CombatTabLink {
-  name: 'Preferences' | 'Combat Log' | 'Claims';
+  name: 'Exploration Preferences' | 'Combat Log' | 'Claims';
   link: CombatTab;
 }
 
