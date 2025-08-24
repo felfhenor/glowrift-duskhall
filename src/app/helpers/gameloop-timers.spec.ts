@@ -62,7 +62,7 @@ describe('gameloopTimers', () => {
       expect(timerGetTickActionsBeforeAndIncluding).toHaveBeenCalledTimes(1);
       expect(timerGetTickActionsBeforeAndIncluding).toHaveBeenCalledWith(100);
       expect(timerActionDo).toHaveBeenCalledTimes(1);
-      expect(timerActionDo).toHaveBeenCalledWith(mockActions, 100);
+      expect(timerActionDo).toHaveBeenCalledWith(mockActions);
     });
 
     it('should process multiple ticks sequentially', () => {
@@ -95,9 +95,9 @@ describe('gameloopTimers', () => {
         52,
       );
       expect(timerActionDo).toHaveBeenCalledTimes(3);
-      expect(timerActionDo).toHaveBeenNthCalledWith(1, mockActions1, 50);
-      expect(timerActionDo).toHaveBeenNthCalledWith(2, mockActions2, 51);
-      expect(timerActionDo).toHaveBeenNthCalledWith(3, mockActions3, 52);
+      expect(timerActionDo).toHaveBeenNthCalledWith(1, mockActions1);
+      expect(timerActionDo).toHaveBeenNthCalledWith(2, mockActions2);
+      expect(timerActionDo).toHaveBeenNthCalledWith(3, mockActions3);
     });
 
     it('should handle zero numTicks without processing any ticks', () => {
@@ -141,8 +141,8 @@ describe('gameloopTimers', () => {
       gameloopTimers(numTicks);
 
       expect(timerActionDo).toHaveBeenCalledTimes(2);
-      expect(timerActionDo).toHaveBeenNthCalledWith(1, emptyActions, 75);
-      expect(timerActionDo).toHaveBeenNthCalledWith(2, emptyActions, 76);
+      expect(timerActionDo).toHaveBeenNthCalledWith(1, emptyActions);
+      expect(timerActionDo).toHaveBeenNthCalledWith(2, emptyActions);
     });
 
     it('should process single timer action per tick', () => {
@@ -159,8 +159,8 @@ describe('gameloopTimers', () => {
       gameloopTimers(numTicks);
 
       expect(timerActionDo).toHaveBeenCalledTimes(2);
-      expect(timerActionDo).toHaveBeenNthCalledWith(1, actions1, 300);
-      expect(timerActionDo).toHaveBeenNthCalledWith(2, actions2, 301);
+      expect(timerActionDo).toHaveBeenNthCalledWith(1, actions1);
+      expect(timerActionDo).toHaveBeenNthCalledWith(2, actions2);
     });
 
     it('should process multiple timer actions per tick', () => {
@@ -176,7 +176,7 @@ describe('gameloopTimers', () => {
       gameloopTimers(numTicks);
 
       expect(timerActionDo).toHaveBeenCalledTimes(1);
-      expect(timerActionDo).toHaveBeenCalledWith(multipleActions, 400);
+      expect(timerActionDo).toHaveBeenCalledWith(multipleActions);
     });
 
     it('should handle mix of empty and populated action arrays', () => {
@@ -197,10 +197,10 @@ describe('gameloopTimers', () => {
       gameloopTimers(numTicks);
 
       expect(timerActionDo).toHaveBeenCalledTimes(4);
-      expect(timerActionDo).toHaveBeenNthCalledWith(1, actions1, 500);
-      expect(timerActionDo).toHaveBeenNthCalledWith(2, actions2, 501);
-      expect(timerActionDo).toHaveBeenNthCalledWith(3, actions3, 502);
-      expect(timerActionDo).toHaveBeenNthCalledWith(4, actions4, 503);
+      expect(timerActionDo).toHaveBeenNthCalledWith(1, actions1);
+      expect(timerActionDo).toHaveBeenNthCalledWith(2, actions2);
+      expect(timerActionDo).toHaveBeenNthCalledWith(3, actions3);
+      expect(timerActionDo).toHaveBeenNthCalledWith(4, actions4);
     });
   });
 
@@ -222,7 +222,7 @@ describe('gameloopTimers', () => {
 
       gameloopTimers(numTicks);
 
-      expect(timerActionDo).toHaveBeenCalledWith([endFestivalTimer], 600);
+      expect(timerActionDo).toHaveBeenCalledWith([endFestivalTimer]);
     });
 
     it('should process UnclaimVillage timer actions', () => {
@@ -242,7 +242,7 @@ describe('gameloopTimers', () => {
 
       gameloopTimers(numTicks);
 
-      expect(timerActionDo).toHaveBeenCalledWith([unclaimTimer], 700);
+      expect(timerActionDo).toHaveBeenCalledWith([unclaimTimer]);
     });
 
     it('should process mixed timer action types in same tick', () => {
@@ -269,7 +269,7 @@ describe('gameloopTimers', () => {
 
       gameloopTimers(numTicks);
 
-      expect(timerActionDo).toHaveBeenCalledWith(mixedActions, 800);
+      expect(timerActionDo).toHaveBeenCalledWith(mixedActions);
     });
   });
 
@@ -484,11 +484,11 @@ describe('gameloopTimers', () => {
         1404,
       );
 
-      expect(timerActionDo).toHaveBeenNthCalledWith(1, tick1Actions, 1400);
-      expect(timerActionDo).toHaveBeenNthCalledWith(2, tick2Actions, 1401);
-      expect(timerActionDo).toHaveBeenNthCalledWith(3, tick3Actions, 1402);
-      expect(timerActionDo).toHaveBeenNthCalledWith(4, tick4Actions, 1403);
-      expect(timerActionDo).toHaveBeenNthCalledWith(5, tick5Actions, 1404);
+      expect(timerActionDo).toHaveBeenNthCalledWith(1, tick1Actions);
+      expect(timerActionDo).toHaveBeenNthCalledWith(2, tick2Actions);
+      expect(timerActionDo).toHaveBeenNthCalledWith(3, tick3Actions);
+      expect(timerActionDo).toHaveBeenNthCalledWith(4, tick4Actions);
+      expect(timerActionDo).toHaveBeenNthCalledWith(5, tick5Actions);
     });
   });
 });
