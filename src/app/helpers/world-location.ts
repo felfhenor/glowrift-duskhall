@@ -259,16 +259,19 @@ export function locationGetAllMatchingPreferences(
     return true;
   });
 
-  const sortedByRarity = sortBy(viableNodes, (n) => {
-    const highestRarity = locationGetHighestLootRarity(n);
-    return isNumber(highestRarity) ? RARITY_PRIORITY[highestRarity] : -1;
-  });
+  const sortedNodes = sortBy(viableNodes, [
+    (n) => distanceBetweenNodes(node, n),
+    (n) => {
+      const highestRarity = locationGetHighestLootRarity(n);
+      return isNumber(highestRarity) ? RARITY_PRIORITY[highestRarity] : -1;
+    },
+    (n) => {
+      const nodeId = worldNodeGetAccessId(n);
+      return tooHardNodes.includes(nodeId) ? 1 : 0;
+    },
+  ]);
 
-  // Then sort them so that "too hard" nodes come last (de-prioritized)
-  return sortBy(sortedByRarity, (node) => {
-    const nodeId = worldNodeGetAccessId(node);
-    return tooHardNodes.includes(nodeId) ? 1 : 0;
-  });
+  return sortedNodes;
 }
 
 export function locationGetClaimed(): WorldLocation[] {
