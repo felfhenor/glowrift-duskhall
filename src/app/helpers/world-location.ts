@@ -5,6 +5,7 @@ import { currencyClaimsGain, currencyClaimsLose } from '@helpers/currency';
 import { defaultLocation, defaultNodeCountBlock } from '@helpers/defaults';
 import { discordUpdateStatus } from '@helpers/discord';
 import { droppableGain, droppableMakeReal } from '@helpers/droppable';
+import { heroAverageLevel } from '@helpers/hero';
 import { itemElementAdd, itemIsEquipment } from '@helpers/item';
 import { distanceBetweenNodes } from '@helpers/math';
 import { gamestate, updateGamestate } from '@helpers/state-game';
@@ -62,7 +63,19 @@ export function migrateResetClaimedNodeCounts(): void {
 }
 
 export function locationExploreTimeRequired(location: WorldLocation): number {
-  return location.encounterLevel * 5;
+  const heroLevel = heroAverageLevel();
+  const diff = Math.abs(heroLevel - location.encounterLevel);
+  const baseValue = location.encounterLevel * 5;
+
+  if (heroLevel > location.encounterLevel) {
+    return Math.max(1, baseValue - diff * 5);
+  }
+
+  if (heroLevel < location.encounterLevel) {
+    return baseValue + diff * 10;
+  }
+
+  return baseValue;
 }
 
 export function locationClaimDuration(location: WorldLocation): number {

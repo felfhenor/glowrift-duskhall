@@ -16,6 +16,10 @@ export function allHeroes(): Hero[] {
   return gamestate().hero.heroes;
 }
 
+export function heroAverageLevel(): number {
+  return meanBy(allHeroes(), (hero) => hero.level);
+}
+
 export function heroUpdateData(heroData: Hero): void {
   updateGamestate((state) => {
     const hero = state.hero.heroes.find((f) => f.id === heroData.id);
