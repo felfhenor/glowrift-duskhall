@@ -57,6 +57,13 @@ export function timerGetRegisterTick(ticksAway: number): number {
   return timerTicksElapsed() + ticksAway;
 }
 
+export function timerGetTickActionsBeforeAndIncluding(ticks: number): Timer[] {
+  const allTicksBefore = Object.keys(gamestate().actionClock.timers)
+    .map(Number)
+    .filter((tick) => tick <= ticks);
+  return allTicksBefore.flatMap((tick) => timerGetTickActions(tick));
+}
+
 export function timerGetTickActions(ticks: number): Timer[] {
   return gamestate().actionClock.timers[ticks] ?? [];
 }
