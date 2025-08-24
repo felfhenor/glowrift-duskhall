@@ -20,34 +20,6 @@
           <label class="label cursor-pointer label-checkbox">
             <input
               type="checkbox"
-              [checked]="notificationCategoriesEnabled().includes('Travel')"
-              class="checkbox checkbox-secondary"
-              (click)="toggleNotificationCategories('Travel')"
-              [disabled]="!notificationsEnabled()"
-            />
-            <span class="label-text">Travel</span>
-          </label>
-        </div>
-
-        <div class="form-control">
-          <label class="label cursor-pointer label-checkbox">
-            <input
-              type="checkbox"
-              [checked]="
-                notificationCategoriesEnabled().includes('LocationClaim')
-              "
-              class="checkbox checkbox-secondary"
-              (click)="toggleNotificationCategories('LocationClaim')"
-              [disabled]="!notificationsEnabled()"
-            />
-            <span class="label-text">Location Claim</span>
-          </label>
-        </div>
-
-        <div class="form-control">
-          <label class="label cursor-pointer label-checkbox">
-            <input
-              type="checkbox"
               [checked]="notificationCategoriesEnabled().includes('Festival')"
               class="checkbox checkbox-secondary"
               (click)="toggleNotificationCategories('Festival')"
@@ -61,7 +33,7 @@
 
     <div class="card bg-base-100 foreground shadow-xl mt-3">
       <div class="card-body">
-        <div class="card-title">Options</div>
+        <div class="card-title">Gameplay</div>
 
         <div class="form-control">
           <label class="label cursor-pointer label-checkbox">
@@ -69,7 +41,9 @@
               type="checkbox"
               [checked]="getOption('followHeroesOnMap')"
               class="checkbox checkbox-secondary"
-              (click)="setOption('followHeroesOnMap', !getOption('followHeroesOnMap'))"
+              (click)="
+                setOption('followHeroesOnMap', !getOption('followHeroesOnMap'))
+              "
             />
             <span class="label-text">Follow heroes on map</span>
           </label>

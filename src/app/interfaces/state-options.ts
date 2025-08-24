@@ -15,12 +15,7 @@ export type GameOption =
   | 'canSendNotifications'
   | 'followHeroesOnMap';
 
-export type NotificationCategory =
-  | 'Error'
-  | 'Success'
-  | 'Travel'
-  | 'LocationClaim'
-  | 'Festival';
+export type NotificationCategory = 'Error' | 'Success' | 'Festival';
 
 export type ToggleableCategory = Exclude<
   NotificationCategory,

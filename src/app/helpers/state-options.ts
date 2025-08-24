@@ -22,7 +22,7 @@ export function defaultOptions(): GameOptions {
     volume: 0.5,
     gameloopPaused: false,
     canSendNotifications: true,
-    enabledNotificationCategories: ['Travel', 'LocationClaim'],
+    enabledNotificationCategories: ['Festival'],
     combatTab: 'Preferences',
     optionsTab: 'UI',
     townTab: 'Market',
