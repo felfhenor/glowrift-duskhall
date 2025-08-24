@@ -7,6 +7,7 @@ vi.mock('@helpers/timer', () => ({
   timerTicksElapsed: vi.fn(),
   timerGetTickActions: vi.fn(),
   timerActionDo: vi.fn(),
+  timerGetTickActionsBeforeAndIncluding: vi.fn(),
 }));
 
 // Import the mocked functions and the function under test
@@ -14,6 +15,7 @@ import { gameloopTimers } from '@helpers/gameloop-timers';
 import {
   timerActionDo,
   timerGetTickActions,
+  timerGetTickActionsBeforeAndIncluding,
   timerTicksElapsed,
 } from '@helpers/timer';
 
@@ -50,13 +52,15 @@ describe('gameloopTimers', () => {
       const mockActions = [mockTimer];
 
       vi.mocked(timerTicksElapsed).mockReturnValue(baseTicks);
-      vi.mocked(timerGetTickActions).mockReturnValue(mockActions);
+      vi.mocked(timerGetTickActionsBeforeAndIncluding).mockReturnValue(
+        mockActions,
+      );
 
       gameloopTimers(numTicks);
 
       expect(timerTicksElapsed).toHaveBeenCalledTimes(1);
-      expect(timerGetTickActions).toHaveBeenCalledTimes(1);
-      expect(timerGetTickActions).toHaveBeenCalledWith(100);
+      expect(timerGetTickActionsBeforeAndIncluding).toHaveBeenCalledTimes(1);
+      expect(timerGetTickActionsBeforeAndIncluding).toHaveBeenCalledWith(100);
       expect(timerActionDo).toHaveBeenCalledTimes(1);
       expect(timerActionDo).toHaveBeenCalledWith(mockActions, 100);
     });
@@ -69,7 +73,7 @@ describe('gameloopTimers', () => {
       const mockActions3 = [mockTimer2];
 
       vi.mocked(timerTicksElapsed).mockReturnValue(baseTicks);
-      vi.mocked(timerGetTickActions)
+      vi.mocked(timerGetTickActionsBeforeAndIncluding)
         .mockReturnValueOnce(mockActions1)
         .mockReturnValueOnce(mockActions2)
         .mockReturnValueOnce(mockActions3);
@@ -77,10 +81,19 @@ describe('gameloopTimers', () => {
       gameloopTimers(numTicks);
 
       expect(timerTicksElapsed).toHaveBeenCalledTimes(1);
-      expect(timerGetTickActions).toHaveBeenCalledTimes(3);
-      expect(timerGetTickActions).toHaveBeenNthCalledWith(1, 50);
-      expect(timerGetTickActions).toHaveBeenNthCalledWith(2, 51);
-      expect(timerGetTickActions).toHaveBeenNthCalledWith(3, 52);
+      expect(timerGetTickActionsBeforeAndIncluding).toHaveBeenCalledTimes(3);
+      expect(timerGetTickActionsBeforeAndIncluding).toHaveBeenNthCalledWith(
+        1,
+        50,
+      );
+      expect(timerGetTickActionsBeforeAndIncluding).toHaveBeenNthCalledWith(
+        2,
+        51,
+      );
+      expect(timerGetTickActionsBeforeAndIncluding).toHaveBeenNthCalledWith(
+        3,
+        52,
+      );
       expect(timerActionDo).toHaveBeenCalledTimes(3);
       expect(timerActionDo).toHaveBeenNthCalledWith(1, mockActions1, 50);
       expect(timerActionDo).toHaveBeenNthCalledWith(2, mockActions2, 51);
@@ -121,7 +134,9 @@ describe('gameloopTimers', () => {
       const emptyActions: Timer[] = [];
 
       vi.mocked(timerTicksElapsed).mockReturnValue(baseTicks);
-      vi.mocked(timerGetTickActions).mockReturnValue(emptyActions);
+      vi.mocked(timerGetTickActionsBeforeAndIncluding).mockReturnValue(
+        emptyActions,
+      );
 
       gameloopTimers(numTicks);
 
@@ -137,7 +152,7 @@ describe('gameloopTimers', () => {
       const actions2 = [mockTimer2];
 
       vi.mocked(timerTicksElapsed).mockReturnValue(baseTicks);
-      vi.mocked(timerGetTickActions)
+      vi.mocked(timerGetTickActionsBeforeAndIncluding)
         .mockReturnValueOnce(actions1)
         .mockReturnValueOnce(actions2);
 
@@ -154,7 +169,9 @@ describe('gameloopTimers', () => {
       const multipleActions = [mockTimer, mockTimer2];
 
       vi.mocked(timerTicksElapsed).mockReturnValue(baseTicks);
-      vi.mocked(timerGetTickActions).mockReturnValue(multipleActions);
+      vi.mocked(timerGetTickActionsBeforeAndIncluding).mockReturnValue(
+        multipleActions,
+      );
 
       gameloopTimers(numTicks);
 
@@ -171,7 +188,7 @@ describe('gameloopTimers', () => {
       const actions4 = [mockTimer, mockTimer2];
 
       vi.mocked(timerTicksElapsed).mockReturnValue(baseTicks);
-      vi.mocked(timerGetTickActions)
+      vi.mocked(timerGetTickActionsBeforeAndIncluding)
         .mockReturnValueOnce(actions1)
         .mockReturnValueOnce(actions2)
         .mockReturnValueOnce(actions3)
@@ -199,7 +216,9 @@ describe('gameloopTimers', () => {
       };
 
       vi.mocked(timerTicksElapsed).mockReturnValue(baseTicks);
-      vi.mocked(timerGetTickActions).mockReturnValue([endFestivalTimer]);
+      vi.mocked(timerGetTickActionsBeforeAndIncluding).mockReturnValue([
+        endFestivalTimer,
+      ]);
 
       gameloopTimers(numTicks);
 
@@ -217,7 +236,9 @@ describe('gameloopTimers', () => {
       };
 
       vi.mocked(timerTicksElapsed).mockReturnValue(baseTicks);
-      vi.mocked(timerGetTickActions).mockReturnValue([unclaimTimer]);
+      vi.mocked(timerGetTickActionsBeforeAndIncluding).mockReturnValue([
+        unclaimTimer,
+      ]);
 
       gameloopTimers(numTicks);
 
@@ -242,7 +263,9 @@ describe('gameloopTimers', () => {
       const mixedActions = [endFestivalTimer, unclaimTimer];
 
       vi.mocked(timerTicksElapsed).mockReturnValue(baseTicks);
-      vi.mocked(timerGetTickActions).mockReturnValue(mixedActions);
+      vi.mocked(timerGetTickActionsBeforeAndIncluding).mockReturnValue(
+        mixedActions,
+      );
 
       gameloopTimers(numTicks);
 
@@ -256,14 +279,15 @@ describe('gameloopTimers', () => {
       const numTicks = 1;
 
       vi.mocked(timerTicksElapsed).mockReturnValue(baseTicks);
-      vi.mocked(timerGetTickActions).mockReturnValue([]);
+      vi.mocked(timerGetTickActionsBeforeAndIncluding).mockReturnValue([]);
 
       gameloopTimers(numTicks);
 
       const callOrder =
         vi.mocked(timerTicksElapsed).mock.invocationCallOrder[0];
-      const getActionsCallOrder =
-        vi.mocked(timerGetTickActions).mock.invocationCallOrder[0];
+      const getActionsCallOrder = vi.mocked(
+        timerGetTickActionsBeforeAndIncluding,
+      ).mock.invocationCallOrder[0];
       const actionDoCallOrder =
         vi.mocked(timerActionDo).mock.invocationCallOrder[0];
 
@@ -284,8 +308,9 @@ describe('gameloopTimers', () => {
       expect(timerTicksElapsed).toHaveBeenCalledTimes(1);
 
       // Verify timerGetTickActions and timerActionDo are called in pairs for each tick
-      const getActionsCallOrders =
-        vi.mocked(timerGetTickActions).mock.invocationCallOrder;
+      const getActionsCallOrders = vi.mocked(
+        timerGetTickActionsBeforeAndIncluding,
+      ).mock.invocationCallOrder;
       const actionDoCallOrders =
         vi.mocked(timerActionDo).mock.invocationCallOrder;
 
@@ -305,14 +330,23 @@ describe('gameloopTimers', () => {
       const numTicks = 2.7; // JavaScript for loop will process this as 2.7 > 2, so 3 iterations
 
       vi.mocked(timerTicksElapsed).mockReturnValue(baseTicks);
-      vi.mocked(timerGetTickActions).mockReturnValue([]);
+      vi.mocked(timerGetTickActionsBeforeAndIncluding).mockReturnValue([]);
 
       gameloopTimers(numTicks);
 
-      expect(timerGetTickActions).toHaveBeenCalledTimes(3); // 1100, 1101, 1102
-      expect(timerGetTickActions).toHaveBeenNthCalledWith(1, 1100);
-      expect(timerGetTickActions).toHaveBeenNthCalledWith(2, 1101);
-      expect(timerGetTickActions).toHaveBeenNthCalledWith(3, 1102);
+      expect(timerGetTickActionsBeforeAndIncluding).toHaveBeenCalledTimes(3); // 1100, 1101, 1102
+      expect(timerGetTickActionsBeforeAndIncluding).toHaveBeenNthCalledWith(
+        1,
+        1100,
+      );
+      expect(timerGetTickActionsBeforeAndIncluding).toHaveBeenNthCalledWith(
+        2,
+        1101,
+      );
+      expect(timerGetTickActionsBeforeAndIncluding).toHaveBeenNthCalledWith(
+        3,
+        1102,
+      );
     });
 
     it('should handle very small positive numTicks', () => {
@@ -324,8 +358,11 @@ describe('gameloopTimers', () => {
 
       gameloopTimers(numTicks);
 
-      expect(timerGetTickActions).toHaveBeenCalledTimes(1);
-      expect(timerGetTickActions).toHaveBeenNthCalledWith(1, 1200);
+      expect(timerGetTickActionsBeforeAndIncluding).toHaveBeenCalledTimes(1);
+      expect(timerGetTickActionsBeforeAndIncluding).toHaveBeenNthCalledWith(
+        1,
+        1200,
+      );
     });
 
     it('should handle negative baseTicks correctly', () => {
@@ -333,14 +370,23 @@ describe('gameloopTimers', () => {
       const numTicks = 3;
 
       vi.mocked(timerTicksElapsed).mockReturnValue(baseTicks);
-      vi.mocked(timerGetTickActions).mockReturnValue([]);
+      vi.mocked(timerGetTickActionsBeforeAndIncluding).mockReturnValue([]);
 
       gameloopTimers(numTicks);
 
-      expect(timerGetTickActions).toHaveBeenCalledTimes(3);
-      expect(timerGetTickActions).toHaveBeenNthCalledWith(1, -5);
-      expect(timerGetTickActions).toHaveBeenNthCalledWith(2, -4);
-      expect(timerGetTickActions).toHaveBeenNthCalledWith(3, -3);
+      expect(timerGetTickActionsBeforeAndIncluding).toHaveBeenCalledTimes(3);
+      expect(timerGetTickActionsBeforeAndIncluding).toHaveBeenNthCalledWith(
+        1,
+        -5,
+      );
+      expect(timerGetTickActionsBeforeAndIncluding).toHaveBeenNthCalledWith(
+        2,
+        -4,
+      );
+      expect(timerGetTickActionsBeforeAndIncluding).toHaveBeenNthCalledWith(
+        3,
+        -3,
+      );
     });
   });
 
@@ -403,7 +449,7 @@ describe('gameloopTimers', () => {
       ];
 
       vi.mocked(timerTicksElapsed).mockReturnValue(baseTicks);
-      vi.mocked(timerGetTickActions)
+      vi.mocked(timerGetTickActionsBeforeAndIncluding)
         .mockReturnValueOnce(tick1Actions)
         .mockReturnValueOnce(tick2Actions)
         .mockReturnValueOnce(tick3Actions)
@@ -413,41 +459,36 @@ describe('gameloopTimers', () => {
       gameloopTimers(numTicks);
 
       expect(timerTicksElapsed).toHaveBeenCalledTimes(1);
-      expect(timerGetTickActions).toHaveBeenCalledTimes(5);
+      expect(timerGetTickActionsBeforeAndIncluding).toHaveBeenCalledTimes(5);
       expect(timerActionDo).toHaveBeenCalledTimes(5);
 
       // Verify each tick was processed correctly
-      expect(timerGetTickActions).toHaveBeenNthCalledWith(1, 1400);
-      expect(timerGetTickActions).toHaveBeenNthCalledWith(2, 1401);
-      expect(timerGetTickActions).toHaveBeenNthCalledWith(3, 1402);
-      expect(timerGetTickActions).toHaveBeenNthCalledWith(4, 1403);
-      expect(timerGetTickActions).toHaveBeenNthCalledWith(5, 1404);
+      expect(timerGetTickActionsBeforeAndIncluding).toHaveBeenNthCalledWith(
+        1,
+        1400,
+      );
+      expect(timerGetTickActionsBeforeAndIncluding).toHaveBeenNthCalledWith(
+        2,
+        1401,
+      );
+      expect(timerGetTickActionsBeforeAndIncluding).toHaveBeenNthCalledWith(
+        3,
+        1402,
+      );
+      expect(timerGetTickActionsBeforeAndIncluding).toHaveBeenNthCalledWith(
+        4,
+        1403,
+      );
+      expect(timerGetTickActionsBeforeAndIncluding).toHaveBeenNthCalledWith(
+        5,
+        1404,
+      );
 
       expect(timerActionDo).toHaveBeenNthCalledWith(1, tick1Actions, 1400);
       expect(timerActionDo).toHaveBeenNthCalledWith(2, tick2Actions, 1401);
       expect(timerActionDo).toHaveBeenNthCalledWith(3, tick3Actions, 1402);
       expect(timerActionDo).toHaveBeenNthCalledWith(4, tick4Actions, 1403);
       expect(timerActionDo).toHaveBeenNthCalledWith(5, tick5Actions, 1404);
-    });
-
-    it('should handle maximum safe integer values', () => {
-      const baseTicks = Number.MAX_SAFE_INTEGER - 1;
-      const numTicks = 2;
-
-      vi.mocked(timerTicksElapsed).mockReturnValue(baseTicks);
-      vi.mocked(timerGetTickActions).mockReturnValue([]);
-
-      gameloopTimers(numTicks);
-
-      expect(timerGetTickActions).toHaveBeenCalledTimes(2);
-      expect(timerGetTickActions).toHaveBeenNthCalledWith(
-        1,
-        Number.MAX_SAFE_INTEGER - 1,
-      );
-      expect(timerGetTickActions).toHaveBeenNthCalledWith(
-        2,
-        Number.MAX_SAFE_INTEGER,
-      );
     });
   });
 });

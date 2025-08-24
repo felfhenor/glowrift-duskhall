@@ -20,6 +20,9 @@ vi.mock('@helpers/defaults', () => ({
 vi.mock('@helpers/state-game', () => ({
   gamestate: vi.fn(),
   setGameState: vi.fn(),
+  gamestateTickStart: vi.fn(),
+  gamestateTickEnd: vi.fn(),
+  saveGameState: vi.fn(),
 }));
 
 vi.mock('@helpers/state-options', () => ({
