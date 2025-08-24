@@ -9,6 +9,6 @@ export function gameloopTimers(numTicks: number): void {
 
   for (let i = baseTicks; i < baseTicks + numTicks; i++) {
     const actions = timerGetTickActionsBeforeAndIncluding(i);
-    timerActionDo(actions, i);
+    timerActionDo(actions);
   }
 }

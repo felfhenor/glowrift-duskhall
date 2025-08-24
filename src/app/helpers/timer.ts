@@ -83,13 +83,18 @@ function timerActionAdd(timerAction: Partial<Timer>, atTicks: number) {
   });
 }
 
-export function timerActionDo(actions: Timer[], atTime: number): void {
+export function timerActionDo(actions: Timer[]): void {
+  const times: number[] = [];
   actions.forEach((action) => {
     timerActionDoSingular(action);
+    times.push(action.tick);
   });
 
   updateGamestate((state) => {
-    delete state.actionClock.timers[atTime];
+    times.forEach((t) => {
+      delete state.actionClock.timers[t];
+    });
+
     return state;
   });
 }
