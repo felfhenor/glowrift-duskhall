@@ -17,12 +17,14 @@ import {
   locationGet,
   locationRewardsGain,
 } from '@helpers/world-location';
-import type {
-  Combat,
-  Combatant,
-  DroppableEquippable,
-  HeroId,
+import type { Guardian } from '@interfaces';
+import {
+  type Combat,
+  type Combatant,
+  type DroppableEquippable,
+  type HeroId,
 } from '@interfaces';
+import { sumBy } from 'es-toolkit/compat';
 
 export function combatHasGuardiansAlive(): boolean {
   const combat = currentCombat();
@@ -85,10 +87,19 @@ function handleCombatVictory(combat: Combat): void {
 
     heroAllGainXp(xpGainedForClaim);
 
-    const soulEssenceGained =
-      xpGainedForClaim +
-      currentNode.guardianIds.length *
-        locationTraitCurrencySpecialModifier(currentNode, 'Soul Essence');
+    const soulEssenceGained = Math.floor(
+      sumBy(currentNode.guardianIds, (g) => {
+        const guardian = getEntry<Guardian>(g);
+        if (!guardian) return 0;
+
+        return (
+          currentNode.encounterLevel *
+          ((guardian.statScaling.Aura ?? 0) + (guardian.statScaling.Force ?? 0))
+        );
+      }) *
+        (1 + locationTraitCurrencySpecialModifier(currentNode, 'Soul Essence')),
+    );
+
     currencyGain('Soul Essence', soulEssenceGained);
     combatMessageLog(combat, `You gained ${soulEssenceGained} Soul Essence!`);
 

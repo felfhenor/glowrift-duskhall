@@ -73,8 +73,8 @@
   costScalePerTile: 3
 
   baseCost:
-    Mana: 300
-    Soul Essence: 200
+    Mana: 400
+    Soul Essence: 50
 
   boostedTicksPerLevel: 120
 
