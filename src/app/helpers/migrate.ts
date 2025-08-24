@@ -1,7 +1,13 @@
 import { defaultGameState } from '@helpers/defaults';
 import { migrateItems } from '@helpers/migrate-items';
 import { migrateSkills } from '@helpers/migrate-skills';
-import { gamestate, setGameState } from '@helpers/state-game';
+import {
+  gamestate,
+  gamestateTickEnd,
+  gamestateTickStart,
+  saveGameState,
+  setGameState,
+} from '@helpers/state-game';
 import { defaultOptions, options, setOptions } from '@helpers/state-options';
 import { migrateCleanupOldTimerEntries } from '@helpers/timer';
 import {
@@ -16,6 +22,7 @@ export function migrateGameState() {
   const newState = merge(defaultGameState(), state);
   setGameState(newState);
 
+  gamestateTickStart();
   migrateItems();
   migrateSkills();
 
@@ -23,6 +30,8 @@ export function migrateGameState() {
   migrateUnclaimMissedNodes();
   migratePermanentlyClaimedNodes();
   migrateResetClaimedNodeCounts();
+  gamestateTickEnd();
+  saveGameState();
 }
 
 export function migrateOptionsState() {
