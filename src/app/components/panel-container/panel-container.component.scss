@@ -48,8 +48,18 @@
 }
 
 ::ng-deep .panel-card .card-body {
+  @media (max-height: 1200px) {
+    max-height: 350px;
+    overflow-y: auto;
+  }
+
   @media (max-height: 900px) {
     max-height: 250px;
+    overflow-y: auto;
+  }
+
+  @media (max-height: 600px) {
+    max-height: 150px;
     overflow-y: auto;
   }
 }
