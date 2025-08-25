@@ -319,6 +319,7 @@ export function locationClaim(node: WorldLocation): void {
       (nearbyTownishNode
         ? locationUpgradeStatTotal(nearbyTownishNode, 'boostedTicksPerLevel')
         : 0);
+
     unclaimTime = timerGetRegisterTick(claimDuration);
     timerAddUnclaimAction(node, unclaimTime);
   }
@@ -351,6 +352,8 @@ export function locationClaim(node: WorldLocation): void {
   discordUpdateStatus();
 }
 export function locationUnclaim(node: WorldLocation): void {
+  if (!node.currentlyClaimed) return;
+
   currencyClaimsLose(node);
 
   globalStatusText.set(`${node.name} was lost!`);
