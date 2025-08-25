@@ -263,14 +263,14 @@ export function locationGetAllMatchingPreferences(
   });
 
   const sortedNodes = sortBy(viableNodes, [
+    (n) => {
+      const nodeId = worldNodeGetAccessId(n);
+      return tooHardNodes.includes(nodeId) ? 1 : 0;
+    },
     (n) => distanceBetweenNodes(node, n),
     (n) => {
       const highestRarity = locationGetHighestLootRarity(n);
       return isNumber(highestRarity) ? RARITY_PRIORITY[highestRarity] : -1;
-    },
-    (n) => {
-      const nodeId = worldNodeGetAccessId(n);
-      return tooHardNodes.includes(nodeId) ? 1 : 0;
     },
   ]);
 

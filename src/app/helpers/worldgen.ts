@@ -530,6 +530,7 @@ export async function worldgenGenerateWorld(
     nodeType: 'town',
     name: 'LaFlotte',
     currentlyClaimed: true,
+    permanentlyClaimed: true,
     elements: [
       { element: 'Air', intensity: 1 },
       { element: 'Fire', intensity: 1 },
