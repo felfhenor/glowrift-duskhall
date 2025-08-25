@@ -30,15 +30,19 @@ export function defaultOptions(): GameOptions {
     inventoryFilter: 'accessory',
     selectedHeroIndex: 0,
     selectedTalentTreeElement: 'Fire',
+    empireSelectedLocationTypes: [
+      'castle',
+      'cave',
+      'dungeon',
+      'town',
+      'village',
+    ],
+    empireSelectedOwnershipTypes: ['Permanent', 'Temporary'],
   };
 }
 
 const _options = localStorageSignal<GameOptions>('options', defaultOptions());
 export const options: Signal<GameOptions> = _options.asReadonly();
-
-export function toggleDebugOn() {
-  setOption('showDebug', true);
-}
 
 export function setOptions(options: GameOptions) {
   _options.set(options);

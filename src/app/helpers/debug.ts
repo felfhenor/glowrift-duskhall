@@ -1,9 +1,14 @@
 import { getEntriesByType, getEntry } from '@helpers/content';
 import { droppableGain, droppableMakeReal } from '@helpers/droppable';
+import { setOption } from '@helpers/state-options';
 import { locationClaim, locationGetAll } from '@helpers/world-location';
 import type { EquipmentItem } from '@interfaces/content-equipment';
 import type { EquipmentSkillContent } from '@interfaces/content-skill';
 import type { DroppableEquippable } from '@interfaces/droppable';
+
+export function debugToggle() {
+  setOption('showDebug', true);
+}
 
 export function debugCreateDroppable(id: string): DroppableEquippable {
   return droppableMakeReal(getEntry<DroppableEquippable>(id)!);

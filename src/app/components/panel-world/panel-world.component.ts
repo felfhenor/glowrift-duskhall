@@ -3,6 +3,7 @@ import { ButtonCloseComponent } from '@components/button-close/button-close.comp
 import { CardPageComponent } from '@components/card-page/card-page.component';
 import { PanelWorldClaimlogComponent } from '@components/panel-world-claimlog/panel-world-claimlog.component';
 import { PanelWorldClaimsComponent } from '@components/panel-world-claims/panel-world-claims.component';
+import { PanelWorldEmpireManagementComponent } from '@components/panel-world-empire-management/panel-world-empire-management.component';
 import { PanelWorldFestivalsComponent } from '@components/panel-world-festivals/panel-world-festivals.component';
 import { PanelWorldResourceGenerationComponent } from '@components/panel-world-resource-generation/panel-world-resource-generation.component';
 import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
@@ -20,6 +21,7 @@ import type { WorldTab } from '@interfaces/state-options';
     PanelWorldFestivalsComponent,
     PanelWorldResourceGenerationComponent,
     PanelWorldClaimlogComponent,
+    PanelWorldEmpireManagementComponent,
   ],
   templateUrl: './panel-world.component.html',
   styleUrl: './panel-world.component.scss',
@@ -35,6 +37,7 @@ export class PanelWorldComponent {
     link: WorldTab;
   }> = [
     { name: 'Resource Generation', link: 'ResourceGeneration' },
+    { name: 'Empire Management', link: 'EmpireManagement' },
     { name: 'Claimed Locations', link: 'Claims' },
     { name: 'Claim Log', link: 'ClaimsLog' },
     {

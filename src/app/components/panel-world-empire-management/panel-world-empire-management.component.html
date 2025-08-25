@@ -1,0 +1,103 @@
+<div class="flex gap-2">
+  <div class="join">
+    @let selectedNodeTypes = selectedLocationTypes();
+
+    @for (nodeType of locationTypes; track $index) {
+      <button
+        class="btn btn-primary join-item relative"
+        [class.btn-outline]="!selectedNodeTypes.includes(nodeType)"
+        (click)="toggleLocationType(nodeType)"
+      >
+        <app-icon-location
+          class="scale-50 absolute left-[-4px]"
+          [type]="nodeType"
+        ></app-icon-location>
+
+        <span class="pl-8">
+          {{ nodeType | titlecase }}
+        </span>
+      </button>
+    }
+  </div>
+
+  <div class="join">
+    @let selectedOwnerships = selectedOwnershipTypes();
+
+    @for (ownership of ownershipTypes; track $index) {
+      <button
+        class="btn btn-{{ ownership.color }} join-item relative"
+        [class.btn-outline]="!selectedOwnerships.includes(ownership.type)"
+        (click)="toggleOwnershipType(ownership.type)"
+      >
+        {{ ownership.type }}
+      </button>
+    }
+  </div>
+</div>
+
+<table class="table table-sm mt-2">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Name</th>
+      <th>Ownership</th>
+      <th>Upgrade Level</th>
+      <th>Upgrades</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    @for (loc of formattedOwnedLocations(); track loc.id) {
+      <tr class="relative">
+        <td>
+          <app-icon-location
+            class="scale-50 absolute top-[-12px] left-[-16px]"
+            [type]="loc.type"
+          ></app-icon-location>
+        </td>
+
+        <td
+          class="decoration-dashed cursor-pointer"
+          (click)="openLocation(loc)"
+        >
+          {{ loc.name }}
+        </td>
+
+        <td>
+          @if (loc.permanentlyClaimed) {
+            <div class="badge badge-success text-center">
+              <span class="min-w-[100px]">Permanent</span>
+            </div>
+          } @else {
+            <div class="badge badge-warning text-center">
+              <span class="min-w-[100px]">Temporary</span>
+            </div>
+          }
+        </td>
+
+        <td>+{{ loc.upgradeLevel }}</td>
+
+        <td class="inline-flex gap-2">
+          @for (upgrade of loc.upgrades; track $index) {
+            <button
+              class="btn btn-info btn-xs"
+              [disabled]="!upgrade.canBuy"
+              (click)="doUpgrade(loc, upgrade)"
+              appAnalyticsClick="Game:Empire:Upgrade:{{ upgrade.name }}"
+            >
+              <span class="min-w-[180px]">
+                {{ upgrade.name }} Lv.{{ upgrade.level }}
+              </span>
+            </button>
+          } @empty {
+            <span class="italic">None</span>
+          }
+        </td>
+      </tr>
+    } @empty {
+      <tr>
+        <td colspan="5" class="text-center italic">No matching locations</td>
+      </tr>
+    }
+  </tbody>
+</table>

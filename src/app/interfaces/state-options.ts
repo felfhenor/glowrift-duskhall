@@ -1,5 +1,6 @@
 import type { Signal } from '@angular/core';
 import type { InventorySlotType } from '@interfaces/content-equipment';
+import type { LocationType } from '@interfaces/content-worldconfig';
 import type { GameElement } from '@interfaces/element';
 import type { TownBuilding } from '@interfaces/town';
 
@@ -26,15 +27,13 @@ export type WorldTab =
   | 'Festivals'
   | 'Claims'
   | 'ClaimsLog'
-  | 'ResourceGeneration';
+  | 'ResourceGeneration'
+  | 'EmpireManagement';
 export type TownTab = TownBuilding;
 export type CombatTab = 'Preferences' | 'CombatLog';
 export type OptionsTab = 'UI' | 'Savefile' | 'Debug';
 
-export interface CombatTabLink {
-  name: 'Exploration Preferences' | 'Combat Log' | 'Claims';
-  link: CombatTab;
-}
+export type OwnershipType = 'Permanent' | 'Temporary';
 
 export interface OptionsTabLink {
   name: 'UI' | 'Savefile' | 'Debug';
@@ -55,4 +54,6 @@ export type GameOptions = Record<GameOption, boolean> & {
   inventoryFilter: InventorySlotType;
   selectedHeroIndex: number;
   selectedTalentTreeElement: GameElement;
+  empireSelectedLocationTypes: LocationType[];
+  empireSelectedOwnershipTypes: OwnershipType[];
 };

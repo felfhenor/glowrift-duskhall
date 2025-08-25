@@ -12,7 +12,7 @@ import {
   options,
   showCombatMenu,
 } from '@helpers';
-import type { CombatTab, CombatTabLink } from '@interfaces';
+import type { CombatTab } from '@interfaces';
 
 @Component({
   selector: 'app-panel-combat',
@@ -32,7 +32,7 @@ export class PanelCombatComponent extends OptionsBaseComponent {
     this.setOption('combatTab', tab);
   }
 
-  public readonly tabs: CombatTabLink[] = [
+  public readonly tabs: Array<{ name: string; link: CombatTab }> = [
     {
       name: 'Exploration Preferences',
       link: 'Preferences',

@@ -73,7 +73,8 @@ export function locationCanUpgrade(
 
   return (
     townHasUpgrade(townUpgrade) &&
-    locationLevel(location) < townBuildingLevel('Rally Point')
+    locationLevel(location) < townBuildingLevel('Rally Point') &&
+    currencyHasMultipleAmounts(locationUpgradeCosts(location, upgrade))
   );
 }
 

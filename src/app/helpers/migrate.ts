@@ -36,6 +36,12 @@ export function migrateGameState() {
 
 export function migrateOptionsState() {
   const state = options();
+  const { empireSelectedLocationTypes, empireSelectedOwnershipTypes } = state;
+
   const newState = merge(defaultOptions(), state);
+
+  newState.empireSelectedLocationTypes = empireSelectedLocationTypes;
+  newState.empireSelectedOwnershipTypes = empireSelectedOwnershipTypes;
+
   setOptions(newState);
 }

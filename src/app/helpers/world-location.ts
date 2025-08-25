@@ -79,8 +79,11 @@ export function locationExploreTimeRequired(location: WorldLocation): number {
 }
 
 export function locationClaimDuration(location: WorldLocation): number {
+  const config = gamestate().world.config;
+  const maxLevel = config.maxLevel;
+
   return (
-    (100 - location.encounterLevel) * 25 +
+    (maxLevel * 3 - location.encounterLevel) * maxLevel +
     locationUpgradeStatTotal(location, 'boostedTicksPerLevel')
   );
 }
@@ -312,7 +315,10 @@ export function locationClaim(node: WorldLocation): void {
     // we can still buff ones even if we don't own the location
     const nearbyTownishNode = locationGetNearbySafeHaven(node, false);
     const claimDuration =
-      locationClaimDuration(node) * (nearbyTownishNode ? 2 : 1);
+      locationClaimDuration(node) +
+      (nearbyTownishNode
+        ? locationUpgradeStatTotal(nearbyTownishNode, 'boostedTicksPerLevel')
+        : 0);
     unclaimTime = timerGetRegisterTick(claimDuration);
     timerAddUnclaimAction(node, unclaimTime);
   }
