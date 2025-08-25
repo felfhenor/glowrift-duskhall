@@ -258,7 +258,7 @@ describe('gameloopAutoTravel', () => {
       );
       expect(locationGetAllMatchingPreferences).not.toHaveBeenCalled();
       expect(globalStatusText.set).toHaveBeenCalledWith(
-        'No unclaimed nodes available; idle.',
+        'No unclaimed locations available; idle.',
       );
       expect(travelToNode).not.toHaveBeenCalled();
     });
@@ -289,7 +289,7 @@ describe('gameloopAutoTravel', () => {
         [],
       );
       expect(globalStatusText.set).toHaveBeenCalledWith(
-        'No unclaimed nodes available; idle.',
+        'No unclaimed locations available; idle.',
       );
     });
   });

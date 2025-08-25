@@ -45,13 +45,15 @@
         <div class="badge badge-warning">
           <app-countdown
             [secondsLeft]="nodeLostTime()"
-            label="Node Lost In"
+            label="Location Lost In"
           ></app-countdown>
         </div>
       } @else if (locationData.permanentlyClaimed) {
-        <div class="badge badge-success">This node is permanently safe!</div>
+        <div class="badge badge-success">
+          This location is permanently safe!
+        </div>
       } @else {
-        <div class="badge badge-danger">Node error!</div>
+        <div class="badge badge-danger">Location error!</div>
       }
     }
 

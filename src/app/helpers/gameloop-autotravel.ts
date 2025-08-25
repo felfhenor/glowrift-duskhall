@@ -36,7 +36,7 @@ export function gameloopAutoTravel(): void {
       locationGetInOrderOfCloseness(currentNode),
     );
     if (!anyUnclaimedNode) {
-      globalStatusText.set('No unclaimed nodes available; idle.');
+      globalStatusText.set('No unclaimed locations available; idle.');
       return;
     }
 
