@@ -40,8 +40,8 @@ export function migrateOptionsState() {
 
   const newState = merge(defaultOptions(), state);
 
-  newState.empireSelectedLocationTypes = empireSelectedLocationTypes;
-  newState.empireSelectedOwnershipTypes = empireSelectedOwnershipTypes;
+  newState.empireSelectedLocationTypes = empireSelectedLocationTypes ?? [];
+  newState.empireSelectedOwnershipTypes = empireSelectedOwnershipTypes ?? [];
 
   setOptions(newState);
 }
