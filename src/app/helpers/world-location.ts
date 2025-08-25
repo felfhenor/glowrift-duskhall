@@ -81,9 +81,10 @@ export function locationExploreTimeRequired(location: WorldLocation): number {
 export function locationClaimDuration(location: WorldLocation): number {
   const config = gamestate().world.config;
   const maxLevel = config.maxLevel;
+  const claimCount = location.claimCount + 1;
 
   return (
-    (maxLevel * 3 - location.encounterLevel) * maxLevel +
+    (maxLevel * 3 - location.encounterLevel) * claimCount ** 2.1 +
     locationUpgradeStatTotal(location, 'boostedTicksPerLevel')
   );
 }
