@@ -7,6 +7,8 @@ import { locationTraitExplorationMultiplier } from '@helpers/trait-location-expl
 import { globalStatusText } from '@helpers/ui';
 import { locationGetNearest } from '@helpers/world-location';
 import type { WorldLocation, WorldPosition } from '@interfaces';
+import { allHeroes } from '@helpers/hero';
+import { meanBy } from 'es-toolkit/compat';
 
 export function isTraveling() {
   return gamestate().hero.travel.ticksLeft > 0;
@@ -32,9 +34,17 @@ export function travelTimeFromCurrentLocationTo(node: WorldLocation): number {
   const travelTimeModification = Math.floor(
     baseTravelTime * travelTimeMultiplier,
   );
+
+  const averageHeroSpeed = meanBy(
+    allHeroes(),
+    (heroSpeed) => heroSpeed.totalStats.Speed,
+  );
+
+  const tickReduction = averageHeroSpeed;
+
   const totalTravelTime = baseTravelTime + travelTimeModification;
 
-  return totalTravelTime;
+  return Math.max(1, totalTravelTime - tickReduction);
 }
 
 export function travelToNode(node: WorldLocation): void {
