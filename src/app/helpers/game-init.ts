@@ -1,5 +1,6 @@
-import { cameraCenterOnPlayer } from '@helpers/camera';
+import { cameraCenterOn } from '@helpers/camera';
 import { combatLogReset } from '@helpers/combat-log';
+import { fogInvalidateCache } from '@helpers/fog-of-war';
 import { heroPositionSet } from '@helpers/hero';
 import { setupFinish } from '@helpers/setup';
 import { gamestate, resetGameState } from '@helpers/state-game';
@@ -14,12 +15,16 @@ export async function gameStart(): Promise<void> {
   delete world.didFinish;
 
   setWorld(world);
-  heroPositionSet(config.width / 2, config.height / 2);
-  cameraCenterOnPlayer();
-  setupFinish();
+
+  setTimeout(() => {
+    heroPositionSet(world.homeBase.x, world.homeBase.y);
+    cameraCenterOn(world.homeBase.x, world.homeBase.y + 1);
+    setupFinish();
+  }, 0);
 }
 
 export function gameReset(): void {
   resetGameState();
   combatLogReset();
+  fogInvalidateCache();
 }
