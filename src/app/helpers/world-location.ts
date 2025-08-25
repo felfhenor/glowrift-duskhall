@@ -210,7 +210,7 @@ export function locationGetNearbySafeHaven(
 }
 
 export function locationIsPermanentlyClaimed(node: WorldLocation): boolean {
-  return node.permanentlyClaimed;
+  return !!node.permanentlyClaimed;
 }
 
 export function locationGetNearest(

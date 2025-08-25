@@ -495,6 +495,25 @@ function cleanUpEmptyNodes(nodes: Record<string, WorldLocation>): void {
   });
 }
 
+export function worldgenGetLaFlotte(x: number, y: number): WorldLocation {
+  return {
+    ...defaultLocation(),
+    id: rngUuid(),
+    x,
+    y,
+    nodeType: 'town',
+    name: 'LaFlotte',
+    currentlyClaimed: true,
+    permanentlyClaimed: true,
+    elements: [
+      { element: 'Air', intensity: 1 },
+      { element: 'Fire', intensity: 1 },
+      { element: 'Earth', intensity: 1 },
+      { element: 'Water', intensity: 1 },
+    ],
+  };
+}
+
 export async function worldgenGenerateWorld(
   config: WorldConfigContent,
 ): Promise<GameStateWorld & { didFinish?: boolean }> {
@@ -522,22 +541,10 @@ export async function worldgenGenerateWorld(
     y: Math.floor(config.height / 2),
   };
 
-  const firstTown: WorldLocation = {
-    ...defaultLocation(),
-    id: rngUuid(),
-    x: Math.floor(config.width / 2),
-    y: Math.floor(config.height / 2),
-    nodeType: 'town',
-    name: 'LaFlotte',
-    currentlyClaimed: true,
-    permanentlyClaimed: true,
-    elements: [
-      { element: 'Air', intensity: 1 },
-      { element: 'Fire', intensity: 1 },
-      { element: 'Earth', intensity: 1 },
-      { element: 'Water', intensity: 1 },
-    ],
-  };
+  const firstTown: WorldLocation = worldgenGetLaFlotte(
+    centerPosition.x,
+    centerPosition.y,
+  );
 
   const maxDistance = distanceBetweenNodes(
     { x: centerPosition.x, y: 0 },
