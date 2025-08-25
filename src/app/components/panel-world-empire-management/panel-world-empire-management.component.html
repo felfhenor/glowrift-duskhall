@@ -35,20 +35,23 @@
   </div>
 </div>
 
-<table class="table table-sm mt-2">
-  <thead>
-    <tr>
-      <th></th>
-      <th>Name</th>
-      <th>Ownership</th>
-      <th>Upgrade Level</th>
-      <th>Upgrades</th>
-    </tr>
-  </thead>
+<cdk-virtual-scroll-viewport class="h-[400px] w-full mt-2" [itemSize]="40">
+  <table class="table table-sm">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Ownership</th>
+        <th>Upgrade Level</th>
+        <th>Upgrades</th>
+      </tr>
+    </thead>
 
-  <tbody>
-    @for (loc of formattedOwnedLocations(); track loc.id) {
-      <tr class="relative">
+    <tbody>
+      <tr
+        class="relative"
+        *cdkVirtualFor="let loc of formattedOwnedLocations()"
+      >
         <td>
           <app-icon-location
             class="scale-50 absolute top-[-12px] left-[-16px]"
@@ -57,7 +60,7 @@
         </td>
 
         <td
-          class="decoration-dashed cursor-pointer"
+          class="decoration-dashed cursor-pointer min-w-[200px]"
           (click)="openLocation(loc)"
         >
           {{ loc.name }}
@@ -94,10 +97,6 @@
           }
         </td>
       </tr>
-    } @empty {
-      <tr>
-        <td colspan="5" class="text-center italic">No matching locations</td>
-      </tr>
-    }
-  </tbody>
-</table>
+    </tbody>
+  </table>
+</cdk-virtual-scroll-viewport>

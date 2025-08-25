@@ -1,3 +1,4 @@
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { TitleCasePipe } from '@angular/common';
 import { Component, computed } from '@angular/core';
 import { IconLocationComponent } from '@components/icon-location/icon-location.component';
@@ -20,7 +21,12 @@ import { debounce } from 'typescript-debounce-decorator';
 
 @Component({
   selector: 'app-panel-world-empire-management',
-  imports: [AnalyticsClickDirective, IconLocationComponent, TitleCasePipe],
+  imports: [
+    AnalyticsClickDirective,
+    IconLocationComponent,
+    TitleCasePipe,
+    ScrollingModule,
+  ],
   templateUrl: './panel-world-empire-management.component.html',
   styleUrl: './panel-world-empire-management.component.scss',
 })
