@@ -10,6 +10,7 @@ import {
 } from '@interfaces';
 
 export const isGameStateReady = signal<boolean>(false);
+export const hasGameStateLoaded = signal<boolean>(false);
 
 let tickGamestate: GameState | undefined = undefined;
 
@@ -24,6 +25,8 @@ const _savedGamestate = indexedDbSignal<GameState>(
   defaultGameState(),
   (state: GameState) => {
     _liveGameState.set(state);
+
+    hasGameStateLoaded.set(true);
   },
 );
 

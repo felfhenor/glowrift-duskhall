@@ -4,6 +4,7 @@ import {
   gameloopShouldRun,
   gamestate,
   getOption,
+  hasGameStateLoaded,
   isCatchingUp,
   isGameStateReady,
   isPageVisible,
@@ -25,7 +26,12 @@ export class GamestateService {
 
   constructor() {
     effect(() => {
-      if (!this.contentService.hasLoaded() || this.hasLoaded()) return;
+      if (
+        !this.contentService.hasLoaded() ||
+        this.hasLoaded() ||
+        !hasGameStateLoaded()
+      )
+        return;
       this.logger.info('GameState', 'Migrating gamestate...');
 
       migrateGameState();
