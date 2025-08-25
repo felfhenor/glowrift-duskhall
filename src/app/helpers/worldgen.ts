@@ -274,11 +274,14 @@ function setEncounterLevels(
   });
 }
 
-function fillSpacesWithEvil(nodes: Record<string, WorldLocation>): void {
+function fillSpacesWithEvil(
+  nodes: Record<string, WorldLocation>,
+  firstTown: WorldLocation,
+): void {
   Object.values(nodes).forEach((node) => {
     if (!node.nodeType || node.currentlyClaimed) return;
 
-    worldgenDetermineExploreTypeAndSetValues(node);
+    worldgenDetermineExploreTypeAndSetValues(node, firstTown);
   });
 }
 
@@ -794,7 +797,7 @@ export async function worldgenGenerateWorld(
     addElementsToWorld(config, nodes);
 
     setWorldGenStatus(`Giving darkness to the world...`);
-    fillSpacesWithEvil(nodes);
+    fillSpacesWithEvil(nodes, firstTown);
 
     setWorldGenStatus(`Giving treasure to the world...`);
     fillSpacesWithLoot(nodes);
@@ -870,6 +873,7 @@ function numLootForLocation(location: WorldLocation): number {
 
 export function worldgenDetermineExploreTypeAndSetValues(
   node: WorldLocation,
+  worldCenter: WorldPosition,
   rng = rngSeeded(),
 ): void {
   if (node.currentlyClaimed) return;
@@ -879,7 +883,7 @@ export function worldgenDetermineExploreTypeAndSetValues(
 
     node.guardianIds = worldgenGuardiansForLocation(
       node,
-      gamestate().world.homeBase,
+      worldCenter,
       worldMaxDistance(),
     )
       .filter(Boolean)
@@ -910,6 +914,7 @@ export function worldgenGuardiansForLocation(
     worldCenter,
     maxDistance,
   );
+
   const guardians = Array.from({ length: numGuardians }, () => {
     const randomGuardianDataId = rngChoiceIdentifiable<GuardianContent>(
       validGuardians,

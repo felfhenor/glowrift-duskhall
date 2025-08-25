@@ -328,6 +328,10 @@ export function locationClaim(node: WorldLocation): void {
     if (updateNodeData) {
       updateNodeData.claimCount++;
       updateNodeData.currentlyClaimed = true;
+      if (nearbyPermanentNode) {
+        updateNodeData.permanentlyClaimed = true;
+      }
+
       updateNodeData.guardianIds = [];
       updateNodeData.claimLootIds = [];
 
@@ -357,7 +361,7 @@ export function locationUnclaim(node: WorldLocation): void {
     if (updateNodeData) {
       updateNodeData.currentlyClaimed = false;
 
-      worldgenDetermineExploreTypeAndSetValues(node);
+      worldgenDetermineExploreTypeAndSetValues(node, state.world.homeBase);
 
       updateNodeData.claimLootIds = worldgenLootForLocation(updateNodeData).map(
         (i) => i.id,
