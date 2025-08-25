@@ -47,7 +47,13 @@ export class PanelTownMarketComponent {
     const input = this.inputCurrency();
     const output = this.outputCurrency();
 
-    if (!input || !output || input.id === output.id || this.outputAmount() <= 0)
+    if (
+      !input ||
+      !output ||
+      input.id === output.id ||
+      this.inputAmount() <= 0 ||
+      this.outputAmount() <= 0
+    )
       return false;
 
     return this.hasInputAmount();
