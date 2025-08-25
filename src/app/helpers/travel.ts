@@ -1,5 +1,6 @@
 import { exploringUpdateGlobalStatusText } from '@helpers/explore';
 import { festivalExplorationTickMultiplier } from '@helpers/festival-exploration';
+import { allHeroes } from '@helpers/hero';
 import { error } from '@helpers/logging';
 import { distanceBetweenNodes } from '@helpers/math';
 import { gamestate, updateGamestate } from '@helpers/state-game';
@@ -7,7 +8,6 @@ import { locationTraitExplorationMultiplier } from '@helpers/trait-location-expl
 import { globalStatusText } from '@helpers/ui';
 import { locationGetNearest } from '@helpers/world-location';
 import type { WorldLocation, WorldPosition } from '@interfaces';
-import { allHeroes } from '@helpers/hero';
 import { meanBy } from 'es-toolkit/compat';
 
 export function isTraveling() {
@@ -44,7 +44,7 @@ export function travelTimeFromCurrentLocationTo(node: WorldLocation): number {
 
   const totalTravelTime = baseTravelTime + travelTimeModification;
 
-  return Math.max(1, totalTravelTime - tickReduction);
+  return Math.floor(Math.max(1, totalTravelTime - tickReduction));
 }
 
 export function travelToNode(node: WorldLocation): void {
