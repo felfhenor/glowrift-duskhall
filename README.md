@@ -20,3 +20,22 @@
 - [ngx-toastr](https://ngx-toastr.vercel.app/) (for notifications)
 - [Pixi](https://pixijs.com/8.x/guides/getting-started/intro) (for map rendering)
 - [SweetAlert2](https://github.com/sweetalert2/ngx-sweetalert2) (for alerts)
+
+## Assets
+
+### Art
+
+- Map Icons: Tiny Tales 2D WorldMap 1.0
+- Talent Icons: Spellbook Mega Pack (REXARD)
+- Skill Animations: Pixel Animations and Effects Pack (finalbossblues)
+- Monster Animations: ???
+- Map Tiles: ???
+
+### SFX
+
+- UI & Menu Sound FXs Pack (Ovani Sound)
+- RPG Music Pack The Complete Collection III
+
+### BGM
+
+- Ambient Music Pack Vol.2 (Ovani Sound)

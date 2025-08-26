@@ -60,6 +60,8 @@
           class="btn btn-primary"
           [class.btn-disabled]="!canTrade()"
           (click)="trade()"
+          appSfx="item-get-minor"
+          [sfxTrigger]="['click', 'hover']"
         >
           Trade!
         </button>

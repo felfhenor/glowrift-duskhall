@@ -42,6 +42,8 @@
               appAnalyticsClick="Game:Town:Blacksmith:IncreaseSymmetry:{{
                 chosen.name
               }}"
+              appSfx="item-get-minor"
+              [sfxTrigger]="['click', 'hover']"
             >
               Increase Symmetry ({{ symmetrySkillCount() }} matching)
             </button>
@@ -58,6 +60,8 @@
                 [disabled]="!path.canEnchant"
                 (click)="enchantSkill(chosen, path.path)"
                 appAnalyticsClick="Game:Town:Academy:Enchant:{{ chosen.name }}"
+                appSfx="item-get-minor"
+                [sfxTrigger]="['click', 'hover']"
               >
                 {{ path.path.description }}
 

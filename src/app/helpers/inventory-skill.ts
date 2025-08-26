@@ -4,6 +4,7 @@ import { currencyGain } from '@helpers/currency';
 import { droppableSortedRarityList } from '@helpers/droppable';
 import { heroUpdateData } from '@helpers/hero';
 import { heroRecalculateStats } from '@helpers/hero-stats';
+import { playSFX } from '@helpers/sfx';
 import { updateGamestate } from '@helpers/state-game';
 import type { EquipmentSkill, Hero } from '@interfaces';
 import { sumBy } from 'es-toolkit/compat';
@@ -71,6 +72,7 @@ export function skillEquip(
   skillInventoryRemove([item]);
   heroRecalculateStats(hero.id);
 
+  playSFX('skill-equip', 0);
   analyticsSendDesignEvent(`Game:Hero:EquipSkill:${item.name}`);
 }
 

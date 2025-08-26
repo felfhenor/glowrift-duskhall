@@ -6,6 +6,7 @@ import { IconItemComponent } from '@components/icon-item/icon-item.component';
 import { InventoryGridContainerComponent } from '@components/inventory-grid-container/inventory-grid-container.component';
 import { MarkerCurrencyComponent } from '@components/marker-currency/marker-currency.component';
 import { PanelTownBuildingUpgradeComponent } from '@components/panel-town-building-upgrade/panel-town-building-upgrade.component';
+import { SFXDirective } from '@directives/sfx.directive';
 import {
   analyticsSendDesignEvent,
   droppableSortedRarityList,
@@ -31,6 +32,7 @@ import { RepeatPipe } from 'ngxtension/repeat-pipe';
     MarkerCurrencyComponent,
     TeleportDirective,
     InventoryGridContainerComponent,
+    SFXDirective,
   ],
   templateUrl: './panel-town-salvager.component.html',
   styleUrl: './panel-town-salvager.component.scss',

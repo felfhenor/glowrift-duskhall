@@ -67,6 +67,7 @@ export * from './quadtree';
 export * from './rng';
 export * from './scheduler';
 export * from './setup';
+export * from './sfx';
 export * from './signal';
 export * from './skill';
 export * from './sprite';

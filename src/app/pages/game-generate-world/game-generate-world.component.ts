@@ -7,6 +7,7 @@ import {
   cancelWorldGeneration,
   currentWorldGenStatus,
 } from '@helpers/worldgen';
+import { SoundService } from '@services/sound.service';
 
 @Component({
   selector: 'app-game-generate-world',
@@ -16,6 +17,7 @@ import {
 })
 export class GameGenerateWorldComponent implements AfterViewInit, OnDestroy {
   private router = inject(Router);
+  private soundService = inject(SoundService);
 
   public worldGenStatus = computed(() => currentWorldGenStatus());
 
@@ -24,12 +26,14 @@ export class GameGenerateWorldComponent implements AfterViewInit, OnDestroy {
       const isReady = isSetup();
       if (isReady) {
         this.router.navigate(['/game']);
+        this.soundService.stopSFX();
       }
     });
   }
 
   ngAfterViewInit() {
     setTimeout(async () => {
+      this.soundService.playSound('loading', 1);
       await gameStart();
     }, 100);
   }

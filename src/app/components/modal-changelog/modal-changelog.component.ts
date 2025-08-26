@@ -1,5 +1,6 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { SFXDirective } from '@directives/sfx.directive';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { tablerPackage } from '@ng-icons/tabler-icons';
 import { TippyDirective } from '@ngneat/helipopper';
@@ -7,7 +8,7 @@ import { MetaService } from '@services/meta.service';
 
 @Component({
   selector: 'app-modal-changelog',
-  imports: [NgIconComponent, TippyDirective],
+  imports: [NgIconComponent, TippyDirective, SFXDirective],
   providers: [provideIcons({ tablerPackage })],
   templateUrl: './modal-changelog.component.html',
   styleUrl: './modal-changelog.component.scss',

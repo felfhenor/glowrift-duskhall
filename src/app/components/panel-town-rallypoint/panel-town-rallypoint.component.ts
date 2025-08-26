@@ -2,6 +2,7 @@ import { Component, computed } from '@angular/core';
 import { ButtonCostListComponent } from '@components/button-cost-list/button-cost-list.component';
 import { PanelTownBuildingUpgradeComponent } from '@components/panel-town-building-upgrade/panel-town-building-upgrade.component';
 import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
+import { SFXDirective } from '@directives/sfx.directive';
 import { getEntriesByType } from '@helpers/content';
 import { townBuyUpgrade, townHasUpgrade } from '@helpers/town';
 import { canBuyRallyPointUpgrade } from '@helpers/town-rallypoint';
@@ -14,6 +15,7 @@ import { sortBy } from 'es-toolkit/compat';
     PanelTownBuildingUpgradeComponent,
     ButtonCostListComponent,
     AnalyticsClickDirective,
+    SFXDirective,
   ],
   templateUrl: './panel-town-rallypoint.component.html',
   styleUrl: './panel-town-rallypoint.component.scss',

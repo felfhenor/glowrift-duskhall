@@ -3,6 +3,7 @@ import { Component, computed, input } from '@angular/core';
 import { IconItemComponent } from '@components/icon-currency/icon-currency.component';
 import { IconLocationComponent } from '@components/icon-location/icon-location.component';
 import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
+import { SFXDirective } from '@directives/sfx.directive';
 import {
   academyMaxEnchantLevel,
   alchemistCurrencyMultiplier,
@@ -33,6 +34,7 @@ import { debounce } from 'typescript-debounce-decorator';
     IconItemComponent,
     DecimalPipe,
     AnalyticsClickDirective,
+    SFXDirective,
   ],
   templateUrl: './panel-town-building-upgrade.component.html',
   styleUrl: './panel-town-building-upgrade.component.scss',

@@ -3,6 +3,8 @@ import { TitleCasePipe } from '@angular/common';
 import { Component, computed } from '@angular/core';
 import { IconLocationComponent } from '@components/icon-location/icon-location.component';
 import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
+import { SFXDirective } from '@directives/sfx.directive';
+import { playSFX } from '@helpers/sfx';
 import { getOption, setOption } from '@helpers/state-options';
 import { showLocationMenu } from '@helpers/ui';
 import { locationGetClaimed } from '@helpers/world-location';
@@ -26,6 +28,7 @@ import { debounce } from 'typescript-debounce-decorator';
     IconLocationComponent,
     TitleCasePipe,
     ScrollingModule,
+    SFXDirective,
   ],
   templateUrl: './panel-world-empire-management.component.html',
   styleUrl: './panel-world-empire-management.component.scss',
@@ -81,9 +84,14 @@ export class PanelWorldEmpireManagementComponent {
     }));
   });
 
+  public trackLocBy(index: number, location: WorldLocation) {
+    return location.id;
+  }
+
   @debounce(10)
   public doUpgrade(location: WorldLocation, upgrade: LocationUpgradeContent) {
     locationUpgrade(location, upgrade);
+    playSFX('ui-success', 0);
   }
 
   public openLocation(location: WorldLocation) {

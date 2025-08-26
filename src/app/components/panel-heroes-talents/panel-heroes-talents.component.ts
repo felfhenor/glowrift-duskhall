@@ -3,6 +3,7 @@ import { Component, computed, input } from '@angular/core';
 import { IconElementComponent } from '@components/icon-element/icon-element.component';
 import { PanelHeroesTalentsTreeComponent } from '@components/panel-heroes-talents-tree/panel-heroes-talents-tree.component';
 import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
+import { SFXDirective } from '@directives/sfx.directive';
 import {
   getEntry,
   getOption,
@@ -23,6 +24,7 @@ import { intersection } from 'es-toolkit/compat';
     PanelHeroesTalentsTreeComponent,
     SweetAlert2Module,
     AnalyticsClickDirective,
+    SFXDirective,
   ],
   templateUrl: './panel-heroes-talents.component.html',
   styleUrl: './panel-heroes-talents.component.scss',

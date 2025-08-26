@@ -1,3 +1,4 @@
+import { playSFX } from '@helpers/sfx';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 
 export function victoryHasWonForFirstTime(): boolean {
@@ -13,6 +14,8 @@ export function victoryDismissWinDialog(): void {
 }
 
 export function victoryClaim(): void {
+  playSFX('victory', 0);
+
   updateGamestate((state) => {
     state.meta.hasWon = true;
     state.meta.wonAtTick = state.actionClock.numTicks;

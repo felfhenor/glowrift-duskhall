@@ -6,6 +6,7 @@ import { MarkerCurrencyInlineComponent } from '@components/marker-currency-inlin
 import { PanelTownBuildingUpgradeComponent } from '@components/panel-town-building-upgrade/panel-town-building-upgrade.component';
 import { StatsSkillComponent } from '@components/stats-skill/stats-skill.component';
 import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
+import { SFXDirective } from '@directives/sfx.directive';
 import { currencyHasMultipleAmounts } from '@helpers/currency';
 import { skillGetById } from '@helpers/skill';
 import {
@@ -35,6 +36,7 @@ import { debounce } from 'typescript-debounce-decorator';
     TeleportDirective,
     MarkerCurrencyInlineComponent,
     AnalyticsClickDirective,
+    SFXDirective,
   ],
   templateUrl: './panel-town-academy.component.html',
   styleUrl: './panel-town-academy.component.scss',

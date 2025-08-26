@@ -1,6 +1,7 @@
 import { NgClass, TitleCasePipe } from '@angular/common';
 import { Component, computed } from '@angular/core';
 import { IconLocationComponent } from '@components/icon-location/icon-location.component';
+import { SFXDirective } from '@directives/sfx.directive';
 import {
   gamestate,
   heroSetLootRarityPreference,
@@ -12,7 +13,13 @@ import { TippyDirective } from '@ngneat/helipopper';
 
 @Component({
   selector: 'app-panel-combat-preferences',
-  imports: [TippyDirective, TitleCasePipe, IconLocationComponent, NgClass],
+  imports: [
+    TippyDirective,
+    TitleCasePipe,
+    IconLocationComponent,
+    NgClass,
+    SFXDirective,
+  ],
   templateUrl: './panel-combat-preferences.component.html',
   styleUrl: './panel-combat-preferences.component.scss',
 })

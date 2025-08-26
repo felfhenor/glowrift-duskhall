@@ -9,6 +9,9 @@
     (mouseenter)="ext.currentColor = ext.color"
     (mouseleave)="ext.currentColor = '#ccc'"
     [appAnalyticsClick]="'Meta:External:' + ext.name"
+    appSfx="ui-click"
+    [sfxOffset]="$index"
+    [sfxTrigger]="['click', 'hover']"
   >
     <ng-icon [name]="ext.icon" [color]="ext.currentColor || '#ccc'"></ng-icon>
   </a>

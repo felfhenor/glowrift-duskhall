@@ -5,6 +5,7 @@ import { droppableSortedRarityList } from '@helpers/droppable';
 import { heroUpdateData } from '@helpers/hero';
 import { heroRecalculateStats } from '@helpers/hero-stats';
 import { notifyError } from '@helpers/notify';
+import { playSFX } from '@helpers/sfx';
 import { updateGamestate } from '@helpers/state-game';
 import type { EquipmentItem, EquipmentSlot, Hero } from '@interfaces';
 import { groupBy, sumBy } from 'es-toolkit/compat';
@@ -91,6 +92,7 @@ export function itemEquip(hero: Hero, item: EquipmentItem): void {
   heroRecalculateStats(hero.id);
 
   analyticsSendDesignEvent(`Game:Hero:EquipItem:${item.name}`);
+  playSFX('item-equip', 0);
 }
 
 export function itemUnequip(hero: Hero, item: EquipmentItem): void {

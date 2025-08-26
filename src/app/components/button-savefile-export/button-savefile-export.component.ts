@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
+import { SFXDirective } from '@directives/sfx.directive';
 import { gamestate } from '@helpers';
 
 @Component({
   selector: 'app-button-savefile-export',
-  imports: [AnalyticsClickDirective],
+  imports: [AnalyticsClickDirective, SFXDirective],
   templateUrl: './button-savefile-export.component.html',
   styleUrl: './button-savefile-export.component.scss',
 })

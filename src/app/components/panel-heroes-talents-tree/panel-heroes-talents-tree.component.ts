@@ -2,6 +2,7 @@ import type { Signal } from '@angular/core';
 import { Component, computed, input } from '@angular/core';
 import { IconTalentComponent } from '@components/icon-talent/icon-talent.component';
 import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
+import { SFXDirective } from '@directives/sfx.directive';
 import {
   getEntry,
   heroCanBuyTalent,
@@ -9,6 +10,7 @@ import {
   heroSpendTalentPoint,
   heroTalentsInvestedInTree,
   heroTotalTalentLevel,
+  playSFX,
 } from '@helpers';
 import type {
   GameElement,
@@ -40,7 +42,12 @@ type TalentTreeHeroDefinition = TalentTreeContent & {
 
 @Component({
   selector: 'app-panel-heroes-talents-tree',
-  imports: [IconTalentComponent, SweetAlert2Module, AnalyticsClickDirective],
+  imports: [
+    IconTalentComponent,
+    SweetAlert2Module,
+    AnalyticsClickDirective,
+    SFXDirective,
+  ],
   templateUrl: './panel-heroes-talents-tree.component.html',
   styleUrl: './panel-heroes-talents-tree.component.scss',
 })
@@ -91,5 +98,6 @@ export class PanelHeroesTalentsTreeComponent {
 
   learnTalent(talent: TalentTreeHeroNode): void {
     heroSpendTalentPoint(this.hero(), talent.talentData.id);
+    playSFX('item-get-minor', 0);
   }
 }

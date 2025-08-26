@@ -28,6 +28,7 @@ import {
 import { routes } from '@routes/app.routes';
 import { AnalyticsService } from '@services/analytics.service';
 import { APIService } from '@services/api.service';
+import { BGMService } from '@services/bgm.service';
 import { CameraService } from '@services/camera.service';
 import { ContentService } from '@services/content.service';
 import { GamestateService } from '@services/gamestate.service';
@@ -142,6 +143,11 @@ export const appConfig: ApplicationConfig = {
       useValue: async () => {
         await inject(SoundService).init();
       },
+    },
+    {
+      provide: ENVIRONMENT_INITIALIZER,
+      multi: true,
+      useValue: () => inject(BGMService).init(),
     },
   ],
 };

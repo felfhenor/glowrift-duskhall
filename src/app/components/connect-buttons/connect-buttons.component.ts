@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ModalChangelogComponent } from '@components/modal-changelog/modal-changelog.component';
 import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
+import { SFXDirective } from '@directives/sfx.directive';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import {
   tablerBrandDiscord,
@@ -17,6 +18,7 @@ import { TippyDirective } from '@ngneat/helipopper';
     TippyDirective,
     ModalChangelogComponent,
     AnalyticsClickDirective,
+    SFXDirective,
   ],
   providers: [
     provideIcons({

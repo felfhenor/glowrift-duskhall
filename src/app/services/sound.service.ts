@@ -1,125 +1,141 @@
-import { Injectable } from '@angular/core';
-import { getOption, warn } from '@helpers';
-import type { SFX } from '@interfaces';
+import { computed, effect, Injectable, signal } from '@angular/core';
+import { getOption, sfx$ } from '@helpers';
+import type { BGM, SFX } from '@interfaces';
 import { zip } from 'es-toolkit/compat';
+
+const soundsToLoad: Record<SFX, string> = {
+  'ui-click': './audio/sfx/ui-click.mp3',
+  'item-get-major': './audio/sfx/item-get-major.mp3',
+  'item-get-minor': './audio/sfx/item-get-minor.mp3',
+  'ui-error': './audio/sfx/ui-error.mp3',
+  'ui-hover': './audio/sfx/ui-hover.mp3',
+  'ui-success': './audio/sfx/ui-success.mp3',
+  loading: './audio/sfx/loading.mp3',
+  victory: './audio/sfx/victory.mp3',
+  'festival-start': './audio/sfx/festival-start.mp3',
+  'item-equip': './audio/sfx/item-equip.mp3',
+  'item-salvage': './audio/sfx/item-salvage.mp3',
+  'skill-equip': './audio/sfx/skill-equip.mp3',
+  'merchant-reset': './audio/sfx/merchant-reset.mp3',
+};
+
+const soundVolumeMixing: Record<SFX, number> = {
+  'ui-click': 0.5,
+  'item-get-major': 1,
+  'item-get-minor': 0.5,
+  'ui-error': 1.5,
+  'ui-hover': 1,
+  'ui-success': 1,
+  loading: 0.5,
+  victory: 1.5,
+  'festival-start': 0.5,
+  'item-equip': 0.5,
+  'item-salvage': 0.25,
+  'skill-equip': 1,
+  'merchant-reset': 0.5,
+};
+
+const bgmsToLoad: Record<BGM, string> = {
+  'game-casual': './audio/bgm/game-casual.mp3',
+  'game-threatened': './audio/bgm/game-threatened.mp3',
+  menu: './audio/bgm/menu.mp3',
+};
 
 @Injectable({
   providedIn: 'root',
 })
 export class SoundService {
-  private context: AudioContext | null = null;
-  private soundEffects: Partial<Record<SFX, AudioBuffer>> = {};
-  private isInitialized = false;
-  private hasUserInteracted = false;
+  private context = new AudioContext();
+  private audioRefs: Partial<Record<SFX | BGM, AudioBuffer>> = {};
+
+  private bgmGain: GainNode | undefined;
+  private bgm: AudioBufferSourceNode | undefined;
+
+  private lastSFX: AudioBufferSourceNode | undefined;
+
+  private hasInteracted = signal<boolean>(false);
+  public allowAudioInteractions = this.hasInteracted.asReadonly();
+
+  private lastBGMVolume = signal<number>(0);
+
+  private bgmVolume = computed(() =>
+    getOption<'bgmPlay'>('bgmPlay') ? getOption<'bgmVolume'>('bgmVolume') : 0,
+  );
+
+  private sfxVolume = computed(() => 0.5 * getOption<'sfxVolume'>('sfxVolume'));
 
   constructor() {
-    // Set up one-time user interaction listeners to enable audio
+    effect(() => {
+      const bgmVolume = this.bgmVolume();
+      if (bgmVolume !== this.lastBGMVolume()) {
+        this.changeBGMVolume(bgmVolume);
+        this.lastBGMVolume.set(bgmVolume);
+      }
+    });
+  }
+
+  async init() {
+    this.lastBGMVolume.set(getOption<'bgmVolume'>('bgmVolume'));
     this.setupUserInteractionListeners();
+    await this.loadSFX();
+    await this.loadBGM();
+
+    sfx$.subscribe((sfxData) => {
+      const { sfx, rate } = sfxData;
+
+      this.playSound(sfx, rate);
+    });
   }
 
   private setupUserInteractionListeners() {
     const enableAudio = () => {
-      this.hasUserInteracted = true;
-      // Remove listeners after first interaction
+      this.hasInteracted.set(true);
       document.removeEventListener('click', enableAudio);
       document.removeEventListener('keydown', enableAudio);
       document.removeEventListener('touchstart', enableAudio);
+      document.removeEventListener('mousemove', enableAudio);
     };
 
     document.addEventListener('click', enableAudio, { once: true });
     document.addEventListener('keydown', enableAudio, { once: true });
     document.addEventListener('touchstart', enableAudio, { once: true });
+    document.addEventListener('mousemove', enableAudio, { once: true });
   }
 
-  private async createAudioContext(): Promise<AudioContext> {
-    if (this.context) {
-      return this.context;
-    }
+  private async loadSFX() {
+    const sfxToLoad = Object.keys(soundsToLoad).map((sfx) => ({
+      sfx: sfx as SFX,
+      url: soundsToLoad[sfx as SFX],
+    }));
 
-    // Only create AudioContext after user interaction to avoid policy violations
-    if (!this.hasUserInteracted) {
-      throw new Error('AudioContext creation requires user interaction');
-    }
+    const soundNames = sfxToLoad.map((s) => s.sfx);
+    const sounds = await this.loadSounds(sfxToLoad.map((s) => s.url));
 
-    try {
-      // Create AudioContext only when needed and after user interaction
-      const AudioContextClass = window.AudioContext;
-      this.context = new AudioContextClass();
-
-      // Handle suspended context (common in modern browsers due to autoplay policy)
-      if (this.context.state === 'suspended') {
-        await this.context.resume();
-      }
-
-      return this.context;
-    } catch (error) {
-      warn('Audio', 'Failed to create AudioContext:', error);
-      throw new Error('AudioContext creation failed');
-    }
+    const zipped = zip<SFX, AudioBuffer>(soundNames, sounds);
+    zipped.forEach(([name, buffer]) => {
+      this.audioRefs[name as SFX] = buffer;
+    });
   }
 
-  async init() {
-    try {
-      // Try to initialize AudioContext if user has already interacted
-      if (this.hasUserInteracted) {
-        await this.createAudioContext();
-      }
+  private async loadBGM() {
+    const bgmToLoad = Object.keys(bgmsToLoad).map((bgm) => ({
+      bgm: bgm as BGM,
+      url: bgmsToLoad[bgm as BGM],
+    }));
 
-      const soundsToLoad: Record<SFX, string> = {
-        'ui-click': './sfx/ui-click.mp3',
-      };
+    const soundNames = bgmToLoad.map((b) => b.bgm);
+    const sounds = await this.loadSounds(bgmToLoad.map((b) => b.url));
 
-      const sfxToLoad = Object.keys(soundsToLoad).map((sfx) => ({
-        sfx: sfx as SFX,
-        url: soundsToLoad[sfx as SFX],
-      }));
-
-      // Load sound files even if AudioContext isn't ready yet
-      const soundNames = sfxToLoad.map((s) => s.sfx);
-
-      if (this.context) {
-        const sounds = await this.loadSounds(sfxToLoad.map((s) => s.url));
-        const zipped = zip<SFX, AudioBuffer>(soundNames, sounds);
-        zipped.forEach(([name, buffer]) => {
-          this.soundEffects[name as SFX] = buffer;
-        });
-      }
-
-      this.isInitialized = true;
-    } catch (error) {
-      warn('Audio', 'Failed to initialize SoundService:', error);
-      this.isInitialized = true;
-    }
-  }
-
-  private async ensureSoundsLoaded() {
-    // If sounds aren't loaded yet and we have an AudioContext, load them now
-    if (this.context && Object.keys(this.soundEffects).length === 0) {
-      const soundsToLoad: Record<SFX, string> = {
-        'ui-click': './sfx/ui-click.mp3',
-      };
-
-      const sfxToLoad = Object.keys(soundsToLoad).map((sfx) => ({
-        sfx: sfx as SFX,
-        url: soundsToLoad[sfx as SFX],
-      }));
-
-      const soundNames = sfxToLoad.map((s) => s.sfx);
-      const sounds = await this.loadSounds(sfxToLoad.map((s) => s.url));
-      const zipped = zip<SFX, AudioBuffer>(soundNames, sounds);
-      zipped.forEach(([name, buffer]) => {
-        this.soundEffects[name as SFX] = buffer;
-      });
-    }
+    const zipped = zip<BGM, AudioBuffer>(soundNames, sounds);
+    zipped.forEach(([name, buffer]) => {
+      this.audioRefs[name as BGM] = buffer;
+    });
   }
 
   private async loadSound(url: string) {
-    if (!this.context) {
-      throw new Error('AudioContext not initialized');
-    }
     return fetch(url)
       .then((r) => r.arrayBuffer())
-      .then((b) => this.context!.decodeAudioData(b));
+      .then((b) => this.context.decodeAudioData(b));
   }
 
   private async loadSounds(urls: string[]) {
@@ -128,61 +144,60 @@ export class SoundService {
       .then((urls) => Promise.all(urls.map((url) => this.loadSound(url))));
   }
 
-  public async playSound(soundName: SFX, rate: number) {
-    if (!getOption('audioPlay')) return;
-    if (!this.isInitialized) {
-      warn('Audio', 'SoundService not initialized, skipping sound playback');
-      return;
-    }
+  public playSound(soundName: SFX, rate: number) {
+    if (!getOption('sfxPlay')) return;
 
-    try {
-      // Create AudioContext if it doesn't exist and user has interacted
-      if (!this.context && this.hasUserInteracted) {
-        await this.createAudioContext();
-        await this.ensureSoundsLoaded();
-      }
+    const sound = this.audioRefs[soundName]!;
 
-      if (!this.context) {
-        // AudioContext not available yet, skip silently
-        return;
-      }
+    const source = this.context.createBufferSource();
+    source.buffer = sound;
+    source.detune.value = rate;
 
-      // Ensure context is resumed (in case it was suspended)
-      if (this.context.state === 'suspended') {
-        await this.context.resume();
-      }
+    const gain = this.context.createGain();
+    gain.gain.value = this.sfxVolume() * soundVolumeMixing[soundName];
+    source.connect(gain);
+    gain.connect(this.context.destination);
 
-      const sound = this.soundEffects[soundName];
-      if (!sound) {
-        warn('Audio', `Sound effect '${soundName}' not found`);
-        return;
-      }
+    source.start(0);
 
-      const source = this.context.createBufferSource();
-      source.buffer = sound;
-      source.detune.value = rate;
-
-      const gain = this.context.createGain();
-      gain.gain.value = getOption<'volume'>('volume');
-      source.connect(gain);
-      gain.connect(this.context.destination);
-
-      source.start(0);
-    } catch (error) {
-      warn('Audio', 'Failed to play sound:', error);
-    }
+    this.lastSFX = source;
   }
 
-  public async cleanup() {
-    if (this.context) {
-      try {
-        await this.context.close();
-        this.context = null;
-      } catch (error) {
-        warn('Audio', 'Failed to close AudioContext:', error);
-      }
-    }
-    this.soundEffects = {};
-    this.isInitialized = false;
+  public stopSFX() {
+    this.lastSFX?.stop();
+  }
+
+  public playBGM(bgmName: BGM) {
+    if (!getOption('bgmPlay')) return;
+
+    this.stopBGM();
+
+    const volume = this.bgmVolume();
+
+    const bgm = this.audioRefs[bgmName]!;
+
+    const source = this.context.createBufferSource();
+    source.buffer = bgm;
+    source.loop = true;
+
+    const gain = this.context.createGain();
+    gain.gain.value = volume;
+    source.connect(gain);
+    gain.connect(this.context.destination);
+
+    source.start(0);
+
+    this.bgm = source;
+    this.bgmGain = gain;
+  }
+
+  public stopBGM() {
+    this.bgm?.stop();
+  }
+
+  public changeBGMVolume(newVolume: number) {
+    if (!this.bgmGain) return;
+
+    this.bgmGain.gain.setValueAtTime(newVolume, this.context.currentTime);
   }
 }

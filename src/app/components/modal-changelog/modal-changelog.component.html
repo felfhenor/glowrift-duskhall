@@ -5,6 +5,9 @@
   (mouseenter)="currentColor = color"
   (mouseleave)="currentColor = '#ccc'"
   (click)="changelogs.showModal()"
+  appSfx="ui-click"
+  [sfxOffset]="4"
+  [sfxTrigger]="['click', 'hover']"
 >
   <ng-icon [name]="'tablerPackage'" [color]="currentColor || '#ccc'"></ng-icon>
 </button>

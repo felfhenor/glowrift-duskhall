@@ -6,6 +6,7 @@ import { IconSkillComponent } from '@components/icon-skill/icon-skill.component'
 import { InventoryGridContainerComponent } from '@components/inventory-grid-container/inventory-grid-container.component';
 import { MarkerCurrencyComponent } from '@components/marker-currency/marker-currency.component';
 import { PanelTownBuildingUpgradeComponent } from '@components/panel-town-building-upgrade/panel-town-building-upgrade.component';
+import { SFXDirective } from '@directives/sfx.directive';
 import {
   alchemistMultiSkillSalvageCurrencyGain,
   alchemistSalvageSkills,
@@ -31,6 +32,7 @@ import { RepeatPipe } from 'ngxtension/repeat-pipe';
     TeleportDirective,
     IconSkillComponent,
     InventoryGridContainerComponent,
+    SFXDirective,
   ],
   templateUrl: './panel-town-alchemist.component.html',
   styleUrl: './panel-town-alchemist.component.scss',

@@ -43,6 +43,8 @@
               appAnalyticsClick="Game:Town:Blacksmith:RerollTrait:{{
                 chosen.name
               }}"
+              appSfx="ui-click"
+              [sfxTrigger]="['hover']"
             >
               Reroll Traits
 
@@ -61,6 +63,8 @@
               appAnalyticsClick="Game:Town:Blacksmith:IncreaseSymmetry:{{
                 chosen.name
               }}"
+              appSfx="item-get-minor"
+              [sfxTrigger]="['click', 'hover']"
             >
               Increase Symmetry ({{ symmetryItemCount() }} matching)
             </button>
@@ -79,6 +83,8 @@
                 appAnalyticsClick="Game:Town:Blacksmith:Enchant:{{
                   chosen.name
                 }}"
+                appSfx="item-get-minor"
+                [sfxTrigger]="['click', 'hover']"
               >
                 <app-button-cost-list
                   [label]="path.path.description"

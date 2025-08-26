@@ -46,7 +46,7 @@
             (click)="panel.clickCb()"
             appSfx="ui-click"
             [sfxOffset]="$index"
-            [sfxTrigger]="['click']"
+            [sfxTrigger]="['click', 'hover']"
           >
             <app-icon [name]="panel.icon" size="2em" color="#000"></app-icon>
           </button>
@@ -58,6 +58,9 @@
           class="btn btn-xs btn-info"
           [tp]="'Focus Camera [F]'"
           (click)="focusCamera()"
+          appSfx="ui-click"
+          [sfxOffset]="panelConfigs.length + 1"
+          [sfxTrigger]="['click', 'hover']"
         >
           <app-icon name="gameHumanTarget" size="2em" color="#000"></app-icon>
         </button>
@@ -68,6 +71,9 @@
           class="btn btn-xs btn-info"
           [tp]="isPaused() ? 'Resume Game [SPACE]' : 'Pause Game [SPACE]'"
           (click)="togglePause()"
+          appSfx="ui-click"
+          [sfxOffset]="panelConfigs.length + 2"
+          [sfxTrigger]="['click', 'hover']"
         >
           <app-icon
             [name]="isPaused() ? 'gamePlayButton' : 'gamePauseButton'"
@@ -82,6 +88,9 @@
           class="btn btn-xs btn-warning"
           [swal]="leaveSwal"
           [tp]="'Go Back [Q]'"
+          appSfx="ui-error"
+          [sfxOffset]="panelConfigs.length + 1"
+          [sfxTrigger]="['click', 'hover']"
         >
           <app-icon name="gameExitDoor" size="2em" color="#000"></app-icon>
         </a>

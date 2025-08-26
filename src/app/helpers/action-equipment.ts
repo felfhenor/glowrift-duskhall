@@ -2,6 +2,7 @@ import { currencyGain } from '@helpers/currency';
 import { itemInventoryRemove } from '@helpers/inventory-equipment';
 import { itemSkills, itemStat, itemTalents, itemTraits } from '@helpers/item';
 import { notifySuccess } from '@helpers/notify';
+import { playSFX } from '@helpers/sfx';
 import { townBuildingLevel } from '@helpers/town';
 import type {
   DropRarity,
@@ -38,6 +39,8 @@ export function actionItemSalvage(item: EquipmentItem): void {
   currencyGain('Mana', manaGained);
 
   notifySuccess(`Salvaged ${item.name} for ${manaGained} mana!`);
+
+  playSFX('item-salvage', 0);
 }
 
 export function actionItemBuyValue(item: EquipmentItemContent): number {

@@ -28,7 +28,7 @@
               [class.text-error]="!hasNodeClaim(lib.key, lib.value)"
             >
               <app-icon-location
-                class="scale-50 absolute left-[-16px] top-[-16px]"
+                class="scale-50 absolute left-[-16px] top-[-24px]"
                 [type]="lib.key"
               ></app-icon-location>
 
@@ -68,6 +68,8 @@
           [class.btn-disabled]="!canUpgrade()"
           appAnalyticsClick="Game:Town:UpgradeBuilding:{{ building() }}"
           (click)="upgrade()"
+          appSfx="item-get-minor"
+          [sfxTrigger]="['click', 'hover']"
         >
           Upgrade
         </button>

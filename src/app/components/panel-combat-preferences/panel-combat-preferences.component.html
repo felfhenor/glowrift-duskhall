@@ -8,6 +8,9 @@
         class="btn btn-info join-item"
         [class.btn-outline]="tolerance !== 'low'"
         (click)="changeRiskTolerance('low')"
+        appSfx="ui-click"
+        [sfxOffset]="0"
+        [sfxTrigger]="['click', 'hover']"
         [tp]="
           'Heroes will attempt locations no more than 3 levels higher than them.'
         "
@@ -18,6 +21,9 @@
         class="btn btn-warning join-item"
         [class.btn-outline]="tolerance !== 'medium'"
         (click)="changeRiskTolerance('medium')"
+        appSfx="ui-click"
+        [sfxOffset]="1"
+        [sfxTrigger]="['click', 'hover']"
         [tp]="
           'Heroes will attempt locations no more than 7 levels higher than them.'
         "
@@ -28,6 +34,9 @@
         class="btn btn-error join-item"
         [class.btn-outline]="tolerance !== 'high'"
         (click)="changeRiskTolerance('high')"
+        appSfx="ui-click"
+        [sfxOffset]="2"
+        [sfxTrigger]="['click', 'hover']"
         [tp]="'Heroes will attempt any location.'"
       >
         Risky
@@ -43,6 +52,9 @@
           class="btn btn-primary join-item relative"
           [class.btn-outline]="!preferences[nodeType]"
           (click)="toggleNodeType(nodeType)"
+          appSfx="ui-click"
+          [sfxOffset]="$index"
+          [sfxTrigger]="['click', 'hover']"
           [tp]="
             'Heroes will ' +
             (preferences[nodeType] ? 'attempt' : 'avoid') +
@@ -74,6 +86,9 @@
           [class.btn-light]="!rarityPrefs[rarity]"
           [ngClass]="[rarityPrefs[rarity] ? 'bg-' + rarity : '']"
           (click)="toggleLootRarity(rarity)"
+          appSfx="ui-click"
+          [sfxOffset]="$index"
+          [sfxTrigger]="['click', 'hover']"
           [tp]="
             'Heroes will ' +
             (rarityPrefs[rarity] ? 'attempt' : 'avoid') +

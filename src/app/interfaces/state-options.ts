@@ -11,7 +11,8 @@ export type GameOption =
   | 'debugGameloopTimerUpdates'
   | 'debugAllowBackgroundOperations'
   | 'debugDisableFogOfWar'
-  | 'audioPlay'
+  | 'sfxPlay'
+  | 'bgmPlay'
   | 'gameloopPaused'
   | 'canSendNotifications'
   | 'followHeroesOnMap';
@@ -43,7 +44,8 @@ export interface OptionsTabLink {
 
 export type GameOptions = Record<GameOption, boolean> & {
   uiTheme: string;
-  volume: number;
+  sfxVolume: number;
+  bgmVolume: number;
   debugTickMultiplier: number;
   debugSaveInterval: number;
   enabledNotificationCategories: ToggleableCategory[];

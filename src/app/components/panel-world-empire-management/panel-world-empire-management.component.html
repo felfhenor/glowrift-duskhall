@@ -7,6 +7,9 @@
         class="btn btn-primary join-item relative"
         [class.btn-outline]="!selectedNodeTypes.includes(nodeType)"
         (click)="toggleLocationType(nodeType)"
+        appSfx="ui-click"
+        [sfxOffset]="$index"
+        [sfxTrigger]="['click', 'hover']"
       >
         <app-icon-location
           class="scale-50 absolute left-[-4px]"
@@ -28,6 +31,9 @@
         class="btn btn-{{ ownership.color }} join-item relative"
         [class.btn-outline]="!selectedOwnerships.includes(ownership.type)"
         (click)="toggleOwnershipType(ownership.type)"
+        appSfx="ui-click"
+        [sfxOffset]="$index"
+        [sfxTrigger]="['click', 'hover']"
       >
         {{ ownership.type }}
       </button>
@@ -50,7 +56,10 @@
     <tbody>
       <tr
         class="relative"
-        *cdkVirtualFor="let loc of formattedOwnedLocations()"
+        *cdkVirtualFor="
+          let loc of formattedOwnedLocations();
+          trackBy: trackLocBy
+        "
       >
         <td>
           <app-icon-location
@@ -87,6 +96,9 @@
               [disabled]="!upgrade.canBuy"
               (click)="doUpgrade(loc, upgrade)"
               appAnalyticsClick="Game:Empire:Upgrade:{{ upgrade.name }}"
+              appSfx="ui-click"
+              [sfxOffset]="$index"
+              [sfxTrigger]="['hover']"
             >
               <span class="min-w-[180px]">
                 {{ upgrade.name }} Lv.{{ upgrade.level }}

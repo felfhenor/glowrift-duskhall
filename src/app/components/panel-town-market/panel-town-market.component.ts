@@ -2,6 +2,7 @@ import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { PanelTownBuildingUpgradeComponent } from '@components/panel-town-building-upgrade/panel-town-building-upgrade.component';
 import { SelectorCurrencyComponent } from '@components/selector-currency/selector-currency.component';
+import { SFXDirective } from '@directives/sfx.directive';
 import {
   analyticsSendDesignEvent,
   currencyGain,
@@ -23,6 +24,7 @@ import { debounce } from 'typescript-debounce-decorator';
     PanelTownBuildingUpgradeComponent,
     SelectorCurrencyComponent,
     FormsModule,
+    SFXDirective,
   ],
   templateUrl: './panel-town-market.component.html',
   styleUrl: './panel-town-market.component.scss',

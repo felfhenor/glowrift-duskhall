@@ -1,4 +1,4 @@
-import { TitleCasePipe } from '@angular/common';
+import { DecimalPipe, TitleCasePipe } from '@angular/common';
 import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { OptionsBaseComponent } from '@components/panel-options/option-base-page.component';
@@ -6,7 +6,7 @@ import type { ToggleableCategory } from '@interfaces';
 
 @Component({
   selector: 'app-panel-options-ui',
-  imports: [FormsModule, TitleCasePipe],
+  imports: [FormsModule, TitleCasePipe, DecimalPipe],
   templateUrl: './panel-options-ui.component.html',
   styleUrl: './panel-options-ui.component.scss',
 })

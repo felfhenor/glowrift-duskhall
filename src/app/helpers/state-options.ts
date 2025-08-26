@@ -14,12 +14,16 @@ export function defaultOptions(): GameOptions {
     debugTickMultiplier: 1,
     debugSaveInterval: 15,
 
-    audioPlay: true,
     followHeroesOnMap: true,
 
     uiTheme: 'dark',
 
-    volume: 0.5,
+    sfxPlay: true,
+    sfxVolume: 0.3,
+
+    bgmPlay: true,
+    bgmVolume: 0.1,
+
     gameloopPaused: false,
     canSendNotifications: true,
     enabledNotificationCategories: ['Festival'],

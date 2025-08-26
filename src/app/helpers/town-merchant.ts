@@ -7,9 +7,13 @@ import {
 import { currencyHasAmount, currencyLose } from '@helpers/currency';
 import { itemInventoryAdd } from '@helpers/inventory-equipment';
 import { rngSucceedsChance } from '@helpers/rng';
+import { playSFX } from '@helpers/sfx';
 import { updateGamestate } from '@helpers/state-game';
 import { talentTownStatTotalForAllHeroes } from '@helpers/talent';
-import { timerAddMerchantRefreshAction, timerGetRegisterTick } from '@helpers/timer';
+import {
+  timerAddMerchantRefreshAction,
+  timerGetRegisterTick,
+} from '@helpers/timer';
 import { townBuildingLevel } from '@helpers/town';
 import { traitAddToEquipment } from '@helpers/trait-equipment';
 import type { EquipmentItem } from '@interfaces';
@@ -60,6 +64,8 @@ export function merchantGenerateItems(): void {
     state.town.merchant.soldItems = items;
     return state;
   });
+
+  playSFX('merchant-reset', 0);
 }
 
 export function merchantScheduleNextRefresh(): void {

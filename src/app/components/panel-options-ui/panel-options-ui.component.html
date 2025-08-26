@@ -61,28 +61,61 @@
           <label class="label cursor-pointer label-checkbox">
             <input
               type="checkbox"
-              [checked]="getOption('audioPlay')"
+              [checked]="getOption('bgmPlay')"
               class="checkbox checkbox-secondary"
-              (click)="setOption('audioPlay', !getOption('audioPlay'))"
+              (click)="setOption('bgmPlay', !getOption('bgmPlay'))"
             />
-            <span class="label-text">Play Audio</span>
+            <span class="label-text">Play Background Music</span>
           </label>
         </div>
 
         <div class="form-control">
           <label class="label cursor-pointer label-checkbox">
-            <span class="label-text !ml-0 mr-2">SFX Volume</span>
+            <span class="label-text !ml-0 mr-2">Background Music Volume</span>
+            <input
+              #bgmVolume
+              type="range"
+              [min]="0"
+              [max]="1"
+              [step]="0.05"
+              [value]="getOption('bgmVolume')"
+              (change)="setOption('bgmVolume', bgmVolume.valueAsNumber)"
+              class="range range-secondary"
+            />
+            <span class="ml-2">
+              {{ getOption('bgmVolume') * 100 | number: '1.0-0' }}%
+            </span>
+          </label>
+        </div>
+
+        <div class="form-control mt-4">
+          <label class="label cursor-pointer label-checkbox">
+            <input
+              type="checkbox"
+              [checked]="getOption('sfxPlay')"
+              class="checkbox checkbox-secondary"
+              (click)="setOption('sfxPlay', !getOption('sfxPlay'))"
+            />
+            <span class="label-text">Play Sound Effects</span>
+          </label>
+        </div>
+
+        <div class="form-control">
+          <label class="label cursor-pointer label-checkbox">
+            <span class="label-text !ml-0 mr-2">Sound Effects Volume</span>
             <input
               #sfxVolume
               type="range"
               [min]="0"
               [max]="1"
               [step]="0.05"
-              [value]="getOption('volume')"
-              (change)="setOption('volume', sfxVolume.valueAsNumber)"
+              [value]="getOption('sfxVolume')"
+              (change)="setOption('sfxVolume', sfxVolume.valueAsNumber)"
               class="range range-secondary"
             />
-            <span class="ml-2">{{ getOption('volume') * 100 }}%</span>
+            <span class="ml-2">
+              {{ getOption('sfxVolume') * 100 | number: '1.0-0' }}%
+            </span>
           </label>
         </div>
       </div>

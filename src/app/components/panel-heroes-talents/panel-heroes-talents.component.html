@@ -11,6 +11,8 @@
     class="btn btn-warning btn-sm"
     [swal]="respecSwal"
     appAnalyticsClick="Game:Hero:Respec"
+    appSfx="ui-error"
+    [sfxTrigger]="['click', 'hover']"
   >
     Re-spec
   </button>
@@ -21,6 +23,9 @@
         class="btn btn-neutral btn-sm btn-active join-item"
         [class.btn-outline]="currentElement() !== type.element"
         (click)="changeElement(type.element)"
+        appSfx="ui-click"
+        [sfxOffset]="$index"
+        [sfxTrigger]="['click', 'hover']"
       >
         <app-icon-element [element]="type.element"></app-icon-element>
         {{ type.element }} ({{ type.amount }})

@@ -252,10 +252,10 @@ describe('migrate', () => {
     debugDisableFogOfWar: false,
     debugTickMultiplier: 1,
     debugSaveInterval: 30,
-    audioPlay: true,
+    sfxPlay: true,
     followHeroesOnMap: false,
     uiTheme: 'dark',
-    volume: 0.5,
+    sfxVolume: 0.5,
     gameloopPaused: false,
     canSendNotifications: true,
     enabledNotificationCategories: ['Travel', 'LocationClaim'],
@@ -423,8 +423,8 @@ describe('migrate', () => {
       // Arrange
       const partialOptions = {
         showDebug: true,
-        audioPlay: false,
-        volume: 0.8,
+        sfxPlay: false,
+        sfxVolume: 0.8,
       } as GameOptions;
 
       const mockDefaultOptions = createMockOptions();
@@ -465,8 +465,8 @@ describe('migrate', () => {
       const customOptions: GameOptions = {
         ...createMockOptions(),
         showDebug: true,
-        audioPlay: false,
-        volume: 0.8,
+        sfxPlay: false,
+        sfxVolume: 0.8,
         uiTheme: 'light',
         enabledNotificationCategories: ['Travel'],
         combatTab: 'CombatLog',

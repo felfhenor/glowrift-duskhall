@@ -2,6 +2,7 @@ import { clockGetTickTimer } from '@helpers/clock';
 import { getEntriesByType, getEntry } from '@helpers/content';
 import { notify } from '@helpers/notify';
 import { rngChoiceRarity, rngSucceedsChance } from '@helpers/rng';
+import { playSFX } from '@helpers/sfx';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { timerAddFestivalEndAction } from '@helpers/timer';
 import type { FestivalContent } from '@interfaces';
@@ -21,6 +22,7 @@ export function festivalStart(festivalId: string): void {
   if (!festivalData) return;
 
   notify('Festival', festivalData.description);
+  playSFX('festival-start', 0);
 
   const endsAt = clockGetTickTimer(festivalData.duration);
 
