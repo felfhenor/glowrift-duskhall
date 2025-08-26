@@ -1,94 +1,94 @@
 - id: 5f0c768c-e09e-4903-a6b9-bb77e56fc0a2
   category: Status Effects
-  name: Swiftness
+  name: -Swiftness
   description: Buff (Air). Gives the target a boost to Speed so they can act faster.
 
 - id: 5e704713-cd53-4475-8b7c-009417fc5020
   category: Status Effects
-  name: Focus
+  name: -Focus
   description: Buff (Air). Gives the target a +20% chance of striking again with a skill of any element.
 
 - id: 649ba219-26b4-41cc-9c1b-20ebe1fa9744
   category: Status Effects
-  name: Fortified
+  name: -Fortified
   description: Buff (Earth). Gives the target a boost to Aura so they take less damage.
 
 - id: 9fca4308-0bb0-4dec-a8cd-a4778f4fe4c7
   category: Status Effects
-  name: Endurance
+  name: -Endurance
   description: Buff (Earth). Gives the target a boost to Health so they can support taking more damage.
 
 - id: a41ccf96-2021-458a-946d-09793b7af1bf
   category: Status Effects
-  name: Aegis
+  name: -Aegis
   description: Buff (Earth). Gives the target a +100% chance of ignoring debuffs of any element.
 
 - id: 1bd38531-e256-44ca-893c-335e93bfc893
   category: Status Effects
-  name: Empowered
+  name: -Empowered
   description: Buff (Fire). Gives the target a boost to Force so they can do more damage.
 
 - id: 6c2066f9-e9a8-41b6-bbec-961138fc4792
   category: Status Effects
-  name: Fervor
+  name: -Fervor
   description: Buff (Fire). Gives the target a +20% chance to take another action.
 
 - id: e65045bf-82fc-41a9-bc58-adec9f101ae7
   category: Status Effects
-  name: Rebirth
+  name: -Rebirth
   description: Buff (Fire). Gives the target a +100% chance to be revived (once) upon death.
 
 - id: 2e5eac5a-5d7d-4a39-ab36-ececc1ae3152
   category: Status Effects
-  name: Regeneration
+  name: -Regeneration
   description: Buff (Water). Gives the target a heal-over-time that triggers at the start of their turn.
 
 - id: 5f151e83-674d-4e7e-a6e1-f058fb5d849d
   category: Status Effects
-  name: Crystalline
+  name: -Crystalline
   description: Buff (Water). Gives the target +20% damage reflect for damage of all elements.
 
 - id: edc8d06e-61d5-4709-8f4a-ff9f4d3a707e
   category: Status Effects
-  name: Gravity
+  name: -Gravity
   description: Debuff (Air). Gives the target a +50% chance to consume +1 use of a skill when using a skill.
 
 - id: 60697458-abc1-4bcd-bc69-74bf5b1d0110
   category: Status Effects
-  name: Redirect
+  name: -Redirect
   description: Debuff (Air). Gives the target a +20% chance to have their skills target the opposite team as intended ("Enemies" skills will target Allies and vice-versa).
 
 - id: 91bd5fa5-db3f-4a5b-a401-2864caab97af
   category: Status Effects
-  name: Crushed
+  name: -Crushed
   description: Debuff (Earth). Reduces the targets Aura, increasing the amount of damage they take.
 
 - id: 631ac710-e0ce-4df8-ad9c-bc8a6a0b62b3
   category: Status Effects
-  name: Trembling
+  name: -Trembling
   description: Debuff (Earth). Gives the target a +20% chance to miss with a skill.
 
 - id: eeae7d1b-31c6-4f4b-884c-e7e512660192
   category: Status Effects
-  name: Burning
+  name: -Burning
   description: Debuff (Fire). The target takes damage over time at the end of every turn.
 
 - id: baabd677-826f-47c4-b1fe-48f573f42ff6
   category: Status Effects
-  name: Scorched
+  name: -Scorched
   description: Debuff (Fire). Reduces the incoming healing the target receives by 50%.
 
 - id: bad5171e-b2e9-4b45-b639-85088c669a20
   category: Status Effects
-  name: Frozen
+  name: -Frozen
   description: Debuff (Water). The target cannot act.
 
 - id: 43717d34-90a9-4293-be03-d6fa6a233d26
   category: Status Effects
-  name: Brittle
+  name: -Brittle
   description: Debuff (Water). Reduces the targets Health, making them easier to finish off.
 
 - id: 5b527ebc-1617-4323-8c41-f21b9884f0c7
   category: Status Effects
-  name: Hypothermia
+  name: -Hypothermia
   description: Debuff (Water). Reduces the targets Speed, making them act slower.

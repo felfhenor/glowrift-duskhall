@@ -18,7 +18,7 @@
     <div class="flex-1 min-h-[500px] max-h-[500px] overflow-y-auto pl-4">
       @for (help of currentHelps(); track $index) {
         <div class="border-b mb-4 pb-2">
-          <h2 class="text-lg">{{ help.name }}</h2>
+          <h2 class="text-lg">{{ help.name.replace('-', '') }}</h2>
 
           <p>{{ help.description }}</p>
         </div>

@@ -1,29 +1,29 @@
 - id: f21b6dc6-19c5-4fe9-a599-43a7df6d9c78
   category: Location Upgrades
-  name: Boosted Production
+  name: -Boosted Production
   description: Increases the production of all resources at this location, including resources added by traits.
 
 - id: 4c9ec6e1-22ae-4618-8ed7-55c0b4dda952
   category: Location Upgrades
-  name: Boosted Stash Quality
+  name: -Boosted Stash Quality
   description: Increases the maximum level of loot at this location. This doesn't apply to existing loot, only when generating new loot at this location. When a location with this upgrade becomes permanently owned, the level of this upgrade is added to "Dust Production" for the location.
 
 - id: 89fd91e7-3d4a-411c-a133-389c9bae57bb
   category: Location Upgrades
-  name: Dust Production
+  name: -Dust Production
   description: Produces +1 Common Dust per level of this ability. If this location were to no longer be permanently owned, the levels applied to this upgrade would instead be applied to "Boosted Stash Quality".
 
 - id: 76ec8c8f-3a51-401a-991a-5ee5b8c0e35c
   category: Location Upgrades
-  name: Boosted Evil Resistance
+  name: -Boosted Evil Resistance
   description: Increases the timer for this location to become unclaimed. If this is applied to a village or town, any location captured within its zone of control will also receive this bonus. When a location with this upgrade becomes permanently owned, the level of this upgrade is added to "Rebellion from Evil" for the location.
 
 - id: 4a9c54b1-fbda-45d6-965d-528c6f30bf4c
   category: Location Upgrades
-  name: Rebellion from Evil
+  name: -Rebellion from Evil
   description: Repels evil creatures by the level of this upgrade. If this location were to no longer be permanently owned, the levels applied to this upgrade would instead be applied to "Boosted Evil Resistance".
 
 - id: b254194b-5b09-490b-8ec8-962e68cb6c90
   category: Location Upgrades
-  name: Nullify Evil
+  name: -Nullify Evil
   description: Make all locations in the zone of control of this location permanently owned when captured. Only available to Towns.

@@ -1,19 +1,19 @@
 - id: ef2a9a58-535c-426d-922c-4683096e9216
   category: Stats
-  name: Force
+  name: -Force
   description: Force primarily determines how much damage a particular creature or ability does. Each point of Force does the equivalent amount of damage. Sometimes, Force is also used for healing spells as a secondary stat.
 
 - id: 8433992a-854e-4c7e-8ecc-41f6c6d5f045
   category: Stats
-  name: Aura
+  name: -Aura
   description: Aura primarily determines how much damage reduction a particular creature has. Each point of Aura does the equivalent amount of damage reduction. Some abilities have the "AllowsPlink" tag, which lets them always do a minimum of 1 damage. Sometimes, Aura is also used for healing or damage spells as a secondary stat.
 
 - id: 4c6065a3-4939-4ccc-8a93-2b3a03ec8948
   category: Stats
-  name: Speed
+  name: -Speed
   description: Speed primarily determines how fast a particular creature goes in the turn order. Faster creatures go first. Each creature gets exactly 1 turn per round, unless something gives them more.
 
 - id: 1622c4b3-b9a7-4e83-a254-c3f0a56f6a34
   category: Stats
-  name: Health
+  name: -Health
   description: Increasing Health increases the maximum health the creature has. When this goes to 0 for heroes, the hero will be incapacitated until they either get revived. When all heroes are incapacitated, they will travel to the nearest Town to recover. Sometimes, Health is used in spells as a secondary stat. In these cases, these spells scale with the creatures maximum health, not current health.

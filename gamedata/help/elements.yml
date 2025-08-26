@@ -1,54 +1,54 @@
 - id: ff25061c-7380-4136-aa2b-cf5c245a414d
   category: Elements
-  name: Earth
+  name: -Earth
   description: Base element. Offensive spells of this type will generally be low-use, do a lot of damage, and target singular targets.
 
 - id: 7cd68d59-438c-4ca5-8432-7442c7dfcc1e
   category: Elements
-  name: Fire
+  name: -Fire
   description: Base element. Offensive spells of this type will generally be medium-use, do a medium amount of damage, and target any number of creatures.
 
 - id: 81223405-b882-40c2-bbe3-3656549d3bd5
   category: Elements
-  name: Water
+  name: -Water
   description: Base element. Offensive spells of this type will generally be medium-use, and primarily focus on debuffing enemies.
 
 - id: 00b57d54-aba2-42a0-8043-002d405f36a1
   category: Elements
-  name: Air
+  name: -Air
   description: Base element. Offensive spells of this type will generally be medium-use, do low damage, and focus on targetting a lot of enemies. They may also target heroes.
 
 - id: 4ad24933-78b1-41ac-9287-fa8d6950a5aa
   category: Elements
-  name: Heat
+  name: -Heat
   description: Higher-level element (Air+Fire). Spells of this type will generally utilize the traits of both Air and Fire.
 
 - id: 3e87f573-75a9-4b74-a6c6-76fc9c683f14
   category: Elements
-  name: Sand
+  name: -Sand
   description: Higher-level element (Air+Earth). Spells of this type will generally utilize the traits of both Air and Earth.
 
 - id: 724717fd-0153-4de2-bd6b-0840de95fca7
   category: Elements
-  name: Mist
+  name: -Mist
   description: Higher-level element (Air+Water). Spells of this type will generally utilize the traits of both Air and Water.
 
 - id: 567a27a6-8f02-47c1-b4f9-fa3f58bf353f
   category: Elements
-  name: Molten
+  name: -Molten
   description: Higher-level element (Fire+Earth). Spells of this type will generally utilize the traits of both Fire and Earth.
 
 - id: 678cf14a-9d89-448e-b761-e43b2b7fb084
   category: Elements
-  name: Steam
+  name: -Steam
   description: Higher-level element (Fire+Water). Spells of this type will generally utilize the traits of both Fire and Water.
 
 - id: 775860ec-109b-4db1-8546-f92c5d55d5a7
   category: Elements
-  name: Mud
+  name: -Mud
   description: Higher-level element (Water+Earth). Spells of this type will generally utilize the traits of both Water and Earth.
 
 - id: 777866c7-1c2b-4374-95a1-2909beab5769
   category: Elements
-  name: Holy
+  name: -Holy
   description: Highest-level element (Air+Earth+Fire+Water). Spells of this type are very special, and follow no particular guidelines.
