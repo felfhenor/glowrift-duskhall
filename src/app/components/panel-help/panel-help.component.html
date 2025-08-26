@@ -1,0 +1,28 @@
+<app-card-page>
+  <span header>Help</span>
+
+  <div class="flex">
+    <div class="w-[200px] min-h-[500px] max-h-[500px] overflow-y-auto">
+      @for (category of allCategories(); track $index) {
+        <div
+          class="border-l border-t border-r border-b p-4 cursor-pointer font-bold"
+          [class.bg-accent]="category === currentCategory()"
+          [class.text-black]="category === currentCategory()"
+          (click)="changeCategory(category)"
+        >
+          {{ category }}
+        </div>
+      }
+    </div>
+
+    <div class="flex-1 min-h-[500px] max-h-[500px] overflow-y-auto pl-4">
+      @for (help of currentHelps(); track $index) {
+        <div class="border-b mb-4 pb-2">
+          <h2 class="text-lg">{{ help.name }}</h2>
+
+          <p>{{ help.description }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</app-card-page>

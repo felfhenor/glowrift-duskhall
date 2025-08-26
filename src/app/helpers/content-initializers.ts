@@ -19,6 +19,7 @@ import type {
   FestivalContent,
   GuardianContent,
   GuardianId,
+  HelpContent,
   IsContentItem,
   LocationUpgradeContent,
   LocationUpgradeId,
@@ -58,6 +59,7 @@ const initializers: Record<ContentType, (entry: any) => any> = {
   traitequipment: ensureTraitEquipment,
   traitlocation: ensureTraitLocation,
   worldconfig: ensureWorldConfig,
+  help: ensureHelp,
 };
 
 function ensureStats(statblock: Partial<StatBlock> = {}): Required<StatBlock> {
@@ -410,5 +412,15 @@ function ensureLocationUpgrade(
     boostedRebellionPerLevel: locationUpgrade.boostedRebellionPerLevel ?? 0,
     boostedDustProductionPerLevel:
       locationUpgrade.boostedDustProductionPerLevel ?? 0,
+  };
+}
+
+export function ensureHelp(help: Partial<HelpContent>): Required<HelpContent> {
+  return {
+    id: help.id ?? ('UNKNOWN' as string),
+    name: help.name ?? 'UNKNOWN',
+    category: help.category ?? 'General',
+    description: help.description ?? 'UNKNOWN',
+    __type: 'help',
   };
 }

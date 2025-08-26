@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { GameMapPixiComponent } from '@components/game-map-pixi/game-map-pixi.component';
 import { PanelCombatComponent } from '@components/panel-combat/panel-combat.component';
 import { PanelContainerComponent } from '@components/panel-container/panel-container.component';
+import { PanelHelpComponent } from '@components/panel-help/panel-help.component';
 import { PanelHeroesComponent } from '@components/panel-heroes/panel-heroes.component';
 import { PanelInventoryComponent } from '@components/panel-inventory/panel-inventory.component';
 import { PanelLocationComponent } from '@components/panel-location/panel-location.component';
@@ -17,6 +18,7 @@ import {
   isCatchingUp,
   isShowingAnyMenu,
   showCombatMenu,
+  showHelpMenu,
   showHeroesMenu,
   showInventoryMenu,
   showLocationMenu,
@@ -40,6 +42,7 @@ import {
     DecimalPipe,
     RouterModule,
     PanelWorldComponent,
+    PanelHelpComponent,
   ],
   templateUrl: './game-play.component.html',
   styleUrl: './game-play.component.scss',
@@ -52,6 +55,7 @@ export class GamePlayComponent {
   public showInventory = computed(() => showInventoryMenu());
   public showTown = computed(() => showTownMenu());
   public showWorld = computed(() => showWorldMenu());
+  public showHelp = computed(() => showHelpMenu());
 
   public isShowingAnyMenu = computed(() => isShowingAnyMenu());
 

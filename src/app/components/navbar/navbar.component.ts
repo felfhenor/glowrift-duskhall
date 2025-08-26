@@ -15,6 +15,7 @@ import {
   setOption,
   showCombatMenu,
   showCurrencyList,
+  showHelpMenu,
   showHeroesMenu,
   showInventoryMenu,
   showOptionsMenu,
@@ -106,10 +107,26 @@ export class NavbarComponent implements OnInit, OnDestroy {
       hotkey: '6',
       clickCb: () => this.toggleOptions(),
     },
+    {
+      name: 'Help',
+      icon: 'gameHelp',
+      hotkey: '?',
+      clickCb: () => this.toggleHelp(),
+    },
   ];
 
   public toggleCurrencyList() {
     showCurrencyList.set(!showCurrencyList());
+  }
+
+  public toggleHelp() {
+    if (showHelpMenu()) {
+      showHelpMenu.set(false);
+      return;
+    }
+
+    closeAllMenus();
+    showHelpMenu.set(!showHelpMenu());
   }
 
   public toggleOptions() {
@@ -196,6 +213,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.hotkeys
       .addShortcut({ keys: '6' })
       .subscribe(() => this.toggleOptions());
+    this.hotkeys.addShortcut({ keys: '?' }).subscribe(() => this.toggleHelp());
 
     // Game controls
     this.hotkeys.addShortcut({ keys: 'f' }).subscribe(() => this.focusCamera());
@@ -220,6 +238,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       '4',
       '5',
       '6',
+      '?',
       'f',
       'space',
       'escape',

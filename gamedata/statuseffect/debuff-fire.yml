@@ -51,7 +51,7 @@
 
   onUnapply:
     - type: SendMessage
-      combatMessage: '**{{ combatant.name }}** is no longer trembling!'
+      combatMessage: '**{{ combatant.name }}** is no longer scorched!'
 
     - type: TakeCombatStatElement
       element: Fire

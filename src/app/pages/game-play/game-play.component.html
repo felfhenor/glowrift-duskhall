@@ -55,6 +55,12 @@
       ></app-panel-location>
     </app-panel-container>
   }
+
+  @if (showHelp()) {
+    <app-panel-container>
+      <app-panel-help class="absolute inset-0 panel-layer"></app-panel-help>
+    </app-panel-container>
+  }
 </div>
 
 @if (isCatchingUp()) {

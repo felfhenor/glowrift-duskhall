@@ -7,6 +7,7 @@ export * from './content-currency';
 export * from './content-equipment';
 export * from './content-festival';
 export * from './content-guardian';
+export * from './content-help';
 export * from './content-locationupgrade';
 export * from './content-skill';
 export * from './content-statuseffect';

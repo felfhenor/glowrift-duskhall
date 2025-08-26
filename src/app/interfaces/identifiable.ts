@@ -14,7 +14,8 @@ export type ContentType =
   | 'traitequipment'
   | 'traitlocation'
   | 'townupgrade'
-  | 'locationupgrade';
+  | 'locationupgrade'
+  | 'help';
 
 export interface Identifiable {
   id: string;

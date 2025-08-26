@@ -13,6 +13,7 @@ export const globalStatusText = signal<string>('');
 
 export const showCurrencyList = signal<boolean>(false);
 export const showLocationMenu = signal<WorldPosition | undefined>(undefined);
+export const showHelpMenu = signal<boolean>(false);
 export const showOptionsMenu = signal<boolean>(false);
 export const showInventoryMenu = signal<boolean>(false);
 export const showHeroesMenu = signal<boolean>(false);
@@ -22,6 +23,7 @@ export const showWorldMenu = signal<boolean>(false);
 
 export const isShowingAnyMenu = computed(
   () =>
+    showHelpMenu() ||
     showCurrencyList() ||
     showLocationMenu() ||
     showOptionsMenu() ||
@@ -39,6 +41,7 @@ export function isPageVisible(): boolean {
 }
 
 export function closeAllMenus() {
+  showHelpMenu.set(false);
   showCurrencyList.set(false);
   showHeroesMenu.set(false);
   showCombatMenu.set(false);
