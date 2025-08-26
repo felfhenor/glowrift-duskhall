@@ -34,7 +34,7 @@ export function pixiInidicatorNodeClaimCreate(
   const sprite = new Sprite(texture);
 
   sprite.x = 44;
-  sprite.y = 64 - 24;
+  sprite.y = 64 - 14;
   sprite.width = 20;
   sprite.height = 20;
   sprite.interactive = false;
@@ -66,7 +66,7 @@ export function pixiIndicatorNodeLevelCreate(location: WorldLocation): Text {
 
   // Position text at bottom left of tile
   levelText.x = 2;
-  levelText.y = 64 - 22; // 14px from bottom for 12px font
+  levelText.y = 64 - 14; // 14px from bottom for 12px font
   levelText.cullable = true;
 
   return levelText;
@@ -95,7 +95,7 @@ export function pixiIndicatorNodeUpgradeLevelCreate(
 
   // Position text at bottom right of tile
   upgradeText.x = 64 - 22;
-  upgradeText.y = 64 - 22; // 14px from bottom for 12px font
+  upgradeText.y = 64 - 14; // 14px from bottom for 12px font
   upgradeText.cullable = true;
 
   return upgradeText;

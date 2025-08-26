@@ -112,7 +112,7 @@ export function pixiIndicatorNodeSpriteCreate(
     !getOption('debugDisableFogOfWar') &&
     !fogIsPositionRevealed(nodeData.x, nodeData.y)
   ) {
-    const fogOfWarSprite = new Sprite(objectTextures['0027']);
+    const fogOfWarSprite = new Sprite(objectTextures['0000']);
     fogOfWarSprite.width = 64;
     fogOfWarSprite.height = 64;
     fogOfWarSprite.interactive = false;

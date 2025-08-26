@@ -47,16 +47,16 @@ export function spriteGetFromNodeType(
   nodeType: LocationType | undefined,
 ): string {
   switch (nodeType) {
-    case 'town':
-      return '0021';
     case 'castle':
-      return '0000';
-    case 'cave':
-      return '0020';
+      return '0001';
     case 'dungeon':
-      return '0023';
+      return '0002';
+    case 'cave':
+      return '0003';
     case 'village':
-      return '0022';
+      return '0004';
+    case 'town':
+      return '0005';
     default:
       return '';
   }
