@@ -52,6 +52,7 @@
   description: Boost the Force of Dustwisp skills by +100% & increase Trembling chance by +20%.
   sprite: '0032'
 
+  applyToAttributes: [DamagesTarget]
   applyToSkillIds:
     - Dustwisp I
     - Dustwisp II
@@ -72,6 +73,7 @@
 
   requireTalentId: Strength of Dustwisp I
 
+  applyToAttributes: [DamagesTarget]
   applyToSkillIds:
     - Dustwisp I
     - Dustwisp II
@@ -89,6 +91,7 @@
 
   requireTalentId: Strength of Dustwisp II
 
+  applyToAttributes: [DamagesTarget]
   applyToSkillIds:
     - Dustwisp I
     - Dustwisp II
