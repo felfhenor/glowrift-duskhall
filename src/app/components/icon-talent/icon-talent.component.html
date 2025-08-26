@@ -17,14 +17,14 @@
 
 @if (boostValue()) {
   <div
-    class="z-20 absolute bottom-0 right-1 text-xs font-bold italic text-black text-shadow-white"
+    class="z-20 absolute bottom-0 right-1 text-xs font-bold italic text-white text-shadow-black"
   >
     + {{ boostValue() }}
   </div>
 }
 
 <ng-template #talentInfo let-hide>
-  <app-stats-talent 
+  <app-stats-talent
     [talent]="talentData"
     [requiredTalentsInvested]="requiredTalentsInvested()"
     [currentTalentsInvested]="currentTalentsInvested()"

@@ -11,6 +11,7 @@
           [requiredTalentsInvested]="talent.requiredTalentsInvested"
           [currentTalentsInvested]="talent.currentTalentsInvested"
           [class.opacity-50]="!talent.canPurchase"
+          [class.grayscale]="!talent.canPurchase && !talent.isLearned"
           [class.cursor-pointer]="talent.canPurchase && !talent.isLearned"
           [class.cursor-disabled]="!talent.canPurchase"
           (click)="tryLearnTalent(learnSwal, talent)"
