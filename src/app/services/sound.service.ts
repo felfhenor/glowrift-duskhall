@@ -96,10 +96,26 @@ export class SoundService {
       document.removeEventListener('mousemove', enableAudio);
     };
 
+    const reenableAudio = async () => {
+      if (!this.context) {
+        this.context = new AudioContext();
+
+        // Resume context if it's suspended
+        if (this.context.state === 'suspended') {
+          await this.context.resume();
+        }
+      }
+    };
+
     document.addEventListener('click', enableAudio, { once: true });
     document.addEventListener('keydown', enableAudio, { once: true });
     document.addEventListener('touchstart', enableAudio, { once: true });
     document.addEventListener('mousemove', enableAudio, { once: true });
+
+    document.addEventListener('click', reenableAudio);
+    document.addEventListener('keydown', reenableAudio);
+    document.addEventListener('touchstart', reenableAudio);
+    document.addEventListener('mousemove', reenableAudio);
   }
 
   private async loadSFX() {
