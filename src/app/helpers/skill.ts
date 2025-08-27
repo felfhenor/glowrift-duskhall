@@ -47,6 +47,7 @@ export function skillTechniqueNumTargets(
   skill: EquipmentSkill,
   technique: EquipmentSkillContentTechnique,
 ): number {
+  if (technique.targetType === 'Self') return 1;
   return technique.targets + (skill.mods?.numTargets ?? 0);
 }
 
