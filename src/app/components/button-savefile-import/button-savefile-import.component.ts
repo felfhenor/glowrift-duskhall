@@ -2,7 +2,12 @@ import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
 import { SFXDirective } from '@directives/sfx.directive';
-import { migrateGameState, notifySuccess, setGameState } from '@helpers';
+import {
+  closeAllMenus,
+  migrateGameState,
+  notifySuccess,
+  setGameState,
+} from '@helpers';
 import type { GameState } from '@interfaces';
 
 @Component({
@@ -34,6 +39,7 @@ export class ButtonSavefileImportComponent {
 
       setGameState(charFile);
       migrateGameState();
+      closeAllMenus();
 
       finish();
 

@@ -197,6 +197,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
     setOption('gameloopPaused', !this.isPaused());
   }
 
+  public goToHome() {
+    closeAllMenus();
+    this.router.navigate(['..']);
+  }
+
   ngOnInit() {
     // Menu toggles
     this.hotkeys.addShortcut({ keys: '1' }).subscribe(() => this.toggleWorld());
