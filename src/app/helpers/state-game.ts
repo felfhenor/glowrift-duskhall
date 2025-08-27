@@ -24,6 +24,9 @@ const _savedGamestate = indexedDbSignal<GameState>(
   'gamestate',
   defaultGameState(),
   (state: GameState) => {
+    if (hasGameStateLoaded()) return;
+
+    console.log(state);
     _liveGameState.set(state);
 
     hasGameStateLoaded.set(true);
