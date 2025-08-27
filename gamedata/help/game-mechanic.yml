@@ -1,9 +1,29 @@
 - id: eb5205ca-c6df-4660-943d-7a305e964b99
-  category: Game Mechanic
+  category: Game Mechanics
   name: -Symmetry (Skills)
   description: Increasing the Symmetry of a skill will increase its stats, and add skill repeats. Every level will increase each stat by +5%. At level 3, the skill will gain a repeat that casts at 25% effectiveness. At level 5, the skill repeat will be cast at 50% effectiveness.
 
 - id: 4d5c86c1-64ce-4842-a866-7e566921ee18
-  category: Game Mechanic
+  category: Game Mechanics
   name: -Symmetry (Items)
   description: Increasing the Symmetry of an item will increase its stats, and add trait slots. Every level will increase each stat by +5%. At level 3, the item will gain a trait slot (to a maximum of 2). At level 5, the item will gain another trait slot (to a maximum of 3). You may have to reroll to fully utilize those trait slots.
+
+- id: bdd8fa77-7da6-48c8-a84b-f9f23044b63c
+  category: Game Mechanics
+  name: -Enchantments
+  description: Each item and skill is enchantable, and has a completely unique path based on the item/level (so, even though Firewisp has 3 forms, each one has a unique upgrade path). This means that if one item is upgraded suboptimally, the player can simply find another of that item and try again.
+
+- id: 5fa1dfe7-41cf-4812-92ee-665cfc2bfce7
+  category: Game Mechanics
+  name: -Gameplay Loop
+  description: The heroes will constantly explore a location they think they can handle. If they conquer it, the location will be temporarily or permanently owned by the player. Heroes can acquire talents and be given items and skills by the player. The player can also upgrade various facets of the game using the Town system.
+
+- id: 57af7489-f611-4309-852b-c0091285370e
+  category: Game Mechanics
+  name: -Goal
+  description: The goal of the game is to win by owning every location on the map.
+
+- id: d9ec4781-63da-46be-b3f8-a02ec26dac25
+  category: Game Mechanics
+  name: -Exploration Preferences
+  description: By default, the heroes will choose to safely explore the closest locations to them. If they encounter a location they cannot handle, they will retreat and try a different one, remembering their defeat (and thus, prioritizing it last). Risk Tolerance determines how willing heroes are to take on locations that are more difficult. Location Type determines what types of locations the heroes will go to. Loot Rarity determines what loot the heroes will fight for. Changing these will affect the locations the heroes prioritize to conquer. Modifying these will allow the player to focus on certain micro-strategies (such as seeking powerful items short term, or conquering towns and villages).
