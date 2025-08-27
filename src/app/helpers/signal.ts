@@ -117,6 +117,8 @@ export function indexedDbSignal<T>(
             // No stored value, save the initial value
             saveToDBSync(initialValue);
           }
+
+          onLoad?.(initialValue);
           isInitialized = true;
           resolve();
         };

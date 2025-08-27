@@ -1,7 +1,6 @@
 import { effect, inject, Injectable, signal } from '@angular/core';
 import {
   gameloop,
-  gameloopShouldRun,
   gamestate,
   getOption,
   hasGameStateLoaded,
@@ -68,13 +67,7 @@ export class GamestateService {
     runLoop(1);
 
     interval(1000).subscribe(() => {
-      if (
-        lastRunTime <= 0 ||
-        !this.hasLoaded() ||
-        !isGameStateReady() ||
-        !gameloopShouldRun()
-      )
-        return;
+      if (lastRunTime <= 0 || !this.hasLoaded()) return;
 
       if (!isPageVisible() && !getOption('debugAllowBackgroundOperations')) {
         return;
