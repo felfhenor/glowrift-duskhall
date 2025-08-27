@@ -1,8 +1,8 @@
 import { Component, computed, signal } from '@angular/core';
 import { BlankSlateComponent } from '@components/blank-slate/blank-slate.component';
+import { ButtonCostListComponent } from '@components/button-cost-list/button-cost-list.component';
 import { CardPageComponent } from '@components/card-page/card-page.component';
 import { InventoryGridContainerComponent } from '@components/inventory-grid-container/inventory-grid-container.component';
-import { MarkerCurrencyInlineComponent } from '@components/marker-currency-inline/marker-currency-inline.component';
 import { PanelTownBuildingUpgradeComponent } from '@components/panel-town-building-upgrade/panel-town-building-upgrade.component';
 import { StatsSkillComponent } from '@components/stats-skill/stats-skill.component';
 import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
@@ -34,9 +34,9 @@ import { debounce } from 'typescript-debounce-decorator';
     PanelTownBuildingUpgradeComponent,
     StatsSkillComponent,
     TeleportDirective,
-    MarkerCurrencyInlineComponent,
     AnalyticsClickDirective,
     SFXDirective,
+    ButtonCostListComponent,
   ],
   templateUrl: './panel-town-academy.component.html',
   styleUrl: './panel-town-academy.component.scss',
