@@ -9,12 +9,12 @@
       />
     </figure>
 
-    <div class="card-body items-center justify-between relative">
-      <div class="card-title text-center flex flex-col">
+    <div class="card-body flex flex-col justify-around items-center relative">
+      <div class="flex-1 card-title text-center">
         <span class="title text-4xl">Glowrift Duskhall</span>
       </div>
 
-      <p class="mt-3 flex items-center max-w-[600px]">
+      <p class="flex-3 flex items-center max-w-[600px]">
         Lead a guild of wizards through procedurally generated worlds where
         magic flows through everything. Your wizards automatically explore
         dangerous territories, battle corrupted Forces, and discover powerful
@@ -25,9 +25,9 @@
         civilization.
       </p>
 
-      <div class="card-actions pb-10 mt-3 flex gap-2">
+      <div class="flex-3 card-actions flex flex-col gap-2 w-1/2">
         <button
-          class="btn btn-primary"
+          class="btn btn-primary btn-block"
           (click)="newGame()"
           appAnalyticsClick="Meta:Play:New"
           appSfx="ui-click"
@@ -39,7 +39,7 @@
 
         @if (hasStartedGame()) {
           <button
-            class="btn btn-primary"
+            class="btn btn-primary btn-block"
             (click)="resumeGame()"
             appAnalyticsClick="Meta:Play:Resume"
             appSfx="ui-click"
@@ -49,6 +49,17 @@
             Resume Game
           </button>
         }
+
+        <button
+          class="btn btn-secondary btn-block"
+          (click)="showOptionsMenu()"
+          appAnalyticsClick="Meta:Settings"
+          appSfx="ui-click"
+          [sfxOffset]="2"
+          [sfxTrigger]="['click']"
+        >
+          Settings
+        </button>
       </div>
 
       <div class="card-actions absolute bottom-0 left-0 right-0 p-2">
@@ -57,6 +68,14 @@
     </div>
   </div>
 </div>
+
+@if (showingOptions()) {
+  <div class="absolute inset-0 static-layer bg-gray-400/35"></div>
+
+  <app-panel-container>
+    <app-panel-options class="absolute inset-0 panel-layer"></app-panel-options>
+  </app-panel-container>
+}
 
 <div
   class="fixed bottom-0 left-0 right-0 bg-base-100 h-8 flex justify-center items-center text-sm"

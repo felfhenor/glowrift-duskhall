@@ -2,9 +2,16 @@ import type { OnInit } from '@angular/core';
 import { Component, computed, inject, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ConnectButtonsComponent } from '@components/connect-buttons/connect-buttons.component';
+import { PanelContainerComponent } from '@components/panel-container/panel-container.component';
+import { PanelOptionsComponent } from '@components/panel-options/panel-options.component';
 import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
 import { SFXDirective } from '@directives/sfx.directive';
-import { discordSetStatus, gameReset, isSetup } from '@helpers';
+import {
+  discordSetStatus,
+  gameReset,
+  isSetup,
+  showOptionsMenu,
+} from '@helpers';
 import { MetaService } from '@services/meta.service';
 import type { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
@@ -16,6 +23,8 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
     ConnectButtonsComponent,
     AnalyticsClickDirective,
     SFXDirective,
+    PanelOptionsComponent,
+    PanelContainerComponent,
   ],
   providers: [],
   templateUrl: './home.component.html',
@@ -28,6 +37,7 @@ export class HomeComponent implements OnInit {
   public resetGameSwal = viewChild<SwalComponent>('newGameSwal');
 
   public hasStartedGame = computed(() => isSetup());
+  public showingOptions = computed(() => showOptionsMenu());
 
   ngOnInit() {
     discordSetStatus({
@@ -52,5 +62,9 @@ export class HomeComponent implements OnInit {
 
   resumeGame() {
     this.router.navigate(['/game']);
+  }
+
+  showOptionsMenu() {
+    showOptionsMenu.set(true);
   }
 }
