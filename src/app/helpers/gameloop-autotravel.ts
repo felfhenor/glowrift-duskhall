@@ -14,7 +14,6 @@ import {
 } from '@helpers/world-location';
 
 export function gameloopAutoTravel(): void {
-  console.log(isExploring(), isTraveling());
   if (isExploring()) return;
   if (isTraveling()) return;
   if (heroAreAllDead()) {
