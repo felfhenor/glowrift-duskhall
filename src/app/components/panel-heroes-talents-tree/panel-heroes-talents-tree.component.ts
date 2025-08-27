@@ -6,6 +6,7 @@ import { SFXDirective } from '@directives/sfx.directive';
 import {
   getEntry,
   heroCanBuyTalent,
+  heroEquipmentTalentLevel,
   heroHasTalent,
   heroSpendTalentPoint,
   heroTalentsInvestedInTree,
@@ -30,6 +31,7 @@ type TalentTreeHeroNode = TalentTreeContentNode & {
   talentLevel: number;
   requiredTalentsInvested: number;
   currentTalentsInvested: number;
+  hasFromEquipment: boolean;
 };
 
 type TalentTreeHeroLevel = TalentTreeContentLevel & {
@@ -80,6 +82,8 @@ export class PanelHeroesTalentsTreeComponent {
             level.requiredTalentsInvested,
           ),
           talentLevel: heroTotalTalentLevel(this.hero(), talentData.id),
+          hasFromEquipment:
+            heroEquipmentTalentLevel(this.hero(), talentData.id) > 0,
           requiredTalentsInvested: level.requiredTalentsInvested,
           currentTalentsInvested,
         } as TalentTreeHeroNode;

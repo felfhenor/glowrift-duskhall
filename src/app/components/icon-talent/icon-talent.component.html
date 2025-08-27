@@ -5,6 +5,7 @@
 <div
   class="h-[64px] w-[64px] outline outline-2 z-0 absolute"
   [class.outline-green-400]="isBought()"
+  [class.outline-amber-400]="isSpecialLearned()"
 ></div>
 
 <app-atlas-image
@@ -13,6 +14,7 @@
   [spritesheet]="'talent'"
   [tp]="talentInfo"
   [tpIsEnabled]="talentData.name !== 'Blank Talent'"
+  [class.grayscale]="unableToBuy()"
 ></app-atlas-image>
 
 @if (boostValue()) {
