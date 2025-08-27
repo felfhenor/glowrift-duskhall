@@ -1,0 +1,29 @@
+- id: 0aec10c9-f94d-4eec-acbe-5389e5966810
+  category: Technique Type
+  name: -Damages Target
+  description: Skills tagged with "Damages Target" are skills that damage the target they hit.
+
+- id: 736f4512-17b4-42ee-980b-9dabb1634bfb
+  category: Technique Type
+  name: -Allow Plink
+  description: Skills tagged with "Allow Plink" are skills that will always do a minimum of 1 damage when they hit the target.
+
+- id: da5840e1-a84c-4f9b-9e4e-6ed633a6f607
+  category: Technique Type
+  name: -Bypass Defense
+  description: Skills tagged with "Bypass Defense" are skills that ignore the target's Aura when dealing damage.
+
+- id: 041e0ecc-9dd5-4240-87f4-b5a6433697d1
+  category: Technique Type
+  name: -Heals Target
+  description: Skills tagged with "Heals Target" are skills that restore Health to the target they hit.
+
+- id: 9f765eaf-7d8c-4d40-bb88-db0f6c85a8b8
+  category: Technique Type
+  name: -Buff
+  description: Skills tagged with "Buff" are skills that enhance the target's attributes or abilities.
+
+- id: 4b3e5f9b-2a11-4158-9895-3de5c4f2a365
+  category: Technique Type
+  name: -Debuff
+  description: Skills tagged with "Debuff" are skills that reduce the target's attributes or abilities.
