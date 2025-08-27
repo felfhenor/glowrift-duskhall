@@ -1,0 +1,82 @@
+@let showAll = showFullInfo();
+
+<div
+  class="flex gap-2"
+  (mouseenter)="showFullInfo.set(true)"
+  (mouseleave)="showFullInfo.set(false)"
+>
+  @for (hero of heroes(); track $index) {
+    @if (showAll) {
+      <div
+        class="bg-black/50 relative min-h-[64px] min-w-[160px] border-2 border-black/50"
+      >
+        <div class="flex gap-2">
+          <app-icon-hero
+            [hero]="hero"
+            [class.grayscale]="hero.hp <= 0"
+          ></app-icon-hero>
+
+          <div class="pt-2">
+            <div>{{ hero.name }}</div>
+            <div>Lv.{{ hero.level }}</div>
+          </div>
+        </div>
+
+        <div class="flex flex-col w-full">
+          <div class="bar bar-hp h-[16px] w-full relative">
+            <div
+              class="bar-inner h-[16px]"
+              [style.width.%]="(hero.hp / hero.totalStats.Health) * 100"
+            ></div>
+
+            <div
+              class="w-full absolute inset top-0 z-30 text-center text-xs text-outline-black"
+            >
+              {{ hero.hp | number }} / {{ hero.totalStats.Health | number }}
+            </div>
+          </div>
+
+          <div class="bar bar-xp h-[16px] w-full relative">
+            <div
+              class="bar-inner h-[16px]"
+              [style.width.%]="(hero.xp / hero.maxXp) * 100"
+            ></div>
+
+            <div
+              class="w-full absolute inset top-0 z-30 text-center text-xs text-outline-black"
+            >
+              {{ hero.xp | number }} / {{ hero.maxXp | number }}
+            </div>
+          </div>
+        </div>
+      </div>
+    } @else {
+      <div
+        class="p-2 bg-black/50 relative min-h-[40px] min-w-[32px] border-2 border-black/50"
+      >
+        <div
+          class="absolute top-[-18px] left-[-18px] transform scale-50"
+          [class.grayscale]="hero.hp <= 0"
+        >
+          <app-icon-hero [hero]="hero"></app-icon-hero>
+        </div>
+
+        <div class="flex flex-col absolute left-0 bottom-0 h-[8px] w-full">
+          <div class="bar bar-hp small h-[4px] w-full">
+            <div
+              class="bar-inner h-[4px]"
+              [style.width.%]="(hero.hp / hero.totalStats.Health) * 100"
+            ></div>
+          </div>
+
+          <div class="bar bar-xp small h-[4px] w-full">
+            <div
+              class="bar-inner h-[4px]"
+              [style.width.%]="(hero.xp / hero.maxXp) * 100"
+            ></div>
+          </div>
+        </div>
+      </div>
+    }
+  }
+</div>

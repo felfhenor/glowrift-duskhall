@@ -1,4 +1,5 @@
-@let glanceValue = showGlanceResources();
+@let glanceResourceValue = showGlanceResources();
+@let glanceHeroValue = showGlanceHeroes();
 
 <div class="game-container relative">
   <app-game-map-pixi class="absolute inset-0 map-layer"></app-game-map-pixi>
@@ -64,12 +65,20 @@
     </app-panel-container>
   }
 
-  @if (glanceValue !== 'hidden') {
+  @if (glanceResourceValue !== 'hidden') {
     <app-glance-resources
       class="absolute glance-layer top-2"
-      [class.left-2]="glanceValue === 'left'"
-      [class.right-2]="glanceValue === 'right'"
+      [class.left-2]="glanceResourceValue === 'left'"
+      [class.right-2]="glanceResourceValue === 'right'"
     ></app-glance-resources>
+  }
+
+  @if (glanceHeroValue !== 'hidden') {
+    <app-glance-heroes
+      class="absolute glance-layer bottom-2"
+      [class.left-2]="glanceHeroValue === 'left'"
+      [class.right-2]="glanceHeroValue === 'right'"
+    ></app-glance-heroes>
   }
 </div>
 

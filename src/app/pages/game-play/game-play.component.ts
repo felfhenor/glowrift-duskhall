@@ -11,6 +11,7 @@ import { PanelLocationComponent } from '@components/panel-location/panel-locatio
 import { PanelOptionsComponent } from '@components/panel-options/panel-options.component';
 import { PanelTownComponent } from '@components/panel-town/panel-town.component';
 
+import { GlanceHeroesComponent } from '@components/glance-heroes/glance-heroes.component';
 import { GlanceResourcesComponent } from '@components/glance-resources/glance-resources.component';
 import { PanelWorldComponent } from '@components/panel-world/panel-world.component';
 import {
@@ -46,6 +47,7 @@ import {
     PanelWorldComponent,
     PanelHelpComponent,
     GlanceResourcesComponent,
+    GlanceHeroesComponent,
   ],
   templateUrl: './game-play.component.html',
   styleUrl: './game-play.component.scss',
@@ -60,6 +62,7 @@ export class GamePlayComponent {
   public showWorld = computed(() => showWorldMenu());
   public showHelp = computed(() => showHelpMenu());
   public showGlanceResources = computed(() => getOption('glanceResourceView'));
+  public showGlanceHeroes = computed(() => getOption('glanceHeroView'));
 
   public isShowingAnyMenu = computed(() => isShowingAnyMenu());
 

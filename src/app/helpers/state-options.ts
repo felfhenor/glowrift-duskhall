@@ -17,6 +17,7 @@ export function defaultOptions(): GameOptions {
     followHeroesOnMap: true,
     switchToBiggestTreeOnHeroChange: true,
     glanceResourceView: 'left',
+    glanceHeroView: 'left',
 
     uiTheme: 'dark',
 

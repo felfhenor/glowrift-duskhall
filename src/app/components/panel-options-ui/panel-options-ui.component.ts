@@ -2,7 +2,11 @@ import { DecimalPipe, TitleCasePipe } from '@angular/common';
 import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { OptionsBaseComponent } from '@components/panel-options/option-base-page.component';
-import type { GlanceResourceView, ToggleableCategory } from '@interfaces';
+import type {
+  GlanceHeroView,
+  GlanceResourceView,
+  ToggleableCategory,
+} from '@interfaces';
 
 @Component({
   selector: 'app-panel-options-ui',
@@ -14,6 +18,9 @@ export class PanelOptionsUIComponent extends OptionsBaseComponent {
   public currentTheme = signal<string>(this.getOption('uiTheme') as string);
   public glanceResourceView = signal<GlanceResourceView>(
     this.getOption('glanceResourceView') as GlanceResourceView,
+  );
+  public glanceHeroView = signal<GlanceHeroView>(
+    this.getOption('glanceHeroView') as GlanceHeroView,
   );
 
   public notificationsEnabled = computed(() =>
