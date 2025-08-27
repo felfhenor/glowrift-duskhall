@@ -1,6 +1,10 @@
 <app-card-page>
   <span header>Help</span>
 
+  <div pageactions>
+    <app-button-close (click)="closeMenu()"></app-button-close>
+  </div>
+
   <div class="flex">
     <div class="w-[200px] min-h-[500px] max-h-[500px] overflow-y-auto">
       @for (category of allCategories(); track $index) {

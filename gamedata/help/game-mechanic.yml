@@ -1,0 +1,9 @@
+- id: eb5205ca-c6df-4660-943d-7a305e964b99
+  category: Game Mechanic
+  name: -Symmetry (Skills)
+  description: Increasing the Symmetry of a skill will increase its stats, and add skill repeats. Every level will increase each stat by +5%. At level 3, the skill will gain a repeat that casts at 25% effectiveness. At level 5, the skill repeat will be cast at 50% effectiveness.
+
+- id: 4d5c86c1-64ce-4842-a866-7e566921ee18
+  category: Game Mechanic
+  name: -Symmetry (Items)
+  description: Increasing the Symmetry of an item will increase its stats, and add trait slots. Every level will increase each stat by +5%. At level 3, the item will gain a trait slot (to a maximum of 2). At level 5, the item will gain another trait slot (to a maximum of 3). You may have to reroll to fully utilize those trait slots.
