@@ -41,7 +41,7 @@ function updateHeroHealthAfterCombat(combat: Combat): void {
     const hero = heroGet(combatant.id as HeroId);
     if (!hero) return;
 
-    hero.hp = combatant.hp;
+    hero.hp = Math.min(combatant.hp, hero.totalStats.Health);
     heroUpdateData(hero);
   });
 }
