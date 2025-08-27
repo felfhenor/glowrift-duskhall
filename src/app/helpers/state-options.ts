@@ -15,6 +15,7 @@ export function defaultOptions(): GameOptions {
     debugSaveInterval: 15,
 
     followHeroesOnMap: true,
+    switchToBiggestTreeOnHeroChange: true,
 
     uiTheme: 'dark',
 

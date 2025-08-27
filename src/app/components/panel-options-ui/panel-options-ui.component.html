@@ -48,6 +48,25 @@
             <span class="label-text">Follow heroes on map</span>
           </label>
         </div>
+
+        <div class="form-control">
+          <label class="label cursor-pointer label-checkbox">
+            <input
+              type="checkbox"
+              [checked]="getOption('switchToBiggestTreeOnHeroChange')"
+              class="checkbox checkbox-secondary"
+              (click)="
+                setOption(
+                  'switchToBiggestTreeOnHeroChange',
+                  !getOption('switchToBiggestTreeOnHeroChange')
+                )
+              "
+            />
+            <span class="label-text">
+              Auto-select most-invested talent tree
+            </span>
+          </label>
+        </div>
       </div>
     </div>
   </div>

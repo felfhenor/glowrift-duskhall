@@ -1,4 +1,4 @@
-import type { Signal } from '@angular/core';
+import type { OnChanges, Signal } from '@angular/core';
 import { Component, computed, input } from '@angular/core';
 import { IconElementComponent } from '@components/icon-element/icon-element.component';
 import { PanelHeroesTalentsTreeComponent } from '@components/panel-heroes-talents-tree/panel-heroes-talents-tree.component';
@@ -15,7 +15,7 @@ import {
 import type { TalentTreeContent } from '@interfaces';
 import { type GameElement, type Hero } from '@interfaces';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
-import { intersection } from 'es-toolkit/compat';
+import { intersection, maxBy } from 'es-toolkit/compat';
 
 @Component({
   selector: 'app-panel-heroes-talents',
@@ -29,7 +29,7 @@ import { intersection } from 'es-toolkit/compat';
   templateUrl: './panel-heroes-talents.component.html',
   styleUrl: './panel-heroes-talents.component.scss',
 })
-export class PanelHeroesTalentsComponent {
+export class PanelHeroesTalentsComponent implements OnChanges {
   public hero = input.required<Hero>();
 
   public currentElement = computed(() =>
@@ -80,11 +80,24 @@ export class PanelHeroesTalentsComponent {
       },
     ]);
 
+  ngOnChanges() {
+    this.setToBiggestTree();
+  }
+
   public changeElement(element: GameElement): void {
     setOption('selectedTalentTreeElement', element);
   }
 
   public respecHero(): void {
     talentRespec(this.hero());
+  }
+
+  private setToBiggestTree() {
+    if (!getOption('switchToBiggestTreeOnHeroChange')) return;
+
+    const biggestTree = maxBy(this.allTalents(), (t) => t.amount);
+    if (biggestTree) {
+      this.changeElement(biggestTree.element);
+    }
   }
 }
