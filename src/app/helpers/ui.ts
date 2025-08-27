@@ -20,6 +20,7 @@ export const showHeroesMenu = signal<boolean>(false);
 export const showCombatMenu = signal<boolean>(false);
 export const showTownMenu = signal<boolean>(false);
 export const showWorldMenu = signal<boolean>(false);
+export const showAnySubmenu = signal<boolean>(false);
 
 export const isShowingAnyMenu = computed(
   () =>
@@ -40,7 +41,12 @@ export function isPageVisible(): boolean {
   return !document.hidden;
 }
 
-export function closeAllMenus() {
+export function closeAllMenus(smart = true) {
+  if (smart && showAnySubmenu()) {
+    showAnySubmenu.set(false);
+    return;
+  }
+
   showHelpMenu.set(false);
   showCurrencyList.set(false);
   showHeroesMenu.set(false);

@@ -68,7 +68,7 @@
   </div>
 </app-card-page>
 
-@if (equipItemType(); as equipType) {
+@if (showingSubMenu() && equipItemType(); as equipType) {
   <app-card-page heightProfile="sub">
     <span header>Choose {{ equipType | titlecase }}</span>
 
@@ -86,7 +86,7 @@
   </app-card-page>
 }
 
-@if (skillSlot() >= 0) {
+@if (showingSubMenu() && skillSlot() >= 0) {
   <app-card-page heightProfile="sub">
     <span header>Choose Spell</span>
 

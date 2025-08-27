@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   signal,
 } from '@angular/core';
 import { ButtonCloseComponent } from '@components/button-close/button-close.component';
@@ -20,6 +21,7 @@ import {
   itemEquip,
   itemUnequip,
   setOption,
+  showAnySubmenu,
   showHeroesMenu,
   skillEquip,
   skillUnequip,
@@ -47,6 +49,7 @@ import type { EquipmentItem, EquipmentSkill, EquipmentSlot } from '@interfaces';
 export class PanelHeroesComponent {
   public allHeroes = computed(() => gamestate().hero.heroes);
 
+  public showingSubMenu = computed(() => showAnySubmenu());
   public activeHeroIndex = computed(() => getOption('selectedHeroIndex'));
   public activeHero = computed(() => this.allHeroes()[this.activeHeroIndex()]);
 
@@ -54,16 +57,29 @@ export class PanelHeroesComponent {
 
   public skillSlot = signal<number>(-1);
 
+  constructor() {
+    effect(() => {
+      const isShowingSubMenu = this.showingSubMenu();
+      if (!isShowingSubMenu) {
+        this.closeEquipment();
+        this.closeSkills();
+      }
+    });
+  }
+
   closeMenu() {
     showHeroesMenu.set(false);
+    showAnySubmenu.set(false);
   }
 
   closeEquipment() {
     this.equipItemType.set(undefined);
+    showAnySubmenu.set(false);
   }
 
   closeSkills() {
     this.skillSlot.set(-1);
+    showAnySubmenu.set(false);
   }
 
   setHeroIndex(index: number) {
@@ -80,10 +96,12 @@ export class PanelHeroesComponent {
     }
 
     this.skillSlot.set(slot);
+    showAnySubmenu.set(true);
   }
 
   equipSkill(item: EquipmentSkill) {
     skillEquip(this.activeHero(), item, this.skillSlot());
+    this.closeSkills();
   }
 
   unequipSkill(slot: number) {
@@ -101,10 +119,12 @@ export class PanelHeroesComponent {
     }
 
     this.equipItemType.set(type);
+    showAnySubmenu.set(true);
   }
 
   equipItem(item: EquipmentItem) {
     itemEquip(this.activeHero(), item);
+    this.closeEquipment();
   }
 
   unequipItem(itemSlot: EquipmentSlot) {

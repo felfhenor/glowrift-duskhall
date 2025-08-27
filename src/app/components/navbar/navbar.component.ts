@@ -222,9 +222,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     // Game controls
     this.hotkeys.addShortcut({ keys: 'f' }).subscribe(() => this.focusCamera());
+
     this.hotkeys
       .addShortcut({ keys: 'space' })
       .subscribe(() => this.togglePause());
+
     this.hotkeys
       .addShortcut({ keys: 'escape' })
       .subscribe(() => closeAllMenus());
