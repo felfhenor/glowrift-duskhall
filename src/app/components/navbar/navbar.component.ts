@@ -102,7 +102,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       clickCb: () => this.toggleHeroes(),
     },
     {
-      name: 'Options',
+      name: 'Settings',
       icon: 'tablerSettings',
       hotkey: '6',
       clickCb: () => this.toggleOptions(),
