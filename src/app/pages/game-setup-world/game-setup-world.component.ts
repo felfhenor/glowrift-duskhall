@@ -52,7 +52,7 @@ export class GameSetupWorldComponent implements OnInit {
     computed(() => heroPickSpriteByName(this.heroNames[3]())),
   ];
 
-  public selectedWorldSize = signal<WorldConfigContent>(this.allWorldSizes[0]);
+  public selectedWorldSize = signal<WorldConfigContent>(this.allWorldSizes[2]);
   public isGeneratingWorld = signal<boolean>(false);
   public worldSeed = signal<string | null>(null);
 
