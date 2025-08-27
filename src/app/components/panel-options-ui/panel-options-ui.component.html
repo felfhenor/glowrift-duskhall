@@ -2,37 +2,6 @@
   <div class="flex-1">
     <div class="card bg-base-100 foreground shadow-xl mt-3">
       <div class="card-body">
-        <div class="card-title">Notifications</div>
-
-        <div class="form-control">
-          <label class="label cursor-pointer label-checkbox">
-            <input
-              type="checkbox"
-              [checked]="notificationsEnabled()"
-              class="checkbox checkbox-secondary"
-              (click)="toggleNotifications()"
-            />
-            <span class="label-text">Allow Notifications</span>
-          </label>
-        </div>
-
-        <div class="form-control">
-          <label class="label cursor-pointer label-checkbox">
-            <input
-              type="checkbox"
-              [checked]="notificationCategoriesEnabled().includes('Festival')"
-              class="checkbox checkbox-secondary"
-              (click)="toggleNotificationCategories('Festival')"
-              [disabled]="!notificationsEnabled()"
-            />
-            <span class="label-text">Festival Start/Stop</span>
-          </label>
-        </div>
-      </div>
-    </div>
-
-    <div class="card bg-base-100 foreground shadow-xl mt-3">
-      <div class="card-body">
         <div class="card-title">Gameplay</div>
 
         <div class="form-control">
@@ -88,26 +57,28 @@
           </label>
         </div>
 
-        <div class="form-control">
-          <label class="label cursor-pointer label-checkbox">
-            <span class="label-text !ml-0 mr-2">Background Music Volume</span>
-            <input
-              #bgmVolume
-              type="range"
-              [min]="0"
-              [max]="1"
-              [step]="0.05"
-              [value]="getOption('bgmVolume')"
-              (change)="setOption('bgmVolume', bgmVolume.valueAsNumber)"
-              class="range range-secondary"
-            />
-            <span class="ml-2">
-              {{ getOption('bgmVolume') * 100 | number: '1.0-0' }}%
-            </span>
-          </label>
-        </div>
+        @if (getOption('bgmPlay')) {
+          <div class="form-control">
+            <label class="label cursor-pointer label-checkbox">
+              <span class="label-text !ml-0 mr-2">Background Music Volume</span>
+              <input
+                #bgmVolume
+                type="range"
+                [min]="0"
+                [max]="1"
+                [step]="0.05"
+                [value]="getOption('bgmVolume')"
+                (change)="setOption('bgmVolume', bgmVolume.valueAsNumber)"
+                class="range range-secondary"
+              />
+              <span class="ml-2">
+                {{ getOption('bgmVolume') * 100 | number: '1.0-0' }}%
+              </span>
+            </label>
+          </div>
+        }
 
-        <div class="form-control mt-4">
+        <div class="form-control">
           <label class="label cursor-pointer label-checkbox">
             <input
               type="checkbox"
@@ -119,24 +90,26 @@
           </label>
         </div>
 
-        <div class="form-control">
-          <label class="label cursor-pointer label-checkbox">
-            <span class="label-text !ml-0 mr-2">Sound Effects Volume</span>
-            <input
-              #sfxVolume
-              type="range"
-              [min]="0"
-              [max]="1"
-              [step]="0.05"
-              [value]="getOption('sfxVolume')"
-              (change)="setOption('sfxVolume', sfxVolume.valueAsNumber)"
-              class="range range-secondary"
-            />
-            <span class="ml-2">
-              {{ getOption('sfxVolume') * 100 | number: '1.0-0' }}%
-            </span>
-          </label>
-        </div>
+        @if (getOption('sfxPlay')) {
+          <div class="form-control">
+            <label class="label cursor-pointer label-checkbox">
+              <span class="label-text !ml-0 mr-2">Sound Effects Volume</span>
+              <input
+                #sfxVolume
+                type="range"
+                [min]="0"
+                [max]="1"
+                [step]="0.05"
+                [value]="getOption('sfxVolume')"
+                (change)="setOption('sfxVolume', sfxVolume.valueAsNumber)"
+                class="range range-secondary"
+              />
+              <span class="ml-2">
+                {{ getOption('sfxVolume') * 100 | number: '1.0-0' }}%
+              </span>
+            </label>
+          </div>
+        }
       </div>
     </div>
   </div>
@@ -162,6 +135,39 @@
             </option>
           }
         </select>
+      </div>
+    </div>
+
+    <div class="card bg-base-100 foreground shadow-xl mt-3">
+      <div class="card-body">
+        <div class="card-title">Notifications</div>
+
+        <div class="form-control">
+          <label class="label cursor-pointer label-checkbox">
+            <input
+              type="checkbox"
+              [checked]="notificationsEnabled()"
+              class="checkbox checkbox-secondary"
+              (click)="toggleNotifications()"
+            />
+            <span class="label-text">Allow Notifications</span>
+          </label>
+        </div>
+
+        @if (notificationsEnabled()) {
+          <div class="form-control">
+            <label class="label cursor-pointer label-checkbox">
+              <input
+                type="checkbox"
+                [checked]="notificationCategoriesEnabled().includes('Festival')"
+                class="checkbox checkbox-secondary"
+                (click)="toggleNotificationCategories('Festival')"
+                [disabled]="!notificationsEnabled()"
+              />
+              <span class="label-text">Festival Start/Stop</span>
+            </label>
+          </div>
+        }
       </div>
     </div>
   </div>
