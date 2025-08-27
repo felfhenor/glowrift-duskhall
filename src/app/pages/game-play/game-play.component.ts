@@ -11,10 +11,12 @@ import { PanelLocationComponent } from '@components/panel-location/panel-locatio
 import { PanelOptionsComponent } from '@components/panel-options/panel-options.component';
 import { PanelTownComponent } from '@components/panel-town/panel-town.component';
 
+import { GlanceResourcesComponent } from '@components/glance-resources/glance-resources.component';
 import { PanelWorldComponent } from '@components/panel-world/panel-world.component';
 import {
   closeAllMenus,
   gamestate,
+  getOption,
   isCatchingUp,
   isShowingAnyMenu,
   showCombatMenu,
@@ -43,6 +45,7 @@ import {
     RouterModule,
     PanelWorldComponent,
     PanelHelpComponent,
+    GlanceResourcesComponent,
   ],
   templateUrl: './game-play.component.html',
   styleUrl: './game-play.component.scss',
@@ -56,6 +59,7 @@ export class GamePlayComponent {
   public showTown = computed(() => showTownMenu());
   public showWorld = computed(() => showWorldMenu());
   public showHelp = computed(() => showHelpMenu());
+  public showGlanceResources = computed(() => getOption('glanceResourceView'));
 
   public isShowingAnyMenu = computed(() => isShowingAnyMenu());
 

@@ -36,6 +36,20 @@
             </span>
           </label>
         </div>
+
+        <div class="form-control">
+          <label class="label mb-2">At-A-Glance Resource Panel</label>
+
+          <select
+            class="select select-bordered select-xs"
+            [(ngModel)]="glanceResourceView"
+            (ngModelChange)="setOption('glanceResourceView', $event)"
+          >
+            <option [value]="'left'">Left</option>
+            <option [value]="'right'">Right</option>
+            <option [value]="'hidden'">Hidden</option>
+          </select>
+        </div>
       </div>
     </div>
   </div>
@@ -119,15 +133,15 @@
       <div class="card-body">
         <div class="card-title">UI Theme</div>
 
-        <p class="mb-3">
+        <label class="label mb-3 whitespace-normal">
           Change the visuals of the game. Not every theme is tested equally,
           please report issues with specific themes.
-        </p>
+        </label>
 
         <select
           class="select select-bordered select-xs mx-1"
           [(ngModel)]="currentTheme"
-          (ngModelChange)="changeTheme($event)"
+          (ngModelChange)="setOption('uiTheme', $event)"
         >
           @for (theme of themes; track $index) {
             <option [value]="theme.name">

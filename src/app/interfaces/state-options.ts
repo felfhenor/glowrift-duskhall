@@ -34,8 +34,8 @@ export type WorldTab =
 export type TownTab = TownBuilding;
 export type CombatTab = 'Preferences' | 'CombatLog';
 export type OptionsTab = 'UI' | 'Savefile' | 'Debug';
-
 export type OwnershipType = 'Permanent' | 'Temporary';
+export type GlanceResourceView = 'left' | 'right' | 'hidden';
 
 export interface OptionsTabLink {
   name: 'UI' | 'Savefile' | 'Debug';
@@ -57,6 +57,7 @@ export type GameOptions = Record<GameOption, boolean> & {
   inventoryFilter: InventorySlotType;
   selectedHeroIndex: number;
   selectedTalentTreeElement: GameElement;
+  glanceResourceView: GlanceResourceView;
   empireSelectedLocationTypes: LocationType[];
   empireSelectedOwnershipTypes: OwnershipType[];
 };

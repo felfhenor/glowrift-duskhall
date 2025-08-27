@@ -2,14 +2,11 @@ import type { OnDestroy, OnInit } from '@angular/core';
 import { Component, computed, inject, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IconComponent } from '@components/icon/icon.component';
-import { MarkerCurrencyCurrentComponent } from '@components/marker-currency-current/marker-currency-current.component';
 import { RequireSetupDirective } from '@directives/require-setup.directive';
 import { SFXDirective } from '@directives/sfx.directive';
 import {
   cameraCenterOnPlayer,
   closeAllMenus,
-  currencySortByOrder,
-  gamestate,
   getOption,
   globalStatusText,
   setOption,
@@ -22,7 +19,7 @@ import {
   showTownMenu,
   showWorldMenu,
 } from '@helpers';
-import type { GameCurrency, Icon } from '@interfaces';
+import type { Icon } from '@interfaces';
 import { TippyDirective } from '@ngneat/helipopper';
 import { HotkeysService } from '@ngneat/hotkeys';
 import { MetaService } from '@services/meta.service';
@@ -37,7 +34,6 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
     IconComponent,
     SweetAlert2Module,
     SFXDirective,
-    MarkerCurrencyCurrentComponent,
   ],
   providers: [],
   templateUrl: './navbar.component.html',
@@ -53,17 +49,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   public isPaused = computed(() => getOption('gameloopPaused'));
   public currentStatus = computed(() => globalStatusText());
-
-  public shouldShowCurrencyList = computed(() => showCurrencyList());
-
-  public displayedCurrencies = computed(() => {
-    const currentCurrencies = gamestate().currency.currencies;
-    const availableCurrencies = Object.keys(currentCurrencies).filter(
-      (c) =>
-        c !== 'Mana' && Math.floor(currentCurrencies[c as GameCurrency]) > 0,
-    ) as GameCurrency[];
-    return currencySortByOrder(availableCurrencies);
-  });
 
   public readonly panelConfigs: Array<{
     name: string;

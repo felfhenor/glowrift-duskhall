@@ -9,33 +9,6 @@
     </ul>
   </div>
 
-  <div class="navbar-center">
-    <ul class="menu menu-horizontal px-1" appRequireSetup>
-      <li>
-        <details
-          [open]="shouldShowCurrencyList()"
-          (click)="toggleCurrencyList()"
-        >
-          <summary class="!pl-2">
-            <app-marker-currency-current
-              currency="Mana"
-            ></app-marker-currency-current>
-          </summary>
-
-          <ul class="bg-base-100 rounded-t-none p-2 z-51 !mt-0 !pe-8">
-            @for (currency of displayedCurrencies(); track $index) {
-              <app-marker-currency-current
-                [currency]="currency"
-              ></app-marker-currency-current>
-            } @empty {
-              No other currencies
-            }
-          </ul>
-        </details>
-      </li>
-    </ul>
-  </div>
-
   <div class="navbar-end">
     <ul class="menu menu-horizontal px-1 flex gap-2">
       @for (panel of panelConfigs; track $index) {

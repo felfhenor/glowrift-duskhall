@@ -1,0 +1,20 @@
+<div
+  class="p-2 bg-black/50 max-h-[50vh] overflow-y-auto"
+  (mouseenter)="showNames.set(true)"
+  (mouseleave)="showNames.set(false)"
+>
+  @for (curr of allCurrencies(); track $index) {
+    <div class="text-outline-black">
+      @if (showNames()) {
+        <app-marker-currency-current
+          [currency]="curr.id"
+        ></app-marker-currency-current>
+      } @else {
+        <app-marker-currency-inline
+          [currency]="curr.id"
+          [value]="curr.amount"
+        ></app-marker-currency-inline>
+      }
+    </div>
+  }
+</div>

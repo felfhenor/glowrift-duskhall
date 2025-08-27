@@ -1,3 +1,5 @@
+@let glanceValue = showGlanceResources();
+
 <div class="game-container relative">
   <app-game-map-pixi class="absolute inset-0 map-layer"></app-game-map-pixi>
 
@@ -60,6 +62,14 @@
     <app-panel-container>
       <app-panel-help class="absolute inset-0 panel-layer"></app-panel-help>
     </app-panel-container>
+  }
+
+  @if (glanceValue !== 'hidden') {
+    <app-glance-resources
+      class="absolute glance-layer top-[20px]"
+      [class.left-2]="glanceValue === 'left'"
+      [class.right-2]="glanceValue === 'right'"
+    ></app-glance-resources>
   }
 </div>
 
