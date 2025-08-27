@@ -18,4 +18,10 @@
       }
     </app-icon-blank-slot>
   }
+
+  @for (skill of equipmentSkills(); track $index) {
+    <app-icon-blank-slot class="opacity-50">
+      <app-icon-skill [skill]="skill"></app-icon-skill>
+    </app-icon-blank-slot>
+  }
 </div>

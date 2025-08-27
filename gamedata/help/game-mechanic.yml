@@ -27,3 +27,8 @@
   category: Game Mechanics
   name: -Exploration Preferences
   description: By default, the heroes will choose to safely explore the closest locations to them. If they encounter a location they cannot handle, they will retreat and try a different one, remembering their defeat (and thus, prioritizing it last). Risk Tolerance determines how willing heroes are to take on locations that are more difficult. Location Type determines what types of locations the heroes will go to. Loot Rarity determines what loot the heroes will fight for. Changing these will affect the locations the heroes prioritize to conquer. Modifying these will allow the player to focus on certain micro-strategies (such as seeking powerful items short term, or conquering towns and villages).
+
+- id: 239b590c-dd2f-426e-8f76-ddb1ed14bbea
+  category: Game Mechanics
+  name: -Item Skills
+  description: Some items give you skills when equipped. These skills are not modified by talents, and are shown next to a heroes equippable skill list.

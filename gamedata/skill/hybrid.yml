@@ -39,7 +39,7 @@
 
   techniques:
     - elements: [Fire, Earth]
-      attributes: [DamagesTarget, AllowPlink]
+      attributes: [DamagesTarget, AllowPlink, BypassDefense]
       targets: 10
       targetType: Enemies
       targetBehaviors:
