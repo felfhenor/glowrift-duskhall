@@ -14,11 +14,13 @@ import {
   symmetrySkillsMatchingSkill,
 } from '@helpers/symmetry';
 import { townBuildingLevel } from '@helpers/town';
+import type { GameCurrency } from '@interfaces/content-currency';
 import type { EquipmentSkill } from '@interfaces/content-skill';
 import type {
   StatusEffectContent,
   StatusEffectId,
 } from '@interfaces/content-statuseffect';
+import { RARITY_PRIORITY } from '@interfaces/droppable';
 import type { GameStat } from '@interfaces/stat';
 import type { AcademyEnchant } from '@interfaces/town';
 import { uniq } from 'es-toolkit/compat';
@@ -198,6 +200,12 @@ export function academyNextSkillEnchants(
       if (level >= 50) {
         path.cost[`${el} Crystal`] = adjustByLevel(10, -50);
       }
+    });
+  });
+
+  validPaths.forEach((path) => {
+    Object.keys(path.cost).forEach((currency) => {
+      path.cost[currency as GameCurrency] *= RARITY_PRIORITY[skill.rarity];
     });
   });
 

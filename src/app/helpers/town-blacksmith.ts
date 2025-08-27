@@ -29,10 +29,11 @@ import {
   traitAddToEquipment,
   traitMaxForEquipment,
 } from '@helpers/trait-equipment';
+import type { GameCurrency } from '@interfaces/content-currency';
 import type { EquipmentItem } from '@interfaces/content-equipment';
 import type { TalentContent } from '@interfaces/content-talent';
 import type { TraitEquipmentContent } from '@interfaces/content-trait-equipment';
-import type { DropRarity } from '@interfaces/droppable';
+import { RARITY_PRIORITY, type DropRarity } from '@interfaces/droppable';
 import type { GameElement } from '@interfaces/element';
 import type { GameStat } from '@interfaces/stat';
 import type { BlacksmithEnchant } from '@interfaces/town';
@@ -241,12 +242,18 @@ export function blacksmithNextItemEnchants(
         rarity: 'Rare',
         cost: {
           ...defaultCurrencyBlock(),
-          'Soul Essence': adjustByLevel(300),
+          'Soul Essence': adjustByLevel(500),
         },
         talentBoosts: [talentData.id],
       });
     });
   }
+
+  validPaths.forEach((path) => {
+    Object.keys(path.cost).forEach((currency) => {
+      path.cost[currency as GameCurrency] *= RARITY_PRIORITY[item.rarity];
+    });
+  });
 
   validPaths.forEach((path) => {
     path.cost[`${item.rarity} Dust`] += 1;

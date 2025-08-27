@@ -17,6 +17,7 @@ export const RARITY_PRIORITY: Record<DropRarity, number> = {
   Legendary: 5,
   Unique: 6,
 };
+
 export interface HasRarity {
   rarity: DropRarity;
 }

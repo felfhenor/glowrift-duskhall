@@ -5,16 +5,10 @@
 
 <div class="card bg-base-100 foreground shadow-xl panel-card">
   <div class="card-body overflow-y-auto">
-    <div class="card-title">
-      @if (isMaxLevel()) {
-        {{ building() }} is at max level
-      } @else {
-        Upgrade {{ building() }} to Lv.{{ nextLevel() }}
-      }
-    </div>
+    <div class="card-title">{{ building() }} Lv.{{ nextLevel() - 1 }}</div>
 
     @if (isMaxLevel()) {
-      <div class="text-success text-lg mt-4 mb-4">
+      <div class="text-success mt-4 mb-4">
         This building is at max level and cannot be upgraded any further.
       </div>
     } @else {
@@ -71,7 +65,7 @@
           appSfx="item-get-minor"
           [sfxTrigger]="['click', 'hover']"
         >
-          Upgrade
+          Upgrade to Lv.{{ nextLevel() }}
         </button>
       </div>
 
