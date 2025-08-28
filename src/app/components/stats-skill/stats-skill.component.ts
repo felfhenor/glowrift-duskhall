@@ -1,9 +1,10 @@
-import { NgClass } from '@angular/common';
+import { DecimalPipe, NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 import { MarkerSymmetryComponent } from '@components/marker-symmetry/marker-symmetry.component';
 import {
   allHeroes,
   getEntry,
+  heroTotalStat,
   skillCreateForHero,
   skillCreateWithSymmetry,
   skillDisplayElement,
@@ -28,10 +29,11 @@ import type {
   StatusEffectContent,
   SymmetryLevel,
 } from '@interfaces';
+import { sumBy } from 'es-toolkit/compat';
 
 @Component({
   selector: 'app-stats-skill',
-  imports: [NgClass, MarkerSymmetryComponent],
+  imports: [NgClass, MarkerSymmetryComponent, DecimalPipe],
   templateUrl: './stats-skill.component.html',
   styleUrl: './stats-skill.component.scss',
 })
@@ -81,7 +83,7 @@ export class StatsSkillComponent {
     const skillRef = this.skillRef() ?? this.skillWithSymmetry();
 
     return skillRef.techniques.map((t) => {
-      const statString = Object.keys(t.damageScaling)
+      const statScalars = Object.keys(t.damageScaling)
         .filter((d) => t.damageScaling[d as GameStat])
         .map((d) => {
           const statMult = skillTechniqueDamageScalingStat(
@@ -90,7 +92,21 @@ export class StatsSkillComponent {
             d as GameStat,
           );
 
-          return `${d} (${statMult.toFixed(2)}x)`;
+          return { stat: d, multiplier: statMult };
+        });
+
+      const totalValue = this.equippingHero()
+        ? sumBy(
+            statScalars,
+            (s) =>
+              s.multiplier *
+              heroTotalStat(this.equippingHero()!, s.stat as GameStat),
+          )
+        : 0;
+
+      const statString = statScalars
+        .map((d) => {
+          return `${d.stat} (${d.multiplier.toFixed(2)}x)`;
         })
         .join(' + ');
 
@@ -118,6 +134,7 @@ export class StatsSkillComponent {
         attributes: t.attributes,
         statString,
         statusString,
+        calculatedTotal: totalValue,
       };
     });
   });
