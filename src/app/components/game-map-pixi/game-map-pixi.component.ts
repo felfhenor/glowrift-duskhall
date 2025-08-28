@@ -20,6 +20,7 @@ import {
   pixiGameMapContainersCreate,
   pixiIconTextureClaimCreate,
   pixiIndicatorHeroTravelCreate,
+  pixiIndicatorNodePlayerAtLocationArrowCreate,
   pixiIndicatorNodePlayerAtLocationCreate,
   pixiIndicatorNodeSpriteCreate,
   pixiIndicatorNodeTerritoryOwnershipCreate,
@@ -77,7 +78,9 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     string,
     { graphics: Graphics; ticker: () => void }
   > = {};
-  private travelVisualizerTickerUpdate?: () => void;
+
+  private heroAtLocationArrowTicker?: () => void;
+  private heroAtLocationTicker?: () => void;
   private heroTickerUpdate?: () => void;
 
   // Local computed properties for component functionality
@@ -228,7 +231,8 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     const ticker = this.app?.ticker;
     if (ticker) {
       ticker.stop();
-      ticker.remove(this.travelVisualizerTickerUpdate!);
+      ticker.remove(this.heroAtLocationTicker!);
+      ticker.remove(this.heroAtLocationArrowTicker!);
       Object.values(this.ownershipVisualizerTickerUpdates).forEach((update) => {
         ticker.remove(update.ticker);
       });
@@ -586,8 +590,15 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     const { graphics, ticker } = pixiIndicatorNodePlayerAtLocationCreate();
     this.playerIndicatorContainer.addChild(graphics);
 
-    this.travelVisualizerTickerUpdate = ticker;
+    this.heroAtLocationTicker = ticker;
     this.app.ticker.add(ticker);
+
+    const { graphics: arrowGraphics, ticker: arrowTicker } =
+      pixiIndicatorNodePlayerAtLocationArrowCreate();
+    this.playerIndicatorContainer.addChild(arrowGraphics);
+
+    this.heroAtLocationTicker = arrowTicker;
+    this.app.ticker.add(arrowTicker);
 
     const heroPosition = this.heroPosition();
     const camera = cameraPosition();

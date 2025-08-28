@@ -42,6 +42,50 @@ export function pixiIndicatorNodePlayerAtLocationCreate(): {
   return { graphics, ticker };
 }
 
+export function pixiIndicatorNodePlayerAtLocationArrowCreate(): {
+  graphics: Graphics;
+  ticker: () => void;
+} {
+  const START_X = 27;
+  const START_Y = 22;
+
+  const graphics = new Graphics()
+    .moveTo(START_X - 1, START_Y - 1)
+    .lineTo(START_X + 9, START_Y)
+    .lineTo(START_X + 9, START_Y + 17)
+    .lineTo(START_X + 13, START_Y + 17)
+    .lineTo(START_X + 6, START_Y + 26)
+    .lineTo(START_X + 4, START_Y + 26)
+    .lineTo(START_X - 5, START_Y + 17)
+    .lineTo(START_X - 1, START_Y + 17)
+    .lineTo(START_X - 1, START_Y - 1)
+    .fill(0x000000)
+
+    .moveTo(START_X, START_Y)
+    .lineTo(START_X + 8, START_Y)
+    .lineTo(START_X + 8, START_Y + 16)
+    .lineTo(START_X + 12, START_Y + 16)
+    .lineTo(START_X + 5, START_Y + 25)
+    .lineTo(START_X + 3, START_Y + 25)
+    .lineTo(START_X - 4, START_Y + 16)
+    .lineTo(START_X, START_Y + 16)
+    .lineTo(START_X, START_Y)
+    .fill(0xffffff);
+
+  graphics.cullable = true;
+
+  const pixelY = -64;
+
+  let bobOffset = 0;
+
+  const ticker = () => {
+    bobOffset += 0.4;
+    graphics.y = pixelY + Math.sin(bobOffset) * 2;
+  };
+
+  return { graphics, ticker };
+}
+
 /**
  * Creates an animated territory ownership square
  *
