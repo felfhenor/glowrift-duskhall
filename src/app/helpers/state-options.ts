@@ -46,6 +46,8 @@ export function defaultOptions(): GameOptions {
       'village',
     ],
     empireSelectedOwnershipTypes: ['Permanent', 'Temporary'],
+    organizeItems: 'default',
+    organizeSkills: 'default',
   };
 }
 

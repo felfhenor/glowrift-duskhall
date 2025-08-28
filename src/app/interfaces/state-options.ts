@@ -1,5 +1,6 @@
 import type { Signal } from '@angular/core';
 import type { InventorySlotType } from '@interfaces/content-equipment';
+import type { EquipmentSkillAttribute } from '@interfaces/content-skill';
 import type { LocationType } from '@interfaces/content-worldconfig';
 import type { GameElement } from '@interfaces/element';
 import type { TownBuilding } from '@interfaces/town';
@@ -38,6 +39,23 @@ export type OwnershipType = 'Permanent' | 'Temporary';
 export type GlanceResourceView = 'left' | 'right' | 'hidden';
 export type GlanceClaimView = 'left' | 'right' | 'hidden';
 export type GlanceHeroView = 'left' | 'right' | 'middle' | 'hidden';
+export type ItemOrganizeSetting =
+  | 'default'
+  | 'stat-health'
+  | 'stat-force'
+  | 'stat-aura'
+  | 'stat-speed'
+  | 'element-earth'
+  | 'element-fire'
+  | 'element-water'
+  | 'element-air';
+export type SkillOrganizeSetting =
+  | 'default'
+  | 'element-earth'
+  | 'element-fire'
+  | 'element-water'
+  | 'element-air'
+  | `tech-${EquipmentSkillAttribute}`;
 
 export interface OptionsTabLink {
   name: 'UI' | 'Savefile' | 'Debug';
@@ -64,4 +82,6 @@ export type GameOptions = Record<GameOption, boolean> & {
   glanceClaimView: GlanceClaimView;
   empireSelectedLocationTypes: LocationType[];
   empireSelectedOwnershipTypes: OwnershipType[];
+  organizeItems: ItemOrganizeSetting;
+  organizeSkills: SkillOrganizeSetting;
 };

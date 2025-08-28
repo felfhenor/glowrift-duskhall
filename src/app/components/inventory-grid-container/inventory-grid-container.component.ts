@@ -24,10 +24,15 @@ import type {
 } from '@interfaces/content-skill';
 import type { Hero } from '@interfaces/hero';
 import type { ItemAction, SkillAction } from '@interfaces/town';
+import { TeleportOutletDirective } from '@ngneat/overview';
 
 @Component({
   selector: 'app-inventory-grid-container',
-  imports: [InventoryGridSkillComponent, InventoryGridItemComponent],
+  imports: [
+    InventoryGridSkillComponent,
+    InventoryGridItemComponent,
+    TeleportOutletDirective,
+  ],
   templateUrl: './inventory-grid-container.component.html',
   styleUrl: './inventory-grid-container.component.scss',
 })

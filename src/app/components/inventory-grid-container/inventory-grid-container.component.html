@@ -1,4 +1,4 @@
-<div role="tablist" class="tabs tabs-boxed">
+<div role="tablist" class="tabs tabs-boxed items-center">
   @for (type of visibleItemTypes(); track type.type) {
     <button
       role="tab"
@@ -9,6 +9,8 @@
       {{ type.name }} ({{ itemCounts()[type.type] }})
     </button>
   }
+
+  <ng-container teleportOutlet="equipment-sorter"></ng-container>
 </div>
 
 <div

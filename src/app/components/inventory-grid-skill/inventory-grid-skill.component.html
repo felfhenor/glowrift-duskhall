@@ -1,8 +1,21 @@
 @let actions = allowedActions();
 @let disable = disabledSkillIds();
 
+<select
+  *teleportTo="'equipment-sorter'"
+  class="select select-bordered select-xs mx-1"
+  [(ngModel)]="currentSortFilter"
+  (ngModelChange)="setOption('organizeSkills', $event)"
+>
+  @for (filter of sortFilters; track $index) {
+    <option [value]="filter.setting">
+      {{ filter.label }}
+    </option>
+  }
+</select>
+
 <div class="flex flex-wrap flex-row gap-2">
-  @for (skill of skills(); track skill.id) {
+  @for (skill of sortedFilteredSkills(); track skill.id) {
     <app-icon-skill
       [skill]="skill"
       [compareSkill]="compareSkill()"

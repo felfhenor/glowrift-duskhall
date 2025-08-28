@@ -1,8 +1,21 @@
 @let actions = allowedActions();
 @let disable = disabledItemIds();
 
+<select
+  *teleportTo="'equipment-sorter'"
+  class="select select-bordered select-xs mx-1"
+  [(ngModel)]="currentSortFilter"
+  (ngModelChange)="setOption('organizeItems', $event)"
+>
+  @for (filter of sortFilters; track $index) {
+    <option [value]="filter.setting">
+      {{ filter.label }}
+    </option>
+  }
+</select>
+
 <div class="flex flex-wrap flex-row gap-2">
-  @for (item of items(); track $index) {
+  @for (item of sortedFilteredItems(); track $index) {
     @if (item) {
       <app-icon-item
         [item]="item"
