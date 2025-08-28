@@ -6,22 +6,16 @@
 
     <p class="min-h-16">Next Level: {{ description() }}</p>
 
-    @if (canUpgrade()) {
-      <button
-        class="btn btn-neutral"
-        (click)="buyUpgrade()"
-        [disabled]="!hasCurrency()"
-        appAnalyticsClick="Game:Location:Upgrade:{{ upg.name }}"
-      >
-        <app-button-cost-list
-          [label]="''"
-          [currencies]="upgradeCost()"
-        ></app-button-cost-list>
-      </button>
-    } @else {
-      <button class="btn btn-warning" [disabled]="true">
-        Rally Point needs to level up first
-      </button>
-    }
+    <button
+      class="btn btn-neutral"
+      (click)="buyUpgrade()"
+      [disabled]="!hasCurrency() || !canUpgrade()"
+      appAnalyticsClick="Game:Location:Upgrade:{{ upg.name }}"
+    >
+      <app-button-cost-list
+        [label]="''"
+        [currencies]="upgradeCost()"
+      ></app-button-cost-list>
+    </button>
   </div>
 </div>
