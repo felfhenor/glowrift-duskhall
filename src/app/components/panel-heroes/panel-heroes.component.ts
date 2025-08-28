@@ -9,6 +9,7 @@ import {
 import { ButtonCloseComponent } from '@components/button-close/button-close.component';
 import { CardPageComponent } from '@components/card-page/card-page.component';
 import { IconHeroComponent } from '@components/icon-hero/icon-hero.component';
+import { IconComponent } from '@components/icon/icon.component';
 import { InventoryGridContainerComponent } from '@components/inventory-grid-container/inventory-grid-container.component';
 import { PanelHeroesEquipmentComponent } from '@components/panel-heroes-equipment/panel-heroes-equipment.component';
 import { PanelHeroesSkillsComponent } from '@components/panel-heroes-skills/panel-heroes-skills.component';
@@ -17,6 +18,7 @@ import { PanelHeroesTalentsComponent } from '@components/panel-heroes-talents/pa
 import { PanelHeroesTargettingComponent } from '@components/panel-heroes-targetting/panel-heroes-targetting.component';
 import {
   gamestate,
+  getEntriesByType,
   getOption,
   itemEquip,
   itemUnequip,
@@ -26,7 +28,13 @@ import {
   skillEquip,
   skillUnequip,
 } from '@helpers';
-import type { EquipmentItem, EquipmentSkill, EquipmentSlot } from '@interfaces';
+import type { CameoContent } from '@interfaces';
+import {
+  type EquipmentItem,
+  type EquipmentSkill,
+  type EquipmentSlot,
+} from '@interfaces';
+import { TippyDirective } from '@ngneat/helipopper';
 
 @Component({
   selector: 'app-panel-heroes',
@@ -41,13 +49,22 @@ import type { EquipmentItem, EquipmentSkill, EquipmentSlot } from '@interfaces';
     PanelHeroesTargettingComponent,
     InventoryGridContainerComponent,
     ButtonCloseComponent,
+    IconComponent,
+    TippyDirective,
   ],
   templateUrl: './panel-heroes.component.html',
   styleUrl: './panel-heroes.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PanelHeroesComponent {
-  public allHeroes = computed(() => gamestate().hero.heroes);
+  public allHeroes = computed(() =>
+    gamestate().hero.heroes.map((h) => ({
+      ...h,
+      contribution: getEntriesByType<CameoContent>('cameo').find(
+        (c) => c.name === h.name,
+      )?.contribution,
+    })),
+  );
 
   public showingSubMenu = computed(() => showAnySubmenu());
   public activeHeroIndex = computed(() => getOption('selectedHeroIndex'));

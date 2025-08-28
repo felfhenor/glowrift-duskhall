@@ -19,7 +19,13 @@
         >
           <app-icon-hero [hero]="hero"></app-icon-hero>
 
-          <div>{{ hero.name }}</div>
+          <div>
+            {{ hero.name }}
+
+            @if (hero.contribution) {
+              <app-icon [name]="'gameHelp'" [tp]="hero.contribution"></app-icon>
+            }
+          </div>
         </div>
       }
     </div>
