@@ -1,6 +1,6 @@
 import type { WorldLocation } from '@interfaces/world';
 import { REVELATION_RADIUS } from '@interfaces/world';
-import { Graphics } from 'pixi.js';
+import { Graphics, Sprite, type Texture } from 'pixi.js';
 
 /**
  * Creates an animated player indicator at the specified position
@@ -132,6 +132,85 @@ export function pixiIndicatorNodeTerritoryOwnershipCreate(node: WorldLocation):
     // Clamp alpha to valid range
     alpha = Math.max(0.4, Math.min(0.8, alpha));
     graphics.alpha = alpha;
+  };
+
+  return { graphics, ticker };
+}
+
+/**
+ * Creates an offscreen indicator arrow pointing to hero location
+ * @param direction Direction vector from screen center to hero position
+ * @param heroTexture Texture for the hero sprite
+ * @returns Object with graphics and cleanup function
+ */
+export function pixiIndicatorOffscreenArrowCreate(
+  direction: { x: number; y: number },
+  heroTexture?: Texture,
+): {
+  graphics: Graphics;
+  ticker: () => void;
+} {
+  const graphics = new Graphics();
+
+  // Create arrow shaft
+  graphics
+    .moveTo(0, -2)
+    .lineTo(30, -2)
+    .lineTo(30, 2)
+    .lineTo(0, 2)
+    .lineTo(0, -2)
+    .fill(0x000000);
+
+  graphics
+    .moveTo(1, -1)
+    .lineTo(29, -1)
+    .lineTo(29, 1)
+    .lineTo(1, 1)
+    .lineTo(1, -1)
+    .fill(0xffffff);
+
+  // Create arrow head
+  graphics
+    .moveTo(30, -6)
+    .lineTo(42, 0)
+    .lineTo(30, 6)
+    .lineTo(30, -6)
+    .fill(0x000000);
+
+  graphics
+    .moveTo(31, -4)
+    .lineTo(39, 0)
+    .lineTo(31, 4)
+    .lineTo(31, -4)
+    .fill(0xffffff);
+
+  graphics.cullable = true;
+
+  // Calculate rotation angle from direction vector
+  const angle = Math.atan2(direction.y, direction.x);
+  graphics.rotation = angle;
+
+  // Add hero sprite at the base of the arrow if texture is provided
+  if (heroTexture) {
+    const heroSprite = new Sprite(heroTexture);
+    heroSprite.x = -25; // Position at the base of the arrow
+    heroSprite.y = 0;
+    heroSprite.width = 32;
+    heroSprite.height = 32;
+    heroSprite.anchor.set(0.5, 0.5);
+    // Counter-rotate the hero sprite to maintain default orientation
+    heroSprite.rotation = -angle;
+    graphics.addChild(heroSprite);
+  }
+
+  let bobOffset = 0;
+
+  const ticker = () => {
+    bobOffset += 0.3;
+    // Small bobbing animation
+    const bobAmount = Math.sin(bobOffset) * 2;
+    graphics.x += Math.cos(graphics.rotation) * bobAmount * 0.1;
+    graphics.y += Math.sin(graphics.rotation) * bobAmount * 0.1;
   };
 
   return { graphics, ticker };
