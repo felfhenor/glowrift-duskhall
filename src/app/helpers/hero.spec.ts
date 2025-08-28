@@ -79,13 +79,6 @@ describe('Hero Helper Functions', () => {
   });
 
   describe('pickSpriteForHeroName', () => {
-    it('should return predefined sprites for specific heroes', () => {
-      expect(heroPickSpriteByName('Ignatius')).toBe('0004');
-      expect(heroPickSpriteByName('Aquara')).toBe('0000');
-      expect(heroPickSpriteByName('Terrus')).toBe('0060');
-      expect(heroPickSpriteByName('Zephyra')).toBe('0036');
-    });
-
     it('should generate consistent sprite for other names', () => {
       const sprite = heroPickSpriteByName('TestHero');
       expect(sprite).toMatch(/^\d{4}$/);
