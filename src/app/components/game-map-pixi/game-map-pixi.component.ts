@@ -24,6 +24,7 @@ import {
   pixiIndicatorNodePlayerAtLocationCreate,
   pixiIndicatorNodeSpriteCreate,
   pixiIndicatorNodeTerritoryOwnershipCreate,
+  pixiIndicatorOffscreenArrowCreate,
   pixiIndicatorTravelLineCreate,
   pixiResponsiveCanvasSetup,
   pixiTextureGameMapLoad,
@@ -37,6 +38,11 @@ import {
   worldClearNodeChanges,
   worldGetNodeChanges,
 } from '@helpers';
+import {
+  calculateDirectionToPosition,
+  calculateScreenEdgePosition,
+  isPositionOnScreen,
+} from '@helpers/pixi-offscreen-indicator';
 import type { WorldNodeChangeEvent } from '@interfaces';
 import { REVELATION_RADIUS, type WorldLocation } from '@interfaces';
 import type { NodeSpriteData } from '@interfaces/sprite';
@@ -65,6 +71,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
   private ownershipVisualizationContainer?: Container;
   private playerIndicatorContainer?: Container;
   private travelVisualizationContainer?: Container;
+  private offscreenIndicatorContainer?: Container;
   private terrainTextures: LoadedTextures = {};
   private objectTextures: LoadedTextures = {};
   private heroTextures: LoadedTextures = {};
@@ -82,6 +89,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
   private heroAtLocationArrowTicker?: () => void;
   private heroAtLocationTicker?: () => void;
   private heroTickerUpdate?: () => void;
+  private offscreenArrowTicker?: () => void;
 
   // Local computed properties for component functionality
   private debugMapNodePositions = computed(() =>
@@ -179,6 +187,15 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
 
       this.updatePlayerIndicators();
     });
+
+    // Effect for offscreen indicator to update when hero position or camera changes
+    effect(() => {
+      this.isPixiSetup();
+      travelCurrentPosition();
+      cameraPosition();
+
+      this.updateOffscreenIndicator();
+    });
   }
 
   private updateFoWForSurroundingNodes(change: WorldNodeChangeEvent) {
@@ -233,6 +250,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       ticker.stop();
       ticker.remove(this.heroAtLocationTicker!);
       ticker.remove(this.heroAtLocationArrowTicker!);
+      ticker.remove(this.offscreenArrowTicker!);
       Object.values(this.ownershipVisualizerTickerUpdates).forEach((update) => {
         ticker.remove(update.ticker);
       });
@@ -296,6 +314,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       containers.ownershipVisualizationContainer;
     this.playerIndicatorContainer = containers.playerIndicatorContainer;
     this.travelVisualizationContainer = containers.travelVisualizationContainer;
+    this.offscreenIndicatorContainer = containers.offscreenIndicatorContainer;
 
     // Add specific WebGL context restoration handler for this component
     const canvas = this.app.canvas as HTMLCanvasElement;
@@ -672,6 +691,49 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
 
     this.app?.ticker.remove(this.heroTickerUpdate!);
     this.heroTickerUpdate = undefined;
+  }
+
+  private updateOffscreenIndicator() {
+    if (!this.offscreenIndicatorContainer || !this.app) return;
+
+    const heroPosition = this.heroPosition();
+
+    // Clear existing offscreen indicator
+    this.clearOffscreenIndicator();
+
+    // Only show offscreen indicator if hero is not visible on screen
+    if (!isPositionOnScreen(heroPosition)) {
+      const direction = calculateDirectionToPosition(heroPosition);
+      const edgePosition = calculateScreenEdgePosition(direction);
+
+      // Get hero texture for the indicator
+      const partyLeader = this.firstHero();
+      const heroTexture =
+        partyLeader && this.heroTextures[partyLeader.sprite]
+          ? this.heroTextures[partyLeader.sprite]
+          : undefined;
+
+      const { graphics, ticker } = pixiIndicatorOffscreenArrowCreate(
+        direction,
+        heroTexture,
+      );
+
+      // Position the arrow at the calculated edge position
+      graphics.position.set(edgePosition.x, edgePosition.y);
+
+      this.offscreenIndicatorContainer.addChild(graphics);
+      this.offscreenArrowTicker = ticker;
+      this.app.ticker.add(ticker);
+    }
+  }
+
+  private clearOffscreenIndicator() {
+    this.offscreenIndicatorContainer?.removeChildren();
+
+    if (this.offscreenArrowTicker) {
+      this.app?.ticker.remove(this.offscreenArrowTicker);
+      this.offscreenArrowTicker = undefined;
+    }
   }
 
   private investigateLocation(nodeData: WorldLocation) {
