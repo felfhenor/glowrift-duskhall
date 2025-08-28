@@ -60,6 +60,7 @@ export interface GameStateHeroes {
   respawnTicks: number;
   exploreTicks: number;
   tooHardNodes: string[];
+  failuresSinceLastSuccess: number;
   combat?: Combat;
 }
 

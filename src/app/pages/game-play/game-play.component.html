@@ -94,6 +94,15 @@
       ></app-glance-heroes>
     </div>
   }
+
+  @if (showGlanceFailures()) {
+    <div
+      class="flex justify-center absolute top-0 left-0 right-0 min-h-[32px] cursor-pointer"
+      (click)="setOption('showHeroFailureIndicator', false)"
+    >
+      <app-glance-failures class="glance-layer"></app-glance-failures>
+    </div>
+  }
 </div>
 
 @if (isCatchingUp()) {

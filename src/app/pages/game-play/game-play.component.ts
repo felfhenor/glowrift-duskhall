@@ -12,8 +12,10 @@ import { PanelOptionsComponent } from '@components/panel-options/panel-options.c
 import { PanelTownComponent } from '@components/panel-town/panel-town.component';
 
 import { GlanceClaimsComponent } from '@components/glance-claims/glance-claims.component';
+import { GlanceFailuresComponent } from '@components/glance-failures/glance-failures.component';
 import { GlanceHeroesComponent } from '@components/glance-heroes/glance-heroes.component';
 import { GlanceResourcesComponent } from '@components/glance-resources/glance-resources.component';
+import { OptionsBaseComponent } from '@components/panel-options/option-base-page.component';
 import { PanelWorldComponent } from '@components/panel-world/panel-world.component';
 import {
   closeAllMenus,
@@ -50,11 +52,12 @@ import {
     GlanceResourcesComponent,
     GlanceHeroesComponent,
     GlanceClaimsComponent,
+    GlanceFailuresComponent,
   ],
   templateUrl: './game-play.component.html',
   styleUrl: './game-play.component.scss',
 })
-export class GamePlayComponent {
+export class GamePlayComponent extends OptionsBaseComponent {
   public showOptions = computed(() => showOptionsMenu());
   public showHeroes = computed(() => showHeroesMenu());
   public showCombat = computed(() => showCombatMenu());
@@ -66,6 +69,11 @@ export class GamePlayComponent {
   public showGlanceResources = computed(() => getOption('glanceResourceView'));
   public showGlanceHeroes = computed(() => getOption('glanceHeroView'));
   public showGlanceClaims = computed(() => getOption('glanceClaimView'));
+  public showGlanceFailures = computed(
+    () =>
+      getOption('showHeroFailureIndicator') &&
+      gamestate().hero.failuresSinceLastSuccess > 0,
+  );
 
   public isShowingAnyMenu = computed(() => isShowingAnyMenu());
 

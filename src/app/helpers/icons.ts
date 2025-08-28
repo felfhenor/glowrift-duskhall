@@ -28,6 +28,7 @@ import {
 } from '@ng-icons/game-icons';
 import {
   tablerCheck,
+  tablerExclamationCircle,
   tablerPlus,
   tablerSettings,
   tablerX,
@@ -64,4 +65,5 @@ export const ALL_ICONS = {
   tablerSettings,
   tablerX,
   tablerCheck,
+  tablerExclamationCircle,
 };

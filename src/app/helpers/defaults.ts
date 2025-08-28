@@ -65,6 +65,7 @@ export function defaultGameState(): GameState {
         ticksTotal: 0,
       },
       tooHardNodes: [],
+      failuresSinceLastSuccess: 0,
     },
     inventory: {
       items: [],

@@ -19,6 +19,7 @@ export function defaultOptions(): GameOptions {
     glanceResourceView: 'left',
     glanceHeroView: 'left',
     glanceClaimView: 'left',
+    showHeroFailureIndicator: false,
 
     uiTheme: 'dark',
 

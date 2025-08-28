@@ -17,7 +17,8 @@ export type GameOption =
   | 'gameloopPaused'
   | 'canSendNotifications'
   | 'followHeroesOnMap'
-  | 'switchToBiggestTreeOnHeroChange';
+  | 'switchToBiggestTreeOnHeroChange'
+  | 'showHeroFailureIndicator';
 
 export type NotificationCategory = 'Error' | 'Success' | 'Festival';
 

@@ -4,6 +4,8 @@ import { getEntry } from '@helpers/content';
 import { currencyClaimsUpdate, currencyGain } from '@helpers/currency';
 import { droppableMakeReal } from '@helpers/droppable';
 import {
+  exploreAddFailureToCapture,
+  exploreClearFailures,
   exploreProgressPercent,
   exploringUpdateGlobalStatusText,
 } from '@helpers/explore';
@@ -119,6 +121,7 @@ function handleCombatVictory(combat: Combat): void {
 
   combatReset();
   currencyClaimsUpdate();
+  exploreClearFailures();
 }
 
 export function combatHandleDefeat(combat: Combat): void {
@@ -133,6 +136,7 @@ export function combatHandleDefeat(combat: Combat): void {
   locationAddTooHard(currentNodeId);
 
   travelHome();
+  exploreAddFailureToCapture();
 }
 
 export function combatCheckIfOver(combat: Combat): boolean {
