@@ -1,4 +1,4 @@
-import type { OnChanges, Signal } from '@angular/core';
+import type { OnChanges, Signal, SimpleChanges } from '@angular/core';
 import { Component, computed, input } from '@angular/core';
 import { IconElementComponent } from '@components/icon-element/icon-element.component';
 import { PanelHeroesTalentsTreeComponent } from '@components/panel-heroes-talents-tree/panel-heroes-talents-tree.component';
@@ -80,8 +80,11 @@ export class PanelHeroesTalentsComponent implements OnChanges {
       },
     ]);
 
-  ngOnChanges() {
-    this.setToBiggestTree();
+  ngOnChanges(changes: SimpleChanges) {
+    const { hero } = changes;
+    if (hero.currentValue?.id !== hero.previousValue?.id) {
+      this.setToBiggestTree();
+    }
   }
 
   public changeElement(element: GameElement): void {
@@ -97,7 +100,9 @@ export class PanelHeroesTalentsComponent implements OnChanges {
 
     const biggestTree = maxBy(this.allTalents(), (t) => t.amount);
     if (biggestTree) {
-      this.changeElement(biggestTree.element);
+      setTimeout(() => {
+        this.changeElement(biggestTree.element);
+      }, 0);
     }
   }
 }
