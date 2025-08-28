@@ -1,6 +1,7 @@
 import type { OnDestroy, OnInit } from '@angular/core';
 import { Component, computed, inject, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { ButtonUpdateComponent } from '@components/button-update/button-update.component';
 import { IconComponent } from '@components/icon/icon.component';
 import { RequireSetupDirective } from '@directives/require-setup.directive';
 import { SFXDirective } from '@directives/sfx.directive';
@@ -34,6 +35,7 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
     IconComponent,
     SweetAlert2Module,
     SFXDirective,
+    ButtonUpdateComponent,
   ],
   providers: [],
   templateUrl: './navbar.component.html',

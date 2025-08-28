@@ -1,6 +1,11 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { environment } from '@environments/environment.development';
-import { liveVersion, localVersion, versionInfoToSemver } from '@helpers';
+import {
+  isInElectron,
+  liveVersion,
+  localVersion,
+  versionInfoToSemver,
+} from '@helpers';
 import { LoggerService } from '@services/logger.service';
 import { marked, Renderer } from 'marked';
 import { interval } from 'rxjs';
@@ -27,7 +32,6 @@ export class MetaService {
 
   public versionMismatch = computed(
     () =>
-      environment.production &&
       this.liveVersionString() &&
       this.versionString() !== this.liveVersionString(),
   );
@@ -96,6 +100,8 @@ export class MetaService {
   }
 
   private async checkVersionAgainstLiveVersion() {
+    if (!environment.production) return;
+
     try {
       const liveVersionFile = await fetch(
         'https://glowriftduskhall.felfhenor.com/version.json',
@@ -111,6 +117,11 @@ export class MetaService {
   }
 
   public update() {
-    window.location.reload();
+    if (!isInElectron()) {
+      window.location.reload();
+      return;
+    }
+
+    window.open('https://seiyria.itch.io/glowrift-duskhall');
   }
 }
