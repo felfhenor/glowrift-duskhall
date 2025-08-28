@@ -18,3 +18,19 @@
 }
 
 <app-modal-changelog></app-modal-changelog>
+
+<a
+  class="btn btn-ghost btn-untextured social-icon animate-pulse"
+  [tp]="'Download Glowrift Duskhall!'"
+  [href]="'https://seiyria.itch.io/glowrift-duskhall'"
+  target="_blank"
+  rel="nofollow"
+  [style.--social-color]="'#fa5c5c'"
+  [appAnalyticsClick]="'Meta:External:Download'"
+  appSfx="ui-click"
+  [sfxOffset]="5"
+  [sfxTrigger]="['click', 'hover']"
+  appHideInElectron
+>
+  <ng-icon [name]="'tablerDownload'" [color]="'#fa5c5c'"></ng-icon>
+</a>
