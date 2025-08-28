@@ -1,6 +1,7 @@
 import type { OnInit } from '@angular/core';
 import { Component, computed, inject, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { ButtonQuitComponent } from '@components/button-quit/button-quit.component';
 import { ButtonUpdateComponent } from '@components/button-update/button-update.component';
 import { ConnectButtonsComponent } from '@components/connect-buttons/connect-buttons.component';
 import { PanelContainerComponent } from '@components/panel-container/panel-container.component';
@@ -27,6 +28,7 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
     PanelOptionsComponent,
     PanelContainerComponent,
     ButtonUpdateComponent,
+    ButtonQuitComponent,
   ],
   providers: [],
   templateUrl: './home.component.html',

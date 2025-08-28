@@ -1,0 +1,20 @@
+<button
+  class="btn btn-warning btn-block"
+  appDisableOutsideElectron
+  [swal]="quitSwal"
+  appAnalyticsClick="Meta:Quit"
+  appSfx="ui-error"
+  [sfxTrigger]="['hover', 'click']"
+>
+  Quit
+</button>
+
+<swal
+  #quitSwal
+  title="Quit Glowrift Duskhall?"
+  text="Boo will miss you!"
+  icon="warning"
+  confirmButtonText="Yes, quit game"
+  cancelButtonText="No, cancel"
+  (confirm)="meta.quit()"
+></swal>

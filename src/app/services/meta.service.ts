@@ -124,4 +124,8 @@ export class MetaService {
 
     window.open('https://seiyria.itch.io/glowrift-duskhall');
   }
+
+  public quit() {
+    window.close();
+  }
 }

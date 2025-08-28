@@ -1,6 +1,6 @@
 <div class="flex justify-center items-center page-size">
   <div
-    class="card card-side bg-base-100 shadow-xl min-h-[300px] max-h-[500px] w-3/4"
+    class="card card-side bg-base-100 shadow-xl min-h-[300px] max-h-[600px] w-3/4"
   >
     <figure class="card-image !hidden md:!flex">
       <img
@@ -25,7 +25,7 @@
         civilization.
       </p>
 
-      <div class="flex-3 card-actions flex flex-col gap-2 w-1/2">
+      <div class="flex-3 card-actions flex flex-col gap-2 w-1/2 max-w-[300px]">
         <button
           class="btn btn-primary btn-block"
           (click)="newGame()"
@@ -44,7 +44,7 @@
             appAnalyticsClick="Meta:Play:Resume"
             appSfx="ui-click"
             [sfxOffset]="1"
-            [sfxTrigger]="['click']"
+            [sfxTrigger]="['hover', 'click']"
           >
             Resume Game
           </button>
@@ -56,11 +56,15 @@
           appAnalyticsClick="Meta:Settings"
           appSfx="ui-click"
           [sfxOffset]="2"
-          [sfxTrigger]="['click']"
+          [sfxTrigger]="['hover', 'click']"
         >
           Settings
         </button>
+
+        <app-button-quit></app-button-quit>
       </div>
+
+      <div class="min-h-[48px]"></div>
 
       <div class="card-actions absolute bottom-0 left-0 right-0 p-2">
         <app-connect-buttons></app-connect-buttons>
