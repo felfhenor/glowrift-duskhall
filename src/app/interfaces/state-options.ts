@@ -36,6 +36,7 @@ export type CombatTab = 'Preferences' | 'CombatLog';
 export type OptionsTab = 'UI' | 'Savefile' | 'Debug';
 export type OwnershipType = 'Permanent' | 'Temporary';
 export type GlanceResourceView = 'left' | 'right' | 'hidden';
+export type GlanceClaimView = 'left' | 'right' | 'hidden';
 export type GlanceHeroView = 'left' | 'right' | 'middle' | 'hidden';
 
 export interface OptionsTabLink {
@@ -60,6 +61,7 @@ export type GameOptions = Record<GameOption, boolean> & {
   selectedTalentTreeElement: GameElement;
   glanceResourceView: GlanceResourceView;
   glanceHeroView: GlanceHeroView;
+  glanceClaimView: GlanceClaimView;
   empireSelectedLocationTypes: LocationType[];
   empireSelectedOwnershipTypes: OwnershipType[];
 };

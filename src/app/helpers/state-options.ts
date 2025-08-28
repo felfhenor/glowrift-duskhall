@@ -18,6 +18,7 @@ export function defaultOptions(): GameOptions {
     switchToBiggestTreeOnHeroChange: true,
     glanceResourceView: 'left',
     glanceHeroView: 'left',
+    glanceClaimView: 'left',
 
     uiTheme: 'dark',
 

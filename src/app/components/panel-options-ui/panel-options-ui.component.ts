@@ -3,6 +3,7 @@ import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { OptionsBaseComponent } from '@components/panel-options/option-base-page.component';
 import type {
+  GlanceClaimView,
   GlanceHeroView,
   GlanceResourceView,
   ToggleableCategory,
@@ -16,9 +17,15 @@ import type {
 })
 export class PanelOptionsUIComponent extends OptionsBaseComponent {
   public currentTheme = signal<string>(this.getOption('uiTheme') as string);
+
   public glanceResourceView = signal<GlanceResourceView>(
     this.getOption('glanceResourceView') as GlanceResourceView,
   );
+
+  public glanceClaimView = signal<GlanceClaimView>(
+    this.getOption('glanceClaimView') as GlanceClaimView,
+  );
+
   public glanceHeroView = signal<GlanceHeroView>(
     this.getOption('glanceHeroView') as GlanceHeroView,
   );

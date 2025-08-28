@@ -1,0 +1,29 @@
+<div
+  class="p-2 bg-black/50 max-h-[50vh] [@media(max-height:800px)]:max-h-[35vh] overflow-y-auto"
+  (mouseenter)="showNames.set(true)"
+  (mouseleave)="showNames.set(false)"
+>
+  @for (claim of claimsOrdered(); track $index) {
+    <div class="text-outline-black flex relative min-h-[32px]">
+      @if (showNames()) {
+        <div class="transform scale-50 absolute left-[-16px] top-[-24px]">
+          <app-icon-location [type]="claim.nodeType"></app-icon-location>
+        </div>
+
+        <div class="ml-10 flex">
+          <div class="min-w-[100px]">{{ claim.nodeType | titlecase }}</div>
+
+          <div>{{ (claim.owned / claim.total) * 100 | number: '1.2-2' }}%</div>
+        </div>
+      } @else {
+        <div class="transform scale-50 absolute left-[-16px] top-[-24px]">
+          <app-icon-location [type]="claim.nodeType"></app-icon-location>
+        </div>
+
+        <span class="ml-10">
+          {{ (claim.owned / claim.total) * 100 | number: '1.2-2' }}%
+        </span>
+      }
+    </div>
+  }
+</div>

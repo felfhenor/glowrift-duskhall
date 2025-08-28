@@ -52,6 +52,20 @@
         </div>
 
         <div class="form-control">
+          <label class="label mb-2">At-A-Glance Claims Panel</label>
+
+          <select
+            class="select select-bordered select-xs"
+            [(ngModel)]="glanceClaimView"
+            (ngModelChange)="setOption('glanceClaimView', $event)"
+          >
+            <option [value]="'left'">Left</option>
+            <option [value]="'right'">Right</option>
+            <option [value]="'hidden'">Hidden</option>
+          </select>
+        </div>
+
+        <div class="form-control">
           <label class="label mb-2">At-A-Glance Hero Panel</label>
 
           <select
