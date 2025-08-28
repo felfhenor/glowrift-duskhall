@@ -1,5 +1,7 @@
 import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
+import { IconSkillComponent } from '@components/icon-skill/icon-skill.component';
+import { IconTalentComponent } from '@components/icon-talent/icon-talent.component';
 import { MarkerElementComponent } from '@components/marker-element/marker-element.component';
 import { MarkerStatComponent } from '@components/marker-stat/marker-stat.component';
 import { MarkerSymmetryComponent } from '@components/marker-symmetry/marker-symmetry.component';
@@ -39,6 +41,8 @@ import {
     MarkerElementComponent,
     MarkerTraitComponent,
     MarkerSymmetryComponent,
+    IconSkillComponent,
+    IconTalentComponent,
   ],
   templateUrl: './stats-item.component.html',
   styleUrl: './stats-item.component.scss',
@@ -88,6 +92,7 @@ export class StatsItemComponent {
     itemTalents(this.item() as EquipmentItem).map((t) => ({
       ...t,
       name: getEntry<TalentContent>(t.talentId)?.name ?? t.talentId,
+      ref: getEntry<TalentContent>(t.talentId)!,
     })),
   );
 

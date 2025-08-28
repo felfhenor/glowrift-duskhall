@@ -104,9 +104,15 @@
   @if (allSkills.length > 0) {
     <div class="mt-3 font-bold mb-1">Skills</div>
 
-    <ul class="list-disc pl-5">
+    <ul class="pl-7">
       @for (skill of allSkills; track $index) {
-        <li>{{ skill.name }}</li>
+        <li class="relative">
+          <span class="absolute top-[-24px] left-[-48px] transform scale-25">
+            <app-icon-skill [skill]="skill"></app-icon-skill>
+          </span>
+
+          {{ skill.name }}
+        </li>
       }
     </ul>
   }
@@ -114,9 +120,15 @@
   @if (allTalents.length > 0) {
     <div class="mt-3 font-bold mb-1">Talents</div>
 
-    <ul class="list-disc pl-5">
+    <ul class="list-disc pl-7">
       @for (talent of allTalents; track $index) {
-        <li>{{ talent.name }}: +{{ talent.value }}</li>
+        <li class="relative">
+          <span class="absolute top-[-24px] left-[-48px] transform scale-25">
+            <app-icon-talent [talent]="talent.ref"></app-icon-talent>
+          </span>
+
+          {{ talent.name }}: +{{ talent.value }}
+        </li>
       }
     </ul>
   }
