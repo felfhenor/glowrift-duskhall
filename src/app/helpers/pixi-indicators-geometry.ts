@@ -195,8 +195,8 @@ export function pixiIndicatorOffscreenArrowCreate(
     const heroSprite = new Sprite(heroTexture);
     heroSprite.x = -25; // Position at the base of the arrow
     heroSprite.y = 0;
-    heroSprite.width = 20;
-    heroSprite.height = 20;
+    heroSprite.width = 32;
+    heroSprite.height = 32;
     heroSprite.anchor.set(0.5, 0.5);
     // Counter-rotate the hero sprite to maintain default orientation
     heroSprite.rotation = -angle;
@@ -204,16 +204,13 @@ export function pixiIndicatorOffscreenArrowCreate(
   }
 
   let bobOffset = 0;
-  // Store the base position to prevent cumulative drift
-  const baseX = graphics.x;
-  const baseY = graphics.y;
 
   const ticker = () => {
     bobOffset += 0.3;
     // Small bobbing animation
     const bobAmount = Math.sin(bobOffset) * 2;
-    graphics.x = baseX + Math.cos(graphics.rotation) * bobAmount * 0.1;
-    graphics.y = baseY + Math.sin(graphics.rotation) * bobAmount * 0.1;
+    graphics.x += Math.cos(graphics.rotation) * bobAmount * 0.1;
+    graphics.y += Math.sin(graphics.rotation) * bobAmount * 0.1;
   };
 
   return { graphics, ticker };

@@ -42,7 +42,7 @@ import {
   calculateDirectionToPosition,
   calculateScreenEdgePosition,
   isPositionOnScreen,
-} from '@helpers/offscreen-indicator';
+} from '@helpers/pixi-offscreen-indicator';
 import type { WorldNodeChangeEvent } from '@interfaces';
 import { REVELATION_RADIUS, type WorldLocation } from '@interfaces';
 import type { NodeSpriteData } from '@interfaces/sprite';
@@ -697,7 +697,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     if (!this.offscreenIndicatorContainer || !this.app) return;
 
     const heroPosition = this.heroPosition();
-    
+
     // Clear existing offscreen indicator
     this.clearOffscreenIndicator();
 
@@ -708,13 +708,14 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
 
       // Get hero texture for the indicator
       const partyLeader = this.firstHero();
-      const heroTexture = partyLeader && this.heroTextures[partyLeader.sprite] 
-        ? this.heroTextures[partyLeader.sprite] 
-        : undefined;
+      const heroTexture =
+        partyLeader && this.heroTextures[partyLeader.sprite]
+          ? this.heroTextures[partyLeader.sprite]
+          : undefined;
 
       const { graphics, ticker } = pixiIndicatorOffscreenArrowCreate(
         direction,
-        heroTexture
+        heroTexture,
       );
 
       // Position the arrow at the calculated edge position

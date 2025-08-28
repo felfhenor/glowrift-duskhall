@@ -1,9 +1,9 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   calculateDirectionToPosition,
   calculateScreenEdgePosition,
   isPositionOnScreen,
-} from './offscreen-indicator';
+} from './pixi-offscreen-indicator';
 
 // Mock the dependencies
 vi.mock('@helpers/camera', () => ({
@@ -63,7 +63,7 @@ describe('offscreen-indicator', () => {
       // Position at (30, 17.5) should give direction (1, 0)
       const position = { x: 30, y: 17.5 };
       const direction = calculateDirectionToPosition(position);
-      
+
       expect(direction.x).toBeCloseTo(1, 5);
       expect(direction.y).toBeCloseTo(0, 5);
     });
@@ -71,9 +71,11 @@ describe('offscreen-indicator', () => {
     it('should return normalized direction vector', () => {
       const position = { x: 30, y: 25 };
       const direction = calculateDirectionToPosition(position);
-      
+
       // Vector should be normalized (length = 1)
-      const length = Math.sqrt(direction.x * direction.x + direction.y * direction.y);
+      const length = Math.sqrt(
+        direction.x * direction.x + direction.y * direction.y,
+      );
       expect(length).toBeCloseTo(1, 5);
     });
 
@@ -81,7 +83,7 @@ describe('offscreen-indicator', () => {
       // Position exactly at screen center
       const position = { x: 20, y: 17.5 };
       const direction = calculateDirectionToPosition(position);
-      
+
       // Should return default direction when at center
       expect(direction.x).toBe(1);
       expect(direction.y).toBe(0);
@@ -92,7 +94,7 @@ describe('offscreen-indicator', () => {
     it('should place arrow on right edge for rightward direction', () => {
       const direction = { x: 1, y: 0 };
       const edgePosition = calculateScreenEdgePosition(direction);
-      
+
       // Should be near right edge (viewport is 20 tiles * 64 pixels = 1280)
       expect(edgePosition.x).toBeCloseTo(1184, 1); // 1280 - 96 margin
       expect(edgePosition.y).toBeCloseTo(480, 1); // center height (15 * 64 / 2)
@@ -101,7 +103,7 @@ describe('offscreen-indicator', () => {
     it('should place arrow on bottom edge for downward direction', () => {
       const direction = { x: 0, y: 1 };
       const edgePosition = calculateScreenEdgePosition(direction);
-      
+
       // Should be near bottom edge (viewport is 15 tiles * 64 pixels = 960)
       expect(edgePosition.x).toBeCloseTo(640, 1); // center width (20 * 64 / 2)
       expect(edgePosition.y).toBeCloseTo(864, 1); // 960 - 96 margin
@@ -110,7 +112,7 @@ describe('offscreen-indicator', () => {
     it('should place arrow on left edge for leftward direction', () => {
       const direction = { x: -1, y: 0 };
       const edgePosition = calculateScreenEdgePosition(direction);
-      
+
       expect(edgePosition.x).toBeCloseTo(96, 1); // margin
       expect(edgePosition.y).toBeCloseTo(480, 1); // center height
     });
@@ -118,7 +120,7 @@ describe('offscreen-indicator', () => {
     it('should place arrow on top edge for upward direction', () => {
       const direction = { x: 0, y: -1 };
       const edgePosition = calculateScreenEdgePosition(direction);
-      
+
       expect(edgePosition.x).toBeCloseTo(640, 1); // center width
       expect(edgePosition.y).toBeCloseTo(96, 1); // margin
     });
@@ -126,7 +128,7 @@ describe('offscreen-indicator', () => {
     it('should handle diagonal directions', () => {
       const direction = { x: 0.707, y: 0.707 }; // 45 degrees down-right
       const edgePosition = calculateScreenEdgePosition(direction);
-      
+
       // Should be on one of the edges
       expect(edgePosition.x).toBeGreaterThanOrEqual(32);
       expect(edgePosition.x).toBeLessThanOrEqual(1248);

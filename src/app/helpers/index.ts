@@ -61,6 +61,7 @@ export * from './pixi-drag-handler';
 export * from './pixi-indicators-geometry';
 export * from './pixi-indicators-node';
 export * from './pixi-indicators-travel';
+export * from './pixi-offscreen-indicator';
 export * from './pixi-sprite-factory';
 export * from './pixi-texture-loader';
 export * from './quadtree';
