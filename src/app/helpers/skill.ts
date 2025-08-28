@@ -47,8 +47,10 @@ export function skillTechniqueNumTargets(
   skill: EquipmentSkill,
   technique: EquipmentSkillContentTechnique,
 ): number {
+  const numTargets = technique.targets + (skill.mods?.numTargets ?? 0);
   if (technique.targetType === 'Self') return 1;
-  return technique.targets + (skill.mods?.numTargets ?? 0);
+  if (technique.targetType === 'Allies') return Math.min(1, numTargets);
+  return numTargets;
 }
 
 export function skillTechniqueDamageScalingStat(
