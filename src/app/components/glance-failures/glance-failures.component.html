@@ -1,0 +1,10 @@
+<div
+  class="p-2 bg-red-500/50 min-h-[32px] flex items-center gap-2"
+  [tp]="
+    'Your heroes have failed to capture nodes. Consider sending them to easier nodes, equipping them with stronger items, or stronger skills to maximize their chance of success.'
+  "
+>
+  <app-icon size="1.25em" name="tablerExclamationCircle"></app-icon>
+
+  {{ failures() | number }} recent failures
+</div>
