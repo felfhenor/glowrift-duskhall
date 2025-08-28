@@ -11,7 +11,9 @@ import { locationGetClaimed } from '@helpers/world-location';
 import {
   locationAvailableUpgrades,
   locationCanUpgrade,
+  locationEncounterLevel,
   locationLevel,
+  locationLootLevel,
   locationUpgrade,
   locationUpgradeLevel,
 } from '@helpers/world-location-upgrade';
@@ -69,6 +71,8 @@ export class PanelWorldEmpireManagementComponent {
       .map((l) => ({
         ...l,
         upgradeLevel: locationLevel(l),
+        lootLevel: locationLootLevel(l),
+        encounterLevel: locationEncounterLevel(l),
       })),
   );
 
