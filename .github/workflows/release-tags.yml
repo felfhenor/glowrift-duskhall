@@ -120,100 +120,86 @@ jobs:
         with:
           name: glowrift-duskhall.exe
           path: ./electron/out/make/squirrel.windows/x64/glowrift-duskhall.exe
-#
-#  publish-linux:
-#    needs: [build]
-#    name: Create Linux Binary
-#
-#    runs-on: ${{ matrix.os }}
-#
-#    strategy:
-#      matrix:
-#        os: [ubuntu-latest]
-#        node-version: [18.15.x]
-#
-#    steps:
-#      - name: Load Release URL File from release job
-#        uses: actions/download-artifact@v1
-#        with:
-#          name: release_url
-#
-#      - uses: pCYSl5EDgo/cat@master
-#        id: loadReleaseUrl
-#        with:
-#          path: release_url/release_url.txt
-#
-#      - uses: actions/checkout@v2
-#
-#      - name: Use Node.js ${{ matrix.node-version }}
-#        uses: actions/setup-node@v1
-#        with:
-#          node-version: ${{ matrix.node-version }}
-#
-#      - run: npm install
-#
-#      - run: cd electron && npm install
-#
-#      - run: npm run lint
-#
-#      - run: npm run build:electron
-#
-#      - name: Upload Binary
-#        id: uploadReleaseAsset
-#        uses: actions/upload-release-asset@v1
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        with:
-#          upload_url: ${{ steps.loadReleaseUrl.outputs.text }}
-#          asset_path: ./electron/out/make/zip/linux/x64/Spellwriters.zip
-#          asset_name: Spellwriters-linux.zip
-#          asset_content_type: application/zip
-#
-#      - name: Upload Artifact
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: Spellwriters-linux.zip
-#          path: ./electron/out/make/zip/linux/x64/Spellwriters.zip
-#
-# upload-itch:
-#   needs: [publish-windows, publish-linux]
-#   name: Upload to Itch.io
-#
-#   runs-on: ${{ matrix.os }}
-#
-#   strategy:
-#     matrix:
-#       os: [ubuntu-latest]
-#       node-version: [18.15.x]
-#
-#   steps:
-#     - uses: little-core-labs/get-git-tag@v3.0.1
-#       id: loadTagName
-#
-#     - name: Load Windows Binary
-#       uses: actions/download-artifact@v1
-#       with:
-#         name: Spellwriters.exe
-#
-#     - name: Load Linux Binary
-#       uses: actions/download-artifact@v1
-#       with:
-#         name: Spellwriters-linux.zip
-#
-#     - uses: manleydev/butler-publish-itchio-action@master
-#       env:
-#         BUTLER_CREDENTIALS: ${{ secrets.ITCH_BUTLER_API_KEY }}
-#         CHANNEL: windows
-#         ITCH_GAME: spellwriters
-#         ITCH_USER: seiyria
-#         PACKAGE: ./Spellwriters.exe
-#         VERSION: ${{ steps.loadTagName.outputs.tag }}
-#
-#     - uses: manleydev/butler-publish-itchio-action@master
-#       env:
-#         BUTLER_CREDENTIALS: ${{ secrets.ITCH_BUTLER_API_KEY }}
-#         CHANNEL: linux
-#         ITCH_GAME: spellwriters
-#         ITCH_USER: seiyria
-#         PACKAGE: ./Spellwriters-linux.zip
-#         VERSION: ${{ steps.loadTagName.outputs.tag }}
+  #
+  #  publish-linux:
+  #    needs: [build]
+  #    name: Create Linux Binary
+  #
+  #    runs-on: ${{ matrix.os }}
+  #
+  #    strategy:
+  #      matrix:
+  #        os: [ubuntu-latest]
+  #        node-version: [18.15.x]
+  #
+  #    steps:
+  #      - name: Load Release URL File from release job
+  #        uses: actions/download-artifact@v1
+  #        with:
+  #          name: release_url
+  #
+  #      - uses: pCYSl5EDgo/cat@master
+  #        id: loadReleaseUrl
+  #        with:
+  #          path: release_url/release_url.txt
+  #
+  #      - uses: actions/checkout@v2
+  #
+  #      - name: Use Node.js ${{ matrix.node-version }}
+  #        uses: actions/setup-node@v1
+  #        with:
+  #          node-version: ${{ matrix.node-version }}
+  #
+  #      - run: npm install
+  #
+  #      - run: cd electron && npm install
+  #
+  #      - run: npm run lint
+  #
+  #      - run: npm run build:electron
+  #
+  #      - name: Upload Binary
+  #        id: uploadReleaseAsset
+  #        uses: actions/upload-release-asset@v1
+  #        env:
+  #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #        with:
+  #          upload_url: ${{ steps.loadReleaseUrl.outputs.text }}
+  #          asset_path: ./electron/out/make/zip/linux/x64/Spellwriters.zip
+  #          asset_name: Spellwriters-linux.zip
+  #          asset_content_type: application/zip
+  #
+  #      - name: Upload Artifact
+  #        uses: actions/upload-artifact@v3
+  #        with:
+  #          name: Spellwriters-linux.zip
+  #          path: ./electron/out/make/zip/linux/x64/Spellwriters.zip
+  #
+  upload-itch:
+    needs: [publish-windows]
+    name: Upload to Itch.io
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node-version: [20]
+
+    steps:
+      - uses: little-core-labs/get-git-tag@v3.0.1
+        id: loadTagName
+
+      - name: Load Windows Binary
+        uses: actions/download-artifact@v1
+        with:
+          name: glowrift-duskhall.exe
+
+      - uses: manleydev/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.ITCH_BUTLER_API_KEY }}
+          CHANNEL: windows
+          ITCH_GAME: glowrift-duskhall
+          ITCH_USER: seiyria
+          PACKAGE: ./glowrift-duskhall.exe
+          VERSION: ${{ steps.loadTagName.outputs.tag }}
