@@ -191,7 +191,7 @@ jobs:
         id: loadTagName
 
       - name: Load Windows Binary
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v4
         with:
           name: glowrift-duskhall.exe
 
