@@ -214,7 +214,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     this.hotkeys
       .addShortcut({ keys: 'escape' })
-      .subscribe(() => closeAllMenus());
+      .subscribe(() => closeAllMenus(true));
 
     // Navigation
     this.hotkeys.addShortcut({ keys: 'q' }).subscribe(() => {

@@ -41,7 +41,7 @@ export function isPageVisible(): boolean {
   return !document.hidden;
 }
 
-export function closeAllMenus(smart = true) {
+export function closeAllMenus(smart = false) {
   if (smart && showAnySubmenu()) {
     showAnySubmenu.set(false);
     return;
@@ -56,4 +56,5 @@ export function closeAllMenus(smart = true) {
   showTownMenu.set(false);
   showWorldMenu.set(false);
   showLocationMenu.set(undefined);
+  showAnySubmenu.set(false);
 }
