@@ -74,11 +74,16 @@
   }
 
   @if (glanceHeroValue !== 'hidden') {
-    <app-glance-heroes
-      class="absolute glance-layer bottom-2"
-      [class.left-2]="glanceHeroValue === 'left'"
-      [class.right-2]="glanceHeroValue === 'right'"
-    ></app-glance-heroes>
+    <div
+      class="flex relative left-0 right-0"
+      [class.justify-center]="glanceHeroValue === 'middle'"
+    >
+      <app-glance-heroes
+        class="absolute glance-layer bottom-2"
+        [class.left-2]="glanceHeroValue === 'left'"
+        [class.right-2]="glanceHeroValue === 'right'"
+      ></app-glance-heroes>
+    </div>
   }
 </div>
 
