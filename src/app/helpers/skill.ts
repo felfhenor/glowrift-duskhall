@@ -21,7 +21,7 @@ import type { GameElement } from '@interfaces/element';
 import type { Hero } from '@interfaces/hero';
 import type { GameStat } from '@interfaces/stat';
 import type { GameState } from '@interfaces/state-game';
-import { intersection, sortBy, uniq } from 'es-toolkit/compat';
+import { clamp, intersection, sortBy, uniq } from 'es-toolkit/compat';
 
 export function skillEnchantLevel(skill: EquipmentSkill): number {
   return skill.enchantLevel + (skill.mods?.enchantLevel ?? 0);
@@ -49,7 +49,7 @@ export function skillTechniqueNumTargets(
 ): number {
   const numTargets = technique.targets + (skill.mods?.numTargets ?? 0);
   if (technique.targetType === 'Self') return 1;
-  if (technique.targetType === 'Allies') return Math.min(1, numTargets);
+  if (technique.targetType === 'Allies') return clamp(numTargets, 1, 4);
   return numTargets;
 }
 
