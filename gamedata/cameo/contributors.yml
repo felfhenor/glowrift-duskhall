@@ -1,0 +1,17 @@
+- id: 81ce7382-2d57-4d65-a7bc-6301caff4328
+  name: Seiyria
+  sprite: '0068'
+
+  contribution: Hello.
+
+- id: 3abb580c-88d8-4e06-9823-2755eb5d13f0
+  name: Big Dog
+  sprite: '0072'
+
+  contribution: Early PR support, including rewriting the map to use Pixi.
+
+- id: 106d939b-ad50-4557-a5d0-89aee7788a18
+  name: Emmanuel
+  sprite: '0008'
+
+  contribution: Lots of tiny features throughout the early development period.

@@ -1,0 +1,23 @@
+- id: d035af42-c713-4933-8ba6-af51a1f79ae8
+  name: Terrus
+  sprite: '0060'
+
+  contribution: Earth hero.
+
+- id: 5a7071a9-5e62-4afe-b536-0543dcc63d0d
+  name: Ignatius
+  sprite: '0004'
+
+  contribution: Fire hero.
+
+- id: 3c8b87a5-9115-4f37-881f-645fa27f5849
+  name: Aquara
+  sprite: '0000'
+
+  contribution: Water hero.
+
+- id: 5ea44ee7-3f22-4e29-80ee-47de64e82100
+  name: Zephyra
+  sprite: '0036'
+
+  contribution: Air hero.

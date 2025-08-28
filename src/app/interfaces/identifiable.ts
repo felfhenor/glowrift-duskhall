@@ -15,7 +15,8 @@ export type ContentType =
   | 'traitlocation'
   | 'townupgrade'
   | 'locationupgrade'
-  | 'help';
+  | 'help'
+  | 'cameo';
 
 export interface Identifiable {
   id: string;

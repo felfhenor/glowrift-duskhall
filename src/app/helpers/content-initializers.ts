@@ -4,6 +4,7 @@ import {
   defaultStats,
 } from '@helpers/defaults';
 import type {
+  CameoContent,
   CombatantCombatStats,
   ContentType,
   CurrencyBlock,
@@ -60,6 +61,7 @@ const initializers: Record<ContentType, (entry: any) => any> = {
   traitlocation: ensureTraitLocation,
   worldconfig: ensureWorldConfig,
   help: ensureHelp,
+  cameo: ensureCameo,
 };
 
 function ensureStats(statblock: Partial<StatBlock> = {}): Required<StatBlock> {
@@ -415,12 +417,22 @@ function ensureLocationUpgrade(
   };
 }
 
-export function ensureHelp(help: Partial<HelpContent>): Required<HelpContent> {
+function ensureHelp(help: Partial<HelpContent>): Required<HelpContent> {
   return {
     id: help.id ?? ('UNKNOWN' as string),
     name: help.name ?? 'UNKNOWN',
     category: help.category ?? 'General',
     description: help.description ?? 'UNKNOWN',
     __type: 'help',
+  };
+}
+
+function ensureCameo(cameo: Partial<CameoContent>): Required<CameoContent> {
+  return {
+    id: cameo.id ?? 'UNKNOWN',
+    name: cameo.name ?? 'UNKNOWN',
+    __type: 'cameo',
+    sprite: cameo.sprite ?? '0000',
+    contribution: cameo.contribution ?? 'UNKNOWN',
   };
 }

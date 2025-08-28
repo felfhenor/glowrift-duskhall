@@ -3,6 +3,7 @@ export * from './camera';
 export * from './claim-log';
 export * from './combat';
 export * from './combat-log';
+export * from './content-cameo';
 export * from './content-currency';
 export * from './content-equipment';
 export * from './content-festival';

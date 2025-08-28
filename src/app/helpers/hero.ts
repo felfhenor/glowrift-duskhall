@@ -1,14 +1,16 @@
+import { getEntriesByType } from '@helpers/content';
 import { spriteGetFromIndex } from '@helpers/sprite';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { talentTownStatTotalForAllHeroes } from '@helpers/talent';
 import { locationGet, locationGetCurrent } from '@helpers/world-location';
-import type {
-  DropRarity,
-  Hero,
-  HeroId,
-  HeroRiskTolerance,
-  LocationType,
-  WorldPosition,
+import type { CameoContent } from '@interfaces';
+import {
+  type DropRarity,
+  type Hero,
+  type HeroId,
+  type HeroRiskTolerance,
+  type LocationType,
+  type WorldPosition,
 } from '@interfaces';
 import { meanBy } from 'es-toolkit/compat';
 
@@ -33,10 +35,10 @@ export function heroUpdateData(heroData: Hero): void {
 }
 
 export function heroPickSpriteByName(heroName: string): string {
-  if (heroName === 'Ignatius') return '0004';
-  if (heroName === 'Aquara') return '0000';
-  if (heroName === 'Terrus') return '0060';
-  if (heroName === 'Zephyra') return '0036';
+  const existing = getEntriesByType<CameoContent>('cameo').find(
+    (c) => c.name === heroName,
+  );
+  if (existing) return existing.sprite;
 
   const nameHash = Array.from(heroName).reduce(
     (acc, char) => acc + char.charCodeAt(0),
