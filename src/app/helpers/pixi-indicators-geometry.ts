@@ -204,13 +204,16 @@ export function pixiIndicatorOffscreenArrowCreate(
   }
 
   let bobOffset = 0;
+  // Store the base position to prevent cumulative drift
+  const baseX = graphics.x;
+  const baseY = graphics.y;
 
   const ticker = () => {
     bobOffset += 0.3;
     // Small bobbing animation
     const bobAmount = Math.sin(bobOffset) * 2;
-    graphics.x += Math.cos(graphics.rotation) * bobAmount * 0.1;
-    graphics.y += Math.sin(graphics.rotation) * bobAmount * 0.1;
+    graphics.x = baseX + Math.cos(graphics.rotation) * bobAmount * 0.1;
+    graphics.y = baseY + Math.sin(graphics.rotation) * bobAmount * 0.1;
   };
 
   return { graphics, ticker };
