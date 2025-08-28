@@ -1,9 +1,9 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   calculateDirectionToPosition,
   calculateScreenEdgePosition,
   isPositionOnScreen,
-} from './pixi-offscreen-indicator';
+} from '@helpers/pixi-offscreen-indicator';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock the dependencies
 vi.mock('@helpers/camera', () => ({
