@@ -136,3 +136,67 @@ export function pixiIndicatorNodeTerritoryOwnershipCreate(node: WorldLocation):
 
   return { graphics, ticker };
 }
+
+/**
+ * Creates an offscreen indicator arrow pointing to hero location
+ * @param direction Direction vector from screen center to hero position
+ * @returns Object with graphics and cleanup function
+ */
+export function pixiIndicatorOffscreenArrowCreate(
+  direction: { x: number; y: number },
+): {
+  graphics: Graphics;
+  ticker: () => void;
+} {
+  const graphics = new Graphics();
+
+  // Create arrow shaft
+  graphics
+    .moveTo(0, -2)
+    .lineTo(30, -2)
+    .lineTo(30, 2)
+    .lineTo(0, 2)
+    .lineTo(0, -2)
+    .fill(0x000000);
+
+  graphics
+    .moveTo(1, -1)
+    .lineTo(29, -1)
+    .lineTo(29, 1)
+    .lineTo(1, 1)
+    .lineTo(1, -1)
+    .fill(0xffffff);
+
+  // Create arrow head
+  graphics
+    .moveTo(30, -6)
+    .lineTo(42, 0)
+    .lineTo(30, 6)
+    .lineTo(30, -6)
+    .fill(0x000000);
+
+  graphics
+    .moveTo(31, -4)
+    .lineTo(39, 0)
+    .lineTo(31, 4)
+    .lineTo(31, -4)
+    .fill(0xffffff);
+
+  graphics.cullable = true;
+
+  // Calculate rotation angle from direction vector
+  const angle = Math.atan2(direction.y, direction.x);
+  graphics.rotation = angle;
+
+  let bobOffset = 0;
+
+  const ticker = () => {
+    bobOffset += 0.3;
+    // Small bobbing animation
+    const bobAmount = Math.sin(bobOffset) * 2;
+    graphics.x += Math.cos(graphics.rotation) * bobAmount * 0.1;
+    graphics.y += Math.sin(graphics.rotation) * bobAmount * 0.1;
+  };
+
+  return { graphics, ticker };
+}
