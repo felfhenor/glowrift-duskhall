@@ -706,8 +706,15 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
       const direction = calculateDirectionToPosition(heroPosition);
       const edgePosition = calculateScreenEdgePosition(direction);
 
+      // Get hero texture for the indicator
+      const partyLeader = this.firstHero();
+      const heroTexture = partyLeader && this.heroTextures[partyLeader.sprite] 
+        ? this.heroTextures[partyLeader.sprite] 
+        : undefined;
+
       const { graphics, ticker } = pixiIndicatorOffscreenArrowCreate(
-        direction
+        direction,
+        heroTexture
       );
 
       // Position the arrow at the calculated edge position

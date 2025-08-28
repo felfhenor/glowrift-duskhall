@@ -66,8 +66,8 @@ export function calculateScreenEdgePosition(direction: {
   const viewportWidth = windowWidthTiles() * 64;
   const viewportHeight = windowHeightTiles() * 64;
 
-  // Margin from the edge
-  const margin = 32;
+  // Margin from the edge (increased to prevent cut-off)
+  const margin = 96;
 
   let edgeX: number;
   let edgeY: number;

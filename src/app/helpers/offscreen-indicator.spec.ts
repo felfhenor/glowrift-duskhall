@@ -94,7 +94,7 @@ describe('offscreen-indicator', () => {
       const edgePosition = calculateScreenEdgePosition(direction);
       
       // Should be near right edge (viewport is 20 tiles * 64 pixels = 1280)
-      expect(edgePosition.x).toBeCloseTo(1248, 1); // 1280 - 32 margin
+      expect(edgePosition.x).toBeCloseTo(1184, 1); // 1280 - 96 margin
       expect(edgePosition.y).toBeCloseTo(480, 1); // center height (15 * 64 / 2)
     });
 
@@ -104,14 +104,14 @@ describe('offscreen-indicator', () => {
       
       // Should be near bottom edge (viewport is 15 tiles * 64 pixels = 960)
       expect(edgePosition.x).toBeCloseTo(640, 1); // center width (20 * 64 / 2)
-      expect(edgePosition.y).toBeCloseTo(928, 1); // 960 - 32 margin
+      expect(edgePosition.y).toBeCloseTo(864, 1); // 960 - 96 margin
     });
 
     it('should place arrow on left edge for leftward direction', () => {
       const direction = { x: -1, y: 0 };
       const edgePosition = calculateScreenEdgePosition(direction);
       
-      expect(edgePosition.x).toBeCloseTo(32, 1); // margin
+      expect(edgePosition.x).toBeCloseTo(96, 1); // margin
       expect(edgePosition.y).toBeCloseTo(480, 1); // center height
     });
 
@@ -120,7 +120,7 @@ describe('offscreen-indicator', () => {
       const edgePosition = calculateScreenEdgePosition(direction);
       
       expect(edgePosition.x).toBeCloseTo(640, 1); // center width
-      expect(edgePosition.y).toBeCloseTo(32, 1); // margin
+      expect(edgePosition.y).toBeCloseTo(96, 1); // margin
     });
 
     it('should handle diagonal directions', () => {

@@ -1,6 +1,6 @@
 import type { WorldLocation } from '@interfaces/world';
 import { REVELATION_RADIUS } from '@interfaces/world';
-import { Graphics } from 'pixi.js';
+import { Graphics, Sprite, type Texture } from 'pixi.js';
 
 /**
  * Creates an animated player indicator at the specified position
@@ -140,10 +140,12 @@ export function pixiIndicatorNodeTerritoryOwnershipCreate(node: WorldLocation):
 /**
  * Creates an offscreen indicator arrow pointing to hero location
  * @param direction Direction vector from screen center to hero position
+ * @param heroTexture Texture for the hero sprite
  * @returns Object with graphics and cleanup function
  */
 export function pixiIndicatorOffscreenArrowCreate(
   direction: { x: number; y: number },
+  heroTexture?: Texture,
 ): {
   graphics: Graphics;
   ticker: () => void;
@@ -181,6 +183,17 @@ export function pixiIndicatorOffscreenArrowCreate(
     .lineTo(31, 4)
     .lineTo(31, -4)
     .fill(0xffffff);
+
+  // Add hero sprite at the tip of the arrow if texture is provided
+  if (heroTexture) {
+    const heroSprite = new Sprite(heroTexture);
+    heroSprite.x = 50; // Position at the tip of the arrow
+    heroSprite.y = 0;
+    heroSprite.width = 20;
+    heroSprite.height = 20;
+    heroSprite.anchor.set(0.5, 0.5);
+    graphics.addChild(heroSprite);
+  }
 
   graphics.cullable = true;
 
