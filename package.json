@@ -1,6 +1,6 @@
 {
   "name": "glowrift-duskhall",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "scripts": {
     "start": "concurrently \"npm run start:app\" \"npm run gamedata:watch\"",
     "start:app": "ng serve --open --port 9866",
