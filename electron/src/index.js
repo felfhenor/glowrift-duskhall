@@ -38,6 +38,7 @@ const createWindow = () => {
     ...opts,
     webPreferences: {
       nodeIntegration: true,
+      autoplayPolicy: 'no-user-gesture-required',
     },
   });
 
