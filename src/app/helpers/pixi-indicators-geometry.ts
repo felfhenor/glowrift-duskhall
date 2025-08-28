@@ -184,22 +184,24 @@ export function pixiIndicatorOffscreenArrowCreate(
     .lineTo(31, -4)
     .fill(0xffffff);
 
-  // Add hero sprite at the tip of the arrow if texture is provided
-  if (heroTexture) {
-    const heroSprite = new Sprite(heroTexture);
-    heroSprite.x = 50; // Position at the tip of the arrow
-    heroSprite.y = 0;
-    heroSprite.width = 20;
-    heroSprite.height = 20;
-    heroSprite.anchor.set(0.5, 0.5);
-    graphics.addChild(heroSprite);
-  }
-
   graphics.cullable = true;
 
   // Calculate rotation angle from direction vector
   const angle = Math.atan2(direction.y, direction.x);
   graphics.rotation = angle;
+
+  // Add hero sprite at the base of the arrow if texture is provided
+  if (heroTexture) {
+    const heroSprite = new Sprite(heroTexture);
+    heroSprite.x = -25; // Position at the base of the arrow
+    heroSprite.y = 0;
+    heroSprite.width = 20;
+    heroSprite.height = 20;
+    heroSprite.anchor.set(0.5, 0.5);
+    // Counter-rotate the hero sprite to maintain default orientation
+    heroSprite.rotation = -angle;
+    graphics.addChild(heroSprite);
+  }
 
   let bobOffset = 0;
 
