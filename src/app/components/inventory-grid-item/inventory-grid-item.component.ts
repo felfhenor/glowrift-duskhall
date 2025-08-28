@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { IconBlankSlotComponent } from '@components/icon-blank-slot/icon-blank-slot.component';
 import { IconItemComponent } from '@components/icon-item/icon-item.component';
 import { OptionsBaseComponent } from '@components/panel-options/option-base-page.component';
+import { TeleportToDirective } from '@directives/teleport.to.directive';
 import {
   actionItemSalvage,
   actionItemSalvageValue,
@@ -24,7 +25,6 @@ import type {
   ItemOrganizeSetting,
 } from '@interfaces';
 import { TippyDirective } from '@ngneat/helipopper';
-import { TeleportDirective } from '@ngneat/overview';
 import { sortBy } from 'es-toolkit/compat';
 
 const findItemsMatchingElement = (
@@ -91,7 +91,7 @@ const ITEM_SORTS: Record<
     DecimalPipe,
     IconBlankSlotComponent,
     FormsModule,
-    TeleportDirective,
+    TeleportToDirective,
   ],
   templateUrl: './inventory-grid-item.component.html',
   styleUrl: './inventory-grid-item.component.scss',

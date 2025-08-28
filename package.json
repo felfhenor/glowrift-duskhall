@@ -50,7 +50,6 @@
     "@ng-select/ng-select": "^20.1.0",
     "@ngneat/helipopper": "^11.1.3",
     "@ngneat/hotkeys": "^4.1.0",
-    "@ngneat/overview": "^6.1.2",
     "@pixi/graphics": "^7.4.3",
     "@pixi/sprite": "^7.4.3",
     "@sweetalert2/ngx-sweetalert2": "^13.0.0",

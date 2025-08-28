@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { InventoryGridItemComponent } from '@components/inventory-grid-item/inventory-grid-item.component';
 import { InventoryGridSkillComponent } from '@components/inventory-grid-skill/inventory-grid-skill.component';
+import { TeleportOutletDirective } from '@directives/teleport.outlet.directive';
 import { droppableSortedRarityList } from '@helpers/droppable';
 import { allHeroes } from '@helpers/hero';
 import { gamestate } from '@helpers/state-game';
@@ -24,7 +25,6 @@ import type {
 } from '@interfaces/content-skill';
 import type { Hero } from '@interfaces/hero';
 import type { ItemAction, SkillAction } from '@interfaces/town';
-import { TeleportOutletDirective } from '@ngneat/overview';
 
 @Component({
   selector: 'app-inventory-grid-container',

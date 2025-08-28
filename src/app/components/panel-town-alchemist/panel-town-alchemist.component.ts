@@ -7,6 +7,7 @@ import { InventoryGridContainerComponent } from '@components/inventory-grid-cont
 import { MarkerCurrencyComponent } from '@components/marker-currency/marker-currency.component';
 import { PanelTownBuildingUpgradeComponent } from '@components/panel-town-building-upgrade/panel-town-building-upgrade.component';
 import { SFXDirective } from '@directives/sfx.directive';
+import { TeleportToDirective } from '@directives/teleport.to.directive';
 import {
   alchemistMultiSkillSalvageCurrencyGain,
   alchemistSalvageSkills,
@@ -17,7 +18,6 @@ import {
 } from '@helpers';
 import { gamestate } from '@helpers/state-game';
 import type { EquipmentSkill, GameCurrency } from '@interfaces';
-import { TeleportDirective } from '@ngneat/overview';
 import { RepeatPipe } from 'ngxtension/repeat-pipe';
 
 @Component({
@@ -29,7 +29,8 @@ import { RepeatPipe } from 'ngxtension/repeat-pipe';
     RepeatPipe,
     BlankSlateComponent,
     MarkerCurrencyComponent,
-    TeleportDirective,
+
+    TeleportToDirective,
     IconSkillComponent,
     InventoryGridContainerComponent,
     SFXDirective,

@@ -4,6 +4,7 @@ import { DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IconSkillComponent } from '@components/icon-skill/icon-skill.component';
 import { OptionsBaseComponent } from '@components/panel-options/option-base-page.component';
+import { TeleportToDirective } from '@directives/teleport.to.directive';
 import {
   actionSkillSalvage,
   actionSkillSalvageValue,
@@ -19,7 +20,6 @@ import type {
   SkillOrganizeSetting,
 } from '@interfaces';
 import { TippyDirective } from '@ngneat/helipopper';
-import { TeleportDirective } from '@ngneat/overview';
 import { RepeatPipe } from 'ngxtension/repeat-pipe';
 
 const SKILL_SORTS: Record<
@@ -79,7 +79,7 @@ const SKILL_SORTS: Record<
     IconSkillComponent,
     RepeatPipe,
     FormsModule,
-    TeleportDirective,
+    TeleportToDirective,
   ],
   templateUrl: './inventory-grid-skill.component.html',
   styleUrl: './inventory-grid-skill.component.scss',

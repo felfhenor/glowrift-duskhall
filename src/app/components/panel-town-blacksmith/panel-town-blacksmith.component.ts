@@ -8,6 +8,7 @@ import { PanelTownBuildingUpgradeComponent } from '@components/panel-town-buildi
 import { StatsItemComponent } from '@components/stats-item/stats-item.component';
 import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
 import { SFXDirective } from '@directives/sfx.directive';
+import { TeleportToDirective } from '@directives/teleport.to.directive';
 import { getEntry } from '@helpers/content';
 import {
   currencyHasAmount,
@@ -33,7 +34,6 @@ import type { TraitEquipmentContent } from '@interfaces/content-trait-equipment'
 import type { DropRarity } from '@interfaces/droppable';
 import type { SFX } from '@interfaces/sfx';
 import type { BlacksmithEnchant } from '@interfaces/town';
-import { TeleportDirective } from '@ngneat/overview';
 import { sortBy } from 'es-toolkit/compat';
 import { debounce } from 'typescript-debounce-decorator';
 
@@ -42,10 +42,11 @@ import { debounce } from 'typescript-debounce-decorator';
   imports: [
     PanelTownBuildingUpgradeComponent,
     CardPageComponent,
-    TeleportDirective,
     InventoryGridContainerComponent,
     StatsItemComponent,
     BlankSlateComponent,
+
+    TeleportToDirective,
     MarkerCurrencyInlineComponent,
     AnalyticsClickDirective,
     ButtonCostListComponent,

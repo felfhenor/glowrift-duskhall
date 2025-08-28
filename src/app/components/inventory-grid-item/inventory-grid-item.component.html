@@ -2,7 +2,7 @@
 @let disable = disabledItemIds();
 
 <select
-  *teleportTo="'equipment-sorter'"
+  *appTeleportTo="'equipment-sorter'"
   class="select select-bordered select-xs mx-1"
   [(ngModel)]="currentSortFilter"
   (ngModelChange)="setOption('organizeItems', $event)"

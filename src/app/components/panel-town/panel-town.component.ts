@@ -10,6 +10,7 @@ import { PanelTownMerchantComponent } from '@components/panel-town-merchant/pane
 import { PanelTownRallyPointComponent } from '@components/panel-town-rallypoint/panel-town-rallypoint.component';
 import { PanelTownSalvagerComponent } from '@components/panel-town-salvager/panel-town-salvager.component';
 import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
+import { TeleportOutletDirective } from '@directives/teleport.outlet.directive';
 import {
   getOption,
   setOption,
@@ -17,7 +18,6 @@ import {
   townBuildingLevel,
 } from '@helpers';
 import type { TownTab } from '@interfaces';
-import { TeleportOutletDirective } from '@ngneat/overview';
 
 @Component({
   selector: 'app-panel-town',
@@ -29,10 +29,10 @@ import { TeleportOutletDirective } from '@ngneat/overview';
     PanelTownBlacksmithComponent,
     PanelTownMerchantComponent,
     PanelTownAcademyComponent,
-    TeleportOutletDirective,
     PanelTownAlchemistComponent,
     PanelTownSalvagerComponent,
     PanelTownRallyPointComponent,
+    TeleportOutletDirective,
   ],
   templateUrl: './panel-town.component.html',
   styleUrl: './panel-town.component.scss',

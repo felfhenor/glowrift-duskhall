@@ -7,6 +7,7 @@ import { PanelTownBuildingUpgradeComponent } from '@components/panel-town-buildi
 import { StatsSkillComponent } from '@components/stats-skill/stats-skill.component';
 import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
 import { SFXDirective } from '@directives/sfx.directive';
+import { TeleportToDirective } from '@directives/teleport.to.directive';
 import { currencyHasMultipleAmounts } from '@helpers/currency';
 import { skillGetById } from '@helpers/skill';
 import {
@@ -22,7 +23,6 @@ import {
 import type { GameCurrency } from '@interfaces/content-currency';
 import type { EquipmentSkill } from '@interfaces/content-skill';
 import type { AcademyEnchant } from '@interfaces/town';
-import { TeleportDirective } from '@ngneat/overview';
 import { debounce } from 'typescript-debounce-decorator';
 
 @Component({
@@ -33,7 +33,7 @@ import { debounce } from 'typescript-debounce-decorator';
     BlankSlateComponent,
     PanelTownBuildingUpgradeComponent,
     StatsSkillComponent,
-    TeleportDirective,
+    TeleportToDirective,
     AnalyticsClickDirective,
     SFXDirective,
     ButtonCostListComponent,
