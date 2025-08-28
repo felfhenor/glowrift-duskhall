@@ -26,6 +26,7 @@ import {
   showAnySubmenu,
   showHeroesMenu,
   skillEquip,
+  skillSwap,
   skillUnequip,
 } from '@helpers';
 import type { CameoContent } from '@interfaces';
@@ -108,6 +109,12 @@ export class PanelHeroesComponent {
   setSkillSlot(slot: number) {
     this.equipItemType.set(undefined);
     if (slot === this.skillSlot()) {
+      this.closeSkills();
+      return;
+    }
+
+    if (this.skillSlot() !== -1) {
+      skillSwap(this.activeHero(), this.skillSlot(), slot);
       this.closeSkills();
       return;
     }

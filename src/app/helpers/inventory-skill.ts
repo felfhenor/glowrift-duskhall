@@ -55,6 +55,19 @@ export function skillInventoryRemove(items: EquipmentSkill[]): void {
   });
 }
 
+export function skillSwap(hero: Hero, swap1: number, swap2: number): void {
+  const heroSkills = hero.skills;
+  const skill1 = heroSkills[swap1];
+  const skill2 = heroSkills[swap2];
+
+  if (skill1 && skill2) {
+    heroSkills[swap1] = skill2;
+    heroSkills[swap2] = skill1;
+  }
+
+  heroUpdateData(hero);
+}
+
 export function skillEquip(
   hero: Hero,
   item: EquipmentSkill,
