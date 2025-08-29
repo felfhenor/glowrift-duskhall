@@ -29,7 +29,6 @@ export class ModalComponent {
       $event.preventDefault();
       $event.stopPropagation();
       $event.stopImmediatePropagation();
-      console.log('asc');
     }
   }
 
