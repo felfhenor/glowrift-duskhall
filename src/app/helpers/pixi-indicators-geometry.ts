@@ -1,6 +1,6 @@
 import type { WorldLocation } from '@interfaces/world';
 import { REVELATION_RADIUS } from '@interfaces/world';
-import { Graphics, Sprite, type Texture } from 'pixi.js';
+import { Container, Graphics, Sprite, type Texture } from 'pixi.js';
 
 /**
  * Creates an animated player indicator at the specified position
@@ -147,10 +147,13 @@ export function pixiIndicatorOffscreenArrowCreate(
   direction: { x: number; y: number },
   heroTexture?: Texture,
 ): {
-  graphics: Graphics;
+  container: Container;
   ticker: () => void;
 } {
+  const arrowContainer = new Container();
+
   const graphics = new Graphics();
+  arrowContainer.addChild(graphics);
 
   // Create arrow shaft
   graphics
@@ -188,7 +191,7 @@ export function pixiIndicatorOffscreenArrowCreate(
 
   // Calculate rotation angle from direction vector
   const angle = Math.atan2(direction.y, direction.x);
-  graphics.rotation = angle;
+  arrowContainer.rotation = angle;
 
   // Add hero sprite at the base of the arrow if texture is provided
   if (heroTexture) {
@@ -200,7 +203,7 @@ export function pixiIndicatorOffscreenArrowCreate(
     heroSprite.anchor.set(0.5, 0.5);
     // Counter-rotate the hero sprite to maintain default orientation
     heroSprite.rotation = -angle;
-    graphics.addChild(heroSprite);
+    arrowContainer.addChild(heroSprite);
   }
 
   let bobOffset = 0;
@@ -209,9 +212,9 @@ export function pixiIndicatorOffscreenArrowCreate(
     bobOffset += 0.3;
     // Small bobbing animation
     const bobAmount = Math.sin(bobOffset) * 2;
-    graphics.x += Math.cos(graphics.rotation) * bobAmount * 0.1;
-    graphics.y += Math.sin(graphics.rotation) * bobAmount * 0.1;
+    arrowContainer.x += Math.cos(arrowContainer.rotation) * bobAmount * 0.1;
+    arrowContainer.y += Math.sin(arrowContainer.rotation) * bobAmount * 0.1;
   };
 
-  return { graphics, ticker };
+  return { container: arrowContainer, ticker };
 }

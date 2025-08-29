@@ -713,15 +713,15 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
           ? this.heroTextures[partyLeader.sprite]
           : undefined;
 
-      const { graphics, ticker } = pixiIndicatorOffscreenArrowCreate(
+      const { container, ticker } = pixiIndicatorOffscreenArrowCreate(
         direction,
         heroTexture,
       );
 
       // Position the arrow at the calculated edge position
-      graphics.position.set(edgePosition.x, edgePosition.y);
+      container.position.set(edgePosition.x, edgePosition.y);
 
-      this.offscreenIndicatorContainer.addChild(graphics);
+      this.offscreenIndicatorContainer.addChild(container);
       this.offscreenArrowTicker = ticker;
       this.app.ticker.add(ticker);
     }
