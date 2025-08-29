@@ -16,6 +16,7 @@ import {
   getOption,
   globalStatusText,
   isShowingAnyMenu,
+  saveGameState,
   setOption,
   showCombatMenu,
   showCurrencyList,
@@ -189,6 +190,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   public goToHome() {
+    saveGameState();
     closeAllMenus();
     this.router.navigate(['..']);
   }
