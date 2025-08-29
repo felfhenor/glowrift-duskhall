@@ -10,27 +10,3 @@
   width: 100vw;
   height: calc(100vh - 40px);
 }
-
-.map-layer {
-  @apply z-10;
-}
-
-.glance-layer {
-  @apply z-15;
-}
-
-.camera-layer {
-  @apply z-20;
-}
-
-.static-layer {
-  @apply z-40;
-}
-
-.panel-layer {
-  @apply z-50;
-}
-
-.catchup-message {
-  @apply z-100;
-}

@@ -1,0 +1,23 @@
+.map-layer {
+  @apply z-10;
+}
+
+.glance-layer {
+  @apply z-15;
+}
+
+.camera-layer {
+  @apply z-20;
+}
+
+.static-layer {
+  @apply z-40;
+}
+
+.panel-layer {
+  @apply z-50;
+}
+
+.modal-layer {
+  @apply z-100;
+}

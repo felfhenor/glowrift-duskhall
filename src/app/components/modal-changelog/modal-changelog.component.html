@@ -4,7 +4,7 @@
   [style.--social-color]="color"
   (mouseenter)="currentColor = color"
   (mouseleave)="currentColor = '#ccc'"
-  (click)="changelogs.showModal()"
+  (click)="showChangelog.set(true)"
   appSfx="ui-click"
   [sfxOffset]="4"
   [sfxTrigger]="['click', 'hover']"
@@ -12,6 +12,45 @@
   <ng-icon [name]="'tablerPackage'" [color]="currentColor || '#ccc'"></ng-icon>
 </button>
 
+<app-modal [visible]="showChangelog()" [allowEscToClose]="true">
+  <span title>Changelog</span>
+
+  <div body>
+    <div class="tabs tabs-boxed justify-center mt-1">
+      <a
+        class="tab"
+        [class.tab-active]="currentView() === 'recent'"
+        (click)="currentView.set('recent')"
+        (keydown.enter)="currentView.set('recent')"
+        tabindex="1"
+      >
+        Recent
+      </a>
+      <a
+        class="tab"
+        [class.tab-active]="currentView() === 'all'"
+        (click)="currentView.set('all')"
+        (keydown.enter)="currentView.set('all')"
+        tabindex="1"
+      >
+        All
+      </a>
+    </div>
+
+    <div
+      class="changelog p-1 my-4 overflow-hidden overflow-y-auto max-h-72"
+      [innerHTML]="safeHtml()"
+    >
+      {{ text() }}
+    </div>
+  </div>
+
+  <div actions>
+    <button class="btn" (click)="showChangelog.set(false)">Close</button>
+  </div>
+</app-modal>
+
+<!--
 <dialog #changelogs class="modal">
   <div class="modal-box max-w-3xl">
     <h3 class="text-lg font-bold text-center">Changelog</h3>
@@ -49,3 +88,4 @@
     </div>
   </div>
 </dialog>
+-->

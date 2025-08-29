@@ -15,6 +15,7 @@ import { GlanceClaimsComponent } from '@components/glance-claims/glance-claims.c
 import { GlanceFailuresComponent } from '@components/glance-failures/glance-failures.component';
 import { GlanceHeroesComponent } from '@components/glance-heroes/glance-heroes.component';
 import { GlanceResourcesComponent } from '@components/glance-resources/glance-resources.component';
+import { ModalComponent } from '@components/modal/modal.component';
 import { OptionsBaseComponent } from '@components/panel-options/option-base-page.component';
 import { PanelWorldComponent } from '@components/panel-world/panel-world.component';
 import {
@@ -53,6 +54,7 @@ import {
     GlanceHeroesComponent,
     GlanceClaimsComponent,
     GlanceFailuresComponent,
+    ModalComponent,
   ],
   templateUrl: './game-play.component.html',
   styleUrl: './game-play.component.scss',

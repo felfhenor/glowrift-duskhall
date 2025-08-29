@@ -105,41 +105,25 @@
   }
 </div>
 
-@if (isCatchingUp()) {
-  <div
-    class="absolute top-[40px] left-0 z-100 w-full h-full flex justify-center items-center"
-  >
-    <div class="card bg-base-100 shadow-xl my-4 page-card mx-auto">
-      <div class="card-body flex flex-row">
-        <span class="loading loading-spinner loading-sm"></span>
-        Catching up...
-      </div>
-    </div>
+<app-modal [visible]="isCatchingUp()">
+  <div body class="flex justify-center gap-4">
+    <span class="loading loading-spinner loading-sm"></span>
+    Catching up...
   </div>
-}
+</app-modal>
 
-@if (showWinNotification()) {
-  <div
-    class="absolute top-[40px] left-0 z-100 w-full h-full flex justify-center items-center"
-  >
-    <div class="card bg-base-100 shadow-xl my-4 page-card mx-auto">
-      <div class="card-body">
-        <div class="card-title">You Won!</div>
+<app-modal [visible]="showWinNotification()">
+  <span title>You Won!</span>
 
-        <div>
-          You can either keep playing or go back to the main menu again. It took
-          you {{ winTicks() | number }} seconds to clear this world.
-        </div>
-
-        <div class="card-actions justify-end">
-          <button class="btn btn-default" [routerLink]="['/']">
-            Main Menu
-          </button>
-          <button class="btn btn-primary" (click)="continuePlayingPostWin()">
-            Continue Playing
-          </button>
-        </div>
-      </div>
-    </div>
+  <div body>
+    <p>You can either keep playing or go back to the main menu again.</p>
+    <p>It took you {{ winTicks() | number }} seconds to clear this world.</p>
   </div>
-}
+
+  <div actions>
+    <button class="btn btn-default" [routerLink]="['/']">Main Menu</button>
+    <button class="btn btn-primary" (click)="continuePlayingPostWin()">
+      Continue Playing
+    </button>
+  </div>
+</app-modal>
