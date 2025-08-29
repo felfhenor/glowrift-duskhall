@@ -1,0 +1,19 @@
+- id: 861ef33c-eba0-4137-8f8b-a8579dbc49ba
+  category: Skills
+  name: '-Target Type: Allies'
+  description: "Skills with the target type 'Allies' are skills that can target and affect allies (including Self)."
+
+- id: 20f8e1dd-74eb-4a2c-9602-ee494383f992
+  category: Skills
+  name: '-Target Type: Self'
+  description: "Skills with the target type 'Self' are skills that can only target and affect the user."
+
+- id: 530d24ec-c438-42a2-a87a-bd4a029771e8
+  category: Skills
+  name: '-Target Type: Enemies'
+  description: Skills with the target type 'Enemies' are skills that can target and affect enemies.
+
+- id: b9ec424d-1742-44e4-8b5d-30090c4a8996
+  category: Skills
+  name: '-Target Type: All'
+  description: Skills with the target type 'All' are skills that can target and affect allies (including Self) and enemies.
