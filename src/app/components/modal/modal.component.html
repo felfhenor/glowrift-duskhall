@@ -1,6 +1,20 @@
+@let isInReplacementMode = fullContainer.children.length !== 0;
+
 <dialog #modal class="modal" [class.hidden]="!visible()">
-  <div class="modal-box max-w-3xl p-0">
-    <div class="card bg-base-100 shadow-xl page-card mx-auto">
+  <div
+    class="modal-box p-0"
+    [ngClass]="[widthClass()]"
+    [class.bg-transparent]="isInReplacementMode"
+    [class.shadow-none]="isInReplacementMode"
+  >
+    <div #fullContainer>
+      <ng-content select="[replacement]"></ng-content>
+    </div>
+
+    <div
+      class="card bg-base-100 shadow-xl page-card mx-auto"
+      [class.hidden]="isInReplacementMode"
+    >
       <div class="card-body">
         <div class="card-title flex justify-center relative">
           <ng-content select="[title]"></ng-content>

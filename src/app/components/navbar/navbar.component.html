@@ -67,7 +67,7 @@
         </button>
       </li>
 
-      <li class="action-button">
+      <li class="action-button" appRequireNotSetup>
         <a
           class="btn btn-xs btn-warning"
           [swal]="leaveSwal"
@@ -94,3 +94,39 @@
   cancelButtonText="No, stay here"
   (confirm)="goToHome()"
 ></swal>
+
+<app-modal [visible]="showPauseMenu()" [widthClass]="'max-w-[300px]'">
+  <span title>Game Paused</span>
+
+  <div body class="flex flex-col gap-2">
+    <div class="py-2 mb-4 italic text-center">
+      The game is currently paused.
+    </div>
+
+    <a
+      class="btn btn-info"
+      (click)="closePauseMenu()"
+      appSfx="ui-click"
+      [sfxOffset]="0"
+      [sfxTrigger]="['click', 'hover']"
+    >
+      Resume
+    </a>
+
+    <app-button-settings></app-button-settings>
+
+    <app-button-help></app-button-help>
+
+    <a
+      class="btn btn-warning"
+      [swal]="leaveSwal"
+      appSfx="ui-error"
+      [sfxOffset]="2"
+      [sfxTrigger]="['click', 'hover']"
+    >
+      Quit to Main Menu
+    </a>
+
+    <app-button-quit></app-button-quit>
+  </div>
+</app-modal>

@@ -1,5 +1,4 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { environment } from '@environments/environment.development';
 import {
   isInElectron,
   liveVersion,
@@ -100,8 +99,6 @@ export class MetaService {
   }
 
   private async checkVersionAgainstLiveVersion() {
-    if (!environment.production) return;
-
     try {
       const liveVersionFile = await fetch(
         'https://glowriftduskhall.felfhenor.com/version.json',

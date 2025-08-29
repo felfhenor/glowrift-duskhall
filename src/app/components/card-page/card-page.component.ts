@@ -11,4 +11,6 @@ type CardSize = 'main' | 'sub';
 })
 export class CardPageComponent {
   public heightProfile = input<CardSize>('main');
+
+  public isEmbeddedInModal = input<boolean>(false);
 }

@@ -50,16 +50,7 @@
           </button>
         }
 
-        <button
-          class="btn btn-secondary btn-block"
-          (click)="showOptionsMenu()"
-          appAnalyticsClick="Meta:Settings"
-          appSfx="ui-click"
-          [sfxOffset]="2"
-          [sfxTrigger]="['hover', 'click']"
-        >
-          Settings
-        </button>
+        <app-button-settings></app-button-settings>
 
         <app-button-quit></app-button-quit>
       </div>
@@ -72,14 +63,6 @@
     </div>
   </div>
 </div>
-
-@if (showingOptions()) {
-  <div class="absolute inset-0 static-layer bg-gray-400/35"></div>
-
-  <app-panel-container>
-    <app-panel-options class="absolute inset-0 panel-layer"></app-panel-options>
-  </app-panel-container>
-}
 
 <div
   class="fixed bottom-0 left-0 right-0 bg-base-100 h-8 flex justify-center items-center text-sm"
@@ -96,3 +79,5 @@
   confirmButtonText="Yes, reset game"
   cancelButtonText="No, cancel"
 ></swal>
+
+<ng-container [appTeleportOutlet]="'menu-options'"></ng-container>

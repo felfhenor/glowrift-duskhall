@@ -1,8 +1,13 @@
 import type { OnDestroy, OnInit } from '@angular/core';
-import { Component, computed, inject, viewChild } from '@angular/core';
+import { Component, computed, inject, signal, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { ButtonHelpComponent } from '@components/button-help/button-help.component';
+import { ButtonQuitComponent } from '@components/button-quit/button-quit.component';
+import { ButtonSettingsComponent } from '@components/button-settings/button-settings.component';
 import { ButtonUpdateComponent } from '@components/button-update/button-update.component';
 import { IconComponent } from '@components/icon/icon.component';
+import { ModalComponent } from '@components/modal/modal.component';
+import { RequireNotSetupDirective } from '@directives/no-setup.directive';
 import { RequireSetupDirective } from '@directives/require-setup.directive';
 import { SFXDirective } from '@directives/sfx.directive';
 import {
@@ -10,6 +15,7 @@ import {
   closeAllMenus,
   getOption,
   globalStatusText,
+  isShowingAnyMenu,
   setOption,
   showCombatMenu,
   showCurrencyList,
@@ -37,6 +43,11 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
     SFXDirective,
     ButtonUpdateComponent,
     HotkeysDirective,
+    RequireNotSetupDirective,
+    ModalComponent,
+    ButtonQuitComponent,
+    ButtonSettingsComponent,
+    ButtonHelpComponent,
   ],
   providers: [],
   templateUrl: './navbar.component.html',
@@ -47,6 +58,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   public meta = inject(MetaService);
   public router = inject(Router);
+
+  public showPauseMenu = signal<boolean>(false);
+  private wasPausedBeforeOpeningMenu = signal<boolean>(false);
 
   public leaveSwal = viewChild<SwalComponent>('leaveSwal');
 
@@ -89,32 +103,20 @@ export class NavbarComponent implements OnInit, OnDestroy {
       hotkey: '5',
       clickCb: () => this.toggleHeroes(),
     },
-    {
-      name: 'Settings',
-      icon: 'tablerSettings',
-      hotkey: '6',
-      clickCb: () => this.toggleOptions(),
-    },
-    {
-      name: 'Help',
-      icon: 'gameHelp',
-      hotkey: 'H',
-      clickCb: () => this.toggleHelp(),
-    },
   ];
+
+  ngOnInit() {
+    this.hotkeys
+      .addShortcut({ keys: 'escape' })
+      .subscribe(() => this.closeAllMenus());
+  }
+
+  ngOnDestroy() {
+    this.hotkeys.removeShortcuts(['escape']);
+  }
 
   public toggleCurrencyList() {
     showCurrencyList.set(!showCurrencyList());
-  }
-
-  public toggleHelp() {
-    if (showHelpMenu()) {
-      showHelpMenu.set(false);
-      return;
-    }
-
-    closeAllMenus();
-    showHelpMenu.set(!showHelpMenu());
   }
 
   public toggleOptions() {
@@ -182,6 +184,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   public togglePause() {
+    if (this.showPauseMenu()) return;
     setOption('gameloopPaused', !this.isPaused());
   }
 
@@ -190,13 +193,44 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.router.navigate(['..']);
   }
 
-  ngOnInit() {
-    this.hotkeys
-      .addShortcut({ keys: 'escape' })
-      .subscribe(() => closeAllMenus(true));
+  public closePauseMenu() {
+    this.showPauseMenu.set(false);
+    if (!this.wasPausedBeforeOpeningMenu()) {
+      this.togglePause();
+    }
   }
 
-  ngOnDestroy() {
-    this.hotkeys.removeShortcuts(['escape']);
+  public openPauseMenu() {
+    this.showPauseMenu.set(true);
+    if (this.isPaused()) {
+      this.wasPausedBeforeOpeningMenu.set(true);
+    } else {
+      this.wasPausedBeforeOpeningMenu.set(false);
+      this.togglePause();
+    }
+  }
+
+  private closeAllMenus() {
+    if (showHelpMenu()) {
+      showHelpMenu.set(false);
+      return;
+    }
+
+    if (showOptionsMenu()) {
+      showOptionsMenu.set(false);
+      return;
+    }
+
+    if (this.showPauseMenu()) {
+      this.closePauseMenu();
+      return;
+    }
+
+    if (!isShowingAnyMenu()) {
+      this.openPauseMenu();
+      return;
+    }
+
+    closeAllMenus(true);
   }
 }

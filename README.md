@@ -27,8 +27,9 @@
 - Map Icons: Tiny Tales 2D WorldMap 1.0
 - Talent Icons: Spellbook Mega Pack (REXARD)
 - Skill Animations: Pixel Animations and Effects Pack (finalbossblues)
-- Monster Animations: ???
-- Map Tiles: ???
+- Monster Animations: Oryx Ultimate Fantasy
+- Item Icons: Oryx Ultimate Fantasy
+- Map Tiles: Oryx Ultimate Fantasy
 
 ### SFX
 

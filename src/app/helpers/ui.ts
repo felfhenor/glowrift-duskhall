@@ -51,10 +51,10 @@ export function closeAllMenus(smart = false) {
   showCurrencyList.set(false);
   showHeroesMenu.set(false);
   showCombatMenu.set(false);
-  showOptionsMenu.set(false);
   showInventoryMenu.set(false);
   showTownMenu.set(false);
   showWorldMenu.set(false);
   showLocationMenu.set(undefined);
   showAnySubmenu.set(false);
+  showOptionsMenu.set(false);
 }

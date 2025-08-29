@@ -1,17 +1,11 @@
+import { NgClass } from '@angular/common';
 import type { ElementRef } from '@angular/core';
-import {
-  Component,
-  effect,
-  HostListener,
-  input,
-  model,
-  viewChild,
-} from '@angular/core';
+import { Component, effect, input, model, viewChild } from '@angular/core';
 import { ButtonCloseComponent } from '@components/button-close/button-close.component';
 
 @Component({
   selector: 'app-modal',
-  imports: [ButtonCloseComponent],
+  imports: [ButtonCloseComponent, NgClass],
   templateUrl: './modal.component.html',
   styleUrl: './modal.component.scss',
 })
@@ -19,18 +13,9 @@ export class ModalComponent {
   public visible = model<boolean>(false);
   public allowEscToClose = input<boolean>(true);
   public showCloseButton = input<boolean>(false);
+  public widthClass = input<string>('max-w-3xl');
 
   public modal = viewChild<ElementRef<HTMLDialogElement>>('modal');
-
-  @HostListener('document:keydown.escape', ['$event'])
-  public onEscapeKeyDown($event: KeyboardEvent): void {
-    if (this.allowEscToClose()) {
-      this.visible.set(false);
-      $event.preventDefault();
-      $event.stopPropagation();
-      $event.stopImmediatePropagation();
-    }
-  }
 
   constructor() {
     effect(() => {
@@ -40,7 +25,7 @@ export class ModalComponent {
         return;
       }
 
-      this.modal()?.nativeElement.showModal();
+      this.modal()?.nativeElement.show();
     });
   }
 

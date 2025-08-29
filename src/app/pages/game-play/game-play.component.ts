@@ -4,11 +4,9 @@ import { RouterModule } from '@angular/router';
 import { GameMapPixiComponent } from '@components/game-map-pixi/game-map-pixi.component';
 import { PanelCombatComponent } from '@components/panel-combat/panel-combat.component';
 import { PanelContainerComponent } from '@components/panel-container/panel-container.component';
-import { PanelHelpComponent } from '@components/panel-help/panel-help.component';
 import { PanelHeroesComponent } from '@components/panel-heroes/panel-heroes.component';
 import { PanelInventoryComponent } from '@components/panel-inventory/panel-inventory.component';
 import { PanelLocationComponent } from '@components/panel-location/panel-location.component';
-import { PanelOptionsComponent } from '@components/panel-options/panel-options.component';
 import { PanelTownComponent } from '@components/panel-town/panel-town.component';
 
 import { GlanceClaimsComponent } from '@components/glance-claims/glance-claims.component';
@@ -18,6 +16,7 @@ import { GlanceResourcesComponent } from '@components/glance-resources/glance-re
 import { ModalComponent } from '@components/modal/modal.component';
 import { OptionsBaseComponent } from '@components/panel-options/option-base-page.component';
 import { PanelWorldComponent } from '@components/panel-world/panel-world.component';
+import { TeleportOutletDirective } from '@directives/teleport.outlet.directive';
 import {
   closeAllMenus,
   gamestate,
@@ -25,11 +24,9 @@ import {
   isCatchingUp,
   isShowingAnyMenu,
   showCombatMenu,
-  showHelpMenu,
   showHeroesMenu,
   showInventoryMenu,
   showLocationMenu,
-  showOptionsMenu,
   showTownMenu,
   showWorldMenu,
   victoryDismissWinDialog,
@@ -40,7 +37,6 @@ import {
   imports: [
     GameMapPixiComponent,
     PanelContainerComponent,
-    PanelOptionsComponent,
     PanelHeroesComponent,
     PanelLocationComponent,
     PanelCombatComponent,
@@ -49,25 +45,23 @@ import {
     DecimalPipe,
     RouterModule,
     PanelWorldComponent,
-    PanelHelpComponent,
     GlanceResourcesComponent,
     GlanceHeroesComponent,
     GlanceClaimsComponent,
     GlanceFailuresComponent,
     ModalComponent,
+    TeleportOutletDirective,
   ],
   templateUrl: './game-play.component.html',
   styleUrl: './game-play.component.scss',
 })
 export class GamePlayComponent extends OptionsBaseComponent {
-  public showOptions = computed(() => showOptionsMenu());
   public showHeroes = computed(() => showHeroesMenu());
   public showCombat = computed(() => showCombatMenu());
   public showLocation = computed(() => showLocationMenu());
   public showInventory = computed(() => showInventoryMenu());
   public showTown = computed(() => showTownMenu());
   public showWorld = computed(() => showWorldMenu());
-  public showHelp = computed(() => showHelpMenu());
   public showGlanceResources = computed(() => getOption('glanceResourceView'));
   public showGlanceHeroes = computed(() => getOption('glanceHeroView'));
   public showGlanceClaims = computed(() => getOption('glanceClaimView'));

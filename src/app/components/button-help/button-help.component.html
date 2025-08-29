@@ -1,0 +1,19 @@
+<button
+  class="btn btn-secondary btn-block"
+  (click)="showHelp()"
+  appAnalyticsClick="Meta:Help"
+  appSfx="ui-error"
+  [sfxTrigger]="['hover', 'click']"
+>
+  Help
+</button>
+
+<div *appTeleportTo="'menu-options'">
+  <app-modal
+    [visible]="showingHelp()"
+    [allowEscToClose]="true"
+    [widthClass]="'max-w-[unset]'"
+  >
+    <app-panel-help replacement></app-panel-help>
+  </app-modal>
+</div>

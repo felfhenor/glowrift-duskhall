@@ -1,0 +1,19 @@
+<button
+  class="btn btn-secondary btn-block"
+  (click)="showOptions()"
+  appAnalyticsClick="Meta:Settings"
+  appSfx="ui-error"
+  [sfxTrigger]="['hover', 'click']"
+>
+  Settings
+</button>
+
+<div *appTeleportTo="'menu-options'">
+  <app-modal
+    [visible]="showSettings()"
+    [allowEscToClose]="true"
+    [widthClass]="'max-w-[unset]'"
+  >
+    <app-panel-options replacement></app-panel-options>
+  </app-modal>
+</div>
