@@ -59,10 +59,17 @@ export class MetaService {
   }
 
   async init() {
+    this.logger.log('Meta:Version', 'Checking for local version...');
+
     try {
       const response = await fetch('version.json');
       const versionInfo = await response.json();
       localVersion.set(versionInfo);
+
+      this.logger.log(
+        'Meta:Version',
+        `Got local version: ${this.versionString()}`,
+      );
     } catch (e) {
       this.logger.error('Meta:Version', 'Failed to load version info', e);
     }
@@ -93,18 +100,27 @@ export class MetaService {
       );
     }
 
+    this.checkVersionAgainstLiveVersion();
+
     interval(15 * 60 * 1000).subscribe(() => {
       this.checkVersionAgainstLiveVersion();
     });
   }
 
   private async checkVersionAgainstLiveVersion() {
+    this.logger.log('Meta:Version', 'Checking for live version...');
+
     try {
       const liveVersionFile = await fetch(
         'https://glowriftduskhall.felfhenor.com/version.json',
       );
       const liveVersionData = await liveVersionFile.json();
       liveVersion.set(liveVersionData);
+
+      this.logger.log(
+        'Meta:Version',
+        `Got live version: ${this.liveVersionString()}`,
+      );
     } catch {
       this.logger.error(
         'Meta:Version',
