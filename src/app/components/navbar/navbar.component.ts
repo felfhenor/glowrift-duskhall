@@ -22,7 +22,7 @@ import {
 } from '@helpers';
 import type { Icon } from '@interfaces';
 import { TippyDirective } from '@ngneat/helipopper';
-import { HotkeysService } from '@ngneat/hotkeys';
+import { HotkeysDirective, HotkeysService } from '@ngneat/hotkeys';
 import { MetaService } from '@services/meta.service';
 import type { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
@@ -36,6 +36,7 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
     SweetAlert2Module,
     SFXDirective,
     ButtonUpdateComponent,
+    HotkeysDirective,
   ],
   providers: [],
   templateUrl: './navbar.component.html',
@@ -97,7 +98,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     {
       name: 'Help',
       icon: 'gameHelp',
-      hotkey: '?',
+      hotkey: 'H',
       clickCb: () => this.toggleHelp(),
     },
   ];
@@ -190,53 +191,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // Menu toggles
-    this.hotkeys.addShortcut({ keys: '1' }).subscribe(() => this.toggleWorld());
-    this.hotkeys.addShortcut({ keys: '2' }).subscribe(() => this.toggleTown());
-    this.hotkeys
-      .addShortcut({ keys: '3' })
-      .subscribe(() => this.toggleCombat());
-    this.hotkeys
-      .addShortcut({ keys: '4' })
-      .subscribe(() => this.toggleInventory());
-    this.hotkeys
-      .addShortcut({ keys: '5' })
-      .subscribe(() => this.toggleHeroes());
-    this.hotkeys
-      .addShortcut({ keys: '6' })
-      .subscribe(() => this.toggleOptions());
-    this.hotkeys.addShortcut({ keys: '?' }).subscribe(() => this.toggleHelp());
-
-    // Game controls
-    this.hotkeys.addShortcut({ keys: 'f' }).subscribe(() => this.focusCamera());
-
-    this.hotkeys
-      .addShortcut({ keys: 'space' })
-      .subscribe(() => this.togglePause());
-
     this.hotkeys
       .addShortcut({ keys: 'escape' })
       .subscribe(() => closeAllMenus(true));
-
-    // Navigation
-    this.hotkeys.addShortcut({ keys: 'q' }).subscribe(() => {
-      this.leaveSwal()?.fire();
-    });
   }
 
   ngOnDestroy() {
-    this.hotkeys.removeShortcuts([
-      '1',
-      '2',
-      '3',
-      '4',
-      '5',
-      '6',
-      '?',
-      'f',
-      'space',
-      'escape',
-      'q',
-    ]);
+    this.hotkeys.removeShortcuts(['escape']);
   }
 }

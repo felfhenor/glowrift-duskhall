@@ -19,6 +19,9 @@
             class="btn btn-xs btn-accent"
             [tp]="panel.name + ' [' + panel.hotkey + ']'"
             (click)="panel.clickCb()"
+            [hotkeys]="panel.hotkey"
+            (hotkey)="panel.clickCb()"
+            isGlobal
             appSfx="ui-click"
             [sfxOffset]="$index"
             [sfxTrigger]="['click', 'hover']"
@@ -36,6 +39,9 @@
           appSfx="ui-click"
           [sfxOffset]="panelConfigs.length + 1"
           [sfxTrigger]="['click', 'hover']"
+          [hotkeys]="'f'"
+          (hotkey)="focusCamera()"
+          isGlobal
         >
           <app-icon name="gameHumanTarget" size="2em" color="#000"></app-icon>
         </button>
@@ -49,6 +55,9 @@
           appSfx="ui-click"
           [sfxOffset]="panelConfigs.length + 2"
           [sfxTrigger]="['click', 'hover']"
+          [hotkeys]="'SPACE'"
+          (hotkey)="togglePause()"
+          isGlobal
         >
           <app-icon
             [name]="isPaused() ? 'gamePlayButton' : 'gamePauseButton'"
@@ -66,6 +75,9 @@
           appSfx="ui-error"
           [sfxOffset]="panelConfigs.length + 1"
           [sfxTrigger]="['click', 'hover']"
+          [hotkeys]="'q'"
+          (hotkey)="leaveSwal.fire()"
+          isGlobal
         >
           <app-icon name="gameExitDoor" size="2em" color="#000"></app-icon>
         </a>
