@@ -56,7 +56,7 @@
           @for (path of enchantPaths(); track $index) {
             <li class="list-row">
               <button
-                class="btn btn-block h-[60px] btn-neutral list-col-grow flex flex-col"
+                class="btn btn-block h-[unset] py-1 min-h-[60px] btn-neutral list-col-grow flex flex-col"
                 [disabled]="!path.canEnchant"
                 (click)="enchantSkill(chosen, path.path)"
                 appAnalyticsClick="Game:Town:Academy:Enchant:{{ chosen.name }}"

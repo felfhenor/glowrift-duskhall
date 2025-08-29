@@ -3,9 +3,10 @@
     <div>{{ label }}</div>
   }
 
-  <div class="flex flex-row gap-2 justify-center">
+  <div class="flex flex-wrap gap-2 justify-center">
     @for (currency of currencyList(); track $index) {
       <app-marker-currency-inline
+        class="block min-w-[60px]"
         [currency]="currency.currency"
         [value]="currency.value"
       ></app-marker-currency-inline>
