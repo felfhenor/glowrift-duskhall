@@ -1,5 +1,5 @@
 import { Sprite, Texture } from 'pixi.js';
-import type { Container } from 'pixi.js';
+import type { ParticleContainer } from 'pixi.js';
 
 interface ParticleSprite extends Sprite {
   vx: number;
@@ -25,7 +25,7 @@ interface PixiApplication {
  * @param cameraY Camera Y offset
  */
 export function pixiFogParticleEffectCreate(
-  fogParticleContainer: Container,
+  fogParticleContainer: ParticleContainer,
   worldX: number,
   worldY: number,
   nodeSize: number,
@@ -112,7 +112,7 @@ export function pixiFogParticleEffectCreate(
  * @param fogParticleContainer The particle container to clear
  */
 export function pixiFogParticleEffectClear(
-  fogParticleContainer: Container,
+  fogParticleContainer: ParticleContainer,
 ): void {
   fogParticleContainer.removeChildren().forEach((child) => {
     child.destroy();
