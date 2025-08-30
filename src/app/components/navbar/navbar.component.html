@@ -82,6 +82,26 @@
           <app-icon name="gameExitDoor" size="2em" color="#000"></app-icon>
         </a>
       </li>
+
+      <li class="action-button" appRequireSetup>
+        <button
+          class="btn btn-xs btn-primary"
+          [tp]="'Open Menu [ESC]'"
+          (click)="closeAllMenus()"
+          appSfx="ui-click"
+          [sfxOffset]="panelConfigs.length + 2"
+          [sfxTrigger]="['click', 'hover']"
+          [hotkeys]="'ESCAPE'"
+          (hotkey)="closeAllMenus()"
+          isGlobal
+        >
+          <app-icon
+            [name]="'tablerSettings'"
+            size="2em"
+            color="#000"
+          ></app-icon>
+        </button>
+      </li>
     </ul>
   </div>
 </div>

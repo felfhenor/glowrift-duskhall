@@ -1,4 +1,3 @@
-import type { OnDestroy, OnInit } from '@angular/core';
 import { Component, computed, inject, signal, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ButtonHelpComponent } from '@components/button-help/button-help.component';
@@ -29,7 +28,7 @@ import {
 } from '@helpers';
 import type { Icon } from '@interfaces';
 import { TippyDirective } from '@ngneat/helipopper';
-import { HotkeysDirective, HotkeysService } from '@ngneat/hotkeys';
+import { HotkeysDirective } from '@ngneat/hotkeys';
 import { MetaService } from '@services/meta.service';
 import type { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
@@ -54,9 +53,7 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
 })
-export class NavbarComponent implements OnInit, OnDestroy {
-  private hotkeys = inject(HotkeysService);
-
+export class NavbarComponent {
   public meta = inject(MetaService);
   public router = inject(Router);
 
@@ -105,16 +102,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
       clickCb: () => this.toggleHeroes(),
     },
   ];
-
-  ngOnInit() {
-    this.hotkeys
-      .addShortcut({ keys: 'escape' })
-      .subscribe(() => this.closeAllMenus());
-  }
-
-  ngOnDestroy() {
-    this.hotkeys.removeShortcuts(['escape']);
-  }
 
   public toggleCurrencyList() {
     showCurrencyList.set(!showCurrencyList());
@@ -212,7 +199,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
   }
 
-  private closeAllMenus() {
+  public closeAllMenus() {
     if (showHelpMenu()) {
       showHelpMenu.set(false);
       return;
