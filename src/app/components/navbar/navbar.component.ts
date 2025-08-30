@@ -198,7 +198,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   public closePauseMenu() {
     this.showPauseMenu.set(false);
     if (!this.wasPausedBeforeOpeningMenu()) {
-      this.togglePause();
+      setOption('gameloopPaused', false);
     }
   }
 
@@ -208,7 +208,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.wasPausedBeforeOpeningMenu.set(true);
     } else {
       this.wasPausedBeforeOpeningMenu.set(false);
-      this.togglePause();
+      setOption('gameloopPaused', true);
     }
   }
 
