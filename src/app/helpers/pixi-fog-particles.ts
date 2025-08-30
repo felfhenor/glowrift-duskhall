@@ -68,7 +68,7 @@ export function pixiFogParticleEffectCreate(
   }
 
   // Animate particles using the ticker
-  const app = fogParticleContainer.parent?.parent as PixiApplication;
+  const app = fogParticleContainer.parent?.parent as unknown as PixiApplication;
   if (app?.ticker) {
     const animationTicker = () => {
       let allDead = true;
