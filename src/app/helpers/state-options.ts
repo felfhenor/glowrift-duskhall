@@ -1,11 +1,10 @@
 import type { Signal } from '@angular/core';
-import { environment } from '@environments/environment.development';
 import { localStorageSignal } from '@helpers/signal';
 import type { GameOptions } from '@interfaces';
 
 export function defaultOptions(): GameOptions {
   return {
-    showDebug: !environment.production,
+    showDebug: false,
     debugConsoleLogStateUpdates: false,
     debugGameloopTimerUpdates: false,
     debugMapNodePositions: false,
