@@ -58,6 +58,7 @@ export * from './migrate-skills';
 export * from './notify';
 export * from './pixi-app-setup';
 export * from './pixi-drag-handler';
+export * from './pixi-fog-particles';
 export * from './pixi-indicators-geometry';
 export * from './pixi-indicators-node';
 export * from './pixi-indicators-travel';
