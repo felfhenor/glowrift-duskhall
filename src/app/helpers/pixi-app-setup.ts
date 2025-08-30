@@ -1,6 +1,6 @@
 import { warn } from '@helpers/logging';
 import type { PixiAppConfig } from '@interfaces/pixi-config';
-import { Application, Container } from 'pixi.js';
+import { Application, Container, ParticleContainer } from 'pixi.js';
 
 /**
  * Initializes a pixijs with the specified configuration
@@ -72,7 +72,7 @@ export function pixiResponsiveCanvasSetup(
 /**
  * Creates the main containers for the game map
  * @param app pixijs application
- * @returns Map, player indicator, travel visualization, and offscreen indicator containers
+ * @returns Map, player indicator, travel visualization, offscreen indicator, and fog particle containers
  */
 export function pixiGameMapContainersCreate(app: Application): {
   mapContainer: Container;
@@ -80,24 +80,28 @@ export function pixiGameMapContainersCreate(app: Application): {
   playerIndicatorContainer: Container;
   travelVisualizationContainer: Container;
   offscreenIndicatorContainer: Container;
+  fogParticleContainer: ParticleContainer;
 } {
   const mapContainer = new Container();
   const ownershipVisualizationContainer = new Container();
   const playerIndicatorContainer = new Container();
   const travelVisualizationContainer = new Container();
   const offscreenIndicatorContainer = new Container();
+  const fogParticleContainer = new ParticleContainer();
 
   app.stage.addChild(mapContainer);
   app.stage.addChild(ownershipVisualizationContainer);
   app.stage.addChild(playerIndicatorContainer);
   app.stage.addChild(travelVisualizationContainer);
   app.stage.addChild(offscreenIndicatorContainer);
+  app.stage.addChild(fogParticleContainer);
 
   mapContainer.cullable = true;
   ownershipVisualizationContainer.cullable = false;
   playerIndicatorContainer.cullable = false;
   travelVisualizationContainer.cullable = false;
   offscreenIndicatorContainer.cullable = false;
+  fogParticleContainer.cullable = false;
 
   return {
     mapContainer,
@@ -105,6 +109,7 @@ export function pixiGameMapContainersCreate(app: Application): {
     playerIndicatorContainer,
     travelVisualizationContainer,
     offscreenIndicatorContainer,
+    fogParticleContainer,
   };
 }
 

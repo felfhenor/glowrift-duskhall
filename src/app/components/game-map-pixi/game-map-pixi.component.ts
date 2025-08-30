@@ -14,9 +14,11 @@ import {
   getOption,
   isTraveling,
   locationGet,
+  locationGetAll,
   mapGridGenerate,
   pixiAppInitialize,
   pixiDragSetup,
+  pixiFogParticleEffectCreate,
   pixiGameMapContainersCreate,
   pixiIconTextureClaimCreate,
   pixiIndicatorHeroTravelCreate,
@@ -49,7 +51,7 @@ import type { NodeSpriteData } from '@interfaces/sprite';
 import type { LoadedTextures } from '@interfaces/texture';
 import { ContentService } from '@services/content.service';
 import { LoggerService } from '@services/logger.service';
-import type { Application, Container, Graphics, Texture } from 'pixi.js';
+import type { Application, Container, Graphics, ParticleContainer, Texture } from 'pixi.js';
 
 @Component({
   selector: 'app-game-map-pixi',
@@ -72,6 +74,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
   private playerIndicatorContainer?: Container;
   private travelVisualizationContainer?: Container;
   private offscreenIndicatorContainer?: Container;
+  private fogParticleContainer?: ParticleContainer;
   private terrainTextures: LoadedTextures = {};
   private objectTextures: LoadedTextures = {};
   private heroTextures: LoadedTextures = {};
@@ -200,22 +203,86 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
 
   private updateFoWForSurroundingNodes(change: WorldNodeChangeEvent) {
     if (!change.node.nodeType) return;
+    if (!this.fogParticleContainer) return;
 
     const radiusToUpdate = REVELATION_RADIUS[change.node.nodeType];
+    const camera = cameraPosition();
+    const nodeSize = 64; // Standard node size in pixels
 
-    for (
-      let x = change.worldX - radiusToUpdate;
-      x <= change.worldX + radiusToUpdate;
-      x++
-    ) {
+    // Only trigger particles for claim events (when new areas are revealed)
+    if (change.type === 'claim') {
       for (
-        let y = change.worldY - radiusToUpdate;
-        y <= change.worldY + radiusToUpdate;
-        y++
+        let x = change.worldX - radiusToUpdate;
+        x <= change.worldX + radiusToUpdate;
+        x++
       ) {
-        this.updateSingleNode(x, y);
+        for (
+          let y = change.worldY - radiusToUpdate;
+          y <= change.worldY + radiusToUpdate;
+          y++
+        ) {
+          // Check if this position was previously hidden and is now revealed
+          const wasRevealed = this.wasPreviouslyRevealed(x, y, change);
+          
+          this.updateSingleNode(x, y);
+          
+          // If position was hidden and is now revealed, create particle effect
+          const isNowRevealed = fogIsPositionRevealed(x, y);
+          if (!wasRevealed && isNowRevealed) {
+            pixiFogParticleEffectCreate(
+              this.fogParticleContainer,
+              x,
+              y,
+              nodeSize,
+              camera.x,
+              camera.y,
+            );
+          }
+        }
+      }
+    } else {
+      // For unclaim events, just update without particles
+      for (
+        let x = change.worldX - radiusToUpdate;
+        x <= change.worldX + radiusToUpdate;
+        x++
+      ) {
+        for (
+          let y = change.worldY - radiusToUpdate;
+          y <= change.worldY + radiusToUpdate;
+          y++
+        ) {
+          this.updateSingleNode(x, y);
+        }
       }
     }
+  }
+
+  /**
+   * Checks if a position was previously revealed before the current change
+   * This is done by temporarily excluding the current node from the revelation calculation
+   */
+  private wasPreviouslyRevealed(x: number, y: number, excludeChange: WorldNodeChangeEvent): boolean {
+    // Get all claimed nodes except the one being processed
+    const allLocations = locationGetAll().filter((node) => node.currentlyClaimed);
+    const otherClaimedNodes = allLocations.filter((node) => 
+      !(node.x === excludeChange.worldX && node.y === excludeChange.worldY)
+    );
+
+    // Check if position would be revealed by other claimed nodes
+    for (const claimedNode of otherClaimedNodes) {
+      if (!claimedNode.nodeType) continue;
+
+      const radius = REVELATION_RADIUS[claimedNode.nodeType];
+      const dx = Math.abs(x - claimedNode.x);
+      const dy = Math.abs(y - claimedNode.y);
+
+      if (dx <= radius && dy <= radius) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   async ngOnInit() {
@@ -283,6 +350,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     this.ownershipVisualizationContainer?.removeChildren();
     this.playerIndicatorContainer?.removeChildren();
     this.travelVisualizationContainer?.removeChildren();
+    this.fogParticleContainer?.removeChildren();
 
     this.resizeObserver?.disconnect();
     this.intersectionObserver?.disconnect();
@@ -315,6 +383,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     this.playerIndicatorContainer = containers.playerIndicatorContainer;
     this.travelVisualizationContainer = containers.travelVisualizationContainer;
     this.offscreenIndicatorContainer = containers.offscreenIndicatorContainer;
+    this.fogParticleContainer = containers.fogParticleContainer;
 
     // Add specific WebGL context restoration handler for this component
     const canvas = this.app.canvas as HTMLCanvasElement;
