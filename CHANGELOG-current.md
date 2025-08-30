@@ -1,26 +1,24 @@
-## [0.3.3](https://github.com/felfhenor/glowrift-duskhall/compare/v0.3.2...v0.3.3) (2025-08-28)
+## [0.3.4](https://github.com/felfhenor/glowrift-duskhall/compare/v0.3.3...v0.3.4) (2025-08-30)
 
 
 ### Bug Fixes
 
-* **combat:** cap self at 1x and allies at 4x ([9a00552](https://github.com/felfhenor/glowrift-duskhall/commit/9a0055265daa798ef28ee97c79f70140705364e6)), closes [#128](https://github.com/felfhenor/glowrift-duskhall/issues/128)
-* **location:** upgrades should show costs disabled when unable to buy, not the wrong message ([7261424](https://github.com/felfhenor/glowrift-duskhall/commit/7261424ce7f0b03b7dfefde1a6e62af0f317647f)), closes [#281](https://github.com/felfhenor/glowrift-duskhall/issues/281)
-* **targetting:** allies targetting should be 1..4, not always 1 ([f858c96](https://github.com/felfhenor/glowrift-duskhall/commit/f858c969b74adc530f4291851dbfb80d0bf124ba))
-* **ui:** fix esc/menu close behavior with nested menus ([8be4b24](https://github.com/felfhenor/glowrift-duskhall/commit/8be4b249695d00001c0d662708d16d0def176d21)), closes [#279](https://github.com/felfhenor/glowrift-duskhall/issues/279)
-* **ui:** heroes should not constantly change talent trees when moving ([18127d1](https://github.com/felfhenor/glowrift-duskhall/commit/18127d16cacd09594138e7f4d8686bbde09bb02b)), closes [#280](https://github.com/felfhenor/glowrift-duskhall/issues/280)
-* **ui:** make submenus for town panels show correctly ([dc041f5](https://github.com/felfhenor/glowrift-duskhall/commit/dc041f588b287fff13c384ef316081fcbf74ddb4)), closes [#282](https://github.com/felfhenor/glowrift-duskhall/issues/282)
-* **worldgen:** make tiny worlds 50x50, same number of nodes, to minimize screen space misuage ([e1b1e08](https://github.com/felfhenor/glowrift-duskhall/commit/e1b1e086428bba3684390d946889e4099cb1f8cb)), closes [#175](https://github.com/felfhenor/glowrift-duskhall/issues/175)
+* **map:** fix pixi deprecation by putting more things in containers ([6c0c640](https://github.com/felfhenor/glowrift-duskhall/commit/6c0c640b7016b9b7a4a5822fe95f517a30065904)), closes [#290](https://github.com/felfhenor/glowrift-duskhall/issues/290)
+* **town:** bsm/aca should not have wack-ass currency displays ([3852912](https://github.com/felfhenor/glowrift-duskhall/commit/38529122101daa02562105ef5a133a1866a3a883)), closes [#293](https://github.com/felfhenor/glowrift-duskhall/issues/293)
+* **ui:** hopefully better logic around update button ([e235d42](https://github.com/felfhenor/glowrift-duskhall/commit/e235d424c51d59b32f548579a513964be0956ad7))
+* **ui:** migrate to a real dialog element for any modal-like on the screen in preparation for the pause menu existing ([a15f2b6](https://github.com/felfhenor/glowrift-duskhall/commit/a15f2b644842f92f4adc1c39c3d0d8613de5c1ff))
 
 
 ### Features
 
-* **empire:** empire management shows encounter and loot level ([853fd54](https://github.com/felfhenor/glowrift-duskhall/commit/853fd540be85d2722240ff47a32bb3d4d6e7e114))
-* **hero:** allow heroes to swap skills by clicking the two slots ([085cfbc](https://github.com/felfhenor/glowrift-duskhall/commit/085cfbce566582616ae741436ff537f40c1822f8)), closes [#274](https://github.com/felfhenor/glowrift-duskhall/issues/274)
-* **inventory:** add inventory sort/filter settings ([f4ed274](https://github.com/felfhenor/glowrift-duskhall/commit/f4ed2746ae0a1d11e6f89d06538c5de4f296af0b)), closes [#263](https://github.com/felfhenor/glowrift-duskhall/issues/263)
-* **item:** display skill/talent icons ([2a45a95](https://github.com/felfhenor/glowrift-duskhall/commit/2a45a956652939db7ebe5a61cca2e8edf4d8f869)), closes [#224](https://github.com/felfhenor/glowrift-duskhall/issues/224)
-* **map:** add current indicator arrow above current location ([22ad1e4](https://github.com/felfhenor/glowrift-duskhall/commit/22ad1e494d91f5b79f5d997a54d91d356c97cdb8)), closes [#262](https://github.com/felfhenor/glowrift-duskhall/issues/262)
-* **ui:** add a download button that links to itch if not in desktop build ([5b362c2](https://github.com/felfhenor/glowrift-duskhall/commit/5b362c2d6b1e1f6fa00c861da19809f803b0103c)), closes [#271](https://github.com/felfhenor/glowrift-duskhall/issues/271)
-* **ui:** add failure indicator to show that heroes are failing ([2699f08](https://github.com/felfhenor/glowrift-duskhall/commit/2699f087864c9bd02a3524f5d3cea7278fbe4dc6)), closes [#269](https://github.com/felfhenor/glowrift-duskhall/issues/269)
+* **bgm:** add 2 new bgms, add crossfading between bgms ([9ab3a7e](https://github.com/felfhenor/glowrift-duskhall/commit/9ab3a7e16d5068be76427352b34b8b18bff6c097)), closes [#268](https://github.com/felfhenor/glowrift-duskhall/issues/268)
+* **codex:** add skill targetting help ([2993ce8](https://github.com/felfhenor/glowrift-duskhall/commit/2993ce8fefaf7d0480fa014baa1bc6875424b3c1)), closes [#294](https://github.com/felfhenor/glowrift-duskhall/issues/294)
+* **core:** save game when doing 'go to home' ([ad3b14e](https://github.com/felfhenor/glowrift-duskhall/commit/ad3b14ed9da978af808a19d14f1e03daed240b3d)), closes [#296](https://github.com/felfhenor/glowrift-duskhall/issues/296)
+* **town:** more/better blacksmith enchantments ([64bc5df](https://github.com/felfhenor/glowrift-duskhall/commit/64bc5df4b357c9401fff2ccedd78f6986d9352c0)), closes [#297](https://github.com/felfhenor/glowrift-duskhall/issues/297)
+* **ui:** add a cute effect when the game is paused ([c21abf5](https://github.com/felfhenor/glowrift-duskhall/commit/c21abf50e6a338bf590997e59f09083a43656187)), closes [#295](https://github.com/felfhenor/glowrift-duskhall/issues/295)
+* **ui:** add a menu button to navbar ([8ff5a3d](https://github.com/felfhenor/glowrift-duskhall/commit/8ff5a3d56077dd0eed4cc0c89388cc4edef556e6)), closes [#300](https://github.com/felfhenor/glowrift-duskhall/issues/300)
+* **ui:** add quit button to main menu ([4a91fac](https://github.com/felfhenor/glowrift-duskhall/commit/4a91fac83abc8eb6ca3a93ab81da1ff39a0bee0b)), closes [#286](https://github.com/felfhenor/glowrift-duskhall/issues/286)
+* **ui:** move some things to a modal that happens when you press esc ([3908eed](https://github.com/felfhenor/glowrift-duskhall/commit/3908eed00871b7e7b4b79874809f2d3382b6549b)), closes [#287](https://github.com/felfhenor/glowrift-duskhall/issues/287)
 
 
 
