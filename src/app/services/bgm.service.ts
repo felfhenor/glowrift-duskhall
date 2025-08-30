@@ -1,7 +1,8 @@
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import type { Event } from '@angular/router';
 import { NavigationEnd, Router } from '@angular/router';
-import { gameloopShouldRun, getOption } from '@helpers';
+import { gameloopShouldRun, getOption, locationGetCurrent } from '@helpers';
+import type { BGM } from '@interfaces/sfx';
 import { SoundService } from '@services/sound.service';
 
 @Injectable({
@@ -13,15 +14,17 @@ export class BGMService {
 
   private lastPlace = signal<'menu' | 'game' | ''>('');
   private currentPlace = signal<'menu' | 'game' | ''>('');
+  private lastBGM = signal<BGM | undefined>(undefined);
 
-  private lastBGM = signal<boolean>(getOption('bgmPlay'));
-  private curBGM = computed(() => getOption('bgmPlay'));
+  private lastBGMPlaySetting = signal<boolean>(getOption('bgmPlay'));
+  private curBGMPlaySetting = computed(() => getOption('bgmPlay'));
 
   constructor() {
     effect(() => {
       this.currentPlace();
+      locationGetCurrent();
       this.soundService.allowAudioInteractions();
-      this.curBGM();
+      this.curBGMPlaySetting();
 
       this.playAppropriateBGM();
     });
@@ -40,20 +43,38 @@ export class BGMService {
     if (!this.currentPlace() || !this.soundService.allowAudioInteractions())
       return;
 
+    let nextBGM: BGM | undefined;
+
+    if (!gameloopShouldRun()) {
+      nextBGM = 'menu';
+    } else {
+      const currentNode = locationGetCurrent();
+
+      if (currentNode) {
+        if (currentNode.captureType === 'time') {
+          nextBGM = 'game-explore';
+        }
+
+        if (currentNode.nodeType === 'town') {
+          nextBGM = 'game-recovering';
+        }
+      }
+
+      if (!nextBGM) nextBGM = 'game-casual';
+    }
+
     if (
       this.currentPlace() === this.lastPlace() &&
-      this.curBGM() === this.lastBGM()
+      this.curBGMPlaySetting() === this.lastBGMPlaySetting() &&
+      this.lastBGM() === nextBGM
     )
       return;
 
     this.lastPlace.set(this.currentPlace());
-    this.lastBGM.set(this.curBGM());
+    this.lastBGMPlaySetting.set(this.curBGMPlaySetting());
 
-    if (!gameloopShouldRun()) {
-      this.soundService.playBGM('menu');
-      return;
-    }
+    this.lastBGM.set(nextBGM);
 
-    this.soundService.playBGM('game-casual');
+    this.soundService.playBGM(nextBGM);
   }
 }

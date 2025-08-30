@@ -38,4 +38,5 @@
 
 ### BGM
 
-- Ambient Music Pack Vol.2 (Ovani Sound)
+- Ambient Music Pack Vol.1 (Ovani Sound) [Exploration, Recollect]
+- Ambient Music Pack Vol.2 (Ovani Sound) [Casual Exploration]

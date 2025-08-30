@@ -38,8 +38,12 @@ const soundVolumeMixing: Record<SFX, number> = {
 const bgmsToLoad: Record<BGM, string> = {
   'game-casual': './audio/bgm/game-casual.mp3',
   'game-threatened': './audio/bgm/game-threatened.mp3',
+  'game-recovering': './audio/bgm/game-recovering.mp3',
+  'game-explore': './audio/bgm/game-explore.mp3',
   menu: './audio/bgm/menu.mp3',
 };
+
+const CROSSFADE_TIME = 2; // seconds
 
 @Injectable({
   providedIn: 'root',
@@ -196,19 +200,35 @@ export class SoundService {
     source.buffer = bgm;
     source.loop = true;
 
-    const gain = this.context.createGain();
-    gain.gain.value = volume;
-    source.connect(gain);
-    gain.connect(this.context.destination);
+    const gainNode = this.context.createGain();
+    gainNode.gain.value = volume;
+    source.connect(gainNode);
+    gainNode.connect(this.context.destination);
+
+    if (this.bgm) {
+      gainNode.gain.linearRampToValueAtTime(0, 0);
+      gainNode.gain.linearRampToValueAtTime(this.bgmVolume(), CROSSFADE_TIME);
+    }
 
     source.start(0);
 
     this.bgm = source;
-    this.bgmGain = gain;
+    this.bgmGain = gainNode;
   }
 
   public stopBGM() {
-    this.bgm?.stop();
+    if (!this.bgm || !this.bgmGain) return;
+
+    const currTime = this.context.currentTime;
+    const bgm = this.bgm;
+    const bgmGain = this.bgmGain;
+
+    bgmGain.gain.linearRampToValueAtTime(this.bgmVolume(), currTime);
+    bgmGain.gain.linearRampToValueAtTime(0, currTime + CROSSFADE_TIME);
+
+    setTimeout(() => {
+      bgm.stop();
+    }, CROSSFADE_TIME * 1000);
   }
 
   public changeBGMVolume(newVolume: number) {

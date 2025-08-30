@@ -13,4 +13,9 @@ export type SFX =
   | 'ui-success'
   | 'victory';
 
-export type BGM = 'menu' | 'game-casual' | 'game-threatened';
+export type BGM =
+  | 'menu'
+  | 'game-casual'
+  | 'game-threatened'
+  | 'game-recovering'
+  | 'game-explore';
