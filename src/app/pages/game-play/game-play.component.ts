@@ -16,6 +16,7 @@ import { GlanceResourcesComponent } from '@components/glance-resources/glance-re
 import { ModalComponent } from '@components/modal/modal.component';
 import { OptionsBaseComponent } from '@components/panel-options/option-base-page.component';
 import { PanelWorldComponent } from '@components/panel-world/panel-world.component';
+import { VignettePauseComponent } from '@components/vignette-pause/vignette-pause.component';
 import { TeleportOutletDirective } from '@directives/teleport.outlet.directive';
 import {
   closeAllMenus,
@@ -51,6 +52,7 @@ import {
     GlanceFailuresComponent,
     ModalComponent,
     TeleportOutletDirective,
+    VignettePauseComponent,
   ],
   templateUrl: './game-play.component.html',
   styleUrl: './game-play.component.scss',
@@ -70,6 +72,7 @@ export class GamePlayComponent extends OptionsBaseComponent {
       getOption('showHeroFailureIndicator') &&
       gamestate().hero.failuresSinceLastSuccess > 0,
   );
+  public isPaused = computed(() => getOption('gameloopPaused'));
 
   public isShowingAnyMenu = computed(() => isShowingAnyMenu());
 

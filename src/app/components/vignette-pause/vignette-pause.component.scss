@@ -1,0 +1,50 @@
+// https://www.reddit.com/r/css/comments/1gpzzgu/glowing_rotating_border_overlay/lwvj967/
+
+:host {
+  @apply pointer-events-none;
+}
+
+@property --a {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.vignette {
+  overflow: hidden;
+  position: relative;
+  aspect-ratio: 1;
+  height: calc(100vh - 40px);
+  width: 100vw;
+}
+
+.vignette::before {
+  position: absolute;
+  z-index: -1;
+  inset: -1em;
+  border: solid 2em;
+  border-image: conic-gradient(
+      from var(--a),
+      #669900,
+      #99cc33,
+      #ccee66,
+      #006699,
+      #3399cc,
+      #990066,
+      #cc3399,
+      #ff6600,
+      #ff9900,
+      #ffcc00,
+      #669900
+    )
+    1;
+  filter: blur(1em);
+  animation: a 4s linear infinite;
+  content: '';
+}
+
+@keyframes a {
+  to {
+    --a: 1turn;
+  }
+}

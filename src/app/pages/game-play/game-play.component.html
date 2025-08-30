@@ -5,6 +5,12 @@
 <div class="game-container relative">
   <app-game-map-pixi class="absolute inset-0 map-layer"></app-game-map-pixi>
 
+  @if (isPaused()) {
+    <app-vignette-pause
+      class="absolute inset-0 vignette-layer"
+    ></app-vignette-pause>
+  }
+
   @if (isShowingAnyMenu()) {
     <div
       class="absolute inset-0 static-layer bg-gray-400/35"
