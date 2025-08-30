@@ -1,10 +1,10 @@
 import { describe, expect, it, vi } from 'vitest';
-import { ParticleContainer, Sprite } from 'pixi.js';
-import { pixiFogParticleEffectCreate, pixiFogParticleEffectClear } from './pixi-fog-particles';
+import { Container } from 'pixi.js';
+import { pixiFogParticleEffectCreate, pixiFogParticleEffectClear } from '@helpers/pixi-fog-particles';
 
 // Mock PIXI components
 vi.mock('pixi.js', () => ({
-  ParticleContainer: vi.fn().mockImplementation(() => ({
+  Container: vi.fn().mockImplementation(() => ({
     addChild: vi.fn(),
     removeChildren: vi.fn(() => []),
     parent: {
@@ -33,7 +33,7 @@ vi.mock('pixi.js', () => ({
 
 describe('pixiFogParticleEffect', () => {
   it('should create particle effects correctly', () => {
-    const mockContainer = new ParticleContainer() as unknown as ParticleContainer;
+    const mockContainer = new Container() as unknown as Container;
     
     pixiFogParticleEffectCreate(mockContainer, 10, 15, 64, 5, 5);
     
@@ -48,7 +48,7 @@ describe('pixiFogParticleEffect', () => {
     const mockChild = { destroy: vi.fn() };
     const mockContainer = {
       removeChildren: vi.fn(() => [mockChild]),
-    } as unknown as ParticleContainer;
+    } as unknown as Container;
     
     pixiFogParticleEffectClear(mockContainer);
     
@@ -57,7 +57,7 @@ describe('pixiFogParticleEffect', () => {
   });
 
   it('should calculate screen positions correctly', () => {
-    const mockContainer = new ParticleContainer() as unknown as ParticleContainer;
+    const mockContainer = new Container() as unknown as Container;
     
     // World position (10, 15), camera at (5, 5), node size 64
     // Expected screen position: (10-5)*64 + 32 = 352, (15-5)*64 + 32 = 672

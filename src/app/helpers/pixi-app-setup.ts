@@ -1,6 +1,6 @@
 import { warn } from '@helpers/logging';
 import type { PixiAppConfig } from '@interfaces/pixi-config';
-import { Application, Container, ParticleContainer } from 'pixi.js';
+import { Application, Container } from 'pixi.js';
 
 /**
  * Initializes a pixijs with the specified configuration
@@ -80,14 +80,14 @@ export function pixiGameMapContainersCreate(app: Application): {
   playerIndicatorContainer: Container;
   travelVisualizationContainer: Container;
   offscreenIndicatorContainer: Container;
-  fogParticleContainer: ParticleContainer;
+  fogParticleContainer: Container;
 } {
   const mapContainer = new Container();
   const ownershipVisualizationContainer = new Container();
   const playerIndicatorContainer = new Container();
   const travelVisualizationContainer = new Container();
   const offscreenIndicatorContainer = new Container();
-  const fogParticleContainer = new ParticleContainer();
+  const fogParticleContainer = new Container();
 
   app.stage.addChild(mapContainer);
   app.stage.addChild(ownershipVisualizationContainer);
