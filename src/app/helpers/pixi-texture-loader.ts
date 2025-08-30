@@ -49,10 +49,13 @@ export async function pixiTextureGameMapLoad(
 }> {
   const [terrainTextures, objectTextures] = await Promise.all([
     pixiTextureAtlasLoad(
-      'art/spritesheets/world-terrain.webp',
+      `art/spritesheets/world-terrain.webp?t=${Date.now()}`,
       terrainAtlasData,
     ),
-    pixiTextureAtlasLoad('art/spritesheets/world-object.webp', objectAtlasData),
+    pixiTextureAtlasLoad(
+      `art/spritesheets/world-object.webp?t=${Date.now()}`,
+      objectAtlasData,
+    ),
   ]);
 
   return { terrainTextures, objectTextures };
