@@ -1,7 +1,7 @@
-import { Sprite, Texture } from 'pixi.js';
+import { Particle, Texture } from 'pixi.js';
 import type { ParticleContainer } from 'pixi.js';
 
-interface ParticleSprite extends Sprite {
+interface FogParticle extends Particle {
   vx: number;
   vy: number;
   life: number;
@@ -41,10 +41,21 @@ export function pixiFogParticleEffectCreate(
 
   // Create multiple smoke particles for a puff effect
   const particleCount = 5 + Math.floor(Math.random() * 3); // 5-7 particles
-  const particles: ParticleSprite[] = [];
+  const particles: FogParticle[] = [];
 
   for (let i = 0; i < particleCount; i++) {
-    const particle = new Sprite(smokeTexture) as ParticleSprite;
+    const particle = new Particle({
+      texture: smokeTexture,
+      x: 0,
+      y: 0,
+      scaleX: 0.3 + Math.random() * 0.4,
+      scaleY: 0.3 + Math.random() * 0.4,
+      anchorX: 0.5,
+      anchorY: 0.5,
+      tint: 0x999999, // Gray smoke color
+      alpha: 0.6,     // Initial alpha
+      rotation: 0
+    }) as FogParticle;
     
     // Random position around the center point
     const angle = (Math.PI * 2 * i) / particleCount + Math.random() * 0.5;
@@ -52,10 +63,6 @@ export function pixiFogParticleEffectCreate(
     
     particle.x = screenX + Math.cos(angle) * distance;
     particle.y = screenY + Math.sin(angle) * distance;
-    particle.anchor.set(0.5);
-    particle.scale.set(0.3 + Math.random() * 0.4);
-    particle.alpha = 0.6;
-    particle.tint = 0x999999; // Gray smoke color
     
     // Add random velocity for animation
     particle.vx = Math.cos(angle) * (0.5 + Math.random() * 0.5);
@@ -63,7 +70,7 @@ export function pixiFogParticleEffectCreate(
     particle.life = 1.0;
     particle.decay = 0.02 + Math.random() * 0.01;
     
-    fogParticleContainer.addChild(particle);
+    fogParticleContainer.addParticle(particle);
     particles.push(particle);
   }
 
@@ -84,8 +91,14 @@ export function pixiFogParticleEffectCreate(
         
         // Update life and appearance
         particle.life -= particle.decay;
-        particle.alpha = particle.life * 0.6;
-        particle.scale.set(particle.scale.x * 1.02); // Gradually expand
+        
+        // Update alpha directly
+        particle.alpha = Math.max(0, particle.life * 0.6);
+        
+        // Gradually expand
+        const scaleMultiplier = 1.02;
+        particle.scaleX *= scaleMultiplier;
+        particle.scaleY *= scaleMultiplier;
         
         // Add some upward drift
         particle.vy -= 0.01;
@@ -95,10 +108,7 @@ export function pixiFogParticleEffectCreate(
       if (allDead) {
         app.ticker.remove(animationTicker);
         particles.forEach(particle => {
-          if (particle.parent) {
-            particle.parent.removeChild(particle);
-          }
-          particle.destroy();
+          fogParticleContainer.removeParticle(particle);
         });
       }
     };
@@ -114,7 +124,6 @@ export function pixiFogParticleEffectCreate(
 export function pixiFogParticleEffectClear(
   fogParticleContainer: ParticleContainer,
 ): void {
-  fogParticleContainer.removeChildren().forEach((child) => {
-    child.destroy();
-  });
+  // Remove all particles using the proper ParticleContainer API
+  fogParticleContainer.removeParticles();
 }

@@ -350,7 +350,7 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
     this.ownershipVisualizationContainer?.removeChildren();
     this.playerIndicatorContainer?.removeChildren();
     this.travelVisualizationContainer?.removeChildren();
-    this.fogParticleContainer?.removeChildren();
+    this.fogParticleContainer?.removeParticles();
 
     this.resizeObserver?.disconnect();
     this.intersectionObserver?.disconnect();

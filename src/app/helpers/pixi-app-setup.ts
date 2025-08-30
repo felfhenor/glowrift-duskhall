@@ -87,7 +87,15 @@ export function pixiGameMapContainersCreate(app: Application): {
   const playerIndicatorContainer = new Container();
   const travelVisualizationContainer = new Container();
   const offscreenIndicatorContainer = new Container();
-  const fogParticleContainer = new ParticleContainer();
+  const fogParticleContainer = new ParticleContainer({
+    dynamicProperties: {
+      position: true,  // Update positions each frame
+      color: true,     // Update color/alpha each frame  
+      vertex: true,    // Update scale each frame
+      rotation: false, // Static rotation
+      uvs: false       // Static texture coordinates
+    }
+  });
 
   app.stage.addChild(mapContainer);
   app.stage.addChild(ownershipVisualizationContainer);
