@@ -4,7 +4,7 @@ import { MarkerSymmetryComponent } from '@components/marker-symmetry/marker-symm
 import {
   allHeroes,
   getEntry,
-  heroTotalStat,
+  heroDamageForSkillTechnique,
   skillCreateForHero,
   skillCreateWithSymmetry,
   skillDisplayElement,
@@ -29,7 +29,6 @@ import type {
   StatusEffectContent,
   SymmetryLevel,
 } from '@interfaces';
-import { sumBy } from 'es-toolkit/compat';
 
 @Component({
   selector: 'app-stats-skill',
@@ -96,12 +95,7 @@ export class StatsSkillComponent {
         });
 
       const totalValue = this.equippingHero()
-        ? sumBy(
-            statScalars,
-            (s) =>
-              s.multiplier *
-              heroTotalStat(this.equippingHero()!, s.stat as GameStat),
-          )
+        ? heroDamageForSkillTechnique(this.equippingHero()!, skillRef, t)
         : 0;
 
       const statString = statScalars

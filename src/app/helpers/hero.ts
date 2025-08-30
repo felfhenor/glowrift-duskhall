@@ -1,9 +1,16 @@
 import { getEntriesByType } from '@helpers/content';
+import { heroTotalElement, heroTotalStat } from '@helpers/hero-stats';
+import { skillTechniqueDamageScalingStat } from '@helpers/skill';
 import { spriteGetFromIndex } from '@helpers/sprite';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { talentTownStatTotalForAllHeroes } from '@helpers/talent';
 import { locationGet, locationGetCurrent } from '@helpers/world-location';
-import type { CameoContent } from '@interfaces';
+import type {
+  CameoContent,
+  EquipmentSkill,
+  EquipmentSkillContentTechnique,
+  GameStat,
+} from '@interfaces';
 import {
   type DropRarity,
   type Hero,
@@ -12,7 +19,7 @@ import {
   type LocationType,
   type WorldPosition,
 } from '@interfaces';
-import { meanBy } from 'es-toolkit/compat';
+import { meanBy, sumBy } from 'es-toolkit/compat';
 
 export function allHeroes(): Hero[] {
   return gamestate().hero.heroes;
@@ -143,4 +150,33 @@ export function heroHealAll(amount: number): void {
     state.hero.heroes = structuredClone(heroes);
     return state;
   });
+}
+
+export function heroDamageForSkillTechnique(
+  hero: Hero,
+  skill: EquipmentSkill,
+  tech: EquipmentSkillContentTechnique,
+): number {
+  const statScalars = Object.keys(tech.damageScaling)
+    .filter((d) => tech.damageScaling[d as GameStat])
+    .map((d) => {
+      const statMult = skillTechniqueDamageScalingStat(
+        skill,
+        tech,
+        d as GameStat,
+      );
+
+      return { stat: d, multiplier: statMult };
+    });
+
+  const baseDamage = sumBy(
+    statScalars,
+    (s) => s.multiplier * heroTotalStat(hero, s.stat as GameStat),
+  );
+
+  const affinityElementBoostMultiplier = sumBy(tech.elements, (el) =>
+    heroTotalElement(hero, el),
+  );
+
+  return baseDamage * affinityElementBoostMultiplier;
 }
