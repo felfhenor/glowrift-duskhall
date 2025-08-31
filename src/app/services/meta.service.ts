@@ -1,4 +1,5 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
+import { environment } from '@environments/environment';
 import {
   isInElectron,
   liveVersion,
@@ -108,6 +109,8 @@ export class MetaService {
   }
 
   private async checkVersionAgainstLiveVersion() {
+    if (!environment.production) return;
+
     this.logger.log('Meta:Version', 'Checking for live version...');
 
     try {
