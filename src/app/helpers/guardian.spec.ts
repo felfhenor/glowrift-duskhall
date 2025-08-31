@@ -12,6 +12,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 vi.mock('@helpers/defaults', () => ({
   defaultCombatStats: vi.fn(),
+  defaultGameState: vi.fn(),
 }));
 
 import { defaultCombatStats } from '@helpers/defaults';
