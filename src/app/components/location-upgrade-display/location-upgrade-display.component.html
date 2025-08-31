@@ -7,7 +7,7 @@
     <p class="min-h-16">Next Level: {{ description() }}</p>
 
     <button
-      class="btn btn-neutral"
+      class="btn btn-neutral h-[unset] min-h-[60px]"
       (click)="buyUpgrade()"
       [disabled]="!hasCurrency() || !canUpgrade()"
       appAnalyticsClick="Game:Location:Upgrade:{{ upg.name }}"
