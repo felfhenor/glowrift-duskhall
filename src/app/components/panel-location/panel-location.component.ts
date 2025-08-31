@@ -12,6 +12,7 @@ import { LocationGuardianDisplayComponent } from '@components/location-guardian-
 import { LocationLootDisplayComponent } from '@components/location-loot-display/location-loot-display.component';
 import { LocationUpgradeDisplayComponent } from '@components/location-upgrade-display/location-upgrade-display.component';
 import { MarkerLocationClaimComponent } from '@components/marker-location-claim/marker-location-claim.component';
+import { MarkerLocationTerrorLevelComponent } from '@components/marker-location-terror-level/marker-location-terror-level.component';
 import { MarkerLocationTraitComponent } from '@components/marker-location-trait/marker-location-trait.component';
 import {
   currencyClaimsGetForNode,
@@ -27,6 +28,7 @@ import {
   locationLevel,
   locationLootLevel,
   locationMaxLevel,
+  locationTerrorLevel,
   showLocationMenu,
   spriteGetFromNodeType,
   timerTicksElapsed,
@@ -61,6 +63,7 @@ import { sortBy } from 'es-toolkit/compat';
     ButtonCloseComponent,
     BlankSlateComponent,
     LocationUpgradeDisplayComponent,
+    MarkerLocationTerrorLevelComponent,
   ],
   templateUrl: './panel-location.component.html',
   styleUrl: './panel-location.component.scss',
@@ -151,6 +154,8 @@ export class PanelLocationComponent {
     locationEncounterLevel(this.location()),
   );
   public lootLevel = computed(() => locationLootLevel(this.location()));
+
+  public terrorLevel = computed(() => locationTerrorLevel(this.location()));
 
   closeMenu() {
     showLocationMenu.set(undefined);

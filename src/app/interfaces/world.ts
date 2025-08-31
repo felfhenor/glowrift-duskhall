@@ -4,6 +4,13 @@ import type { LocationType } from '@interfaces/content-worldconfig';
 import type { GameElement } from '@interfaces/element';
 import type { Identifiable } from '@interfaces/identifiable';
 
+export type WorldLocationTerrorLevel =
+  | 'Safe'
+  | 'Uncomfortable'
+  | 'Scary'
+  | 'Terrifying'
+  | 'Fatal';
+
 export type WorldLocationCaptureType = 'guardians' | 'time';
 
 export interface QuadtreePoint {

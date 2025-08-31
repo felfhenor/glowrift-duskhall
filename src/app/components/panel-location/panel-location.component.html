@@ -58,6 +58,14 @@
       }
     }
 
+    @if (
+      locationData.captureType === 'guardians' && !locationData.currentlyClaimed
+    ) {
+      <app-marker-location-terror-level
+        [terrorLevel]="terrorLevel()"
+      ></app-marker-location-terror-level>
+    }
+
     @for (trait of traits(); track $index) {
       <app-marker-location-trait [trait]="trait"></app-marker-location-trait>
     }

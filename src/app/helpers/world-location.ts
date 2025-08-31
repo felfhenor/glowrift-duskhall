@@ -5,7 +5,11 @@ import { currencyClaimsGain, currencyClaimsLose } from '@helpers/currency';
 import { defaultLocation, defaultNodeCountBlock } from '@helpers/defaults';
 import { discordUpdateStatus } from '@helpers/discord';
 import { droppableGain, droppableMakeReal } from '@helpers/droppable';
-import { heroAverageLevel } from '@helpers/hero';
+import {
+  guardianCreateForLocation,
+  guardianMaxDamage,
+} from '@helpers/guardian';
+import { allHeroes, heroAverageLevel } from '@helpers/hero';
 import { itemElementAdd, itemIsEquipment } from '@helpers/item';
 import { distanceBetweenNodes } from '@helpers/math';
 import { gamestate, updateGamestate } from '@helpers/state-game';
@@ -26,12 +30,16 @@ import {
   worldgenLootForLocation,
 } from '@helpers/worldgen';
 import type { EquipmentItemContent } from '@interfaces/content-equipment';
+import type { GuardianContent } from '@interfaces/content-guardian';
 import type { LocationType } from '@interfaces/content-worldconfig';
 import type { DroppableEquippable, DropRarity } from '@interfaces/droppable';
 import { RARITY_PRIORITY } from '@interfaces/droppable';
-import type { WorldPosition } from '@interfaces/world';
+import type {
+  WorldLocationTerrorLevel,
+  WorldPosition,
+} from '@interfaces/world';
 import { REVELATION_RADIUS, type WorldLocation } from '@interfaces/world';
-import { isNumber, sortBy } from 'es-toolkit/compat';
+import { isNumber, mean, sortBy, sumBy } from 'es-toolkit/compat';
 
 export function migrateUnclaimMissedNodes(): void {
   locationGetClaimed().forEach((claimed) => {
@@ -421,4 +429,25 @@ export function locationAddTooHard(nodeId: string): void {
     }
     return state;
   });
+}
+
+export function locationTerrorLevel(
+  location: WorldLocation,
+): WorldLocationTerrorLevel {
+  const totalHeroHealth = sumBy(allHeroes(), (h) => h.totalStats.Health);
+  const averageMaxDamage = mean(
+    location.guardianIds
+      .map((g) => getEntry<GuardianContent>(g))
+      .filter(Boolean)
+      .map((g) => guardianCreateForLocation(location, g!))
+      .map((g) => guardianMaxDamage(g)),
+  );
+  const worstDamagePerRound = averageMaxDamage * location.guardianIds.length;
+  const worstPotentialPercent = (worstDamagePerRound / totalHeroHealth) * 100;
+
+  if (worstPotentialPercent <= 10) return 'Safe';
+  if (worstPotentialPercent <= 25) return 'Uncomfortable';
+  if (worstPotentialPercent <= 50) return 'Scary';
+  if (worstPotentialPercent <= 75) return 'Terrifying';
+  return 'Fatal';
 }
