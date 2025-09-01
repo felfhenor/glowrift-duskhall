@@ -103,6 +103,7 @@ vi.mock('@helpers/state-game', () => {
 
 vi.mock('@helpers/world-location', () => ({
   locationGetClaimed: vi.fn(() => []),
+  locationGetNearbySafeHaven: vi.fn(() => null),
 }));
 
 vi.mock('@helpers/signal', () => ({
@@ -611,11 +612,7 @@ describe('Currency Helper Functions', () => {
 
       const sorted = currencySortByOrder(currencies);
 
-      expect(sorted).toEqual([
-        'Mana',
-        'Fire Sliver',
-        'Unknown Currency',
-      ]);
+      expect(sorted).toEqual(['Mana', 'Fire Sliver', 'Unknown Currency']);
     });
 
     it('should maintain order of elements correctly', () => {
