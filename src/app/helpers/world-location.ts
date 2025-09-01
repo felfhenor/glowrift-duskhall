@@ -271,7 +271,8 @@ export function locationZoneOwner(
     interconnectedness()[worldNodeGetAccessId(position)].zocOwnerPosition;
   if (!pos) return undefined;
 
-  return locationGet(pos.x, pos.y);
+  const node = locationGet(pos.x, pos.y);
+  return node.currentlyClaimed ? node : undefined;
 }
 
 export function locationIsPermanentlyClaimed(node: WorldLocation): boolean {
@@ -377,7 +378,7 @@ export function locationClaim(node: WorldLocation): void {
     claimDuration += locationClaimDuration(node);
   }
 
-  if (zocOwner && zocOwner.currentlyClaimed && !zocOwner.permanentlyClaimed) {
+  if (zocOwner && !zocOwner.permanentlyClaimed) {
     claimDuration += locationClaimDuration(node);
     claimDuration += locationUpgradeStatTotal(zocOwner, 'boostedTicksPerLevel');
   }

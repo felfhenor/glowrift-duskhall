@@ -183,7 +183,7 @@ export function currencyClaimsGetForNode(node: WorldLocation): CurrencyBlock {
   let safeHavenMultiplierBoost = 0;
   if (!['village', 'town'].includes(node.nodeType!)) {
     const zocOwner = locationZoneOwner(node);
-    if (zocOwner && zocOwner.currentlyClaimed) {
+    if (zocOwner) {
       safeHavenMultiplierBoost = locationUpgradeStatTotal(
         zocOwner,
         'boostedProductionValuePercentPerLevel',
