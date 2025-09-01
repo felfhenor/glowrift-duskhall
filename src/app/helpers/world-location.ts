@@ -1,3 +1,4 @@
+import { signal } from '@angular/core';
 import { claimMessageLog } from '@helpers/claim-log';
 import { combatGenerateForLocation } from '@helpers/combat-create';
 import { getEntry } from '@helpers/content';
@@ -31,11 +32,109 @@ import type { LocationType } from '@interfaces/content-worldconfig';
 import type { DroppableEquippable, DropRarity } from '@interfaces/droppable';
 import { RARITY_PRIORITY } from '@interfaces/droppable';
 import type {
+  WorldLocationInterconnectedness,
   WorldLocationTerrorLevel,
   WorldPosition,
 } from '@interfaces/world';
 import { REVELATION_RADIUS, type WorldLocation } from '@interfaces/world';
 import { isNumber, mean, sortBy, sumBy } from 'es-toolkit/compat';
+
+const interconnectedness = signal<
+  Record<string, WorldLocationInterconnectedness>
+>({});
+
+const interconnectednessCalculated = signal<boolean>(false);
+export const isInterconnectednessReady =
+  interconnectednessCalculated.asReadonly();
+
+function calculateInterconnectednessForLocation(
+  location: WorldLocation,
+): WorldLocationInterconnectedness {
+  const allNodes = locationGetAll();
+
+  const nearestTowns = sortBy(
+    allNodes.filter((node) => node.nodeType === 'town'),
+    (checkNode) => distanceBetweenNodes(location, checkNode),
+  ).map((n) => ({ x: n.x, y: n.y }));
+
+  const zocNodes = [];
+  if (['town', 'village'].includes(location.nodeType!)) {
+    zocNodes.push(
+      ...locationNodesAround(
+        location.x,
+        location.y,
+        REVELATION_RADIUS[location.nodeType!],
+      ).filter((n) => n.id !== location.id),
+    );
+  }
+
+  return {
+    nearbyTownOrderPositions: nearestTowns,
+    zocNodePositions: zocNodes,
+  };
+}
+
+export function updateInterconnectednessForLocation(location: WorldLocation) {
+  if (!location.nodeType) return;
+
+  const newInterconnectedness = interconnectedness();
+
+  const locationInterconnectedness =
+    calculateInterconnectednessForLocation(location);
+
+  newInterconnectedness[worldNodeGetAccessId(location)] =
+    locationInterconnectedness;
+
+  if (['town', 'village'].includes(location.nodeType)) {
+    const zocNodes = locationNodesAround(
+      location.x,
+      location.y,
+      REVELATION_RADIUS[location.nodeType],
+    );
+
+    zocNodes.forEach((loc) => {
+      const zocLocId = worldNodeGetAccessId(loc);
+      newInterconnectedness[zocLocId] =
+        calculateInterconnectednessForLocation(loc);
+
+      newInterconnectedness[zocLocId].zocOwnerPosition = {
+        x: location.x,
+        y: location.y,
+      };
+    });
+  }
+
+  interconnectedness.set(newInterconnectedness);
+}
+
+export function worldCalculateInterconnectedness() {
+  resetInterconnectedness();
+  interconnectedness.set({});
+
+  const newInterconnectedness: Record<string, WorldLocationInterconnectedness> =
+    {};
+
+  const allNodes = locationGetAll();
+
+  allNodes.forEach((loc) => {
+    const interconnectedness = calculateInterconnectednessForLocation(loc);
+    newInterconnectedness[worldNodeGetAccessId(loc)] = interconnectedness;
+  });
+
+  interconnectedness.set(newInterconnectedness);
+
+  allNodes
+    .filter((n) => ['town', 'village'].includes(n.nodeType!))
+    .forEach((loc) => {
+      updateInterconnectednessForLocation(loc);
+    });
+
+  interconnectednessCalculated.set(true);
+}
+
+export function resetInterconnectedness() {
+  interconnectednessCalculated.set(false);
+}
 
 export function locationExploreTimeRequired(location: WorldLocation): number {
   const heroLevel = heroAverageLevel();
@@ -165,44 +264,30 @@ export function locationNodesAround(
   return nodes;
 }
 
-export function locationGetNearbySafeHaven(
+export function locationZoneOwner(
   position: WorldPosition,
-  requirePermanentlyOwned = false,
 ): WorldLocation | undefined {
-  const nearest = locationGetNearest(position, ['town', 'village']);
-  if (!nearest) return undefined;
-  if (requirePermanentlyOwned && !locationIsPermanentlyClaimed(nearest))
-    return undefined;
+  const pos =
+    interconnectedness()[worldNodeGetAccessId(position)].zocOwnerPosition;
+  if (!pos) return undefined;
 
-  const squareRadius = REVELATION_RADIUS[nearest.nodeType!];
-  const allNodesNearby = locationNodesAround(
-    position.x,
-    position.y,
-    squareRadius,
-  );
-  const amIContained = !!allNodesNearby.find((n) => n.id === nearest.id);
-
-  return amIContained ? nearest : undefined;
+  return locationGet(pos.x, pos.y);
 }
 
 export function locationIsPermanentlyClaimed(node: WorldLocation): boolean {
   return !!node.permanentlyClaimed;
 }
 
-export function locationGetNearest(
-  position: {
-    x: number;
-    y: number;
-  },
-  types: LocationType[] = ['town'],
-): WorldLocation | undefined {
-  const allNodes = locationGetAll();
-  const towns = allNodes.filter(
-    (node) => types.includes(node.nodeType!) && node.currentlyClaimed,
-  );
-  if (towns.length === 0) return undefined;
+export function locationGetNearestOwnedTown(
+  position: WorldPosition,
+): WorldLocation {
+  const nearestTowns =
+    interconnectedness()[worldNodeGetAccessId(position)]
+      .nearbyTownOrderPositions;
 
-  return sortBy(towns, (town) => distanceBetweenNodes(position, town))[0];
+  return nearestTowns
+    .map((n) => locationGet(n.x, n.y))
+    .filter((t) => t.currentlyClaimed)[0]!;
 }
 
 export function locationGetClosestUnclaimedClaimableLocation(
@@ -284,18 +369,20 @@ export function locationClaim(node: WorldLocation): void {
 
   currencyClaimsGain(node);
 
+  let claimDuration = 0;
   let unclaimTime = 0;
 
-  const nearbyPermanentNode = locationGetNearbySafeHaven(node, true);
-  if (!nearbyPermanentNode) {
-    // we can still buff ones even if we don't own the location
-    const nearbyTownishNode = locationGetNearbySafeHaven(node, false);
-    const claimDuration =
-      locationClaimDuration(node) +
-      (nearbyTownishNode
-        ? locationUpgradeStatTotal(nearbyTownishNode, 'boostedTicksPerLevel')
-        : 0);
+  const zocOwner = locationZoneOwner(node);
+  if (!zocOwner) {
+    claimDuration += locationClaimDuration(node);
+  }
 
+  if (zocOwner && zocOwner.currentlyClaimed && !zocOwner.permanentlyClaimed) {
+    claimDuration += locationClaimDuration(node);
+    claimDuration += locationUpgradeStatTotal(zocOwner, 'boostedTicksPerLevel');
+  }
+
+  if (claimDuration > 0) {
     unclaimTime = timerGetRegisterTick(claimDuration);
     timerAddUnclaimAction(node, unclaimTime);
   }
@@ -305,7 +392,7 @@ export function locationClaim(node: WorldLocation): void {
     if (updateNodeData) {
       updateNodeData.claimCount++;
       updateNodeData.currentlyClaimed = true;
-      if (nearbyPermanentNode) {
+      if (zocOwner?.permanentlyClaimed) {
         updateNodeData.permanentlyClaimed = true;
       }
 
@@ -327,6 +414,7 @@ export function locationClaim(node: WorldLocation): void {
 
   discordUpdateStatus();
 }
+
 export function locationUnclaim(node: WorldLocation): void {
   if (!node.currentlyClaimed) return;
 

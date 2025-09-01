@@ -103,7 +103,7 @@ vi.mock('@helpers/state-game', () => {
 
 vi.mock('@helpers/world-location', () => ({
   locationGetClaimed: vi.fn(() => []),
-  locationGetNearbySafeHaven: vi.fn(() => null),
+  locationZoneOwner: vi.fn(() => undefined),
 }));
 
 vi.mock('@helpers/signal', () => ({

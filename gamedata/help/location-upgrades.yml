@@ -1,7 +1,7 @@
 - id: f21b6dc6-19c5-4fe9-a599-43a7df6d9c78
   category: Location Upgrades
   name: -Boosted Production
-  description: Increases the production of all resources at this location, including resources added by traits.
+  description: Increases the production of all resources at this location, including resources added by traits. If this is applied to a village or town, any location captured within its zone of control will also receive this bonus.
 
 - id: 4c9ec6e1-22ae-4618-8ed7-55c0b4dda952
   category: Location Upgrades

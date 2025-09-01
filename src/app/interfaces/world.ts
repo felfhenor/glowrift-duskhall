@@ -56,6 +56,13 @@ export type WorldLocation = WorldPosition &
     locationUpgrades: Record<LocationUpgradeId, number>;
   };
 
+export type WorldLocationInterconnectedness = {
+  zocOwnerPosition?: WorldPosition;
+  zocNodePositions: WorldPosition[];
+
+  nearbyTownOrderPositions: WorldPosition[];
+};
+
 /**
  * Revelation radius for each location type when claimed
  */

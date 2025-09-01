@@ -4,10 +4,7 @@ import { festivalProductionMultiplier } from '@helpers/festival-production';
 import { error } from '@helpers/logging';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { locationTraitCurrencyAllGenerateModifiers } from '@helpers/trait-location-currency';
-import {
-  locationGetClaimed,
-  locationGetNearbySafeHaven,
-} from '@helpers/world-location';
+import { locationGetClaimed, locationZoneOwner } from '@helpers/world-location';
 import { locationUpgradeStatTotal } from '@helpers/world-location-upgrade';
 import type {
   CurrencyBlock,
@@ -185,10 +182,10 @@ export function currencyClaimsGetForNode(node: WorldLocation): CurrencyBlock {
 
   let safeHavenMultiplierBoost = 0;
   if (!['village', 'town'].includes(node.nodeType!)) {
-    const nearbySafeHaven = locationGetNearbySafeHaven(node);
-    if (nearbySafeHaven) {
+    const zocOwner = locationZoneOwner(node);
+    if (zocOwner && zocOwner.currentlyClaimed) {
       safeHavenMultiplierBoost = locationUpgradeStatTotal(
-        nearbySafeHaven,
+        zocOwner,
         'boostedProductionValuePercentPerLevel',
       );
     }

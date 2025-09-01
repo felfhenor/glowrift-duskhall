@@ -37,10 +37,22 @@ vi.mock('@helpers/timer', () => ({
 
 vi.mock('@helpers/world-location', () => ({
   resetClaimedNodeCounts: vi.fn(),
+  locationGetClaimed: vi.fn(() => []),
+  worldCalculateInterconnectedness: vi.fn(),
 }));
 
 vi.mock('es-toolkit/compat', () => ({
   merge: vi.fn(),
+}));
+
+vi.mock('@helpers/timer', () => ({
+  migrateCleanupOldTimerEntries: vi.fn(),
+}));
+
+vi.mock('@helpers/migrate-world', () => ({
+  migrateResetClaimedNodeCounts: vi.fn(),
+  migrateUnclaimMissedNodes: vi.fn(),
+  migratePermanentlyClaimedNodes: vi.fn(),
 }));
 
 // Import after mocking
@@ -54,18 +66,8 @@ import { gamestate, setGameState } from '@helpers/state-game';
 import { defaultOptions, options, setOptions } from '@helpers/state-options';
 import { merge } from 'es-toolkit/compat';
 
-vi.mock('@helpers/timer', () => ({
-  migrateCleanupOldTimerEntries: vi.fn(),
-}));
-
-vi.mock('@helpers/world-location', () => ({
-  migrateResetClaimedNodeCounts: vi.fn(),
-  migrateUnclaimMissedNodes: vi.fn(),
-  migratePermanentlyClaimedNodes: vi.fn(),
-}));
-
+import { migrateResetClaimedNodeCounts } from '@helpers/migrate-world';
 import { migrateCleanupOldTimerEntries } from '@helpers/timer';
-import { migrateResetClaimedNodeCounts } from '@helpers/world-location';
 
 describe('migrate', () => {
   beforeEach(() => {

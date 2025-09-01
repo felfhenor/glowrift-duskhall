@@ -5,6 +5,10 @@ import { heroPositionSet } from '@helpers/hero';
 import { setupFinish } from '@helpers/setup';
 import { gamestate, resetGameState } from '@helpers/state-game';
 import { setWorld } from '@helpers/world';
+import {
+  resetInterconnectedness,
+  worldCalculateInterconnectedness,
+} from '@helpers/world-location';
 import { worldgenGenerateWorld } from '@helpers/worldgen';
 
 export async function gameStart(): Promise<void> {
@@ -17,6 +21,7 @@ export async function gameStart(): Promise<void> {
   setWorld(world);
 
   setTimeout(() => {
+    worldCalculateInterconnectedness();
     heroPositionSet(world.homeBase.x, world.homeBase.y);
     cameraCenterOn(world.homeBase.x, world.homeBase.y + 1);
     setupFinish();
@@ -27,4 +32,5 @@ export function gameReset(): void {
   resetGameState();
   combatLogReset();
   fogInvalidateCache();
+  resetInterconnectedness();
 }

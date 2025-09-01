@@ -21,7 +21,10 @@ import {
 import { getOption, setOption } from '@helpers/state-options';
 import { timerLastSaveTick, timerTicksElapsed } from '@helpers/timer';
 import { victoryClaim, victoryHasWonForFirstTime } from '@helpers/victory';
-import { locationAreAllClaimed } from '@helpers/world-location';
+import {
+  isInterconnectednessReady,
+  locationAreAllClaimed,
+} from '@helpers/world-location';
 import { clamp } from 'es-toolkit/compat';
 
 export const isGameloopPaused = computed(() => getOption('gameloopPaused'));
@@ -35,6 +38,7 @@ export async function gameloop(totalTicks: number): Promise<void> {
   if (!isGameStateReady()) return;
   if (!gameloopShouldRun()) return;
   if (isGameloopPaused()) return;
+  if (!isInterconnectednessReady()) return;
 
   if (locationAreAllClaimed() && !victoryHasWonForFirstTime()) {
     victoryClaim();

@@ -15,6 +15,7 @@ import {
 } from '@helpers/state-game';
 import { defaultOptions, options, setOptions } from '@helpers/state-options';
 import { migrateCleanupOldTimerEntries } from '@helpers/timer';
+import { worldCalculateInterconnectedness } from '@helpers/world-location';
 import { merge } from 'es-toolkit/compat';
 
 export function migrateGameState() {
@@ -32,6 +33,8 @@ export function migrateGameState() {
   migrateResetClaimedNodeCounts();
   gamestateTickEnd();
   saveGameState();
+
+  worldCalculateInterconnectedness();
 }
 
 export function migrateOptionsState() {

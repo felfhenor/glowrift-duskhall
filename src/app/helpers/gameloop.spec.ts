@@ -71,6 +71,7 @@ vi.mock('@helpers/victory', () => ({
 
 vi.mock('@helpers/world-location', () => ({
   locationAreAllClaimed: vi.fn(),
+  isInterconnectednessReady: vi.fn(() => true),
 }));
 
 // Import the mocked functions and the functions under test
