@@ -2,7 +2,7 @@ import { claimMessageLog } from '@helpers/claim-log';
 import { combatGenerateForLocation } from '@helpers/combat-create';
 import { getEntry } from '@helpers/content';
 import { currencyClaimsGain, currencyClaimsLose } from '@helpers/currency';
-import { defaultLocation, defaultNodeCountBlock } from '@helpers/defaults';
+import { defaultLocation } from '@helpers/defaults';
 import { discordUpdateStatus } from '@helpers/discord';
 import { droppableGain, droppableMakeReal } from '@helpers/droppable';
 import {
@@ -13,11 +13,7 @@ import { allHeroes, heroAverageLevel } from '@helpers/hero';
 import { itemElementAdd, itemIsEquipment } from '@helpers/item';
 import { distanceBetweenNodes } from '@helpers/math';
 import { gamestate, updateGamestate } from '@helpers/state-game';
-import {
-  timerAddUnclaimAction,
-  timerGetRegisterTick,
-  timerTicksElapsed,
-} from '@helpers/timer';
+import { timerAddUnclaimAction, timerGetRegisterTick } from '@helpers/timer';
 import { globalStatusText } from '@helpers/ui';
 import { worldNodeGetAccessId } from '@helpers/world';
 import {
@@ -40,35 +36,6 @@ import type {
 } from '@interfaces/world';
 import { REVELATION_RADIUS, type WorldLocation } from '@interfaces/world';
 import { isNumber, mean, sortBy, sumBy } from 'es-toolkit/compat';
-
-export function migrateUnclaimMissedNodes(): void {
-  locationGetClaimed().forEach((claimed) => {
-    if (
-      locationIsPermanentlyClaimed(claimed) ||
-      claimed.unclaimTime > timerTicksElapsed()
-    )
-      return;
-
-    locationUnclaim(claimed);
-  });
-}
-
-export function migratePermanentlyClaimedNodes(): void {
-  locationGetClaimed().forEach((claimed) => {
-    if (claimed.unclaimTime > 0) return;
-    claimed.permanentlyClaimed = true;
-  });
-}
-
-export function migrateResetClaimedNodeCounts(): void {
-  const baseNodeCount = defaultNodeCountBlock();
-  locationGetClaimed().forEach((node) => baseNodeCount[node.nodeType!]++);
-
-  updateGamestate((state) => {
-    state.world.claimedCounts = baseNodeCount;
-    return state;
-  });
-}
 
 export function locationExploreTimeRequired(location: WorldLocation): number {
   const heroLevel = heroAverageLevel();

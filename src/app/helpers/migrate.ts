@@ -2,6 +2,11 @@ import { defaultGameState } from '@helpers/defaults';
 import { migrateItems } from '@helpers/migrate-items';
 import { migrateSkills } from '@helpers/migrate-skills';
 import {
+  migratePermanentlyClaimedNodes,
+  migrateResetClaimedNodeCounts,
+  migrateUnclaimMissedNodes,
+} from '@helpers/migrate-world';
+import {
   gamestate,
   gamestateTickEnd,
   gamestateTickStart,
@@ -10,11 +15,6 @@ import {
 } from '@helpers/state-game';
 import { defaultOptions, options, setOptions } from '@helpers/state-options';
 import { migrateCleanupOldTimerEntries } from '@helpers/timer';
-import {
-  migratePermanentlyClaimedNodes,
-  migrateResetClaimedNodeCounts,
-  migrateUnclaimMissedNodes,
-} from '@helpers/world-location';
 import { merge } from 'es-toolkit/compat';
 
 export function migrateGameState() {

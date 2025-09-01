@@ -55,6 +55,7 @@ export * from './math';
 export * from './migrate';
 export * from './migrate-items';
 export * from './migrate-skills';
+export * from './migrate-world';
 export * from './notify';
 export * from './pixi-app-setup';
 export * from './pixi-drag-handler';
