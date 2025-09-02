@@ -172,6 +172,7 @@
 
 - id: 411605e2-7186-438f-94ad-c8e7fbe86154
   name: Spiked Club of War
+  description: Violence fixes everything, if you're good at it
   sprite: '0046'
 
   rarity: Uncommon
