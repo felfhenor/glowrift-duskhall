@@ -8,6 +8,7 @@ import { gameloopFestival } from '@helpers/gameloop-festival';
 import { gameloopTimers } from '@helpers/gameloop-timers';
 import { gameloopTown } from '@helpers/gameloop-town';
 import { gameloopTravel } from '@helpers/gameloop-travel';
+import { isInterconnectednessReady } from '@helpers/interconnectedness';
 import { debug } from '@helpers/logging';
 import { schedulerYield } from '@helpers/scheduler';
 import { isSetup } from '@helpers/setup';
@@ -21,10 +22,7 @@ import {
 import { getOption, setOption } from '@helpers/state-options';
 import { timerLastSaveTick, timerTicksElapsed } from '@helpers/timer';
 import { victoryClaim, victoryHasWonForFirstTime } from '@helpers/victory';
-import {
-  isInterconnectednessReady,
-  locationAreAllClaimed,
-} from '@helpers/world-location';
+import { locationAreAllClaimed } from '@helpers/world-location';
 import { clamp } from 'es-toolkit/compat';
 
 export const isGameloopPaused = computed(() => getOption('gameloopPaused'));

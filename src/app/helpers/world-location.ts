@@ -1,4 +1,3 @@
-import { signal } from '@angular/core';
 import { claimMessageLog } from '@helpers/claim-log';
 import { combatGenerateForLocation } from '@helpers/combat-create';
 import { getEntry } from '@helpers/content';
@@ -11,6 +10,7 @@ import {
   guardianMaxDamage,
 } from '@helpers/guardian';
 import { allHeroes, heroAverageLevel } from '@helpers/hero';
+import { interconnectednessState } from '@helpers/interconnectedness';
 import { itemElementAdd, itemIsEquipment } from '@helpers/item';
 import { distanceBetweenNodes } from '@helpers/math';
 import { gamestate, updateGamestate } from '@helpers/state-game';
@@ -32,109 +32,11 @@ import type { LocationType } from '@interfaces/content-worldconfig';
 import type { DroppableEquippable, DropRarity } from '@interfaces/droppable';
 import { RARITY_PRIORITY } from '@interfaces/droppable';
 import type {
-  WorldLocationInterconnectedness,
   WorldLocationTerrorLevel,
   WorldPosition,
 } from '@interfaces/world';
-import { REVELATION_RADIUS, type WorldLocation } from '@interfaces/world';
+import { type WorldLocation } from '@interfaces/world';
 import { isNumber, mean, sortBy, sumBy } from 'es-toolkit/compat';
-
-const interconnectedness = signal<
-  Record<string, WorldLocationInterconnectedness>
->({});
-
-const interconnectednessCalculated = signal<boolean>(false);
-export const isInterconnectednessReady =
-  interconnectednessCalculated.asReadonly();
-
-function calculateInterconnectednessForLocation(
-  location: WorldLocation,
-): WorldLocationInterconnectedness {
-  const allNodes = locationGetAll();
-
-  const nearestTowns = sortBy(
-    allNodes.filter((node) => node.nodeType === 'town'),
-    (checkNode) => distanceBetweenNodes(location, checkNode),
-  ).map((n) => ({ x: n.x, y: n.y }));
-
-  const zocNodes = [];
-  if (['town', 'village'].includes(location.nodeType!)) {
-    zocNodes.push(
-      ...locationNodesAround(
-        location.x,
-        location.y,
-        REVELATION_RADIUS[location.nodeType!],
-      ).filter((n) => n.id !== location.id),
-    );
-  }
-
-  return {
-    nearbyTownOrderPositions: nearestTowns,
-    zocNodePositions: zocNodes,
-  };
-}
-
-export function updateInterconnectednessForLocation(location: WorldLocation) {
-  if (!location.nodeType) return;
-
-  const newInterconnectedness = interconnectedness();
-
-  const locationInterconnectedness =
-    calculateInterconnectednessForLocation(location);
-
-  newInterconnectedness[worldNodeGetAccessId(location)] =
-    locationInterconnectedness;
-
-  if (['town', 'village'].includes(location.nodeType)) {
-    const zocNodes = locationNodesAround(
-      location.x,
-      location.y,
-      REVELATION_RADIUS[location.nodeType],
-    );
-
-    zocNodes.forEach((loc) => {
-      const zocLocId = worldNodeGetAccessId(loc);
-      newInterconnectedness[zocLocId] =
-        calculateInterconnectednessForLocation(loc);
-
-      newInterconnectedness[zocLocId].zocOwnerPosition = {
-        x: location.x,
-        y: location.y,
-      };
-    });
-  }
-
-  interconnectedness.set(newInterconnectedness);
-}
-
-export function worldCalculateInterconnectedness() {
-  resetInterconnectedness();
-  interconnectedness.set({});
-
-  const newInterconnectedness: Record<string, WorldLocationInterconnectedness> =
-    {};
-
-  const allNodes = locationGetAll();
-
-  allNodes.forEach((loc) => {
-    const interconnectedness = calculateInterconnectednessForLocation(loc);
-    newInterconnectedness[worldNodeGetAccessId(loc)] = interconnectedness;
-  });
-
-  interconnectedness.set(newInterconnectedness);
-
-  allNodes
-    .filter((n) => ['town', 'village'].includes(n.nodeType!))
-    .forEach((loc) => {
-      updateInterconnectednessForLocation(loc);
-    });
-
-  interconnectednessCalculated.set(true);
-}
-
-export function resetInterconnectedness() {
-  interconnectednessCalculated.set(false);
-}
 
 export function locationExploreTimeRequired(location: WorldLocation): number {
   const heroLevel = heroAverageLevel();
@@ -268,7 +170,7 @@ export function locationZoneOwner(
   position: WorldPosition,
 ): WorldLocation | undefined {
   const pos =
-    interconnectedness()[worldNodeGetAccessId(position)].zocOwnerPosition;
+    interconnectednessState()[worldNodeGetAccessId(position)].zocOwnerPosition;
   if (!pos) return undefined;
 
   const node = locationGet(pos.x, pos.y);
@@ -283,7 +185,7 @@ export function locationGetNearestOwnedTown(
   position: WorldPosition,
 ): WorldLocation {
   const nearestTowns =
-    interconnectedness()[worldNodeGetAccessId(position)]
+    interconnectednessState()[worldNodeGetAccessId(position)]
       .nearbyTownOrderPositions;
 
   return nearestTowns

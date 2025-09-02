@@ -1,4 +1,5 @@
 import { defaultGameState } from '@helpers/defaults';
+import { interconnectednessRecalculate } from '@helpers/interconnectedness';
 import { migrateItems } from '@helpers/migrate-items';
 import { migrateSkills } from '@helpers/migrate-skills';
 import {
@@ -15,7 +16,6 @@ import {
 } from '@helpers/state-game';
 import { defaultOptions, options, setOptions } from '@helpers/state-options';
 import { migrateCleanupOldTimerEntries } from '@helpers/timer';
-import { worldCalculateInterconnectedness } from '@helpers/world-location';
 import { merge } from 'es-toolkit/compat';
 
 export function migrateGameState() {
@@ -34,7 +34,7 @@ export function migrateGameState() {
   gamestateTickEnd();
   saveGameState();
 
-  worldCalculateInterconnectedness();
+  interconnectednessRecalculate();
 }
 
 export function migrateOptionsState() {

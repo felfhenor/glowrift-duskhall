@@ -38,7 +38,10 @@ vi.mock('@helpers/timer', () => ({
 vi.mock('@helpers/world-location', () => ({
   resetClaimedNodeCounts: vi.fn(),
   locationGetClaimed: vi.fn(() => []),
-  worldCalculateInterconnectedness: vi.fn(),
+}));
+
+vi.mock('@helpers/interconnectedness', () => ({
+  interconnectednessRecalculate: vi.fn(),
 }));
 
 vi.mock('es-toolkit/compat', () => ({

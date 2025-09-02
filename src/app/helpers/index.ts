@@ -46,6 +46,7 @@ export * from './hero-stats';
 export * from './hero-talent';
 export * from './hero-xp';
 export * from './icons';
+export * from './interconnectedness';
 export * from './inventory-equipment';
 export * from './inventory-skill';
 export * from './item';

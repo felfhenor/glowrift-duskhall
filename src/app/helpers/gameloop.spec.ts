@@ -71,6 +71,9 @@ vi.mock('@helpers/victory', () => ({
 
 vi.mock('@helpers/world-location', () => ({
   locationAreAllClaimed: vi.fn(),
+}));
+
+vi.mock('@helpers/interconnectedness', () => ({
   isInterconnectednessReady: vi.fn(() => true),
 }));
 
