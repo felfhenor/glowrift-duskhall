@@ -125,7 +125,9 @@ export function currencyClaimsGetCurrent(): void {
   currencyGainMultiple(currencyGains);
 }
 
-export function currencyClaimsGetForNode(node: WorldLocation): CurrencyBlock {
+export function currencyClaimsForNodeWithoutUpgrades(
+  node: WorldLocation,
+): CurrencyBlock {
   const base = defaultCurrencyBlock();
 
   switch (node.nodeType) {
@@ -171,6 +173,12 @@ export function currencyClaimsGetForNode(node: WorldLocation): CurrencyBlock {
 
     base[currency.name] += currency.value;
   });
+
+  return base;
+}
+
+export function currencyClaimsGetForNode(node: WorldLocation): CurrencyBlock {
+  const base = currencyClaimsForNodeWithoutUpgrades(node);
 
   const dustBoost = locationUpgradeStatTotal(
     node,

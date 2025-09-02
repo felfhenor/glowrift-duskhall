@@ -1,6 +1,6 @@
 import { getEntriesByType, getEntry } from '@helpers/content';
 import {
-  currencyClaimsGetForNode,
+  currencyClaimsForNodeWithoutUpgrades,
   currencyClaimsUpdate,
   currencyHasMultipleAmounts,
   currencyLoseMultiple,
@@ -124,7 +124,7 @@ export function locationUpgradeCosts(
   upgrade: LocationUpgradeContent,
 ): CurrencyBlock {
   const baseScalar = locationUpgradeCostScalar(location, upgrade);
-  const generatedResources = currencyClaimsGetForNode(location);
+  const generatedResources = currencyClaimsForNodeWithoutUpgrades(location);
 
   const usedCurrencies: GameCurrency[] = uniq([
     'Mana',
