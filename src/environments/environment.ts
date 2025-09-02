@@ -20,5 +20,8 @@ export const environment = {
         },
       },
     },
+    recorder: {
+      enable: true,
+    },
   },
 };
