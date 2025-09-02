@@ -21,7 +21,7 @@ export const environment = {
       },
     },
     recorder: {
-      enable: true,
+      enabled: true,
     },
   },
 };
