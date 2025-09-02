@@ -170,7 +170,7 @@ export function locationZoneOwner(
   position: WorldPosition,
 ): WorldLocation | undefined {
   const pos =
-    interconnectednessState()[worldNodeGetAccessId(position)].zocOwnerPosition;
+    interconnectednessState()[worldNodeGetAccessId(position)]?.zocOwnerPosition;
   if (!pos) return undefined;
 
   const node = locationGet(pos.x, pos.y);
