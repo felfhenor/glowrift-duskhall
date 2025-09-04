@@ -212,6 +212,7 @@
 
 - id: c574246d-74e9-49eb-8d20-3af44a74d9e6
   name: Master's Power Gauntlets
+  description: A fist-first philosophy
   sprite: '0002'
 
   rarity: Rare
