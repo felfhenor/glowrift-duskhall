@@ -1,4 +1,4 @@
-<app-card-page>
+<app-card-page heightProfile="heroes">
   <span header>Heroes</span>
 
   <div pageactions>
@@ -75,7 +75,7 @@
 </app-card-page>
 
 @if (showingSubMenu() && equipItemType(); as equipType) {
-  <app-card-page heightProfile="sub">
+  <app-card-page heightProfile="heroes-sub">
     <span header>Choose {{ equipType | titlecase }}</span>
 
     <div pageactions>
@@ -86,14 +86,13 @@
       [allowedItemTypes]="[equipType]"
       (itemClicked)="equipItem($event)"
       [allowItemClicks]="true"
-      [containerHeight]="220"
       [compareItemToHero]="activeHero()"
     ></app-inventory-grid-container>
   </app-card-page>
 }
 
 @if (showingSubMenu() && skillSlot() >= 0) {
-  <app-card-page heightProfile="sub">
+  <app-card-page heightProfile="heroes-sub">
     <span header>Choose Spell</span>
 
     <div pageactions>
@@ -104,7 +103,6 @@
       [allowedItemTypes]="['skill']"
       (skillClicked)="equipSkill($event)"
       [allowSkillClicks]="true"
-      [containerHeight]="220"
       [compareSkillToHero]="activeHero()"
       [compareSkillToHeroSlot]="skillSlot()"
     ></app-inventory-grid-container>

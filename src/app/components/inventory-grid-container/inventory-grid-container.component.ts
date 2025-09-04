@@ -59,8 +59,6 @@ export class InventoryGridContainerComponent implements OnInit {
   public compareSkillToHero = input<Hero>();
   public compareSkillToHeroSlot = input<number>();
 
-  public containerHeight = input<number>(200);
-
   public itemClicked = output<EquipmentItem>();
   public skillClicked = output<EquipmentSkill>();
 

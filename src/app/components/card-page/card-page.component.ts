@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, input } from '@angular/core';
 
-type CardSize = 'main' | 'sub';
+type CardSize = 'main' | 'sub' | 'heroes' | 'heroes-sub';
 
 @Component({
   selector: 'app-card-page',

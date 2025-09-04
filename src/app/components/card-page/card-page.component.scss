@@ -1,12 +1,7 @@
 @reference 'tailwindcss';
 
 .card-page-container {
-  &.size-sub {
-    position: absolute;
-    top: 50vh;
-  }
-
-  transform-origin: top center;
+  transform-origin: center center;
 
   // Full scale at larger resolutions (1600px+ width)
   @media (min-width: 1600px) {
@@ -21,27 +16,45 @@
   // Scale down to 0.85 at medium resolutions (1366px-1399px)
   @media (max-width: 1399px) and (min-width: 1366px) {
     transform: scale(0.9);
-
-    &.size-sub {
-      top: 45vh;
-    }
   }
 
   // Scale down to 0.8 at smaller resolutions (1200px-1365px)
   @media (max-width: 1365px) and (min-width: 1200px) {
     transform: scale(0.85);
-
-    &.size-sub {
-      top: 45vh;
-    }
   }
 
   // Scale down to 0.75 at very small resolutions (<1200px)
   @media (max-width: 1199px) {
     transform: scale(0.8);
+  }
 
-    &.size-sub {
-      top: 45vh;
+  &.size-main {
+    min-height: 65vh;
+    max-height: 65vh;
+  }
+
+  &.size-sub {
+    min-height: 35vh;
+    max-height: 35vh;
+
+    @media (max-height: 1000px) {
+      position: absolute;
+      bottom: 4px;
+    }
+  }
+
+  &.size-heroes {
+    min-height: 650px;
+    max-height: 650px;
+  }
+
+  &.size-heroes-sub {
+    max-height: calc(100vh - 650px);
+
+    @media (max-height: 1000px) {
+      max-height: 35vh;
+      position: absolute;
+      bottom: 4px;
     }
   }
 }

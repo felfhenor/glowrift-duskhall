@@ -1,6 +1,6 @@
 @let items = selectedSkills();
 
-<div class="flex flex-row gap-2 h-full">
+<div class="flex flex-row gap-2 h-full panel-card-container">
   <div class="flex-1 flex flex-col h-full">
     <app-panel-town-building-upgrade
       [building]="'Alchemist'"
@@ -85,6 +85,5 @@
     (skillClicked)="chooseItem($event)"
     [allowSkillClicks]="true"
     [disabledSkillIds]="disabledSkillIds()"
-    [containerHeight]="220"
   ></app-inventory-grid-container>
 </app-card-page>

@@ -1,0 +1,7 @@
+:host {
+  @apply h-full;
+}
+
+.grid-container {
+  max-height: max(80px, calc(100% - 80px));
+}

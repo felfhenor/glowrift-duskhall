@@ -13,10 +13,7 @@
   <ng-container [appTeleportOutlet]="'equipment-sorter'"></ng-container>
 </div>
 
-<div
-  class="flex flex-row overflow-y-auto p-2"
-  [style.max-height.px]="containerHeight()"
->
+<div class="flex flex-row overflow-y-auto p-2 grid-container">
   @switch (currentItemType()) {
     @case ('skill') {
       <app-inventory-grid-skill
