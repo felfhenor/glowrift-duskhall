@@ -13,10 +13,6 @@ export function skillInventoryMaxSize(): number {
   return 100;
 }
 
-export function skillHeroMax(): number {
-  return 3;
-}
-
 export function skillInventoryAdd(item: EquipmentSkill): void {
   const lostSkills: EquipmentSkill[] = [];
 

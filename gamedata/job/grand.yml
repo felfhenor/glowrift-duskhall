@@ -1,0 +1,17 @@
+- id: 3e941a5d-9b0a-481f-a7d3-4649562f2f37
+  name: Holy Mage
+  description: An advanced mage, capable of utilizing earth, fire, water and air skills.
+
+  numSkills: 5
+
+  defaultSkillIds:
+    - Earthspike I
+    - Firewisp I
+    - Healsprite I
+    - Thunderwave I
+
+  talentTreeIds:
+    - Earth Talent Tree
+    - Fire Talent Tree
+    - Water Talent Tree
+    - Air Talent Tree

@@ -1,7 +1,7 @@
 import { Component, computed, input, output } from '@angular/core';
 import { IconBlankSlotComponent } from '@components/icon-blank-slot/icon-blank-slot.component';
 import { IconSkillComponent } from '@components/icon-skill/icon-skill.component';
-import { getEntry, heroEquipmentSkills, skillHeroMax } from '@helpers';
+import { getEntry, heroEquipmentSkills, jobMaxSkillsForHero } from '@helpers';
 import type { EquipmentSkillContent } from '@interfaces';
 import { type Hero } from '@interfaces';
 import { RepeatPipe } from 'ngxtension/repeat-pipe';
@@ -19,7 +19,7 @@ export class PanelHeroesSkillsComponent {
   public slotClick = output<number>();
   public slotRightClick = output<number>();
 
-  public maxSkills = computed(() => skillHeroMax());
+  public maxSkills = computed(() => jobMaxSkillsForHero(this.hero()));
 
   public equipmentSkills = computed(
     () =>

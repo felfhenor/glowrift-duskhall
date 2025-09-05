@@ -59,7 +59,7 @@ const processFiles = () => {
 };
 
 const rewriteDataIds = () => {
-  const allIds = Object.keys(allData);
+  const allIds = Object.keys(allData).reverse();
   console.log(`Valid identifiers: ${allIds.join(', ')}`);
 
   const getIdForName = (name: string, type: string) => {

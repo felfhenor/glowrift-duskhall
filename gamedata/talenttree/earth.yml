@@ -1,5 +1,6 @@
 - id: b0ef64eb-80af-4d87-89b5-918d388adecd
   name: Earth Talent Tree
+  element: Earth
 
   talents:
     - level: 0

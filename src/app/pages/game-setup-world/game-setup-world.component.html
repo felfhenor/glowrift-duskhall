@@ -11,20 +11,36 @@
         <div class="card-actions pt-3 flex flex-row gap-2">
           <div class="flex flex-row justify-center gap-2 flex-wrap">
             @for (name of heroNames; track $index) {
+              @let heroIndex = $index;
+
               <div class="min-w-[128px] flex flex-col gap-2 items-center">
                 <app-atlas-animation
-                  [assetName]="heroSprites[$index]()"
+                  [assetName]="heroSprites[heroIndex]()"
                   [spritesheet]="'hero'"
                 ></app-atlas-animation>
+
                 <button
                   class="btn btn-info btn-block"
                   [swal]="renameSwal"
                   appSfx="ui-click"
-                  [sfxOffset]="$index"
+                  [sfxOffset]="heroIndex"
                   [sfxTrigger]="['click', 'hover']"
                 >
                   {{ name() }}
                 </button>
+
+                <button
+                  class="btn btn-info btn-outline btn-block"
+                  appSfx="ui-click"
+                  [sfxOffset]="heroIndex + 4"
+                  [sfxTrigger]="['click', 'hover']"
+                  [tp]="contextMenu"
+                  tpVariation="contextMenu"
+                  [tpTrigger]="'click'"
+                >
+                  {{ heroJobs[heroIndex]() }}
+                </button>
+
                 <swal
                   #renameSwal
                   title="Rename Hero"
@@ -34,8 +50,29 @@
                   inputValue="{{ name() }}"
                   [inputAttributes]="{ minlength: '2', maxlength: '12' }"
                   icon="warning"
-                  (confirm)="renameHero($index, $event)"
+                  (confirm)="renameHero(heroIndex, $event)"
                 ></swal>
+
+                <ng-template #contextMenu let-hide let-item="data">
+                  <ul
+                    class="menu bg-base-200 rounded-box w-56 p-0 min-w-[300px]"
+                  >
+                    @for (job of allJobs(); track $index) {
+                      <li>
+                        <a
+                          class="flex flex-col items-start"
+                          (click)="heroJobs[heroIndex].set(job.name); hide()"
+                        >
+                          <span class="font-bold">
+                            {{ job.name }}
+                          </span>
+
+                          <p class="italic text-xs">{{ job.description }}</p>
+                        </a>
+                      </li>
+                    }
+                  </ul>
+                </ng-template>
               </div>
             }
           </div>

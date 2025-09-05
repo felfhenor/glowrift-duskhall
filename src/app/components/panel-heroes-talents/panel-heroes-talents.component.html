@@ -18,17 +18,17 @@
   </button>
 
   <div class="join">
-    @for (type of allTalents(); track type.element) {
+    @for (treeData of allTrees(); track treeData.tree.id) {
       <button
         class="btn btn-neutral btn-sm btn-active join-item"
-        [class.btn-outline]="currentElement() !== type.element"
-        (click)="changeElement(type.element)"
+        [class.btn-outline]="currentTreeId() !== treeData.tree.id"
+        (click)="changeTree(treeData.tree.id)"
         appSfx="ui-click"
         [sfxOffset]="$index"
         [sfxTrigger]="['click', 'hover']"
       >
-        <app-icon-element [element]="type.element"></app-icon-element>
-        {{ type.element }} ({{ type.amount }})
+        <app-icon-element [element]="treeData.tree.element"></app-icon-element>
+        {{ treeData.tree.element }} ({{ treeData.amount }})
       </button>
     }
   </div>
@@ -37,7 +37,7 @@
 <div class="w-full mt-2">
   <app-panel-heroes-talents-tree
     [hero]="hero()"
-    [element]="currentElement()"
+    [tree]="currentTree()"
   ></app-panel-heroes-talents-tree>
 </div>
 

@@ -1,7 +1,7 @@
 import type { Signal } from '@angular/core';
 import { environment } from '@environments/environment';
 import { localStorageSignal } from '@helpers/signal';
-import type { GameOptions } from '@interfaces';
+import type { GameOptions, TalentTreeId } from '@interfaces';
 
 export function defaultOptions(): GameOptions {
   return {
@@ -38,7 +38,7 @@ export function defaultOptions(): GameOptions {
     worldTab: 'ResourceGeneration',
     inventoryFilter: 'accessory',
     selectedHeroIndex: 0,
-    selectedTalentTreeElement: 'Fire',
+    selectedTalentTreeId: 'Fire Talent Tree' as TalentTreeId,
     empireSelectedLocationTypes: [
       'castle',
       'cave',

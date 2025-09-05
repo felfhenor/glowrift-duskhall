@@ -1,5 +1,6 @@
 - id: f84a9bbe-8637-4ec0-9325-07995ca6e41d
   name: Air Talent Tree
+  element: Air
 
   talents:
     - level: 0

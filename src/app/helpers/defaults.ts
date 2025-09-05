@@ -10,6 +10,7 @@ import type {
   GameState,
   Hero,
   HeroId,
+  JobId,
   LocationType,
   StatBlock,
   TalentTownStats,
@@ -45,10 +46,26 @@ export function defaultGameState(): GameState {
       nodeTypePreferences: defaultNodeTypePreferences(),
       lootRarityPreferences: defaultLootRarityPreferences(),
       heroes: [
-        defaultHero({ name: 'Terrus', sprite: '0060' }),
-        defaultHero({ name: 'Ignatius', sprite: '0004' }),
-        defaultHero({ name: 'Aquara', sprite: '0000' }),
-        defaultHero({ name: 'Zephyra', sprite: '0036' }),
+        defaultHero({
+          name: 'Terrus',
+          jobId: 'Earth Mage' as JobId,
+          sprite: '0060',
+        }),
+        defaultHero({
+          name: 'Ignatius',
+          jobId: 'Fire Mage' as JobId,
+          sprite: '0004',
+        }),
+        defaultHero({
+          name: 'Aquara',
+          jobId: 'Water Mage' as JobId,
+          sprite: '0000',
+        }),
+        defaultHero({
+          name: 'Zephyra',
+          jobId: 'Air Mage' as JobId,
+          sprite: '0036',
+        }),
       ],
       position: {
         nodeId: '',
@@ -155,6 +172,7 @@ export function defaultAffinities(): ElementBlock {
 export function defaultHero(props: Partial<Hero> = {}): Hero {
   return {
     id: rngUuid() as HeroId,
+    jobId: 'Holy Mage' as JobId,
     name: '',
     sprite: '',
     frames: 4,

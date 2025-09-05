@@ -13,6 +13,7 @@ import {
 } from '@helpers/timer';
 import { merchantGenerateItems } from '@helpers/town-merchant';
 import { locationGet } from '@helpers/world-location';
+import type { JobContent } from '@interfaces/content-job';
 import type { EquipmentSkill } from '@interfaces/content-skill';
 
 export function isSetup(): boolean {
@@ -20,15 +21,17 @@ export function isSetup(): boolean {
 }
 
 function giveHeroesDefaultItems(): void {
-  const items = ['Earthspike I', 'Firewisp I', 'Healsprite I', 'Thunderwave I'];
+  allHeroes().forEach((hero) => {
+    const job = getEntry<JobContent>(hero.jobId);
+    if (!job) return;
 
-  allHeroes().forEach((hero, index) => {
-    const skill = items[index];
-    const createdSkill = droppableMakeReal(
-      getEntry<EquipmentSkill>(skill)!,
-    ) as EquipmentSkill;
+    job.defaultSkillIds.forEach((skill, index) => {
+      const createdSkill = droppableMakeReal(
+        getEntry<EquipmentSkill>(skill)!,
+      ) as EquipmentSkill;
 
-    skillEquip(hero, createdSkill, 0);
+      skillEquip(hero, createdSkill, index);
+    });
   });
 }
 

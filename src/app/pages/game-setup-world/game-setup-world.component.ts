@@ -13,10 +13,12 @@ import {
   getEntriesByType,
   heroPickSpriteByName,
   heroUpdateData,
+  jobUnlocked,
   setWorldConfig,
   setWorldSeed,
 } from '@helpers';
-import type { LocationType, WorldConfigContent } from '@interfaces';
+import type { JobId, LocationType, WorldConfigContent } from '@interfaces';
+import { TippyDirective } from '@ngneat/helipopper';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { sum } from 'es-toolkit/compat';
 
@@ -28,6 +30,7 @@ import { sum } from 'es-toolkit/compat';
     AtlasAnimationComponent,
     SFXDirective,
     FormsModule,
+    TippyDirective,
   ],
   templateUrl: './game-setup-world.component.html',
   styleUrl: './game-setup-world.component.scss',
@@ -44,6 +47,15 @@ export class GameSetupWorldComponent implements OnInit {
     signal<string>('Aquara'),
     signal<string>('Zephyra'),
   ];
+
+  public heroJobs = [
+    signal<string>('Earth Mage'),
+    signal<string>('Fire Mage'),
+    signal<string>('Water Mage'),
+    signal<string>('Air Mage'),
+  ];
+
+  public allJobs = computed(() => jobUnlocked());
 
   public readonly heroSprites = [
     computed(() => heroPickSpriteByName(this.heroNames[0]())),
@@ -89,6 +101,7 @@ export class GameSetupWorldComponent implements OnInit {
       const hero = gamestate().hero.heroes[h];
       hero.name = this.heroNames[h]();
       hero.sprite = this.heroSprites[h]();
+      hero.jobId = this.heroJobs[h]() as JobId;
 
       heroUpdateData(hero);
     }

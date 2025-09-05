@@ -1,0 +1,47 @@
+- id: 7380d1f1-fab6-4a6a-a9f3-4bd42edd58a8
+  name: Air Mage
+  description: A practitioner of air magic, capable of controlling the battlefield with powerful gusts and storms. Very variable damage and powerful buffs/debuffs.
+
+  numSkills: 3
+
+  defaultSkillIds:
+    - Thunderwave I
+
+  talentTreeIds:
+    - Air Talent Tree
+
+- id: de4f8671-ffec-4e4f-937e-c3066056193d
+  name: Fire Mage
+  description: A practitioner of fire magic, capable of doing excellent damage to many foes.
+
+  numSkills: 3
+
+  defaultSkillIds:
+    - Firewisp I
+
+  talentTreeIds:
+    - Fire Talent Tree
+
+- id: 7993b4c6-ad42-4f7a-aabd-21d174e1a931
+  name: Water Mage
+  description: A practitioner of water magic, uniquely capable of healing allies while simultaneously devastating foes. Focuses on defense and support.
+
+  numSkills: 3
+
+  defaultSkillIds:
+    - Healsprite I
+
+  talentTreeIds:
+    - Water Talent Tree
+
+- id: b8971be4-e9ea-43b9-8a9c-3ab3a7afd40e
+  name: Earth Mage
+  description: A practitioner of earth magic, capable of doing massive damage to singular foes. Focuses on defense and control.
+
+  numSkills: 3
+
+  defaultSkillIds:
+    - Earthspike I
+
+  talentTreeIds:
+    - Earth Talent Tree

@@ -22,6 +22,8 @@ import type {
   GuardianId,
   HelpContent,
   IsContentItem,
+  JobContent,
+  JobId,
   LocationUpgradeContent,
   LocationUpgradeId,
   StatBlock,
@@ -62,6 +64,7 @@ const initializers: Record<ContentType, (entry: any) => any> = {
   worldconfig: ensureWorldConfig,
   help: ensureHelp,
   cameo: ensureCameo,
+  job: ensureJob,
 };
 
 function ensureStats(statblock: Partial<StatBlock> = {}): Required<StatBlock> {
@@ -414,6 +417,18 @@ function ensureLocationUpgrade(
     boostedRebellionPerLevel: locationUpgrade.boostedRebellionPerLevel ?? 0,
     boostedDustProductionPerLevel:
       locationUpgrade.boostedDustProductionPerLevel ?? 0,
+  };
+}
+
+function ensureJob(job: Partial<JobContent>): Required<JobContent> {
+  return {
+    id: job.id ?? ('UNKNOWN' as JobId),
+    name: job.name ?? 'UNKNOWN',
+    description: job.description ?? 'UNKNOWN',
+    __type: 'job',
+    numSkills: job.numSkills ?? 3,
+    defaultSkillIds: job.defaultSkillIds ?? [],
+    talentTreeIds: job.talentTreeIds ?? [],
   };
 }
 

@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { ButtonCloseComponent } from '@components/button-close/button-close.component';
 import { CardPageComponent } from '@components/card-page/card-page.component';
+import { ContentNameComponent } from '@components/content-name/content-name.component';
 import { IconHeroComponent } from '@components/icon-hero/icon-hero.component';
 import { IconComponent } from '@components/icon/icon.component';
 import { InventoryGridContainerComponent } from '@components/inventory-grid-container/inventory-grid-container.component';
@@ -52,6 +53,7 @@ import { TippyDirective } from '@ngneat/helipopper';
     ButtonCloseComponent,
     IconComponent,
     TippyDirective,
+    ContentNameComponent,
   ],
   templateUrl: './panel-heroes.component.html',
   styleUrl: './panel-heroes.component.scss',

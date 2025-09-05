@@ -270,7 +270,7 @@ describe('migrate', () => {
     worldTab: 'ResourceGeneration',
     inventoryFilter: 'accessory',
     selectedHeroIndex: 0,
-    selectedTalentTreeElement: 'Fire',
+    selectedTalentTreeId: 'Fire',
   });
 
   beforeEach(() => {

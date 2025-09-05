@@ -16,9 +16,14 @@
             [class.grayscale]="hero.hp <= 0"
           ></app-icon-hero>
 
-          <div class="pt-2">
+          <div class="pt-2 px-2">
             <div>{{ hero.name }}</div>
-            <div>Lv.{{ hero.level }}</div>
+            <div class="flex gap-1 text-sm italic">
+              <span>Lv.{{ hero.level }}</span>
+              <span>
+                <app-content-name [id]="hero.jobId"></app-content-name>
+              </span>
+            </div>
           </div>
         </div>
 

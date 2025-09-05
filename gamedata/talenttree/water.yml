@@ -1,5 +1,6 @@
 - id: 6d6b7c78-f5c0-4312-b0e7-6ff6b44bce04
   name: Water Talent Tree
+  element: Water
 
   talents:
     - level: 0

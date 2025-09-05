@@ -50,6 +50,7 @@ export * from './interconnectedness';
 export * from './inventory-equipment';
 export * from './inventory-skill';
 export * from './item';
+export * from './job';
 export * from './logging';
 export * from './map-grid-generator';
 export * from './math';

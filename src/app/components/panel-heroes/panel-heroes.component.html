@@ -10,7 +10,7 @@
       @for (hero of allHeroes(); track hero.id) {
         @let isActive = hero === activeHero();
         <div
-          class="flex flex-col items-center p-6 cursor-pointer"
+          class="flex flex-col items-center p-3 cursor-pointer"
           [class.border-r]="!isActive"
           [class.border-l]="isActive"
           [class.border-t]="isActive"
@@ -20,11 +20,17 @@
           <app-icon-hero [hero]="hero"></app-icon-hero>
 
           <div>
-            {{ hero.name }}
+            <div class="font-bold">
+              {{ hero.name }}
+            </div>
 
             @if (hero.contribution) {
               <app-icon [name]="'gameHelp'" [tp]="hero.contribution"></app-icon>
             }
+          </div>
+
+          <div class="text-xs italic">
+            <app-content-name [id]="hero.jobId"></app-content-name>
           </div>
         </div>
       }

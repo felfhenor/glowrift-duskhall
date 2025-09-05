@@ -12,8 +12,8 @@ import {
   talentIdsInTalentTree,
   talentRespec,
 } from '@helpers';
-import type { TalentTreeContent } from '@interfaces';
-import { type GameElement, type Hero } from '@interfaces';
+import type { JobContent, TalentTreeContent, TalentTreeId } from '@interfaces';
+import { type Hero } from '@interfaces';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { intersection, maxBy } from 'es-toolkit/compat';
 
@@ -32,53 +32,34 @@ import { intersection, maxBy } from 'es-toolkit/compat';
 export class PanelHeroesTalentsComponent implements OnChanges {
   public hero = input.required<Hero>();
 
-  public currentElement = computed(() =>
-    getOption('selectedTalentTreeElement'),
+  public currentTreeId = computed(() => getOption('selectedTalentTreeId'));
+
+  public currentTree = computed(
+    () =>
+      getEntry<TalentTreeContent>(this.currentTreeId()) as TalentTreeContent,
   );
 
   public pointsAvailable = computed(() =>
     heroRemainingTalentPoints(this.hero()),
   );
 
-  public allTalents: Signal<Array<{ element: GameElement; amount: number }>> =
-    computed(() => [
-      {
-        element: 'Earth',
+  public allTrees: Signal<Array<{ amount: number; tree: TalentTreeContent }>> =
+    computed(() => {
+      const job = getEntry<JobContent>(this.hero().jobId);
+      if (!job) return [];
+
+      const talentTrees = job.talentTreeIds
+        .map((id) => getEntry<TalentTreeContent>(id))
+        .filter(Boolean) as TalentTreeContent[];
+
+      return talentTrees.map((tree) => ({
         amount: intersection(
           Object.keys(this.hero().talents),
-          talentIdsInTalentTree(
-            getEntry<TalentTreeContent>('Earth Talent Tree')!,
-          ),
+          talentIdsInTalentTree(tree),
         ).length,
-      },
-      {
-        element: 'Fire',
-        amount: intersection(
-          Object.keys(this.hero().talents),
-          talentIdsInTalentTree(
-            getEntry<TalentTreeContent>('Fire Talent Tree')!,
-          ),
-        ).length,
-      },
-      {
-        element: 'Water',
-        amount: intersection(
-          Object.keys(this.hero().talents),
-          talentIdsInTalentTree(
-            getEntry<TalentTreeContent>('Water Talent Tree')!,
-          ),
-        ).length,
-      },
-      {
-        element: 'Air',
-        amount: intersection(
-          Object.keys(this.hero().talents),
-          talentIdsInTalentTree(
-            getEntry<TalentTreeContent>('Air Talent Tree')!,
-          ),
-        ).length,
-      },
-    ]);
+        tree,
+      }));
+    });
 
   ngOnChanges(changes: SimpleChanges) {
     const { hero } = changes;
@@ -87,8 +68,8 @@ export class PanelHeroesTalentsComponent implements OnChanges {
     }
   }
 
-  public changeElement(element: GameElement): void {
-    setOption('selectedTalentTreeElement', element);
+  public changeTree(treeId: TalentTreeId): void {
+    setOption('selectedTalentTreeId', treeId);
   }
 
   public respecHero(): void {
@@ -98,10 +79,10 @@ export class PanelHeroesTalentsComponent implements OnChanges {
   private setToBiggestTree() {
     if (!getOption('switchToBiggestTreeOnHeroChange')) return;
 
-    const biggestTree = maxBy(this.allTalents(), (t) => t.amount);
+    const biggestTree = maxBy(this.allTrees(), (t) => t.amount);
     if (biggestTree) {
       setTimeout(() => {
-        this.changeElement(biggestTree.element);
+        this.changeTree(biggestTree.tree.id);
       }, 0);
     }
   }

@@ -1,5 +1,6 @@
 - id: 7e7c8329-00bf-4af0-bcad-b90dc6dc07a1
   name: Fire Talent Tree
+  element: Fire
 
   talents:
     - level: 0

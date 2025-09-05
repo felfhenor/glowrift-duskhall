@@ -1,0 +1,83 @@
+- id: 5564cedc-d8cd-4554-a91d-4705c12d6891
+  name: Heat Mage
+  description: An advanced mage, capable of utilizing both fire and air skills.
+
+  numSkills: 4
+
+  defaultSkillIds:
+    - Thunderwave I
+    - Firewisp I
+
+  talentTreeIds:
+    - Fire Talent Tree
+    - Air Talent Tree
+
+- id: 23baf750-5e04-400d-916e-868fa5299c8f
+  name: Sand Mage
+  description: An advanced mage, capable of utilizing both air and earth skills.
+
+  numSkills: 4
+
+  defaultSkillIds:
+    - Earthspike I
+    - Thunderwave I
+
+  talentTreeIds:
+    - Earth Talent Tree
+    - Air Talent Tree
+
+- id: 6c023a57-c685-4e39-a746-2a0079514930
+  name: Mist Mage
+  description: An advanced mage, capable of utilizing both water and air skills.
+
+  numSkills: 4
+
+  defaultSkillIds:
+    - Thunderwave I
+    - Healsprite I
+
+  talentTreeIds:
+    - Water Talent Tree
+    - Air Talent Tree
+
+- id: 657a115e-bf9b-4f82-9a3b-e3271981392a
+  name: Molten Mage
+  description: An advanced mage, capable of utilizing both fire and earth skills.
+
+  numSkills: 4
+
+  defaultSkillIds:
+    - Earthspike I
+    - Firewisp I
+
+  talentTreeIds:
+    - Earth Talent Tree
+    - Fire Talent Tree
+
+- id: a28316a1-e893-4794-9bd2-c8f31b294165
+  name: Steam Mage
+  description: An advanced mage, capable of utilizing both fire and water skills.
+
+  numSkills: 4
+
+  defaultSkillIds:
+    - Healsprite I
+    - Firewisp I
+
+  talentTreeIds:
+    - Fire Talent Tree
+    - Water Talent Tree
+
+- id: 8199fc88-c5fd-4c2e-bb43-c983ffd1b871
+  name: Mud Mage
+  description: An advanced mage, capable of utilizing both earth and water skills.
+
+  numSkills: 4
+
+  defaultSkillIds:
+    - Earthspike I
+    - Healsprite I
+
+  talentTreeIds:
+    - Earth Talent Tree
+    - Water Talent Tree

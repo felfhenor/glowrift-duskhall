@@ -14,7 +14,6 @@ import {
   playSFX,
 } from '@helpers';
 import type {
-  GameElement,
   Hero,
   TalentContent,
   TalentTreeContent,
@@ -55,12 +54,10 @@ type TalentTreeHeroDefinition = TalentTreeContent & {
 })
 export class PanelHeroesTalentsTreeComponent {
   public hero = input.required<Hero>();
-  public element = input.required<GameElement>();
+  public tree = input.required<TalentTreeContent>();
 
-  public tree: Signal<TalentTreeHeroDefinition> = computed(() => {
-    const talentTree = getEntry<TalentTreeContent>(
-      `${this.element()} Talent Tree`,
-    )!;
+  public treeData: Signal<TalentTreeHeroDefinition> = computed(() => {
+    const talentTree = this.tree();
 
     const currentTalentsInvested = heroTalentsInvestedInTree(
       this.hero(),
