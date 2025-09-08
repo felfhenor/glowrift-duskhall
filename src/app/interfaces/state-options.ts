@@ -32,7 +32,8 @@ export type WorldTab =
   | 'Claims'
   | 'ClaimsLog'
   | 'ResourceGeneration'
-  | 'EmpireManagement';
+  | 'EmpireManagement'
+  | 'Riftglow';
 export type TownTab = TownBuilding;
 export type CombatTab = 'Preferences' | 'CombatLog';
 export type OptionsTab = 'UI' | 'Savefile' | 'Debug';

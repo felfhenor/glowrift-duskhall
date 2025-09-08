@@ -1,5 +1,6 @@
 import { allHeroes } from '@helpers/hero';
 import { heroStats } from '@helpers/hero-stats';
+import { riftglowUpgradeGetValue } from '@helpers/riftglow';
 import { rngChoice, rngSeeded } from '@helpers/rng';
 import { updateGamestate } from '@helpers/state-game';
 import { locationTooHardClear } from '@helpers/world-location';
@@ -33,6 +34,13 @@ function heroLevelUp(hero: Hero): void {
 
   // Clear the "too hard" nodes list when any hero levels up
   locationTooHardClear();
+}
+
+export function heroXpGained(xp: number): number {
+  const xpMultiplier = riftglowUpgradeGetValue('BonusXP') / 100;
+  const finalXpGained = xp * (1 + xpMultiplier);
+
+  return Math.floor(finalXpGained);
 }
 
 export function heroAllGainXp(xp: number): void {

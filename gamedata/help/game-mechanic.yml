@@ -32,3 +32,8 @@
   category: Game Mechanics
   name: -Item Skills
   description: Some items give you skills when equipped. These skills are not modified by talents, and are shown next to a heroes equippable skill list.
+
+- id: 90e4dea9-4c91-4e7f-9170-e3206b07b23f
+  category: Game Mechanics
+  name: -Riftglow
+  description: The Riftglow system allows your heroes to allocate their unused talent points to enhance your heroes capabilities. Talent points and Riftglows can be freely converted between each other.

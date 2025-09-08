@@ -3,6 +3,7 @@ import { festivalExplorationTickMultiplier } from '@helpers/festival-exploration
 import { allHeroes } from '@helpers/hero';
 import { error } from '@helpers/logging';
 import { distanceBetweenNodes } from '@helpers/math';
+import { riftglowUpgradeGetValue } from '@helpers/riftglow';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { locationTraitExplorationMultiplier } from '@helpers/trait-location-exploration';
 import { globalStatusText } from '@helpers/ui';
@@ -40,11 +41,14 @@ export function travelTimeFromCurrentLocationTo(node: WorldLocation): number {
     (heroSpeed) => heroSpeed.totalStats.Speed,
   );
 
-  const tickReduction = averageHeroSpeed;
+  const speedReduction = averageHeroSpeed;
+  const riftglowReduction = riftglowUpgradeGetValue('BonusWorldMovementSpeed');
 
   const totalTravelTime = baseTravelTime + travelTimeModification;
 
-  return Math.floor(Math.max(1, totalTravelTime - tickReduction));
+  return Math.floor(
+    Math.max(1, totalTravelTime - speedReduction - riftglowReduction),
+  );
 }
 
 export function travelToNode(node: WorldLocation): void {

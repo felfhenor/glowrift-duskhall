@@ -1,0 +1,80 @@
+<div class="flex flex-row h-full">
+  <div class="flex-1">
+    <div class="p-4 border-b border-r text-xl text-center">
+      Available Riftglow: {{ availableRiftglowPoints() }}
+    </div>
+
+    @for (hero of allHeroes(); track $index) {
+      <div class="border-b border-r p-2">
+        <div class="flex flex-row items-center">
+          <app-icon-hero [hero]="hero"></app-icon-hero>
+
+          <div class="flex-1">
+            <div class="text-lg">{{ hero.name }}</div>
+            <div>{{ hero.totalPoints }} talent points available</div>
+          </div>
+        </div>
+
+        <div class="flex flex-row">
+          <button
+            class="btn btn-info btn-xs"
+            [disabled]="
+              hero.convertedRiftglow <= 0 || availableRiftglowPoints() <= 0
+            "
+            (click)="loseRiftglow(hero, 1)"
+          >
+            -1 RG
+          </button>
+
+          <div class="flex-1 text-center">
+            {{ hero.convertedRiftglow }} TP Converted
+          </div>
+
+          <button
+            class="btn btn-info btn-xs"
+            [disabled]="hero.totalPoints <= 0"
+            (click)="gainRiftglow(hero, 1)"
+          >
+            +1 RG
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="flex-3 h-full">
+    <div class="h-full overflow-y-auto">
+      @for (upgrade of upgrades(); track $index) {
+        <div class="border-b p-2">
+          <div class="flex flex-row items-center">
+            <div class="flex-1">
+              <div class="text-lg">
+                {{ upgrade.name }} +{{ upgrade.upgradeLevel }}
+              </div>
+
+              <div>{{ upgrade.description }}</div>
+            </div>
+
+            <div class="flex gap-2">
+              <button
+                class="btn btn-info"
+                [disabled]="upgrade.upgradeLevel <= 0"
+                (click)="downgradeRiftglow(upgrade.upgrade)"
+              >
+                -1
+              </button>
+
+              <button
+                class="btn btn-info"
+                [disabled]="availableRiftglowPoints() <= 0"
+                (click)="upgradeRiftglow(upgrade.upgrade, 1)"
+              >
+                +1
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

@@ -3,6 +3,7 @@ import type { CombatantTargettingType } from '@interfaces/combat';
 import type { EquipmentBlock } from '@interfaces/content-equipment';
 import type { JobId } from '@interfaces/content-job';
 import type { EquipmentSkill } from '@interfaces/content-skill';
+import type { TalentId } from '@interfaces/content-talent';
 import type { Branded, Identifiable } from '@interfaces/identifiable';
 import type { StatBlock } from '@interfaces/stat';
 
@@ -25,7 +26,7 @@ export type Hero = Identifiable &
 
     equipment: EquipmentBlock;
     skills: (EquipmentSkill | undefined)[];
-    talents: Record<string, number>;
+    talents: Record<TalentId, number>;
 
     targettingType: CombatantTargettingType;
   };

@@ -13,6 +13,7 @@ import { allHeroes, heroAverageLevel } from '@helpers/hero';
 import { interconnectednessState } from '@helpers/interconnectedness';
 import { itemElementAdd, itemIsEquipment } from '@helpers/item';
 import { distanceBetweenNodes } from '@helpers/math';
+import { riftglowUpgradeGetValue } from '@helpers/riftglow';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { timerAddUnclaimAction, timerGetRegisterTick } from '@helpers/timer';
 import { globalStatusText } from '@helpers/ui';
@@ -43,15 +44,18 @@ export function locationExploreTimeRequired(location: WorldLocation): number {
   const diff = Math.abs(heroLevel - location.encounterLevel);
   const baseValue = location.encounterLevel * 5;
 
+  const reduction = riftglowUpgradeGetValue('BonusExploreSpeed');
+  let exploreTime = baseValue;
+
   if (heroLevel > location.encounterLevel) {
-    return Math.max(1, baseValue - diff * 5);
+    exploreTime = Math.max(1, baseValue - diff * 5);
   }
 
   if (heroLevel < location.encounterLevel) {
-    return baseValue + diff * 10;
+    exploreTime = baseValue + diff * 10;
   }
 
-  return baseValue;
+  return Math.max(1, exploreTime - reduction);
 }
 
 export function locationClaimDuration(location: WorldLocation): number {

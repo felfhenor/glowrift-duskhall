@@ -301,7 +301,7 @@ function ensureTalent(talent: Partial<TalentContent>): Required<TalentContent> {
     __type: talent.__type ?? 'trinket',
     sprite: talent.sprite ?? '0000',
 
-    requireTalentId: talent.requireTalentId ?? '',
+    requireTalentId: (talent.requireTalentId ?? '') as TalentId,
 
     applyToAllSkills: talent.applyToAllSkills ?? false,
     applyToAllStatusEffects: talent.applyToAllStatusEffects ?? false,

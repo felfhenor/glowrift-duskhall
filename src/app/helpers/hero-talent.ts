@@ -1,5 +1,6 @@
 import { getEntry } from '@helpers/content';
 import { heroUpdateData } from '@helpers/hero';
+import { riftglowTalentPointsForHero } from '@helpers/riftglow';
 import { talentIdsInTalentTree } from '@helpers/talent';
 import type {
   Hero,
@@ -10,17 +11,21 @@ import type {
 import { sum } from 'es-toolkit/compat';
 
 export function heroRemainingTalentPoints(hero: Hero): number {
-  return Math.floor(hero.level / 2) - sum(Object.values(hero.talents));
+  return (
+    Math.floor(hero.level / 2) -
+    sum(Object.values(hero.talents)) -
+    riftglowTalentPointsForHero(hero)
+  );
 }
 
-export function heroSpendTalentPoint(hero: Hero, talentId: string): void {
+export function heroSpendTalentPoint(hero: Hero, talentId: TalentId): void {
   if (heroRemainingTalentPoints(hero) <= 0) return;
 
   hero.talents[talentId] = (hero.talents[talentId] ?? 0) + 1;
   heroUpdateData(hero);
 }
 
-export function heroHasTalent(hero: Hero, talentId: string): boolean {
+export function heroHasTalent(hero: Hero, talentId: TalentId): boolean {
   return !!hero.talents[talentId];
 }
 
@@ -39,7 +44,10 @@ export function heroAllEquipmentTalents(
   }));
 }
 
-export function heroEquipmentTalentLevel(hero: Hero, talentId: string): number {
+export function heroEquipmentTalentLevel(
+  hero: Hero,
+  talentId: TalentId,
+): number {
   return sum(
     heroAllEquipmentTalents(hero)
       .filter((boost) => boost.talent.id === talentId)
@@ -47,7 +55,7 @@ export function heroEquipmentTalentLevel(hero: Hero, talentId: string): number {
   );
 }
 
-export function heroTotalTalentLevel(hero: Hero, talentId: string): number {
+export function heroTotalTalentLevel(hero: Hero, talentId: TalentId): number {
   return (
     (hero.talents[talentId] ?? 0) + heroEquipmentTalentLevel(hero, talentId)
   );

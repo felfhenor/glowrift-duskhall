@@ -12,6 +12,7 @@ import type {
   HeroId,
   JobId,
   LocationType,
+  RiftglowUpgrade,
   StatBlock,
   TalentTownStats,
   WorldConfigContent,
@@ -115,6 +116,19 @@ export function defaultGameState(): GameState {
       ticksWithoutFestivalStart: 0,
       festivals: {},
     },
+    riftglow: {
+      convertedPerHero: {},
+      upgradeLevels: defaultRiftglowUpgrades(),
+    },
+  };
+}
+
+export function defaultRiftglowUpgrades(): Record<RiftglowUpgrade, number> {
+  return {
+    BonusExploreSpeed: 0,
+    BonusLootLevel: 0,
+    BonusWorldMovementSpeed: 0,
+    BonusXP: 0,
   };
 }
 

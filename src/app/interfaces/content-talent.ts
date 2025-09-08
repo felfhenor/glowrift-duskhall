@@ -26,7 +26,7 @@ export type TalentContent = IsContentItem &
   HasDescription & {
     id: TalentId;
 
-    requireTalentId?: string;
+    requireTalentId?: TalentId;
 
     applyToAllSkills: boolean;
     applyToAllStatusEffects: boolean;

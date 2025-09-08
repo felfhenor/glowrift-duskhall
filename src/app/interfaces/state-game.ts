@@ -8,8 +8,9 @@ import type {
   WorldConfigContent,
 } from '@interfaces/content-worldconfig';
 import type { DropRarity } from '@interfaces/droppable';
-import type { Hero, HeroRiskTolerance } from '@interfaces/hero';
+import type { Hero, HeroId, HeroRiskTolerance } from '@interfaces/hero';
 import type { Branded } from '@interfaces/identifiable';
+import type { RiftglowUpgrade } from '@interfaces/riftglow';
 import type { Timer } from '@interfaces/timer';
 import type { TownBuilding } from '@interfaces/town';
 import type { WorldLocation, WorldPosition } from '@interfaces/world';
@@ -94,6 +95,11 @@ export interface GameStateFestival {
   festivals: Record<string, number>;
 }
 
+export interface GameStateRiftglow {
+  convertedPerHero: Record<HeroId, number>;
+  upgradeLevels: Record<RiftglowUpgrade, number>;
+}
+
 export interface GameState {
   meta: GameStateMeta;
   gameId: GameId;
@@ -104,4 +110,5 @@ export interface GameState {
   actionClock: GameStateActionClock;
   town: GameStateTown;
   festival: GameStateFestival;
+  riftglow: GameStateRiftglow;
 }

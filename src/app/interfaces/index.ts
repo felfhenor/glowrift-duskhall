@@ -26,6 +26,7 @@ export * from './hero';
 export * from './identifiable';
 export * from './meta';
 export * from './pixi-config';
+export * from './riftglow';
 export * from './sfx';
 export * from './sprite';
 export * from './stat';

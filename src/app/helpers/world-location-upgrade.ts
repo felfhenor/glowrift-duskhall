@@ -6,6 +6,7 @@ import {
   currencyLoseMultiple,
 } from '@helpers/currency';
 import { distanceBetweenNodes } from '@helpers/math';
+import { riftglowUpgradeGetValue } from '@helpers/riftglow';
 import { updateGamestate } from '@helpers/state-game';
 import {
   timerAddUnclaimAction,
@@ -40,7 +41,8 @@ export function locationEncounterLevel(location: WorldLocation): number {
 export function locationLootLevel(location: WorldLocation): number {
   return (
     location.encounterLevel +
-    locationUpgradeStatTotal(location, 'boostedLootLevelPerLevel')
+    locationUpgradeStatTotal(location, 'boostedLootLevelPerLevel') +
+    riftglowUpgradeGetValue('BonusLootLevel')
   );
 }
 

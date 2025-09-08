@@ -1,4 +1,4 @@
-import type { GameOptions } from '@interfaces';
+import type { GameOptions, TalentTreeId } from '@interfaces';
 import type { GameState } from '@interfaces/state-game';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -270,7 +270,7 @@ describe('migrate', () => {
     worldTab: 'ResourceGeneration',
     inventoryFilter: 'accessory',
     selectedHeroIndex: 0,
-    selectedTalentTreeId: 'Fire',
+    selectedTalentTreeId: 'Fire' as TalentTreeId,
   });
 
   beforeEach(() => {

@@ -10,7 +10,7 @@ import {
   exploringUpdateGlobalStatusText,
 } from '@helpers/explore';
 import { allHeroes, heroGet, heroUpdateData } from '@helpers/hero';
-import { heroAllGainXp } from '@helpers/hero-xp';
+import { heroAllGainXp, heroXpGained } from '@helpers/hero-xp';
 import { locationTraitCurrencySpecialModifier } from '@helpers/trait-location-currency';
 import { travelHome } from '@helpers/travel';
 import { worldNodeGetAccessId } from '@helpers/world';
@@ -73,8 +73,8 @@ function handleCombatVictory(combat: Combat): void {
   );
 
   if (currentNode) {
-    const xpGainedForClaim =
-      currentNode.encounterLevel * currentNode.guardianIds.length;
+    const baseXp = currentNode.encounterLevel * currentNode.guardianIds.length;
+    const xpGainedForClaim = heroXpGained(baseXp);
 
     combatMessageLog(combat, `Heroes claimed **${currentNode.name}**!`);
     exploringUpdateGlobalStatusText('');

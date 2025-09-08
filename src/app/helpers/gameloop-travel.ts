@@ -52,6 +52,7 @@ export function gameloopTravel(): void {
       const exploreTicks = newNode?.currentlyClaimed
         ? 0
         : ((newNode?.encounterLevel ?? 1) + 1) * 5;
+
       state.hero.location.ticksTotal = exploreTicks;
       state.hero.location.ticksLeft = exploreTicks;
       return state;
