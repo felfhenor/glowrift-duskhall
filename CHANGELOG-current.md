@@ -1,24 +1,24 @@
-## [0.3.4](https://github.com/felfhenor/glowrift-duskhall/compare/v0.3.3...v0.3.4) (2025-08-30)
+# [0.4.0](https://github.com/felfhenor/glowrift-duskhall/compare/v0.3.4...v0.4.0) (2025-09-08)
 
 
 ### Bug Fixes
 
-* **map:** fix pixi deprecation by putting more things in containers ([6c0c640](https://github.com/felfhenor/glowrift-duskhall/commit/6c0c640b7016b9b7a4a5822fe95f517a30065904)), closes [#290](https://github.com/felfhenor/glowrift-duskhall/issues/290)
-* **town:** bsm/aca should not have wack-ass currency displays ([3852912](https://github.com/felfhenor/glowrift-duskhall/commit/38529122101daa02562105ef5a133a1866a3a883)), closes [#293](https://github.com/felfhenor/glowrift-duskhall/issues/293)
-* **ui:** hopefully better logic around update button ([e235d42](https://github.com/felfhenor/glowrift-duskhall/commit/e235d424c51d59b32f548579a513964be0956ad7))
-* **ui:** migrate to a real dialog element for any modal-like on the screen in preparation for the pause menu existing ([a15f2b6](https://github.com/felfhenor/glowrift-duskhall/commit/a15f2b644842f92f4adc1c39c3d0d8613de5c1ff))
+* **core:** rework core to have a lot more pre-calculated and known information at each ([af75b35](https://github.com/felfhenor/glowrift-duskhall/commit/af75b35e4255a08a2fdf8fb07fb104a0055811e4)), closes [#306](https://github.com/felfhenor/glowrift-duskhall/issues/306)
+* **core:** set up env variables correctly for realsies ([9fdac80](https://github.com/felfhenor/glowrift-duskhall/commit/9fdac804631c9c23afb90a31ceea6313cb6a489d)), closes [#303](https://github.com/felfhenor/glowrift-duskhall/issues/303)
+* **location:** location upgrade buttons should have a better height for upgrades based on currencies needed ([3f6373c](https://github.com/felfhenor/glowrift-duskhall/commit/3f6373c47d76b4e4222fb82f218892567dc48fd4))
+* **map:** cache-bust spritesheets on map ([9d62947](https://github.com/felfhenor/glowrift-duskhall/commit/9d62947b41784b295a30897bb073aa2fcf6b8b5a)), closes [#302](https://github.com/felfhenor/glowrift-duskhall/issues/302)
+* **ui:** improve usability at 1000px tall. rework a lot of ui ([1cdb7e8](https://github.com/felfhenor/glowrift-duskhall/commit/1cdb7e80f58ed3a37e0ce5c49c9017ceb421d7b6)), closes [#275](https://github.com/felfhenor/glowrift-duskhall/issues/275)
+* **ui:** show building upgrade text always, even at max level ([7470eb1](https://github.com/felfhenor/glowrift-duskhall/commit/7470eb10345b5662168e3560aa063b6bdbdcf2a2))
+* **upgrade:** upgrade costs will no longer go up because a safe haven has increased production ([ae20b7b](https://github.com/felfhenor/glowrift-duskhall/commit/ae20b7b86f55553aec6bfdb9de267478d9867acb)), closes [#307](https://github.com/felfhenor/glowrift-duskhall/issues/307)
 
 
 ### Features
 
-* **bgm:** add 2 new bgms, add crossfading between bgms ([9ab3a7e](https://github.com/felfhenor/glowrift-duskhall/commit/9ab3a7e16d5068be76427352b34b8b18bff6c097)), closes [#268](https://github.com/felfhenor/glowrift-duskhall/issues/268)
-* **codex:** add skill targetting help ([2993ce8](https://github.com/felfhenor/glowrift-duskhall/commit/2993ce8fefaf7d0480fa014baa1bc6875424b3c1)), closes [#294](https://github.com/felfhenor/glowrift-duskhall/issues/294)
-* **core:** save game when doing 'go to home' ([ad3b14e](https://github.com/felfhenor/glowrift-duskhall/commit/ad3b14ed9da978af808a19d14f1e03daed240b3d)), closes [#296](https://github.com/felfhenor/glowrift-duskhall/issues/296)
-* **town:** more/better blacksmith enchantments ([64bc5df](https://github.com/felfhenor/glowrift-duskhall/commit/64bc5df4b357c9401fff2ccedd78f6986d9352c0)), closes [#297](https://github.com/felfhenor/glowrift-duskhall/issues/297)
-* **ui:** add a cute effect when the game is paused ([c21abf5](https://github.com/felfhenor/glowrift-duskhall/commit/c21abf50e6a338bf590997e59f09083a43656187)), closes [#295](https://github.com/felfhenor/glowrift-duskhall/issues/295)
-* **ui:** add a menu button to navbar ([8ff5a3d](https://github.com/felfhenor/glowrift-duskhall/commit/8ff5a3d56077dd0eed4cc0c89388cc4edef556e6)), closes [#300](https://github.com/felfhenor/glowrift-duskhall/issues/300)
-* **ui:** add quit button to main menu ([4a91fac](https://github.com/felfhenor/glowrift-duskhall/commit/4a91fac83abc8eb6ca3a93ab81da1ff39a0bee0b)), closes [#286](https://github.com/felfhenor/glowrift-duskhall/issues/286)
-* **ui:** move some things to a modal that happens when you press esc ([3908eed](https://github.com/felfhenor/glowrift-duskhall/commit/3908eed00871b7e7b4b79874809f2d3382b6549b)), closes [#287](https://github.com/felfhenor/glowrift-duskhall/issues/287)
+* **core:** heroes have selectable classes ([f1b89be](https://github.com/felfhenor/glowrift-duskhall/commit/f1b89be432df354f2cbc6c82ab4ff6845545704f)), closes [#291](https://github.com/felfhenor/glowrift-duskhall/issues/291)
+* **hero:** hero skills will now factor in elemental affinity for ~ damage ([a949313](https://github.com/felfhenor/glowrift-duskhall/commit/a949313787ecf0222b2e865b22035872f45742f8)), closes [#301](https://github.com/felfhenor/glowrift-duskhall/issues/301)
+* **location:** show rough terror level of location ([f63064b](https://github.com/felfhenor/glowrift-duskhall/commit/f63064bb51e90853e738f62a565f58877794916a)), closes [#283](https://github.com/felfhenor/glowrift-duskhall/issues/283)
+* **upgrade:** production is boosted by nearby towns in ZoC ([32c6e25](https://github.com/felfhenor/glowrift-duskhall/commit/32c6e25a7fb203931dd7ad5a6d37dee22f7d0509))
+* **world:** add riftglow management, 4 riftglow upgrades. ([fe9567d](https://github.com/felfhenor/glowrift-duskhall/commit/fe9567df6af6baec9af60ed12d82a54e11cd3f6a)), closes [#310](https://github.com/felfhenor/glowrift-duskhall/issues/310)
 
 
 
