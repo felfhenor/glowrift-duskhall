@@ -32,6 +32,11 @@ vi.mock('@helpers/talent', () => ({
 vi.mock('@helpers/defaults', () => ({
   defaultTownStats: vi.fn(),
   defaultCombatStats: vi.fn(),
+  defaultGameState: vi.fn(),
+}));
+
+vi.mock('@helpers/riftglow', () => ({
+  riftglowTalentPointsForHero: vi.fn(() => 0),
 }));
 
 import { defaultCombatStats, defaultTownStats } from '@helpers/defaults';
