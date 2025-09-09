@@ -61,7 +61,7 @@ export function riftglowUpgradeGetValue(stat: RiftglowUpgrade) {
 
   const upgradeValues: Record<RiftglowUpgrade, number> = {
     BonusXP: 5,
-    BonusExploreSpeed: 10,
+    BonusExploreSpeed: 5,
     BonusLootLevel: 1,
     BonusWorldMovementSpeed: 5,
   };

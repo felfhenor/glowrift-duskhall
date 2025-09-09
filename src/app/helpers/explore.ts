@@ -11,6 +11,7 @@ export const exploreProgressPercent = signal<number>(0);
 export function isExploring() {
   const currentPosition = locationGetCurrent();
   if (!currentPosition) return false;
+
   return combatHasGuardiansAlive() || gamestate().hero.exploreTicks > 0;
 }
 
