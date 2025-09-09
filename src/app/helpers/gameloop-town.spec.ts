@@ -31,7 +31,7 @@ const createMockLocation = (
   name: 'Test Location',
   nodeType,
   elements: [],
-  currentlyClaimed: false,
+  currentlyClaimed: true,
   claimCount: 0,
   encounterLevel: 1,
   unclaimTime: 0,
