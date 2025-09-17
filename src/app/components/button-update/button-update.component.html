@@ -1,4 +1,4 @@
-@if (meta.versionMismatch()) {
+@if (shouldShowUpdate && meta.versionMismatch()) {
   <button
     class="btn btn-info btn-xs ms-3"
     (click)="meta.update()"

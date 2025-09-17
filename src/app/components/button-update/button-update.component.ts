@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { isInElectron } from '@helpers/discord';
 import { MetaService } from '@services/meta.service';
 
 @Component({
@@ -9,4 +10,6 @@ import { MetaService } from '@services/meta.service';
 })
 export class ButtonUpdateComponent {
   public meta = inject(MetaService);
+
+  public shouldShowUpdate = !isInElectron();
 }
