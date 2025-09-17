@@ -5,6 +5,18 @@
     <div class="join mt-2">
       @let tolerance = currentRiskTolerance();
       <button
+        class="btn btn-warning join-item"
+        [class.btn-outline]="tolerance !== 'none'"
+        (click)="changeRiskTolerance('none')"
+        appSfx="ui-click"
+        [sfxOffset]="0"
+        [sfxTrigger]="['click', 'hover']"
+        [tp]="'Heroes will not move from their set location.'"
+      >
+        None
+      </button>
+
+      <button
         class="btn btn-info join-item"
         [class.btn-outline]="tolerance !== 'low'"
         (click)="changeRiskTolerance('low')"
@@ -17,6 +29,7 @@
       >
         Safe
       </button>
+
       <button
         class="btn btn-warning join-item"
         [class.btn-outline]="tolerance !== 'medium'"
@@ -30,6 +43,7 @@
       >
         Cautious
       </button>
+
       <button
         class="btn btn-error join-item"
         [class.btn-outline]="tolerance !== 'high'"

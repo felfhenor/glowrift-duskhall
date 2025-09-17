@@ -9,7 +9,7 @@ import type { StatBlock } from '@interfaces/stat';
 
 export type HeroId = Branded<string, 'HeroId'>;
 
-export type HeroRiskTolerance = 'low' | 'medium' | 'high';
+export type HeroRiskTolerance = 'none' | 'low' | 'medium' | 'high';
 
 export type Hero = Identifiable &
   Animatable & {

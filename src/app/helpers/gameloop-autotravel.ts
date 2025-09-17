@@ -22,6 +22,15 @@ export function gameloopAutoTravel(): void {
     return;
   }
 
+  const currentNode = locationGetCurrent();
+  if (currentNode && !currentNode.currentlyClaimed) {
+    globalStatusText.set(
+      'Current location reclaimed; returning to nearest town...',
+    );
+    travelHome();
+    return;
+  }
+
   if (heroRecoveringInTown()) {
     globalStatusText.set(
       `Heroes are recovering in town; cannot travel (${heroRecoveryPercent()}% recovered).`,
@@ -29,7 +38,6 @@ export function gameloopAutoTravel(): void {
     return;
   }
 
-  const currentNode = locationGetCurrent();
   if (currentNode) {
     const anyUnclaimedNode = locationGetClosestUnclaimedClaimableLocation(
       currentNode,

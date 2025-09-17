@@ -217,6 +217,7 @@ export function locationGetAllMatchingPreferences(
   let levelThreshold = 3;
   if (riskTolerance === 'medium') levelThreshold = 7;
   else if (riskTolerance === 'high') levelThreshold = 100;
+  else if (riskTolerance === 'none') levelThreshold = -100;
 
   // First filter out nodes that are too high level based on encounter level
   const viableNodes = nodes.filter((n) => {
