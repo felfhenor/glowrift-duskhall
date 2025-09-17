@@ -1,0 +1,53 @@
+- id: 5b2bfeda-0d23-46eb-ab58-3d08fb967e35
+  category: Common Questions
+  name: -Is it better to prioritize stats or element % on heroes?
+  description: >
+    Both will improve your heroes. Substantial percentages (>50%) in an element relevant to the hero (based on their equipped skills) will increase damage fairly substantially for that hero. However, elements can't replace survivability and power. You should aim to have a balance of both stats and element % on your heroes.
+
+- id: c12c626d-69b1-47e6-a91c-695e2322c553
+  category: Common Questions
+  name: -Do different spell levels (I, II, III) benefit from being equipped?
+  description: >
+    Generally speaking, the highest level of the spell will be the best version of that spell.
+
+- id: 8aadad3f-06a3-4f1b-879e-fc784f6882e0
+  category: Common Questions
+  name: -Can heroes cast spells that are not of their element?
+  description: >
+    Yes. However, their talents might not support a spell of an element they're not aligned with.
+
+- id: 90a4addc-7cd9-4605-82d3-7997f35eb25f
+  category: Common Questions
+  name: -What do elements present in locations do?
+  description: >
+    When acquiring items, the elements present at a location are imparted directly onto those items. If you find a location with 96% Water, all items found there will have 96% Water as well. This can be useful for finding items that match your heroes' elements.
+
+- id: 8d81b24b-c33a-4cdb-aa36-bfc7b8d3458c
+  category: Common Questions
+  name: -Are there benefits to having multiple heroes of the same element?
+  description: >
+    There can be! This is dependent on the goal of your team. For example, if you want to focus on debuffing enemies, having multiple Water heroes can help ensure that you have a steady stream of debuffs. However, having a diverse team can also be beneficial for covering different roles and elements.
+
+- id: 59c27e96-efca-4abe-b420-db5a3be05e0a
+  category: Common Questions
+  name: -Are there benefits to having added percentages in elements other than your main?
+  description: >
+    Yes! There exist hybrid skills that are comprised of more than one element, and each element represents a separate boost to that skill. However, Air % will never buff Firewisp I.
+
+- id: da3e616d-5bb1-4ad9-aa5d-1a04cfd1fa39
+  category: Common Questions
+  name: -Are higher level items always better than lower level item?
+  description: >
+    Generally speaking, higher level items will provide better stats and bonuses than lower level items. However, the specific benefits can vary based on the item's attributes and the needs of your heroes.
+
+- id: 9e4e1278-7917-4b4c-81fe-4ef7da078ec0
+  category: Common Questions
+  name: -Are higher rarity items always better than lower rarity items?
+  description: >
+    Generally speaking, higher rarity items will provide better stats and bonuses than lower rarity items. Some features of an item can also only be found on higher rarity items, such as traits. However, if an item doesn't line up with your heroes needs, it won't be useful to you.
+
+- id: be89aad6-3d3e-4f79-add5-2b4bb16a6267
+  category: Common Questions
+  name: -What are the differences between the different location types?
+  description: >
+    Different location types affect a few things: how many guardians spawn there, what location upgrades exist for them, and what kind of resources they produce. In terms of guardian quantity, Castle > Town > Dungeon > Village > Cave (although this scales based on other factors). Production upgrades only exist for Caves, Dungeons, and Castles. Villages and Towns are the only locations that produce a Zone of Control around them, boosting the locations within it.
