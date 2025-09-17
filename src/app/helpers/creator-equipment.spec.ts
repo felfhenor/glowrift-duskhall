@@ -109,26 +109,6 @@ describe('Equipment Creator Functions', () => {
       expect(result).toEqual(mockItemContent);
       expect(rngChoiceRarity).toHaveBeenCalledWith([mockItemContent], mockRng);
     });
-
-    it('should throw error if no item could be generated', () => {
-      vi.mocked(rngChoiceRarity).mockReturnValue(undefined);
-
-      expect(() =>
-        equipmentPickRandomDefinitionByRarity([], mockRng as PRNG),
-      ).toThrow('Could not generate an item.');
-    });
-
-    it('should throw error if item definition not found', () => {
-      vi.mocked(rngChoiceRarity).mockReturnValue(mockItemContent);
-      vi.mocked(getEntry).mockReturnValue(undefined);
-
-      expect(() =>
-        equipmentPickRandomDefinitionByRarity(
-          [mockItemContent],
-          mockRng as PRNG,
-        ),
-      ).toThrow('Could not generate an item.');
-    });
   });
 
   describe('createItem', () => {

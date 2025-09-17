@@ -34,11 +34,13 @@ export function merchantTraitChance(): number {
   return 3 * townBuildingLevel('Merchant');
 }
 
-function merchantItemGenerate(): EquipmentItem {
+function merchantItemGenerate(): EquipmentItem | undefined {
   const allItems = equipmentAllDefinitions().filter(
     (item) => item.dropLevel <= merchantMaxItemLevel(),
   );
+
   const chosenItem = equipmentPickRandomDefinitionByRarity(allItems);
+  if (!chosenItem) return undefined;
 
   const createdItem = equipmentCreate(chosenItem);
 
@@ -57,7 +59,10 @@ export function merchantGenerateItems(): void {
   const items: EquipmentItem[] = [];
 
   for (let i = 0; i < numItems; i++) {
-    items.push(merchantItemGenerate());
+    const item = merchantItemGenerate();
+    if (!item) continue;
+
+    items.push(item);
   }
 
   updateGamestate((state) => {

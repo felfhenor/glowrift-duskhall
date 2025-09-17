@@ -852,7 +852,7 @@ export function worldgenLootForLocation(
       [
         equipmentPickRandomDefinitionByRarity(allValidItemDefinitions, rng),
         skillPickRandomDefinitionByRarity(allValidSkillDefinitions, rng),
-      ],
+      ].filter(Boolean) as DroppableEquippable[],
       rng,
     );
   }).filter(Boolean);
