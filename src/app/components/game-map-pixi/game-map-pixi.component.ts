@@ -12,6 +12,7 @@ import {
   fogIsPositionRevealed,
   gamestate,
   getOption,
+  isLoadingGamePage,
   isTraveling,
   locationGet,
   mapGridGenerate,
@@ -219,11 +220,13 @@ export class GameMapPixiComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
+    isLoadingGamePage.set(true);
     await this.initPixi();
     await this.loadTextures();
     this.updateMap();
 
     this.isPixiSetup.set(true);
+    isLoadingGamePage.set(false);
   }
 
   /**

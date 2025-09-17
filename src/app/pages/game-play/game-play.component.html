@@ -5,7 +5,7 @@
 <div class="game-container relative">
   <app-game-map-pixi class="absolute inset-0 map-layer"></app-game-map-pixi>
 
-  @if (isPaused()) {
+  @if (isPaused() && !isLoadingGamePage()) {
     <app-vignette-pause
       class="absolute inset-0 vignette-layer"
     ></app-vignette-pause>
@@ -58,44 +58,53 @@
     </app-panel-container>
   }
 
-  @if (glanceResourceValue !== 'hidden') {
-    <app-glance-resources
-      class="absolute glance-layer top-2"
-      [class.left-2]="glanceResourceValue === 'left'"
-      [class.right-2]="glanceResourceValue === 'right'"
-    ></app-glance-resources>
-  }
+  @if (!isLoadingGamePage()) {
+    @if (glanceResourceValue !== 'hidden') {
+      <app-glance-resources
+        class="absolute glance-layer top-2"
+        [class.left-2]="glanceResourceValue === 'left'"
+        [class.right-2]="glanceResourceValue === 'right'"
+      ></app-glance-resources>
+    }
 
-  @if (glanceClaimValue !== 'hidden') {
-    <app-glance-claims
-      class="absolute glance-layer bottom-[128px]"
-      [class.left-2]="glanceClaimValue === 'left'"
-      [class.right-2]="glanceClaimValue === 'right'"
-    ></app-glance-claims>
-  }
+    @if (glanceClaimValue !== 'hidden') {
+      <app-glance-claims
+        class="absolute glance-layer bottom-[128px]"
+        [class.left-2]="glanceClaimValue === 'left'"
+        [class.right-2]="glanceClaimValue === 'right'"
+      ></app-glance-claims>
+    }
 
-  @if (glanceHeroValue !== 'hidden') {
-    <div
-      class="flex relative left-0 right-0"
-      [class.justify-center]="glanceHeroValue === 'middle'"
-    >
-      <app-glance-heroes
-        class="absolute glance-layer bottom-2"
-        [class.left-2]="glanceHeroValue === 'left'"
-        [class.right-2]="glanceHeroValue === 'right'"
-      ></app-glance-heroes>
-    </div>
-  }
+    @if (glanceHeroValue !== 'hidden') {
+      <div
+        class="flex relative left-0 right-0"
+        [class.justify-center]="glanceHeroValue === 'middle'"
+      >
+        <app-glance-heroes
+          class="absolute glance-layer bottom-2"
+          [class.left-2]="glanceHeroValue === 'left'"
+          [class.right-2]="glanceHeroValue === 'right'"
+        ></app-glance-heroes>
+      </div>
+    }
 
-  @if (showGlanceFailures()) {
-    <div
-      class="flex justify-center absolute top-0 left-0 right-0 min-h-[32px] cursor-pointer"
-      (click)="setOption('showHeroFailureIndicator', false)"
-    >
-      <app-glance-failures class="glance-layer"></app-glance-failures>
-    </div>
+    @if (showGlanceFailures()) {
+      <div
+        class="flex justify-center absolute top-0 left-0 right-0 min-h-[32px] cursor-pointer"
+        (click)="setOption('showHeroFailureIndicator', false)"
+      >
+        <app-glance-failures class="glance-layer"></app-glance-failures>
+      </div>
+    }
   }
 </div>
+
+<app-modal [visible]="isLoadingGamePage()">
+  <div body class="flex justify-center gap-4">
+    <span class="loading loading-spinner loading-sm"></span>
+    Loading game...
+  </div>
+</app-modal>
 
 <app-modal [visible]="isCatchingUp()">
   <div body class="flex justify-center gap-4">

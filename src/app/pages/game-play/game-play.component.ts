@@ -23,6 +23,7 @@ import {
   gamestate,
   getOption,
   isCatchingUp,
+  isLoadingGamePage,
   isShowingAnyMenu,
   showCombatMenu,
   showHeroesMenu,
@@ -76,6 +77,7 @@ export class GamePlayComponent extends OptionsBaseComponent {
 
   public isShowingAnyMenu = computed(() => isShowingAnyMenu());
 
+  public isLoadingGamePage = computed(() => isLoadingGamePage());
   public isCatchingUp = computed(() => isCatchingUp());
   public showWinNotification = computed(
     () =>

@@ -35,6 +35,8 @@ export const isShowingAnyMenu = computed(
     showWorldMenu(),
 );
 
+export const isLoadingGamePage = signal<boolean>(true);
+
 export const isCatchingUp = signal<boolean>(false);
 
 export function isPageVisible(): boolean {
