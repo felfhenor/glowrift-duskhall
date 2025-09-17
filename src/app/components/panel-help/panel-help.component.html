@@ -5,8 +5,8 @@
     <app-button-close (click)="closeMenu()"></app-button-close>
   </div>
 
-  <div class="flex">
-    <div class="w-[200px] min-h-[500px] max-h-[500px] overflow-y-auto">
+  <div class="h-full flex">
+    <div class="w-[200px] overflow-y-auto">
       @for (category of allCategories(); track $index) {
         <div
           class="border-l border-t border-r border-b p-4 cursor-pointer font-bold"
@@ -19,7 +19,7 @@
       }
     </div>
 
-    <div class="flex-1 min-h-[500px] max-h-[500px] overflow-y-auto pl-4">
+    <div class="flex-1 overflow-y-auto pl-4">
       @for (help of currentHelps(); track $index) {
         <div class="border-b mb-4 pb-2">
           <h2 class="text-lg">{{ help.name.replace('-', '') }}</h2>
