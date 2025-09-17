@@ -14,14 +14,14 @@ export function skillAllDefinitions(): EquipmentSkillContent[] {
 export function skillPickRandomDefinitionByRarity(
   definitions = getEntriesByType<EquipmentSkillContent>('skill'),
   rng = rngSeeded(rngUuid()),
-): EquipmentSkillContent {
+): EquipmentSkillContent | undefined {
   const allItems = definitions.filter((i) => !i.preventDrop);
 
   const chosenItem = rngChoiceRarity(allItems, rng);
-  if (!chosenItem) throw new Error('Could not generate a skill.');
+  if (!chosenItem) return undefined;
 
   const chosenItemDefinition = getEntry<EquipmentSkillContent>(chosenItem.id);
-  if (!chosenItemDefinition) throw new Error('Could not generate a skill.');
+  if (!chosenItemDefinition) return undefined;
 
   return structuredClone(chosenItemDefinition);
 }

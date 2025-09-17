@@ -91,23 +91,6 @@ describe('Skill Creator Functions', () => {
       expect(rngChoiceRarity).toHaveBeenCalledWith(mockDefinitions, mockRng);
     });
 
-    it('should throw error if no skill could be generated', () => {
-      vi.mocked(rngChoiceRarity).mockReturnValue(undefined);
-
-      expect(() =>
-        skillPickRandomDefinitionByRarity([], mockRng as PRNG),
-      ).toThrow('Could not generate a skill.');
-    });
-
-    it('should throw error if skill definition not found', () => {
-      vi.mocked(rngChoiceRarity).mockReturnValue(mockSkillContent);
-      vi.mocked(getEntry).mockReturnValue(undefined);
-
-      expect(() =>
-        skillPickRandomDefinitionByRarity([mockSkillContent], mockRng as PRNG),
-      ).toThrow('Could not generate a skill.');
-    });
-
     it('should filter out skills with preventDrop flag', () => {
       const preventDropSkill: EquipmentSkillContent = {
         ...mockSkillContent,
