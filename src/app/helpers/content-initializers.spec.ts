@@ -429,7 +429,7 @@ describe('content-initializers', () => {
           __type: 'talent',
           sprite: '0000',
           description: 'UNKNOWN',
-          requireTalentId: '',
+          requireTalentId: '' as TalentId,
           addTechniques: [],
           additionalTargets: 0,
           applyStatusEffects: [],
@@ -508,7 +508,7 @@ describe('content-initializers', () => {
             Speed: 0,
           },
           chanceToIgnoreConsume: 0,
-          requireTalentId: '',
+          requireTalentId: '' as TalentId,
         };
 
         const result = ensureContent(partial);
@@ -619,17 +619,21 @@ describe('content-initializers', () => {
         const partial: Partial<TownUpgradeContent> = {
           __type: 'townupgrade',
           id: 'test-upgrade' as TownUpgradeId,
+          cost: defaultCurrencyBlock(),
         };
 
         const result = ensureContent(partial as TownUpgradeContent);
 
         expect(result).toEqual({
-          id: 'test-upgrade',
+          id: 'test-upgrade' as TownUpgradeId,
           name: 'UNKNOWN',
           __type: 'townupgrade',
           description: 'UNKNOWN',
-          cost: {},
+          cost: {
+            ...defaultCurrencyBlock(),
+          },
           levelRequirement: 1,
+          appliesToTypes: [],
         } as TownUpgradeContent);
       });
 
@@ -639,6 +643,7 @@ describe('content-initializers', () => {
           name: 'Blacksmith Forge',
           __type: 'townupgrade',
           description: 'Improves equipment enchanting capabilities',
+          appliesToTypes: [],
           cost: {
             ...defaultCurrencyBlock(),
             'Air Core': 1,
@@ -664,7 +669,7 @@ describe('content-initializers', () => {
         expect(result).toEqual({
           id: 'test-location-upgrade' as LocationUpgradeId,
           name: 'UNKNOWN',
-          pairedLocationUpgradeId: '',
+          pairedLocationUpgradeId: '' as LocationUpgradeId,
           requireClaimType: '',
           __type: 'locationupgrade',
           description: 'UNKNOWN',
