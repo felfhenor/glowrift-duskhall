@@ -388,6 +388,7 @@ function ensureTownUpgrade(
     __type: 'townupgrade',
     cost: ensureCurrencies(townUpgrade.cost),
     levelRequirement: townUpgrade.levelRequirement ?? 1,
+    appliesToTypes: townUpgrade.appliesToTypes ?? [],
   };
 }
 

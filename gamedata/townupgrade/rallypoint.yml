@@ -1,5 +1,6 @@
 - id: e17d48da-7822-4828-8f92-b8a4987da8c1
   name: Increased Production
+  appliesToTypes: ['cave', 'dungeon', 'castle', 'village']
   description: 'Captured locations will produce more resources.'
   cost:
     Mana: 50000
@@ -12,7 +13,7 @@
 - id: b454e393-f08c-4202-abf1-e37ae805d0ef
   name: Stash Quality
   description: 'Improves the quality of skills and equipment when this node becomes claimed by evil.'
-  appliesToTypes: ['cave', 'dungeon', 'castle', 'town', 'village']
+  appliesToTypes: ['cave', 'dungeon', 'castle']
   cost:
     Mana: 30000
     'Common Dust': 100

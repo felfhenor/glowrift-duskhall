@@ -10,13 +10,17 @@
       <div class="card-body">
         <div class="card-title">Unlock Upgrades</div>
 
-        <div class="grid grid-cols-2 overflow-y-auto max-h-[430px]">
+        <div class="grid grid-cols-2 overflow-y-auto">
           @for (upg of allUpgrades(); track $index) {
             <div class="col-span-1">
               <div class="card bg-base-200 foreground shadow-xl">
                 <div class="card-body">
                   <div class="text-lg">
                     {{ upg.name }} (Lv.{{ upg.levelRequirement }})
+                  </div>
+
+                  <div class="italic">
+                    Location Types: {{ upg.appliesToTypes.join(', ') }}
                   </div>
 
                   <p class="min-h-16">{{ upg.description }}</p>
