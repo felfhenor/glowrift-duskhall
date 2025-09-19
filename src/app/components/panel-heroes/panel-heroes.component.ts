@@ -12,6 +12,7 @@ import { ContentNameComponent } from '@components/content-name/content-name.comp
 import { IconHeroComponent } from '@components/icon-hero/icon-hero.component';
 import { IconComponent } from '@components/icon/icon.component';
 import { InventoryGridContainerComponent } from '@components/inventory-grid-container/inventory-grid-container.component';
+import { MarkerHeroNameComponent } from '@components/marker-hero-name/marker-hero-name.component';
 import { PanelHeroesEquipmentComponent } from '@components/panel-heroes-equipment/panel-heroes-equipment.component';
 import { PanelHeroesSkillsComponent } from '@components/panel-heroes-skills/panel-heroes-skills.component';
 import { PanelHeroesStatsComponent } from '@components/panel-heroes-stats/panel-heroes-stats.component';
@@ -54,6 +55,7 @@ import { TippyDirective } from '@ngneat/helipopper';
     IconComponent,
     TippyDirective,
     ContentNameComponent,
+    MarkerHeroNameComponent,
   ],
   templateUrl: './panel-heroes.component.html',
   styleUrl: './panel-heroes.component.scss',

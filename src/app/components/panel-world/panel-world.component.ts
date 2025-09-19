@@ -3,6 +3,7 @@ import { ButtonCloseComponent } from '@components/button-close/button-close.comp
 import { CardPageComponent } from '@components/card-page/card-page.component';
 import { PanelWorldClaimlogComponent } from '@components/panel-world-claimlog/panel-world-claimlog.component';
 import { PanelWorldClaimsComponent } from '@components/panel-world-claims/panel-world-claims.component';
+import { PanelWorldDuskmotesComponent } from '@components/panel-world-duskmotes/panel-world-duskmotes.component';
 import { PanelWorldEmpireManagementComponent } from '@components/panel-world-empire-management/panel-world-empire-management.component';
 import { PanelWorldFestivalsComponent } from '@components/panel-world-festivals/panel-world-festivals.component';
 import { PanelWorldResourceGenerationComponent } from '@components/panel-world-resource-generation/panel-world-resource-generation.component';
@@ -24,6 +25,7 @@ import type { WorldTab } from '@interfaces/state-options';
     PanelWorldClaimlogComponent,
     PanelWorldEmpireManagementComponent,
     PanelWorldRiftglowComponent,
+    PanelWorldDuskmotesComponent,
   ],
   templateUrl: './panel-world.component.html',
   styleUrl: './panel-world.component.scss',
@@ -49,6 +51,10 @@ export class PanelWorldComponent {
     {
       name: 'Festivals',
       link: 'Festivals',
+    },
+    {
+      name: 'Duskmotes',
+      link: 'Duskmotes',
     },
   ];
 

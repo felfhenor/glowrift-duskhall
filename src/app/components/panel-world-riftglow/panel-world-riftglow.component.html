@@ -10,7 +10,9 @@
           <app-icon-hero [hero]="hero"></app-icon-hero>
 
           <div class="flex-1">
-            <div class="text-lg">{{ hero.name }}</div>
+            <div class="text-lg">
+              <app-marker-hero-name [hero]="hero"></app-marker-hero-name>
+            </div>
             <div>{{ hero.totalPoints }} talent points available</div>
           </div>
         </div>

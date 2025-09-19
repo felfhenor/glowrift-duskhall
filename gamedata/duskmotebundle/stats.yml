@@ -1,0 +1,23 @@
+- id: 5dd4a2f8-9f96-42b3-b2a3-28f56068c6bf
+  name: Mage's Aura Armor Set
+  description: A set of armor that enhances the heroes Aura significantly when equipped.
+
+  cost: 100
+
+- id: b789a400-e11e-4f5b-bb10-9d2ed5783673
+  name: Barbarian's Force Weapon Set
+  description: A set of weapons that enhances the heroes Force significantly when equipped.
+
+  cost: 100
+
+- id: 43010d8f-38a4-4f2b-a402-334de5d6669f
+  name: Alchemist's Health Key Set
+  description: A set of trinkets that enhances the heroes Health significantly when equipped.
+
+  cost: 100
+
+- id: 28311413-8adc-4ac7-9e79-4ce8a62c04d2
+  name: Ranger's Speed Accessory Set
+  description: A set of accessories that enhances the heroes Speed significantly when equipped.
+
+  cost: 100

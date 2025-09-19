@@ -1,5 +1,6 @@
 import { defaultGameState } from '@helpers/defaults';
 import { interconnectednessRecalculate } from '@helpers/interconnectedness';
+import { migrateHeroes } from '@helpers/migrate-heroes';
 import { migrateItems } from '@helpers/migrate-items';
 import { migrateSkills } from '@helpers/migrate-skills';
 import {
@@ -31,6 +32,7 @@ export function migrateGameState() {
   migrateUnclaimMissedNodes();
   migratePermanentlyClaimedNodes();
   migrateResetClaimedNodeCounts();
+  migrateHeroes();
   gamestateTickEnd();
   saveGameState();
 

@@ -58,7 +58,9 @@
             @for (hero of allHeroes(); track $index) {
               <li>
                 <details>
-                  <summary>{{ hero.name }}</summary>
+                  <summary>
+                    <app-marker-hero-name [hero]="hero"></app-marker-hero-name>
+                  </summary>
                   <ul>
                     <li>
                       <a (click)="equipItem(item, hero); hide()">

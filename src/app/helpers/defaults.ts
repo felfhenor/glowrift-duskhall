@@ -31,6 +31,7 @@ export function defaultGameState(): GameState {
       hasWon: false,
       wonAtTick: 0,
       lastSaveTick: 0,
+      isCurrentlyAscending: false,
     },
     gameId: rngUuid() as GameId,
     world: {
@@ -120,6 +121,11 @@ export function defaultGameState(): GameState {
       convertedPerHero: {},
       upgradeLevels: defaultRiftglowUpgrades(),
     },
+    duskmote: {
+      currentWorldCapturePercentage: 0,
+      numAscends: 0,
+      unlockedBundles: {},
+    },
   };
 }
 
@@ -139,6 +145,7 @@ export function defaultWorldConfig(): WorldConfigContent {
     name: '',
     id: 'UNKNOWN',
     maxLevel: 25,
+    duskmoteMultiplier: 1,
     __type: 'worldconfig',
     nodeCount: {
       castle: {
@@ -186,7 +193,7 @@ export function defaultAffinities(): ElementBlock {
 export function defaultHero(props: Partial<Hero> = {}): Hero {
   return {
     id: rngUuid() as HeroId,
-    jobId: 'Holy Mage' as JobId,
+    jobId: 'Diviner' as JobId,
     name: '',
     sprite: '',
     frames: 4,
@@ -252,6 +259,7 @@ export function defaultCurrencyBlock(): CurrencyBlock {
     'Legendary Dust': 0,
     'Unique Dust': 0,
     'Soul Essence': 0,
+    Duskmote: 0,
   };
 }
 

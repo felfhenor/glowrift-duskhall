@@ -99,6 +99,20 @@
   }
 </div>
 
+<app-modal
+  [visible]="isShowingDuskmoteShop()"
+  [showCloseButton]="true"
+  [allowEscToClose]="true"
+  [widthClass]="'max-w-[unset]'"
+  (modalClose)="closeDuskmoteShop()"
+>
+  <span title>Duskmote Shop</span>
+
+  <div body>
+    <app-panel-duskmote-shop></app-panel-duskmote-shop>
+  </div>
+</app-modal>
+
 <app-modal [visible]="isLoadingGamePage()">
   <div body class="flex justify-center gap-4">
     <span class="loading loading-spinner loading-sm"></span>

@@ -1,7 +1,7 @@
 import { NgClass } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
-import type { GameCurrency, Icon } from '@interfaces';
 import { IconComponent } from '@components/icon/icon.component';
+import type { GameCurrency, Icon } from '@interfaces';
 
 const icons: Record<GameCurrency, Icon> = {
   'Air Core': 'gameGlassBall',
@@ -28,6 +28,7 @@ const icons: Record<GameCurrency, Icon> = {
   'Legendary Dust': 'gameDustCloud',
   'Unique Dust': 'gameDustCloud',
   Mana: 'gameBallGlow',
+  Duskmote: 'gameOilySpiral',
 };
 
 const colors: Record<GameCurrency, string> = {
@@ -55,6 +56,7 @@ const colors: Record<GameCurrency, string> = {
   'Legendary Dust': 'text-yellow-400',
   'Unique Dust': 'text-rose-400',
   Mana: 'text-fuchsia-500',
+  Duskmote: 'text-rose-400',
 };
 
 @Component({

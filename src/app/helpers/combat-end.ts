@@ -9,7 +9,7 @@ import {
   exploreProgressPercent,
   exploringUpdateGlobalStatusText,
 } from '@helpers/explore';
-import { allHeroes, heroGet, heroUpdateData } from '@helpers/hero';
+import { allHeroes, heroGet, heroGetName, heroUpdateData } from '@helpers/hero';
 import { heroAllGainXp, heroXpGained } from '@helpers/hero-xp';
 import { locationTraitCurrencySpecialModifier } from '@helpers/trait-location-currency';
 import { travelHome } from '@helpers/travel';
@@ -83,7 +83,7 @@ function handleCombatVictory(combat: Combat): void {
     allHeroes().forEach((hero) => {
       combatMessageLog(
         combat,
-        `**${hero.name}** gained ${xpGainedForClaim} XP!`,
+        `**${heroGetName(hero)}** gained ${xpGainedForClaim} XP!`,
       );
     });
 

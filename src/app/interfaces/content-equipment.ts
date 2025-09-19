@@ -1,3 +1,4 @@
+import type { DuskmoteBundleId } from '@interfaces/content-duskmotebundle';
 import type { EquipmentSkillId } from '@interfaces/content-skill';
 import type { TalentBoost } from '@interfaces/content-talent';
 import type { TraitEquipmentId } from '@interfaces/content-trait-equipment';
@@ -35,6 +36,7 @@ export type EquipmentItemContent = DroppableEquippable &
     id: EquipmentItemId;
 
     unableToUpgrade: Array<keyof BlacksmithEnchant>;
+    duskmoteBundleId?: DuskmoteBundleId;
   };
 
 export type EquipmentItem = EquipmentItemContent & {

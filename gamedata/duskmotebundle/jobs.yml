@@ -1,0 +1,41 @@
+- id: 0b413460-edea-40be-8f58-79be9e4351de
+  name: Warlock Job
+  description: A new job that can boost the potency of both Fire and Air skills!
+
+  cost: 200
+
+- id: a111379a-d0a9-4bd1-b453-47252314d95a
+  name: Ranger Job
+  description: A new job that can boost the potency of both Air and Earth skills!
+
+  cost: 200
+
+- id: 93f2dd0a-5430-4d0f-ae39-911811a3bd4a
+  name: Alchemist Job
+  description: A new job that can boost the potency of both Water and Air skills!
+
+  cost: 200
+
+- id: 1772948d-219d-4882-8887-ece6e88b24aa
+  name: Barbarian Job
+  description: A new job that can boost the potency of both Fire and Earth skills!
+
+  cost: 200
+
+- id: 54027323-c689-43de-aebf-d299f90d7e2e
+  name: Elementalist Job
+  description: A new job that can boost the potency of both Fire and Water skills!
+
+  cost: 200
+
+- id: b523bfd4-6ed8-4a63-900d-5c0186896003
+  name: Druid Job
+  description: A new job that can boost the potency of both Earth and Water skills!
+
+  cost: 200
+
+- id: bda8f9ed-32fd-44e9-b574-c5e31c6da20b
+  name: Diviner Job
+  description: A new job that can boost the potency of Earth, Fire, Water, and Air skills!
+
+  cost: 1000

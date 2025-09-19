@@ -1,3 +1,4 @@
+import { bundleIsUnlocked } from '@helpers/bundle';
 import { getEntriesByType, getEntry } from '@helpers/content';
 import { droppableCleanup } from '@helpers/droppable';
 import { rngChoiceRarity, rngSeeded, rngUuid } from '@helpers/rng';
@@ -8,14 +9,18 @@ import type {
 } from '@interfaces';
 
 export function skillAllDefinitions(): EquipmentSkillContent[] {
-  return getEntriesByType<EquipmentSkillContent>('skill');
+  return getEntriesByType<EquipmentSkillContent>('skill').filter(
+    (i) =>
+      !i.preventDrop &&
+      (!i.duskmoteBundleId || bundleIsUnlocked(i.duskmoteBundleId)),
+  );
 }
 
 export function skillPickRandomDefinitionByRarity(
-  definitions = getEntriesByType<EquipmentSkillContent>('skill'),
+  definitions = skillAllDefinitions(),
   rng = rngSeeded(rngUuid()),
 ): EquipmentSkillContent | undefined {
-  const allItems = definitions.filter((i) => !i.preventDrop);
+  const allItems = definitions;
 
   const chosenItem = rngChoiceRarity(allItems, rng);
   if (!chosenItem) return undefined;

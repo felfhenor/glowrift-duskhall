@@ -2,12 +2,18 @@ import { DecimalPipe } from '@angular/common';
 import { Component, computed, signal } from '@angular/core';
 import { ContentNameComponent } from '@components/content-name/content-name.component';
 import { IconHeroComponent } from '@components/icon-hero/icon-hero.component';
+import { MarkerHeroNameComponent } from '@components/marker-hero-name/marker-hero-name.component';
 import { allHeroes } from '@helpers/hero';
 import { heroXpRequiredForLevelUp } from '@helpers/hero-xp';
 
 @Component({
   selector: 'app-glance-heroes',
-  imports: [IconHeroComponent, DecimalPipe, ContentNameComponent],
+  imports: [
+    IconHeroComponent,
+    DecimalPipe,
+    ContentNameComponent,
+    MarkerHeroNameComponent,
+  ],
   templateUrl: './glance-heroes.component.html',
   styleUrl: './glance-heroes.component.scss',
 })

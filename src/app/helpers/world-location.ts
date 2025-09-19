@@ -1,3 +1,4 @@
+import { ascendUpdateHighestCompletionPercentage } from '@helpers/ascension';
 import { claimMessageLog } from '@helpers/claim-log';
 import { combatGenerateForLocation } from '@helpers/combat-create';
 import { getEntry } from '@helpers/content';
@@ -320,6 +321,7 @@ export function locationClaim(node: WorldLocation): void {
     return state;
   });
 
+  ascendUpdateHighestCompletionPercentage();
   discordUpdateStatus();
 }
 

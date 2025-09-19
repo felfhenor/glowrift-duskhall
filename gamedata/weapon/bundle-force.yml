@@ -1,0 +1,59 @@
+- id: a2aba468-5503-4f84-a0d8-7857b25eff57
+  name: Barbarian's Forceful Curveblade
+  sprite: '0112'
+
+  rarity: Rare
+  dropLevel: 10
+
+  duskmoteBundleId: Barbarian's Force Weapon Set
+
+  baseStats:
+    Force: 10
+
+- id: c144e92f-4e5e-4c78-b836-ff84804c26c4
+  name: Barbarian's Forceful Shortsword
+  sprite: '0113'
+
+  rarity: Rare
+  dropLevel: 20
+
+  duskmoteBundleId: Barbarian's Force Weapon Set
+
+  baseStats:
+    Force: 20
+
+- id: 109c5a4e-6c55-4ea3-88a2-89a4f3e44c26
+  name: Barbarian's Forceful Greatsword
+  sprite: '0114'
+
+  rarity: Rare
+  dropLevel: 30
+
+  duskmoteBundleId: Barbarian's Force Weapon Set
+
+  baseStats:
+    Force: 30
+
+- id: cbf05448-fa8e-4157-b29b-cd3b5c76ad7b
+  name: Barbarian's Forceful Twinblade
+  sprite: '0115'
+
+  rarity: Rare
+  dropLevel: 40
+
+  duskmoteBundleId: Barbarian's Force Weapon Set
+
+  baseStats:
+    Force: 40
+
+- id: 6781606e-fc89-4276-aa64-345ea3717d1b
+  name: Barbarian's Forceful Falchion
+  sprite: '0116'
+
+  rarity: Rare
+  dropLevel: 50
+
+  duskmoteBundleId: Barbarian's Force Weapon Set
+
+  baseStats:
+    Force: 50

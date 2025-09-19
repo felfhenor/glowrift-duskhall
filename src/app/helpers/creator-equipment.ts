@@ -1,3 +1,4 @@
+import { bundleIsUnlocked } from '@helpers/bundle';
 import { getEntriesByType, getEntry } from '@helpers/content';
 import { droppableCleanup } from '@helpers/droppable';
 import { rngChoiceRarity, rngSeeded, rngUuid } from '@helpers/rng';
@@ -17,7 +18,11 @@ export function equipmentAllDefinitions(): EquipmentItemContent[] {
     ...getEntriesByType<EquipmentItemContent>('armor'),
     ...getEntriesByType<EquipmentItemContent>('trinket'),
     ...getEntriesByType<EquipmentItemContent>('weapon'),
-  ].filter((i) => !i.preventDrop);
+  ].filter(
+    (i) =>
+      !i.preventDrop &&
+      (!i.duskmoteBundleId || bundleIsUnlocked(i.duskmoteBundleId)),
+  );
 }
 
 export function equipmentPickRandomDefinitionByRarity(

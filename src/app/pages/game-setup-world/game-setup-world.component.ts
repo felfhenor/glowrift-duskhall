@@ -1,12 +1,19 @@
+import { DecimalPipe } from '@angular/common';
 import type { OnInit } from '@angular/core';
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AtlasAnimationComponent } from '@components/atlas-animation/atlas-animation.component';
+import { ModalComponent } from '@components/modal/modal.component';
+import { PanelDuskmoteShopComponent } from '@components/panel-duskmote-shop/panel-duskmote-shop.component';
 import { AnalyticsClickDirective } from '@directives/analytics-click.directive';
 import { SFXDirective } from '@directives/sfx.directive';
 import {
+  ascendCopyData,
+  ascendSetCopiedData,
   closeAllMenus,
+  currencyGet,
+  currencyHasAmount,
   discordSetStatus,
   gameReset,
   gamestate,
@@ -16,11 +23,13 @@ import {
   jobUnlocked,
   setWorldConfig,
   setWorldSeed,
+  showDuskmoteShop,
 } from '@helpers';
 import type { JobId, LocationType, WorldConfigContent } from '@interfaces';
 import { TippyDirective } from '@ngneat/helipopper';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { sum } from 'es-toolkit/compat';
+import * as romans from 'romans';
 
 @Component({
   selector: 'app-game-setup-world',
@@ -31,6 +40,9 @@ import { sum } from 'es-toolkit/compat';
     SFXDirective,
     FormsModule,
     TippyDirective,
+    DecimalPipe,
+    ModalComponent,
+    PanelDuskmoteShopComponent,
   ],
   templateUrl: './game-setup-world.component.html',
   styleUrl: './game-setup-world.component.scss',
@@ -54,6 +66,18 @@ export class GameSetupWorldComponent implements OnInit {
     signal<string>('Water Mage'),
     signal<string>('Air Mage'),
   ];
+
+  public ascensionRoman = computed(() =>
+    gamestate().duskmote.numAscends > 0
+      ? romans.romanize(gamestate().duskmote.numAscends)
+      : '',
+  );
+  public duskmoteAmount = computed(() => currencyGet('Duskmote'));
+  public shouldShowDuskmoteShop = computed(
+    () =>
+      currencyHasAmount('Duskmote', 1) || gamestate().meta.isCurrentlyAscending,
+  );
+  public isShowingDuskmoteShop = computed(() => showDuskmoteShop());
 
   public allJobs = computed(() => jobUnlocked());
 
@@ -93,6 +117,8 @@ export class GameSetupWorldComponent implements OnInit {
   public async createWorld() {
     closeAllMenus();
 
+    const copyData = ascendCopyData();
+
     gameReset();
     setWorldSeed(this.worldSeed());
     setWorldConfig(this.selectedWorldSize());
@@ -106,10 +132,20 @@ export class GameSetupWorldComponent implements OnInit {
       heroUpdateData(hero);
     }
 
+    ascendSetCopiedData(copyData);
+
     await this.router.navigate(['/setup', 'generate']);
   }
 
   public renameHero(index: number, name: string): void {
     this.heroNames[index].set(name);
+  }
+
+  public showDuskmoteShop() {
+    showDuskmoteShop.set(true);
+  }
+
+  public closeDuskmoteShop() {
+    showDuskmoteShop.set(false);
   }
 }

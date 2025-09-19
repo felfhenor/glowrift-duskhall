@@ -1,7 +1,7 @@
 import { getEntry } from '@helpers/content';
 import { defaultAffinities, defaultStats } from '@helpers/defaults';
 import { guardianCreateForLocation } from '@helpers/guardian';
-import { allHeroes } from '@helpers/hero';
+import { allHeroes, heroGetName } from '@helpers/hero';
 import { heroEquipmentSkills } from '@helpers/hero-skills';
 import { heroElements } from '@helpers/hero-stats';
 import { heroFullTalentHash } from '@helpers/hero-talent';
@@ -24,7 +24,7 @@ import type {
 export function combatGenerateForLocation(location: WorldLocation): Combat {
   const heroes: Combatant[] = allHeroes().map((h) => ({
     id: h.id,
-    name: h.name,
+    name: heroGetName(h),
     isEnemy: false,
 
     targettingType: h.targettingType,

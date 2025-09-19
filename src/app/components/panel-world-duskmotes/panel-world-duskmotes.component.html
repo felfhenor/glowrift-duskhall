@@ -1,0 +1,96 @@
+<div class="grid grid-cols-3 gap-2">
+  <div class="col-span-3">
+    <div class="alert alert-info">
+      Ascending is a core mechanic to unlock more play options. It grants
+      Duskmotes, which can be used to purchase new Jobs, Items, and Skills for
+      use. However, it requires you to start over from a new world. You can't
+      ascend until you've cleared at least 25% of the current world. The number
+      of Duskmotes you acquire scales with how much of the world you've
+      reclaimed, granting bonuses at the following milestones: 50%, 75%, 90%,
+      100%.
+    </div>
+  </div>
+
+  <div class="col-span-1">
+    <div class="card bg-base-100 shadow-xl">
+      <div class="card-body min-h-[180px]">
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-value text-xl">
+              {{ highestPercentage() | number: '1.2-2' }}%
+            </div>
+
+            <div class="stat-desc text-lg">Highest world capture %</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-span-1">
+    <div class="card bg-base-100 shadow-xl">
+      <div class="card-body min-h-[180px]">
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-figure text-rose-400">
+              <app-icon [name]="'gameOilySpiral'" size="2em"></app-icon>
+            </div>
+
+            <div class="stat-value text-xl">
+              {{ duskmotesGained() }}
+            </div>
+
+            <div class="stat-desc text-lg">Duskmotes gained on ascension</div>
+
+            <div class="stat-actions mt-2">
+              <button
+                class="btn btn-sm btn-primary"
+                [swal]="ascendSwal"
+                [disabled]="!canAscend()"
+              >
+                Ascend
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-span-1">
+    <div class="card bg-base-100 shadow-xl">
+      <div class="card-body min-h-[180px]">
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-value text-xl">Spend Duskmotes</div>
+
+            <div class="stat-desc text-lg">
+              You have {{ currentDuskmotes() | number }}.
+            </div>
+
+            <div class="stat-actions mt-2">
+              <button
+                class="btn btn-sm btn-primary"
+                (click)="showDuskmoteShop()"
+              >
+                Open Shop
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<swal
+  #ascendSwal
+  title="Ascend to Duskhalla?"
+  text="This will reset your game world, retaining only your Duskmotes (including the {{
+    duskmotesGained()
+  }} you have gained). You will need to recapture the world again from 0%. Are you sure you want to ascend?"
+  icon="warning"
+  confirmButtonText="Yes, ascend"
+  cancelButtonText="No, stay here"
+  (confirm)="ascend()"
+></swal>

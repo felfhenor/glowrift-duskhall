@@ -1,6 +1,6 @@
 import { computed, Directive } from '@angular/core';
+import { ascendCurrentlyRerollingWorld, isSetup } from '@helpers';
 import { hostBinding } from 'ngxtension/host-binding';
-import { isSetup } from '@helpers';
 
 @Directive({
   selector: '[appRequireSetup]',
@@ -8,6 +8,6 @@ import { isSetup } from '@helpers';
 export class RequireSetupDirective {
   public hidden = hostBinding(
     'class.hidden',
-    computed(() => !isSetup()),
+    computed(() => !isSetup() || ascendCurrentlyRerollingWorld()),
   );
 }

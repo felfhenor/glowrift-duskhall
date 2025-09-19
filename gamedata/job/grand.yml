@@ -1,6 +1,8 @@
 - id: 3e941a5d-9b0a-481f-a7d3-4649562f2f37
-  name: Holy Mage
+  name: Diviner
   description: An advanced mage, capable of utilizing earth, fire, water and air skills.
+
+  duskmoteBundleId: Diviner Job
 
   numSkills: 5
 

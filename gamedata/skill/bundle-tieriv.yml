@@ -1,0 +1,110 @@
+- id: 686fee9b-b161-42a6-8bc3-dd04c15a662d
+  name: Thunderwave IV
+
+  duskmoteBundleId: Elemental Tier IV
+
+  sprite: '0330'
+  frames: 6
+
+  rarity: Mystical
+  dropLevel: 30
+
+  usesPerCombat: 3
+
+  techniques:
+    - elements: [Air]
+      attributes: [DamagesTarget, AllowPlink]
+      targets: 15
+      targetType: Enemies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+      damageScaling:
+        Force: 0.5
+
+      combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
+
+- id: 66bf72f0-e3c5-4bd9-ada1-eaef1278349c
+  name: Earthspike IV
+
+  duskmoteBundleId: Elemental Tier IV
+
+  sprite: '0099'
+  frames: 8
+
+  unableToUpgrade: [numTargets]
+
+  rarity: Mystical
+  dropLevel: 30
+
+  usesPerCombat: 1
+
+  techniques:
+    - elements: [Earth]
+      attributes: [DamagesTarget, AllowPlink, BypassDefense]
+      targets: 1
+      targetType: Enemies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+      damageScaling:
+        Force: 15
+
+      combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
+
+- id: 8952de1b-6e9a-4e38-a068-410027b2db0c
+  name: Firewisp IV
+
+  duskmoteBundleId: Elemental Tier IV
+
+  sprite: '0145'
+  frames: 4
+
+  rarity: Mystical
+  dropLevel: 30
+
+  usesPerCombat: 3
+
+  techniques:
+    - elements: [Fire]
+      attributes: [DamagesTarget, AllowPlink]
+      targets: 1
+      targetType: Enemies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+      damageScaling:
+        Force: 4
+
+      statusEffects:
+        - statusEffectId: Burning
+          chance: 20
+          duration: 3
+
+      combatMessage: '**{{ combatant.name }}** uses **{{ skill.name }}** on **{{ target.name }}** for {{ damage }} damage ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'
+
+- id: 985f7360-9fc7-4fe0-a8bf-832912cad051
+  name: Healsprite IV
+
+  duskmoteBundleId: Elemental Tier IV
+
+  sprite: '0473'
+  frames: 11
+
+  unableToUpgrade: [numTargets]
+
+  rarity: Mystical
+  dropLevel: 30
+
+  usesPerCombat: 1
+
+  techniques:
+    - elements: [Water]
+      attributes: [BypassDefense, HealsTarget]
+      targets: 2
+      targetType: Allies
+      targetBehaviors:
+        - behavior: NotZeroHealth
+        - behavior: NotMaxHealth
+      damageScaling:
+        Force: 3
+        Aura: 1
+
+      combatMessage: '**{{ combatant.name }}** cast **{{ skill.name }}** on **{{ target.name }}** for {{ absdamage }} healing ({{ target.hp }}/{{ target.totalStats.Health }} HP remaining).'

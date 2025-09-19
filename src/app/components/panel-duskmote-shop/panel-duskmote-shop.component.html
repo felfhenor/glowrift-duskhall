@@ -1,0 +1,41 @@
+<div class="text-center italic mb-2">
+  You have {{ currentDuskmotes() | number }} Duskmotes.
+</div>
+
+<div class="grid grid-cols-3 gap-2 h-full max-h-[500px] overflow-y-auto">
+  @for (bundle of unboughtDuskmoteBundles(); track $index) {
+    <div class="col-span-1 card bg-base-100 shadow-xl">
+      <div class="card-body">
+        <div class="text-xl">
+          {{ bundle.name }}
+        </div>
+
+        <p class="min-h-[60px]">
+          {{ bundle.description }}
+        </p>
+
+        <div class="card-actions">
+          <button
+            class="btn btn-sm btn-primary"
+            [disabled]="!bundle.canBuy"
+            (click)="buyBundle(bundle)"
+          >
+            Buy for {{ bundle.cost | number }} Duskmotes
+          </button>
+        </div>
+      </div>
+    </div>
+  } @empty {
+    <div class="col-span-3 card bg-base-100 shadow-xl">
+      <div class="card-body">
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-value text-xl">
+              You've bought all of the Duskmote bundles!
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

@@ -26,7 +26,7 @@
                   [sfxOffset]="heroIndex"
                   [sfxTrigger]="['click', 'hover']"
                 >
-                  {{ name() }}
+                  {{ name() }} {{ ascensionRoman() }}
                 </button>
 
                 <button
@@ -128,6 +128,10 @@
               Location Count: {{ nodeCountValues.min }} -
               {{ nodeCountValues.max }}
             </span>
+
+            <span>
+              Duskmote Multiplier: x{{ worldSize.duskmoteMultiplier }}
+            </span>
           </div>
         }
       </div>
@@ -156,6 +160,32 @@
     </div>
   </div>
 
+  @if (shouldShowDuskmoteShop()) {
+    <div class="w-full lg:max-w-[800px]">
+      <div class="card bg-base-100">
+        <div class="card-body items-center justify-between">
+          <div class="card-title text-center flex flex-col">Duskmote Shop</div>
+
+          <div
+            class="text-center flex flex-row justify-center gap-2 italic px-[15%]"
+          >
+            The Duskmote Shop allows you to purchase special items using
+            Duskmotes. You have {{ duskmoteAmount() | number }} Duskmotes.
+          </div>
+
+          <button
+            class="btn btn-secondary btn-block"
+            (click)="showDuskmoteShop()"
+            appSfx="ui-click"
+            [sfxTrigger]="['click', 'hover']"
+          >
+            Show Duskmote Shop
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
   <div class="w-full lg:max-w-[800px]">
     <div class="card bg-base-100">
       <div class="card-body items-center justify-between">
@@ -177,3 +207,17 @@
     </div>
   </div>
 </div>
+
+<app-modal
+  [visible]="isShowingDuskmoteShop()"
+  [showCloseButton]="true"
+  [allowEscToClose]="true"
+  [widthClass]="'max-w-[unset]'"
+  (modalClose)="closeDuskmoteShop()"
+>
+  <span title>Duskmote Shop</span>
+
+  <div body>
+    <app-panel-duskmote-shop></app-panel-duskmote-shop>
+  </div>
+</app-modal>

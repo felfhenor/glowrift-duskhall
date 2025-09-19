@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 import { MarkerElementComponent } from '@components/marker-element/marker-element.component';
+import { MarkerHeroNameComponent } from '@components/marker-hero-name/marker-hero-name.component';
 import { MarkerStatComponent } from '@components/marker-stat/marker-stat.component';
 import { heroElements, heroXpRequiredForLevelUp } from '@helpers';
 import type { Hero } from '@interfaces';
@@ -13,6 +14,7 @@ import { TippyDirective } from '@ngneat/helipopper';
     MarkerStatComponent,
     MarkerElementComponent,
     TippyDirective,
+    MarkerHeroNameComponent,
   ],
   templateUrl: './panel-heroes-stats.component.html',
   styleUrl: './panel-heroes-stats.component.scss',

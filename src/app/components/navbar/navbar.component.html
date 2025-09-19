@@ -13,10 +13,29 @@
 
   <div class="navbar-end">
     <ul class="menu menu-horizontal px-1 flex gap-2">
+      @if (showAscendButton()) {
+        <li class="action-button" appRequireSetup appButtonGlow>
+          <button
+            class="btn btn-xs btn-primary"
+            [tp]="'You can ascend to Duskhalla!'"
+            (click)="showAscend()"
+            appSfx="ui-click"
+            [sfxOffset]="-1"
+            [sfxTrigger]="['click', 'hover']"
+          >
+            <app-icon
+              [name]="'gameOilySpiral'"
+              size="2em"
+              color="#000"
+            ></app-icon>
+          </button>
+        </li>
+      }
+
       @for (panel of panelConfigs; track $index) {
         <li class="action-button" appRequireSetup>
           <button
-            class="btn btn-xs btn-accent"
+            class="btn btn-xs btn-secondary"
             [tp]="panel.name + ' [' + panel.hotkey + ']'"
             (click)="panel.clickCb()"
             [hotkeys]="panel.hotkey"
@@ -85,7 +104,7 @@
 
       <li class="action-button" appRequireSetup>
         <button
-          class="btn btn-xs btn-primary"
+          class="btn btn-xs btn-accent"
           [tp]="'Open Menu [ESC]'"
           (click)="closeAllMenus()"
           appSfx="ui-click"

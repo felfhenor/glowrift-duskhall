@@ -1,5 +1,6 @@
 import type { Routes } from '@angular/router';
-import { requireNotSetupGuard } from '@guards/require-not-setup.guard';
+import { requireNotRerolling } from '@guards/require-not-rerolling';
+import { setupPageGuard } from '@guards/require-not-setup.guard';
 import { requireSetupGuard } from '@guards/require-setup.guard';
 import { GameComponent } from '@pages/game/game.component';
 import { HomeComponent } from '@pages/home/home.component';
@@ -20,14 +21,14 @@ export const routes: Routes = [
     path: 'setup',
     loadChildren: () =>
       import('./setup.routes').then((routes) => routes.setupRoutes),
-    canActivate: [requireNotSetupGuard],
+    canActivate: [setupPageGuard],
   },
   {
     component: GameComponent,
     path: 'game',
     loadChildren: () =>
       import('./game.routes').then((routes) => routes.gameRoutes),
-    canActivate: [requireSetupGuard],
+    canActivate: [requireSetupGuard, requireNotRerolling],
   },
   {
     path: '**',

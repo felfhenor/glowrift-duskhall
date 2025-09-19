@@ -1,6 +1,7 @@
 import type { Signal } from '@angular/core';
 import { Component, computed } from '@angular/core';
 import { IconHeroComponent } from '@components/icon-hero/icon-hero.component';
+import { MarkerHeroNameComponent } from '@components/marker-hero-name/marker-hero-name.component';
 import { allHeroes } from '@helpers/hero';
 import { heroRemainingTalentPoints } from '@helpers/hero-talent';
 import {
@@ -18,7 +19,7 @@ import { debounce } from 'typescript-debounce-decorator';
 
 @Component({
   selector: 'app-panel-world-riftglow',
-  imports: [IconHeroComponent],
+  imports: [IconHeroComponent, MarkerHeroNameComponent],
   templateUrl: './panel-world-riftglow.component.html',
   styleUrl: './panel-world-riftglow.component.scss',
 })

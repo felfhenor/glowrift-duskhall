@@ -1,5 +1,6 @@
 import { Component, computed, inject, signal, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { ButtonGlowComponent } from '@components/button-glow/button-glow.component';
 import { ButtonHelpComponent } from '@components/button-help/button-help.component';
 import { ButtonQuitComponent } from '@components/button-quit/button-quit.component';
 import { ButtonSettingsComponent } from '@components/button-settings/button-settings.component';
@@ -10,15 +11,17 @@ import { RequireNotSetupDirective } from '@directives/no-setup.directive';
 import { RequireSetupDirective } from '@directives/require-setup.directive';
 import { SFXDirective } from '@directives/sfx.directive';
 import {
+  ascendCanDo,
   cameraCenterOnPlayer,
   closeAllMenus,
   getOption,
   globalStatusText,
+  isSetup,
   isShowingAnyMenu,
   saveGameState,
   setOption,
   showCombatMenu,
-  showCurrencyList,
+  showDuskmoteShop,
   showHelpMenu,
   showHeroesMenu,
   showInventoryMenu,
@@ -48,6 +51,7 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
     ButtonQuitComponent,
     ButtonSettingsComponent,
     ButtonHelpComponent,
+    ButtonGlowComponent,
   ],
   providers: [],
   templateUrl: './navbar.component.html',
@@ -64,6 +68,8 @@ export class NavbarComponent {
 
   public isPaused = computed(() => getOption('gameloopPaused'));
   public currentStatus = computed(() => globalStatusText());
+
+  public showAscendButton = computed(() => ascendCanDo());
 
   public readonly panelConfigs: Array<{
     name: string;
@@ -103,8 +109,9 @@ export class NavbarComponent {
     },
   ];
 
-  public toggleCurrencyList() {
-    showCurrencyList.set(!showCurrencyList());
+  public showAscend() {
+    setOption('worldTab', 'Duskmotes');
+    this.toggleWorld();
   }
 
   public toggleOptions() {
@@ -190,6 +197,8 @@ export class NavbarComponent {
   }
 
   public openPauseMenu() {
+    if (!isSetup()) return;
+
     this.showPauseMenu.set(true);
     if (this.isPaused()) {
       this.wasPausedBeforeOpeningMenu.set(true);
@@ -200,6 +209,11 @@ export class NavbarComponent {
   }
 
   public closeAllMenus() {
+    if (showDuskmoteShop()) {
+      showDuskmoteShop.set(false);
+      return;
+    }
+
     if (showHelpMenu()) {
       showHelpMenu.set(false);
       return;

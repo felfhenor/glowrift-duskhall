@@ -17,7 +17,8 @@ export type ContentType =
   | 'locationupgrade'
   | 'help'
   | 'cameo'
-  | 'job';
+  | 'job'
+  | 'duskmotebundle';
 
 export interface Identifiable {
   id: string;

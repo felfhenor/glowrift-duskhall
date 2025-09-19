@@ -20,6 +20,7 @@ import {
   type WorldPosition,
 } from '@interfaces';
 import { meanBy, sumBy } from 'es-toolkit/compat';
+import * as romans from 'romans';
 
 export function allHeroes(): Hero[] {
   return gamestate().hero.heroes;
@@ -179,4 +180,13 @@ export function heroDamageForSkillTechnique(
   );
 
   return baseDamage * affinityElementBoostMultiplier;
+}
+
+export function heroGetName(hero: Hero): string {
+  const roman =
+    gamestate().duskmote.numAscends > 0
+      ? romans.romanize(gamestate().duskmote.numAscends)
+      : '';
+
+  return `${hero.name} ${roman}`;
 }

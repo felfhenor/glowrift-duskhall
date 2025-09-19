@@ -9,6 +9,8 @@ import type {
   ContentType,
   CurrencyBlock,
   CurrencyContent,
+  DuskmoteBundleContent,
+  DuskmoteBundleId,
   ElementBlock,
   EquipmentElement,
   EquipmentItemContent,
@@ -65,6 +67,7 @@ const initializers: Record<ContentType, (entry: any) => any> = {
   help: ensureHelp,
   cameo: ensureCameo,
   job: ensureJob,
+  duskmotebundle: ensureDuskmoteBundle,
 };
 
 function ensureStats(statblock: Partial<StatBlock> = {}): Required<StatBlock> {
@@ -163,6 +166,7 @@ function ensureWorldConfig(
     height: worldConfig.height ?? 50,
     width: worldConfig.width ?? 50,
     maxLevel: worldConfig.maxLevel ?? 25,
+    duskmoteMultiplier: worldConfig.duskmoteMultiplier ?? 1,
     nodeCount: {
       castle: worldConfig.nodeCount?.castle ?? { min: 1, max: 10 },
       cave: worldConfig.nodeCount?.cave ?? { min: 1, max: 10 },
@@ -232,6 +236,7 @@ function ensureSkill(
     statusEffectDurationBoost: skill.statusEffectDurationBoost ?? {},
     techniques: (skill.techniques ?? []).map(ensureTechnique),
     symmetryCount: skill.symmetryCount ?? 0,
+    duskmoteBundleId: skill.duskmoteBundleId ?? ('' as DuskmoteBundleId),
   };
 }
 
@@ -260,6 +265,7 @@ function ensureItem(
     traitIds: item.traitIds ?? [],
     skillIds: item.skillIds ?? [],
     symmetryCount: item.symmetryCount ?? 0,
+    duskmoteBundleId: item.duskmoteBundleId ?? ('' as DuskmoteBundleId),
   };
 }
 
@@ -430,6 +436,8 @@ function ensureJob(job: Partial<JobContent>): Required<JobContent> {
     numSkills: job.numSkills ?? 3,
     defaultSkillIds: job.defaultSkillIds ?? [],
     talentTreeIds: job.talentTreeIds ?? [],
+
+    duskmoteBundleId: job.duskmoteBundleId ?? ('' as DuskmoteBundleId),
   };
 }
 
@@ -450,5 +458,17 @@ function ensureCameo(cameo: Partial<CameoContent>): Required<CameoContent> {
     __type: 'cameo',
     sprite: cameo.sprite ?? '0000',
     contribution: cameo.contribution ?? 'UNKNOWN',
+  };
+}
+
+function ensureDuskmoteBundle(
+  bundle: Partial<DuskmoteBundleContent>,
+): Required<DuskmoteBundleContent> {
+  return {
+    id: bundle.id ?? ('UNKNOWN' as DuskmoteBundleId),
+    name: bundle.name ?? 'UNKNOWN',
+    description: bundle.description ?? 'UNKNOWN',
+    __type: 'duskmotebundle',
+    cost: bundle.cost ?? 0,
   };
 }

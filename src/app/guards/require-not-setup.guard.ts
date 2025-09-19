@@ -1,15 +1,15 @@
 import { inject } from '@angular/core';
 import type { CanActivateFn } from '@angular/router';
 import { Router } from '@angular/router';
-import { isSetup } from '@helpers';
+import { ascendCurrentlyRerollingWorld, isSetup } from '@helpers';
 import { LoggerService } from '@services/logger.service';
 
-export const requireNotSetupGuard: CanActivateFn = () => {
+export const setupPageGuard: CanActivateFn = () => {
   const router = inject(Router);
 
-  if (!isSetup()) {
-    return true;
-  }
+  if (ascendCurrentlyRerollingWorld()) return true;
+
+  if (!isSetup()) return true;
 
   const logger = inject(LoggerService);
   logger.info(

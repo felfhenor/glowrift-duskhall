@@ -7,5 +7,7 @@ export type WorldConfigContent = IsContentItem & {
   height: number;
 
   maxLevel: number;
+  duskmoteMultiplier: number;
+
   nodeCount: Record<LocationType, { min: number; max: number }>;
 };

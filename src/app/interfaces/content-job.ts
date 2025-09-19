@@ -1,3 +1,4 @@
+import type { DuskmoteBundleId } from '@interfaces/content-duskmotebundle';
 import type { EquipmentSkillId } from '@interfaces/content-skill';
 import type { TalentTreeId } from '@interfaces/content-talenttree';
 import type {
@@ -17,4 +18,6 @@ export type JobContent = Identifiable &
     numSkills: number;
     defaultSkillIds: EquipmentSkillId[];
     talentTreeIds: TalentTreeId[];
+
+    duskmoteBundleId?: DuskmoteBundleId;
   };

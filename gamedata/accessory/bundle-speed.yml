@@ -1,0 +1,59 @@
+- id: c22eba9b-880f-4608-b44f-e6e15c225358
+  name: Ranger's Pendant of Dark Speed
+  sprite: '0002'
+
+  rarity: Rare
+  dropLevel: 10
+
+  duskmoteBundleId: Ranger's Speed Accessory Set
+
+  baseStats:
+    Speed: 10
+
+- id: f2cc8509-d64c-4a72-a6c0-0e12d68ef02b
+  name: Ranger's Amulet of Broken Sands
+  sprite: '0006'
+
+  rarity: Rare
+  dropLevel: 20
+
+  duskmoteBundleId: Ranger's Speed Accessory Set
+
+  baseStats:
+    Speed: 20
+
+- id: 48dd3f9d-acd2-4a45-8f1e-a03f44bb05ad
+  name: Ranger's Ring of Mystic Speed
+  sprite: '0009'
+
+  rarity: Rare
+  dropLevel: 30
+
+  duskmoteBundleId: Ranger's Speed Accessory Set
+
+  baseStats:
+    Speed: 30
+
+- id: 4eacee6c-68ec-4ed7-92f5-30686cbfeb0e
+  name: Ranger's Band of Icy Dash
+  sprite: '0010'
+
+  rarity: Rare
+  dropLevel: 40
+
+  duskmoteBundleId: Ranger's Speed Accessory Set
+
+  baseStats:
+    Speed: 40
+
+- id: 8813e608-a3dd-440a-8771-604b50aef62b
+  name: Ranger's Ring of Emerald Wind
+  sprite: '0014'
+
+  rarity: Rare
+  dropLevel: 50
+
+  duskmoteBundleId: Ranger's Speed Accessory Set
+
+  baseStats:
+    Speed: 50

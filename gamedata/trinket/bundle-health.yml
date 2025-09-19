@@ -1,0 +1,59 @@
+- id: e3c7aab1-aa28-4c21-9ff8-a8a7c9aacc22
+  name: Alchemist's Lesser Key to Survival
+  sprite: '0028'
+
+  rarity: Rare
+  dropLevel: 10
+
+  duskmoteBundleId: Alchemist's Health Key Set
+
+  baseStats:
+    Health: 200
+
+- id: 9bfb8fa1-fee6-4311-8b12-b224219cc794
+  name: Alchemist's Minor Key to Survival
+  sprite: '0029'
+
+  rarity: Rare
+  dropLevel: 20
+
+  duskmoteBundleId: Alchemist's Health Key Set
+
+  baseStats:
+    Health: 400
+
+- id: ed76c871-df1e-41bc-907d-30abdd1c8c58
+  name: Alchemist's Powerful Key to Survival
+  sprite: '0030'
+
+  rarity: Rare
+  dropLevel: 30
+
+  duskmoteBundleId: Alchemist's Health Key Set
+
+  baseStats:
+    Health: 600
+
+- id: 77662929-fa9d-4c4a-8ca8-4ed6e7e9aa6b
+  name: Alchemist's Major Key to Survival
+  sprite: '0031'
+
+  rarity: Rare
+  dropLevel: 40
+
+  duskmoteBundleId: Alchemist's Health Key Set
+
+  baseStats:
+    Health: 800
+
+- id: 4a8a69fd-132a-48b9-bb21-323ab0264736
+  name: Alchemist's Titanic Key to Survival
+  sprite: '0032'
+
+  rarity: Rare
+  dropLevel: 50
+
+  duskmoteBundleId: Alchemist's Health Key Set
+
+  baseStats:
+    Health: 1000

@@ -1,4 +1,5 @@
 import type { Animatable } from '@interfaces/artable';
+import type { DuskmoteBundleId } from '@interfaces/content-duskmotebundle';
 import type { StatusEffectId } from '@interfaces/content-statuseffect';
 import type { DroppableEquippable, HasSymmetry } from '@interfaces/droppable';
 import type { GameElement } from '@interfaces/element';
@@ -69,6 +70,7 @@ export type EquipmentSkillContent = DroppableEquippable &
 
     disableUpgrades: boolean;
     unableToUpgrade: Array<keyof AcademyEnchant>;
+    duskmoteBundleId?: DuskmoteBundleId;
   };
 
 export type EquipmentSkill = EquipmentSkillContent & {

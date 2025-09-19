@@ -1,6 +1,8 @@
 - id: 5564cedc-d8cd-4554-a91d-4705c12d6891
-  name: Heat Mage
-  description: An advanced mage, capable of utilizing both fire and air skills.
+  name: Warlock
+  description: An advanced mage, capable of utilizing both Fire and Air skills to form Heat skills.
+
+  duskmoteBundleId: Warlock Job
 
   numSkills: 4
 
@@ -13,8 +15,10 @@
     - Air Talent Tree
 
 - id: 23baf750-5e04-400d-916e-868fa5299c8f
-  name: Sand Mage
-  description: An advanced mage, capable of utilizing both air and earth skills.
+  name: Ranger
+  description: An advanced mage, capable of utilizing both Air and Earth skills to form Sand skills.
+
+  duskmoteBundleId: Ranger Job
 
   numSkills: 4
 
@@ -27,8 +31,10 @@
     - Air Talent Tree
 
 - id: 6c023a57-c685-4e39-a746-2a0079514930
-  name: Mist Mage
-  description: An advanced mage, capable of utilizing both water and air skills.
+  name: Alchemist
+  description: An advanced mage, capable of utilizing both Water and Air skills to form Mist skills.
+
+  duskmoteBundleId: Alchemist Job
 
   numSkills: 4
 
@@ -41,8 +47,10 @@
     - Air Talent Tree
 
 - id: 657a115e-bf9b-4f82-9a3b-e3271981392a
-  name: Molten Mage
-  description: An advanced mage, capable of utilizing both fire and earth skills.
+  name: Barbarian
+  description: An advanced mage, capable of utilizing both Fire and Earth skills to form Molten skills.
+
+  duskmoteBundleId: Barbarian Job
 
   numSkills: 4
 
@@ -55,8 +63,10 @@
     - Fire Talent Tree
 
 - id: a28316a1-e893-4794-9bd2-c8f31b294165
-  name: Steam Mage
-  description: An advanced mage, capable of utilizing both fire and water skills.
+  name: Elementalist
+  description: An advanced mage, capable of utilizing both Fire and Water skills to form Steam skills.
+
+  duskmoteBundleId: Elementalist Job
 
   numSkills: 4
 
@@ -69,8 +79,10 @@
     - Water Talent Tree
 
 - id: 8199fc88-c5fd-4c2e-bb43-c983ffd1b871
-  name: Mud Mage
-  description: An advanced mage, capable of utilizing both earth and water skills.
+  name: Druid
+  description: An advanced mage, capable of utilizing both Earth and Water skills to form Mud skills.
+
+  duskmoteBundleId: Druid Job
 
   numSkills: 4
 

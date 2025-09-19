@@ -7,6 +7,7 @@ export type CurrencyId = Branded<string, 'CurrencyId'>;
 export type GameCurrency =
   | 'Mana'
   | 'Soul Essence'
+  | 'Duskmote'
   | `${GameElement} Sliver`
   | `${GameElement} Shard`
   | `${GameElement} Crystal`

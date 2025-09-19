@@ -1,0 +1,59 @@
+- id: 28b38a53-0c13-49a5-9598-e206e1ffb954
+  name: Mage's Auratic Gloves
+  sprite: '0027'
+
+  rarity: Rare
+  dropLevel: 10
+
+  duskmoteBundleId: Mage's Aura Armor Set
+
+  baseStats:
+    Aura: 10
+
+- id: d9171b76-c800-466b-a8f7-79fae92521e6
+  name: Mage's Auratic Boots
+  sprite: '0025'
+
+  rarity: Rare
+  dropLevel: 20
+
+  duskmoteBundleId: Mage's Aura Armor Set
+
+  baseStats:
+    Aura: 20
+
+- id: 76d028ae-3a8d-4153-8f89-af9970dd8b66
+  name: Mage's Auratic Helmet
+  sprite: '0028'
+
+  rarity: Rare
+  dropLevel: 30
+
+  duskmoteBundleId: Mage's Aura Armor Set
+
+  baseStats:
+    Aura: 30
+
+- id: 9407443c-bb7f-4c02-b56d-76583c5a722d
+  name: Mage's Auratic Greaves
+  sprite: '0029'
+
+  rarity: Rare
+  dropLevel: 40
+
+  duskmoteBundleId: Mage's Aura Armor Set
+
+  baseStats:
+    Aura: 40
+
+- id: 65ec862c-88f6-4de8-a025-32449d73d9b8
+  name: Mage's Auratic Breastplate
+  sprite: '0026'
+
+  rarity: Rare
+  dropLevel: 50
+
+  duskmoteBundleId: Mage's Aura Armor Set
+
+  baseStats:
+    Aura: 50

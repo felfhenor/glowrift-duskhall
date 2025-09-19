@@ -21,7 +21,7 @@
 
           <div>
             <div class="font-bold">
-              {{ hero.name }}
+              <app-marker-hero-name [hero]="hero"></app-marker-hero-name>
             </div>
 
             @if (hero.contribution) {

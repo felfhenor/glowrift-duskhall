@@ -4,6 +4,7 @@
   height: 50
 
   maxLevel: 25
+  duskmoteMultiplier: 0.25
 
   nodeCount:
     town: { min: 2, max: 5 }
@@ -18,6 +19,7 @@
   height: 50
 
   maxLevel: 55
+  duskmoteMultiplier: 0.75
 
   nodeCount:
     town: { min: 4, max: 65 }
@@ -32,6 +34,7 @@
   height: 75
 
   maxLevel: 55
+  duskmoteMultiplier: 1.00
 
   nodeCount:
     town: { min: 6, max: 8 }
@@ -46,6 +49,7 @@
   height: 100
 
   maxLevel: 55
+  duskmoteMultiplier: 1.50
 
   nodeCount:
     town: { min: 8, max: 10 }

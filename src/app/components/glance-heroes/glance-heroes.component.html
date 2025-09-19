@@ -17,7 +17,9 @@
           ></app-icon-hero>
 
           <div class="pt-2 px-2">
-            <div>{{ hero.name }}</div>
+            <div>
+              <app-marker-hero-name [hero]="hero"></app-marker-hero-name>
+            </div>
             <div class="flex gap-1 text-sm italic">
               <span>Lv.{{ hero.level }}</span>
               <span>

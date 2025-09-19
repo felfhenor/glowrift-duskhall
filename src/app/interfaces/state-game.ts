@@ -1,5 +1,6 @@
 import type { Combat } from '@interfaces/combat';
 import type { CurrencyBlock } from '@interfaces/content-currency';
+import type { DuskmoteBundleId } from '@interfaces/content-duskmotebundle';
 import type { EquipmentItem } from '@interfaces/content-equipment';
 import type { EquipmentSkill } from '@interfaces/content-skill';
 import type { TownUpgradeId } from '@interfaces/content-townupgrade';
@@ -26,6 +27,7 @@ export interface GameStateMeta {
   wonAtTick: number;
   lastSaveTick: number;
   createdAt: number;
+  isCurrentlyAscending: boolean;
 }
 
 export type GameStateHeroesPosition = WorldPosition & { nodeId: string };
@@ -100,6 +102,12 @@ export interface GameStateRiftglow {
   upgradeLevels: Record<RiftglowUpgrade, number>;
 }
 
+export interface GameStateDuskmote {
+  numAscends: number;
+  currentWorldCapturePercentage: number;
+  unlockedBundles: Record<DuskmoteBundleId, boolean>;
+}
+
 export interface GameState {
   meta: GameStateMeta;
   gameId: GameId;
@@ -111,4 +119,5 @@ export interface GameState {
   town: GameStateTown;
   festival: GameStateFestival;
   riftglow: GameStateRiftglow;
+  duskmote: GameStateDuskmote;
 }

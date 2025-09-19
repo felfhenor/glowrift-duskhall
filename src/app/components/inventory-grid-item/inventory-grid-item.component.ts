@@ -4,6 +4,7 @@ import { DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IconBlankSlotComponent } from '@components/icon-blank-slot/icon-blank-slot.component';
 import { IconItemComponent } from '@components/icon-item/icon-item.component';
+import { MarkerHeroNameComponent } from '@components/marker-hero-name/marker-hero-name.component';
 import { OptionsBaseComponent } from '@components/panel-options/option-base-page.component';
 import { TeleportToDirective } from '@directives/teleport.to.directive';
 import {
@@ -92,6 +93,7 @@ const ITEM_SORTS: Record<
     IconBlankSlotComponent,
     FormsModule,
     TeleportToDirective,
+    MarkerHeroNameComponent,
   ],
   templateUrl: './inventory-grid-item.component.html',
   styleUrl: './inventory-grid-item.component.scss',

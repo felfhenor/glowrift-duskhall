@@ -1,6 +1,8 @@
 export * from './action-equipment';
 export * from './action-skill';
 export * from './analytics';
+export * from './ascension';
+export * from './bundle';
 export * from './camera';
 export * from './camera-controller';
 export * from './claim-log';
@@ -55,6 +57,7 @@ export * from './logging';
 export * from './map-grid-generator';
 export * from './math';
 export * from './migrate';
+export * from './migrate-heroes';
 export * from './migrate-items';
 export * from './migrate-skills';
 export * from './migrate-world';

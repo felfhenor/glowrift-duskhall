@@ -1,6 +1,6 @@
 @let isInReplacementMode = fullContainer.children.length !== 0;
 
-<dialog #modal class="modal" [class.hidden]="!visible()">
+<dialog #modal class="modal" [open]="visible()">
   <div
     class="modal-box p-0"
     [ngClass]="[widthClass()]"
@@ -22,7 +22,7 @@
           @if (showCloseButton()) {
             <app-button-close
               class="absolute top-[-4px] right-2"
-              (click)="visible.set(false)"
+              (click)="closeModal()"
             ></app-button-close>
           }
         </div>

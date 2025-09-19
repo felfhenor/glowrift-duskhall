@@ -153,8 +153,8 @@
     Speed: 1.2
 
 - id: 24cf0306-d279-4e0d-8828-4877db20c62e
-  name: Mage's Breastplate
-  sprite: '0026'
+  name: Mage's Cloak
+  sprite: '0054'
 
   rarity: Rare
   dropLevel: 32

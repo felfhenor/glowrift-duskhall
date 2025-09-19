@@ -3,6 +3,7 @@ import { Component, computed, input, output, signal } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IconSkillComponent } from '@components/icon-skill/icon-skill.component';
+import { MarkerHeroNameComponent } from '@components/marker-hero-name/marker-hero-name.component';
 import { OptionsBaseComponent } from '@components/panel-options/option-base-page.component';
 import { TeleportToDirective } from '@directives/teleport.to.directive';
 import {
@@ -80,6 +81,7 @@ const SKILL_SORTS: Record<
     RepeatPipe,
     FormsModule,
     TeleportToDirective,
+    MarkerHeroNameComponent,
   ],
   templateUrl: './inventory-grid-skill.component.html',
   styleUrl: './inventory-grid-skill.component.scss',

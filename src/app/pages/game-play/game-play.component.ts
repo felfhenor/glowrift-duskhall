@@ -14,6 +14,7 @@ import { GlanceFailuresComponent } from '@components/glance-failures/glance-fail
 import { GlanceHeroesComponent } from '@components/glance-heroes/glance-heroes.component';
 import { GlanceResourcesComponent } from '@components/glance-resources/glance-resources.component';
 import { ModalComponent } from '@components/modal/modal.component';
+import { PanelDuskmoteShopComponent } from '@components/panel-duskmote-shop/panel-duskmote-shop.component';
 import { OptionsBaseComponent } from '@components/panel-options/option-base-page.component';
 import { PanelWorldComponent } from '@components/panel-world/panel-world.component';
 import { VignettePauseComponent } from '@components/vignette-pause/vignette-pause.component';
@@ -26,6 +27,7 @@ import {
   isLoadingGamePage,
   isShowingAnyMenu,
   showCombatMenu,
+  showDuskmoteShop,
   showHeroesMenu,
   showInventoryMenu,
   showLocationMenu,
@@ -54,6 +56,7 @@ import {
     ModalComponent,
     TeleportOutletDirective,
     VignettePauseComponent,
+    PanelDuskmoteShopComponent,
   ],
   templateUrl: './game-play.component.html',
   styleUrl: './game-play.component.scss',
@@ -77,6 +80,8 @@ export class GamePlayComponent extends OptionsBaseComponent {
 
   public isShowingAnyMenu = computed(() => isShowingAnyMenu());
 
+  public isShowingDuskmoteShop = computed(() => showDuskmoteShop());
+
   public isLoadingGamePage = computed(() => isLoadingGamePage());
   public isCatchingUp = computed(() => isCatchingUp());
   public showWinNotification = computed(
@@ -91,5 +96,9 @@ export class GamePlayComponent extends OptionsBaseComponent {
 
   continuePlayingPostWin() {
     victoryDismissWinDialog();
+  }
+
+  closeDuskmoteShop() {
+    showDuskmoteShop.set(false);
   }
 }
