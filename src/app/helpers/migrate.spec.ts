@@ -23,6 +23,7 @@ vi.mock('@helpers/state-game', () => ({
   gamestateTickStart: vi.fn(),
   gamestateTickEnd: vi.fn(),
   saveGameState: vi.fn(),
+  updateGamestate: vi.fn(),
 }));
 
 vi.mock('@helpers/state-options', () => ({

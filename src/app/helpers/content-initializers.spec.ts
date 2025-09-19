@@ -70,6 +70,7 @@ describe('content-initializers', () => {
           width: 50,
           height: 50,
           maxLevel: 25,
+          duskmoteMultiplier: 1,
           nodeCount: {
             castle: { min: 1, max: 10 },
             cave: { min: 1, max: 10 },
@@ -88,6 +89,7 @@ describe('content-initializers', () => {
           width: 100,
           height: 75,
           maxLevel: 50,
+          duskmoteMultiplier: 2,
           nodeCount: {
             castle: { min: 2, max: 3 },
             cave: { min: 1, max: 2 },
@@ -230,6 +232,7 @@ describe('content-initializers', () => {
           dropLevel: 0,
           preventDrop: false,
           preventModification: false,
+          duskmoteBundleId: '',
           isFavorite: false,
           usesPerCombat: -1,
           numTargets: 0,
@@ -304,6 +307,7 @@ describe('content-initializers', () => {
           dropLevel: 0,
           preventDrop: false,
           preventModification: false,
+          duskmoteBundleId: '',
           isFavorite: false,
           enchantLevel: 0,
           baseStats: { Force: 0, Health: 0, Speed: 0, Aura: 0 },

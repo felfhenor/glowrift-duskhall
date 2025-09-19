@@ -20,7 +20,7 @@ export function skillPickRandomDefinitionByRarity(
   definitions = skillAllDefinitions(),
   rng = rngSeeded(rngUuid()),
 ): EquipmentSkillContent | undefined {
-  const allItems = definitions;
+  const allItems = definitions.filter((i) => !i.preventDrop);
 
   const chosenItem = rngChoiceRarity(allItems, rng);
   if (!chosenItem) return undefined;

@@ -38,6 +38,7 @@ vi.mock('@helpers/guardian', () => ({
 
 vi.mock('@helpers/hero', () => ({
   allHeroes: vi.fn(),
+  heroGetName: vi.fn((h: Hero) => h.name),
 }));
 
 vi.mock('@helpers/hero-skills', () => ({
