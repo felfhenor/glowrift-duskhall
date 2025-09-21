@@ -5,5 +5,7 @@ import type { WorldLocation } from '@interfaces/world';
 export function locationTraits(
   location: WorldLocation,
 ): TraitLocationContent[] {
-  return location.traitIds.map((t) => getEntry<TraitLocationContent>(t)!);
+  return (location.traitIds ?? [])
+    .map((t) => getEntry<TraitLocationContent>(t)!)
+    .filter(Boolean);
 }

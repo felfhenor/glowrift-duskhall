@@ -18,6 +18,7 @@ import { locationTraitEncounterLevelModifier } from '@helpers/trait-location-wor
 import { worldNodeGetAccessId } from '@helpers/world';
 import { worldNotifyUpdated } from '@helpers/world-change-notifications';
 import {
+  locationGet,
   locationGetClaimed,
   locationIsPermanentlyClaimed,
   locationNodesAround,
@@ -172,9 +173,10 @@ function upgradePermanentlyClaimNearbyClaimedNodes(
 }
 
 export function locationUpgrade(
-  location: WorldLocation,
+  upgLocation: WorldLocation,
   upgrade: LocationUpgradeContent,
 ): void {
+  const location = locationGet(upgLocation.x, upgLocation.y);
   if (locationLevel(location) >= locationMaxLevel()) return;
 
   const costs = locationUpgradeCosts(location, upgrade);
