@@ -1,5 +1,5 @@
 import { computed, effect, Injectable, signal } from '@angular/core';
-import { error, getOption, info, sfx$, warn } from '@helpers';
+import { getOption, sfx$ } from '@helpers';
 import type { BGM, SFX } from '@interfaces';
 import { zip } from 'es-toolkit/compat';
 
@@ -49,7 +49,7 @@ const CROSSFADE_TIME = 2; // seconds
   providedIn: 'root',
 })
 export class SoundService {
-  private context: AudioContext | null = null;
+  private context = new AudioContext();
   private audioRefs: Partial<Record<SFX | BGM, AudioBuffer>> = {};
 
   private bgmGain: GainNode | undefined;
@@ -79,8 +79,6 @@ export class SoundService {
   }
 
   async init() {
-    this.createAudioContext();
-
     this.lastBGMVolume.set(getOption<'bgmVolume'>('bgmVolume'));
     this.setupUserInteractionListeners();
     await this.loadSFX();
@@ -93,74 +91,6 @@ export class SoundService {
     });
   }
 
-  private isAudioContextValid(): boolean {
-    return !!this.context && this.context.state !== 'closed';
-  }
-
-  private createAudioContext(): void {
-    try {
-      if (this.context && this.context.state !== 'closed') {
-        this.context
-          .close()
-          .catch((err) =>
-            warn('SoundService', 'Error closing AudioContext:', err),
-          );
-      }
-
-      this.context = new AudioContext({
-        latencyHint: 'interactive',
-        sampleRate: 44100,
-      });
-
-      // Add error handling for suspended context
-      this.context.addEventListener('error', (event) => {
-        error('SoundService', 'AudioContext error:', event);
-        this.handleAudioContextError();
-      });
-    } catch (err) {
-      error('SoundService', 'Failed to create AudioContext:', err);
-    }
-  }
-
-  private async handleAudioContextError(): Promise<void> {
-    try {
-      this.createAudioContext();
-
-      if (this.context && this.context.state !== 'closed') {
-        info('SoundService', 'Recovering AudioContext...');
-        await this.resumeContext();
-        await this.reloadAudioResources();
-      }
-
-      info('SoundService', 'Recovered AudioContext...');
-    } catch (err) {
-      error('SoundService', 'AudioContext recovery failed:', err);
-    }
-  }
-
-  private async resumeContext(): Promise<void> {
-    if (!this.context || this.context.state === 'closed') {
-      this.createAudioContext();
-      return;
-    }
-
-    if (this.context.state === 'suspended') {
-      this.resumeAudioContext();
-    }
-  }
-
-  private async reloadAudioResources(): Promise<void> {
-    try {
-      this.audioRefs = {};
-
-      await Promise.all([this.loadSFX(), this.loadBGM()]);
-
-      info('SoundService', 'Reloaded audio resources.');
-    } catch (err) {
-      error('SoundService', 'Failed to reload audio resources:', err);
-    }
-  }
-
   private setupUserInteractionListeners() {
     const enableAudio = () => {
       this.hasInteracted.set(true);
@@ -171,12 +101,13 @@ export class SoundService {
     };
 
     const reenableAudio = async () => {
-      if (!this.context || this.context.state === 'closed') {
-        this.createAudioContext();
-      }
+      if (!this.context) {
+        this.context = new AudioContext();
 
-      if (this.context && this.context.state === 'suspended') {
-        this.resumeAudioContext();
+        // Resume context if it's suspended
+        if (this.context.state === 'suspended') {
+          await this.context.resume();
+        }
       }
     };
 
@@ -189,23 +120,6 @@ export class SoundService {
     document.addEventListener('keydown', reenableAudio);
     document.addEventListener('touchstart', reenableAudio);
     document.addEventListener('mousemove', reenableAudio);
-
-    // Handle page visibility changes
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) return;
-
-      this.resumeAudioContext();
-    });
-  }
-
-  private async resumeAudioContext() {
-    if (!this.isAudioContextValid()) return;
-
-    try {
-      await this.context!.resume();
-    } catch (err) {
-      error('SoundService', 'Failed to resume AudioContext:', err);
-    }
   }
 
   private async loadSFX() {
@@ -215,9 +129,7 @@ export class SoundService {
     }));
 
     const soundNames = sfxToLoad.map((s) => s.sfx);
-    const sounds = (await this.loadSounds(
-      sfxToLoad.map((s) => s.url),
-    )) as AudioBuffer[];
+    const sounds = await this.loadSounds(sfxToLoad.map((s) => s.url));
 
     const zipped = zip<SFX, AudioBuffer>(soundNames, sounds);
     zipped.forEach(([name, buffer]) => {
@@ -232,9 +144,7 @@ export class SoundService {
     }));
 
     const soundNames = bgmToLoad.map((b) => b.bgm);
-    const sounds = (await this.loadSounds(
-      bgmToLoad.map((b) => b.url),
-    )) as AudioBuffer[];
+    const sounds = await this.loadSounds(bgmToLoad.map((b) => b.url));
 
     const zipped = zip<BGM, AudioBuffer>(soundNames, sounds);
     zipped.forEach(([name, buffer]) => {
@@ -245,26 +155,28 @@ export class SoundService {
   private async loadSound(url: string) {
     return fetch(url)
       .then((r) => r.arrayBuffer())
-      .then((b) => this.context!.decodeAudioData(b));
+      .then((b) => this.context.decodeAudioData(b));
   }
 
   private async loadSounds(urls: string[]) {
-    return Promise.all(urls.map((url) => this.loadSound(url)));
+    return Promise.all(urls)
+      .then((urls) => urls.map((url) => url))
+      .then((urls) => Promise.all(urls.map((url) => this.loadSound(url))));
   }
 
   public playSound(soundName: SFX, rate: number) {
-    if (!getOption('sfxPlay') || !this.isAudioContextValid()) return;
+    if (!getOption('sfxPlay')) return;
 
     const sound = this.audioRefs[soundName]!;
 
-    const source = this.context!.createBufferSource();
+    const source = this.context.createBufferSource();
     source.buffer = sound;
     source.detune.value = rate;
 
-    const gain = this.context!.createGain();
+    const gain = this.context.createGain();
     gain.gain.value = this.sfxVolume() * soundVolumeMixing[soundName];
     source.connect(gain);
-    gain.connect(this.context!.destination);
+    gain.connect(this.context.destination);
 
     source.start(0);
 
@@ -276,12 +188,7 @@ export class SoundService {
   }
 
   public playBGM(bgmName: BGM) {
-    if (!getOption('bgmPlay') || !this.isAudioContextValid()) return;
-
-    if (this.context!.state === 'suspended') {
-      this.resumeContext();
-      return;
-    }
+    if (!getOption('bgmPlay')) return;
 
     this.stopBGM();
 
@@ -289,14 +196,14 @@ export class SoundService {
 
     const bgm = this.audioRefs[bgmName]!;
 
-    const source = this.context!.createBufferSource();
+    const source = this.context.createBufferSource();
     source.buffer = bgm;
     source.loop = true;
 
-    const gainNode = this.context!.createGain();
+    const gainNode = this.context.createGain();
     gainNode.gain.value = volume;
     source.connect(gainNode);
-    gainNode.connect(this.context!.destination);
+    gainNode.connect(this.context.destination);
 
     if (this.bgm) {
       gainNode.gain.linearRampToValueAtTime(0, 0);
@@ -310,9 +217,9 @@ export class SoundService {
   }
 
   public stopBGM() {
-    if (!this.bgm || !this.bgmGain || !this.isAudioContextValid()) return;
+    if (!this.bgm || !this.bgmGain) return;
 
-    const currTime = this.context!.currentTime;
+    const currTime = this.context.currentTime;
     const bgm = this.bgm;
     const bgmGain = this.bgmGain;
 
@@ -325,7 +232,7 @@ export class SoundService {
   }
 
   public changeBGMVolume(newVolume: number) {
-    if (!this.bgmGain || !this.context) return;
+    if (!this.bgmGain) return;
 
     this.bgmGain.gain.setValueAtTime(newVolume, this.context.currentTime);
   }
