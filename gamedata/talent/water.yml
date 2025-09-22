@@ -228,6 +228,8 @@
   description: Boost the chance of Hypothermia & Frozen by 5%.
   sprite: '0012'
 
+  requireTalentId: Permeating Chill I
+
   applyToAllSkills: true
   applyToStatusEffectIds:
     - Frozen
