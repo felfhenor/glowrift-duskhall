@@ -21,7 +21,7 @@ export function heroEquipmentStat(hero: Hero, stat: GameStat): number {
 }
 
 export function heroTotalStat(hero: Hero, stat: GameStat): number {
-  return heroBaseStat(hero, stat) + heroEquipmentStat(hero, stat);
+  return Math.floor(heroBaseStat(hero, stat) + heroEquipmentStat(hero, stat));
 }
 
 export function heroEquipmentElement(hero: Hero, element: GameElement): number {

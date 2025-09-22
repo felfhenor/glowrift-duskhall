@@ -5,7 +5,9 @@
 <div class="flex gap-1 flex-col">
   <div class="text-2xl">
     <app-marker-hero-name [hero]="heroData"></app-marker-hero-name>
-    [{{ heroData.hp | number }} / {{ heroStatTotals.Health | number }} HP]
+    <span class="text-sm">
+      [{{ heroData.hp | number }} / {{ heroStatTotals.Health | number }} HP]
+    </span>
   </div>
 
   <div class="text-lg"></div>
