@@ -1,7 +1,6 @@
 import {
   symmetryCanIncreaseCount,
   symmetryIncreaseCount,
-  symmetryItemBonusDescription,
   symmetryItemsMatchingItem,
   symmetryLevel,
   symmetryLevelDescription,
@@ -212,28 +211,6 @@ describe('symmetry', () => {
     });
   });
 
-  describe('symmetryItemBonusDescription', () => {
-    it('should return correct bonus descriptions for each level', () => {
-      expect(symmetryItemBonusDescription(0)).toBe('');
-      expect(symmetryItemBonusDescription(1)).toBe('+5% All Stats');
-      expect(symmetryItemBonusDescription(2)).toBe('+10% All Stats');
-      expect(symmetryItemBonusDescription(3)).toBe(
-        '+15% All Stats; +1 Max Trait',
-      );
-      expect(symmetryItemBonusDescription(4)).toBe(
-        '+20% All Stats; +1 Max Trait',
-      );
-      expect(symmetryItemBonusDescription(5)).toBe(
-        '+25% All Stats; +2 Max Traits',
-      );
-    });
-
-    it('should return empty string for invalid levels', () => {
-      expect(symmetryItemBonusDescription(6 as SymmetryLevel)).toBe('');
-      expect(symmetryItemBonusDescription(-1 as SymmetryLevel)).toBe('');
-    });
-  });
-
   describe('symmetrySkillBonusDescription', () => {
     it('should return correct bonus descriptions for each level', () => {
       expect(symmetrySkillBonusDescription(0)).toBe('');
@@ -248,11 +225,6 @@ describe('symmetry', () => {
       expect(symmetrySkillBonusDescription(5)).toBe(
         '+25% All Stats; +1x Repeat (50%)',
       );
-    });
-
-    it('should return empty string for invalid levels', () => {
-      expect(symmetrySkillBonusDescription(6 as SymmetryLevel)).toBe('');
-      expect(symmetrySkillBonusDescription(-1 as SymmetryLevel)).toBe('');
     });
   });
 

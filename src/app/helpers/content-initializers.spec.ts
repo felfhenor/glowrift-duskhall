@@ -688,6 +688,7 @@ describe('content-initializers', () => {
           boostedDustProductionPerLevel: 0,
           boostedRebellionPerLevel: 0,
           costScalePerTile: 1,
+          boostedHealingPerLevel: 0,
           requiresTownUpgradeId: '' as TownUpgradeId,
         } as LocationUpgradeContent);
       });
@@ -710,6 +711,7 @@ describe('content-initializers', () => {
           boostedUnclaimableCount: 0,
           boostedDustProductionPerLevel: 0,
           boostedRebellionPerLevel: 0,
+          boostedHealingPerLevel: 0,
           costScalePerTile: 0,
           requireClaimType: '',
           requiresTownUpgradeId: 'monster-den-upgrade' as TownUpgradeId,
