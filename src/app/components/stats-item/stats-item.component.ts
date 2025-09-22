@@ -1,5 +1,6 @@
 import { NgClass } from '@angular/common';
-import { Component, computed, input } from '@angular/core';
+import type { OnChanges } from '@angular/core';
+import { Component, computed, input, signal } from '@angular/core';
 import { IconSkillComponent } from '@components/icon-skill/icon-skill.component';
 import { IconTalentComponent } from '@components/icon-talent/icon-talent.component';
 import { MarkerElementComponent } from '@components/marker-element/marker-element.component';
@@ -47,21 +48,14 @@ import {
   templateUrl: './stats-item.component.html',
   styleUrl: './stats-item.component.scss',
 })
-export class StatsItemComponent {
+export class StatsItemComponent implements OnChanges {
   public item = input.required<EquipmentItemContent | EquipmentItem>();
   public statDeltas = input<StatBlock>();
   public elementDeltas = input<ElementBlock>();
   public allowHorizontalCollapseOfStatBlocks = input<boolean>(false);
   public showEquippedBy = input<boolean>(false);
 
-  public equippedByText = computed(() => {
-    if (!this.showEquippedBy()) return '';
-
-    return (
-      allHeroes().find((h) => Object.values(h.equipment).includes(this.item()))
-        ?.name ?? ''
-    );
-  });
+  public equippedByText = signal<string>('');
 
   public enchantLevel = computed(() =>
     itemEnchantLevel(this.item() as EquipmentItem),
@@ -130,4 +124,14 @@ export class StatsItemComponent {
     const adjuster = symmetryCopiesRequired(item, itemSymmetryLevel);
     return `${desc} (${itemSymmetryCount - adjuster}/${copiesRequiredForNextLevel - adjuster}): ${bonusDesc}`;
   });
+
+  ngOnChanges() {
+    if (this.showEquippedBy()) {
+      this.equippedByText.set(
+        allHeroes().filter((h) =>
+          Object.values(h.equipment).includes(this.item()),
+        )[0]?.name,
+      );
+    }
+  }
 }

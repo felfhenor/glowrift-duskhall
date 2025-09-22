@@ -1,5 +1,6 @@
 import { DecimalPipe, NgClass } from '@angular/common';
-import { Component, computed, input } from '@angular/core';
+import type { OnChanges } from '@angular/core';
+import { Component, computed, input, signal } from '@angular/core';
 import { MarkerSymmetryComponent } from '@components/marker-symmetry/marker-symmetry.component';
 import {
   allHeroes,
@@ -36,16 +37,12 @@ import type {
   templateUrl: './stats-skill.component.html',
   styleUrl: './stats-skill.component.scss',
 })
-export class StatsSkillComponent {
+export class StatsSkillComponent implements OnChanges {
   public skill = input.required<EquipmentSkillContent>();
   public equippingHero = input<Hero>();
   public showEquippedBy = input<boolean>(false);
 
-  public equippedByText = computed(() => {
-    if (!this.showEquippedBy()) return '';
-
-    return allHeroes().find((h) => h.skills.includes(this.skill()))?.name ?? '';
-  });
+  public equippedByText = signal<string>('');
 
   private skillWithSymmetry = computed(() =>
     skillCreateWithSymmetry(this.skill()),
@@ -156,4 +153,12 @@ export class StatsSkillComponent {
     const adjuster = symmetryCopiesRequired(skill, skillSymmetryLevel);
     return `${desc} (${skillSymmetryCount - adjuster}/${copiesRequiredForNextLevel - adjuster}): ${bonusDesc}`;
   });
+
+  ngOnChanges() {
+    if (this.showEquippedBy()) {
+      this.equippedByText.set(
+        allHeroes().find((h) => h.skills.includes(this.skill()))?.name ?? '',
+      );
+    }
+  }
 }
