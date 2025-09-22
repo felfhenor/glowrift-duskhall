@@ -103,11 +103,11 @@ export class SoundService {
     const reenableAudio = async () => {
       if (!this.context) {
         this.context = new AudioContext();
+      }
 
-        // Resume context if it's suspended
-        if (this.context.state === 'suspended') {
-          await this.context.resume();
-        }
+      // Resume context if it's suspended
+      if (this.context.state === 'suspended') {
+        await this.context.resume();
       }
     };
 
@@ -116,10 +116,10 @@ export class SoundService {
     document.addEventListener('touchstart', enableAudio, { once: true });
     document.addEventListener('mousemove', enableAudio, { once: true });
 
-    document.addEventListener('click', reenableAudio);
-    document.addEventListener('keydown', reenableAudio);
-    document.addEventListener('touchstart', reenableAudio);
-    document.addEventListener('mousemove', reenableAudio);
+    document.addEventListener('click', reenableAudio, { capture: true });
+    document.addEventListener('keydown', reenableAudio, { capture: true });
+    document.addEventListener('touchstart', reenableAudio, { capture: true });
+    document.addEventListener('mousemove', reenableAudio, { capture: true });
   }
 
   private async loadSFX() {
