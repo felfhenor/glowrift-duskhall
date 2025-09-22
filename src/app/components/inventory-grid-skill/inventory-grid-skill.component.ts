@@ -5,11 +5,15 @@ import { FormsModule } from '@angular/forms';
 import { IconSkillComponent } from '@components/icon-skill/icon-skill.component';
 import { MarkerHeroNameComponent } from '@components/marker-hero-name/marker-hero-name.component';
 import { OptionsBaseComponent } from '@components/panel-options/option-base-page.component';
+import { ShowIfOptionDirective } from '@directives/option-hide.directive';
 import { TeleportToDirective } from '@directives/teleport.to.directive';
 import {
   actionSkillSalvage,
   actionSkillSalvageValue,
   allHeroes,
+  copyToClipboard,
+  debugGainDroppableById,
+  droppableGetBaseId,
   favoriteToggleSkill,
   skillEquip,
 } from '@helpers';
@@ -82,6 +86,7 @@ const SKILL_SORTS: Record<
     FormsModule,
     TeleportToDirective,
     MarkerHeroNameComponent,
+    ShowIfOptionDirective,
   ],
   templateUrl: './inventory-grid-skill.component.html',
   styleUrl: './inventory-grid-skill.component.scss',
@@ -148,5 +153,14 @@ export class InventoryGridSkillComponent extends OptionsBaseComponent {
 
   equipSkill(item: EquipmentSkill, hero: Hero, slot: number) {
     skillEquip(hero, item, slot);
+  }
+
+  copyId(item: EquipmentSkill) {
+    copyToClipboard(item.id);
+  }
+
+  duplicateItem(item: EquipmentSkill) {
+    const realId = droppableGetBaseId(item);
+    debugGainDroppableById(realId);
   }
 }

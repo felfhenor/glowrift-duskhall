@@ -82,6 +82,14 @@
               </li>
             }
           }
+
+          <li [appShowIfOption]="'debugDropdownActions'">
+            <a (click)="copyId(item); hide()">Copy Id</a>
+          </li>
+
+          <li [appShowIfOption]="'debugDropdownActions'">
+            <a (click)="duplicateItem(item); hide()">Duplicate</a>
+          </li>
         </ul>
       }
     </ng-template>

@@ -12,6 +12,7 @@ export type GameOption =
   | 'debugGameloopTimerUpdates'
   | 'debugAllowBackgroundOperations'
   | 'debugDisableFogOfWar'
+  | 'debugDropdownActions'
   | 'sfxPlay'
   | 'bgmPlay'
   | 'gameloopPaused'

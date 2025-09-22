@@ -99,6 +99,24 @@
             <span class="label-text">Disable Fog of War</span>
           </label>
         </div>
+
+        <div class="form-control">
+          <label class="label cursor-pointer label-checkbox">
+            <input
+              type="checkbox"
+              [checked]="getOption('debugDropdownActions') === true"
+              class="checkbox checkbox-secondary"
+              appAnalyticsClick="Options:Debug:DropdownActions"
+              (click)="
+                setOption(
+                  'debugDropdownActions',
+                  !getOption('debugDropdownActions')
+                )
+              "
+            />
+            <span class="label-text">Enable Debug Options</span>
+          </label>
+        </div>
       </div>
     </div>
   </div>

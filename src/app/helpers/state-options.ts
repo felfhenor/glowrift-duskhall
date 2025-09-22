@@ -11,6 +11,7 @@ export function defaultOptions(): GameOptions {
     debugMapNodePositions: false,
     debugAllowBackgroundOperations: false,
     debugDisableFogOfWar: false,
+    debugDropdownActions: false,
     debugTickMultiplier: 1,
     debugSaveInterval: 15,
 

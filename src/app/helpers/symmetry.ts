@@ -89,17 +89,62 @@ export function symmetryLevelDescription(forLevel: SymmetryLevel): string {
   return descriptions[forLevel] || '';
 }
 
-export function symmetryItemBonusDescription(forLevel: SymmetryLevel): string {
-  const descriptions: Record<SymmetryLevel, string> = {
-    0: '',
-    1: '+5% All Stats',
-    2: '+10% All Stats',
-    3: '+15% All Stats; +1 Max Trait',
-    4: '+20% All Stats; +1 Max Trait',
-    5: '+25% All Stats; +2 Max Traits',
+export function symmetryItemBonusDescription(
+  forItem: EquipmentItem,
+  forLevel: SymmetryLevel,
+): string {
+  const descriptions: Record<DropRarity, Record<SymmetryLevel, string>> = {
+    Common: {
+      0: '',
+      1: '+5% All Stats',
+      2: '+10% All Stats',
+      3: '+15% All Stats',
+      4: '+20% All Stats',
+      5: '+25% All Stats',
+    },
+    Uncommon: {
+      0: '',
+      1: '+5% All Stats',
+      2: '+10% All Stats',
+      3: '+15% All Stats',
+      4: '+20% All Stats',
+      5: '+25% All Stats; +1 Max Trait',
+    },
+    Rare: {
+      0: '',
+      1: '+5% All Stats',
+      2: '+10% All Stats',
+      3: '+15% All Stats; +1 Max Trait',
+      4: '+20% All Stats',
+      5: '+25% All Stats',
+    },
+    Mystical: {
+      0: '',
+      1: '+5% All Stats',
+      2: '+10% All Stats',
+      3: '+15% All Stats; +1 Max Trait',
+      4: '+20% All Stats; +1 Max Trait',
+      5: '+25% All Stats; +2 Max Traits',
+    },
+    Legendary: {
+      0: '',
+      1: '+5% All Stats; +1 Max Trait',
+      2: '+10% All Stats; +1 Max Trait',
+      3: '+15% All Stats; +2 Max Traits',
+      4: '+20% All Stats; +2 Max Traits',
+      5: '+25% All Stats; +2 Max Traits',
+    },
+    Unique: {
+      0: '',
+      1: '+5% All Stats; +1 Max Trait',
+      2: '+10% All Stats; +1 Max Trait',
+      3: '+15% All Stats; +2 Max Traits',
+      4: '+20% All Stats; +2 Max Traits',
+      5: '+25% All Stats; +2 Max Traits',
+    },
   };
 
-  return descriptions[forLevel] || '';
+  return descriptions[forItem.rarity][forLevel] || '';
 }
 
 export function symmetrySkillBonusDescription(forLevel: SymmetryLevel): string {

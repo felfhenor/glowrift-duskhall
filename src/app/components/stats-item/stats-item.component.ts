@@ -118,7 +118,7 @@ export class StatsItemComponent implements OnChanges {
     if (itemSymmetryLevel === 0)
       return `${desc} (${itemSymmetryCount}/${copiesRequiredForNextLevel})`;
 
-    const bonusDesc = symmetryItemBonusDescription(itemSymmetryLevel);
+    const bonusDesc = symmetryItemBonusDescription(item, itemSymmetryLevel);
     if (itemSymmetryLevel >= 5) return `${desc}: ${bonusDesc}`;
 
     const adjuster = symmetryCopiesRequired(item, itemSymmetryLevel);

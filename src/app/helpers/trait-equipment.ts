@@ -10,7 +10,17 @@ export function traitCanAddToEquipment() {
 
 export function traitMaxForEquipment(item: EquipmentItem) {
   const level = symmetryLevel(item);
-  return 1 + (level >= 3 ? 1 : 0) + (level >= 5 ? 1 : 0);
+
+  let traits = 1;
+
+  if (item.rarity === 'Uncommon' && level >= 5) traits += 1;
+  if (item.rarity === 'Rare' && level >= 3) traits += 1;
+  if (item.rarity === 'Mystical' && level >= 3) traits += 1;
+  if (item.rarity === 'Mystical' && level >= 5) traits += 1;
+  if (item.rarity === 'Legendary' && level >= 1) traits += 1;
+  if (item.rarity === 'Legendary' && level >= 3) traits += 1;
+
+  return traits;
 }
 
 export function traitAddToEquipment(item: EquipmentItem) {

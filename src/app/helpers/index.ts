@@ -6,6 +6,7 @@ export * from './bundle';
 export * from './camera';
 export * from './camera-controller';
 export * from './claim-log';
+export * from './clipboard';
 export * from './clock';
 export * from './combat';
 export * from './combat-create';

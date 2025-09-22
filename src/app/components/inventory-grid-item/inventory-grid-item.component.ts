@@ -6,11 +6,15 @@ import { IconBlankSlotComponent } from '@components/icon-blank-slot/icon-blank-s
 import { IconItemComponent } from '@components/icon-item/icon-item.component';
 import { MarkerHeroNameComponent } from '@components/marker-hero-name/marker-hero-name.component';
 import { OptionsBaseComponent } from '@components/panel-options/option-base-page.component';
+import { ShowIfOptionDirective } from '@directives/option-hide.directive';
 import { TeleportToDirective } from '@directives/teleport.to.directive';
 import {
   actionItemSalvage,
   actionItemSalvageValue,
   allHeroes,
+  copyToClipboard,
+  debugGainDroppableById,
+  droppableGetBaseId,
   favoriteToggleItem,
   itemElementMultiplier,
   itemEquip,
@@ -94,6 +98,7 @@ const ITEM_SORTS: Record<
     FormsModule,
     TeleportToDirective,
     MarkerHeroNameComponent,
+    ShowIfOptionDirective,
   ],
   templateUrl: './inventory-grid-item.component.html',
   styleUrl: './inventory-grid-item.component.scss',
@@ -158,5 +163,14 @@ export class InventoryGridItemComponent extends OptionsBaseComponent {
 
   equipItem(item: EquipmentItem, hero: Hero) {
     itemEquip(hero, item);
+  }
+
+  copyId(item: EquipmentItem) {
+    copyToClipboard(item.id);
+  }
+
+  duplicateItem(item: EquipmentItem) {
+    const realId = droppableGetBaseId(item);
+    debugGainDroppableById(realId);
   }
 }
