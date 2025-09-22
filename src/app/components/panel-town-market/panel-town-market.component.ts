@@ -1,11 +1,13 @@
 import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MarkerCurrencyInlineComponent } from '@components/marker-currency-inline/marker-currency-inline.component';
 import { PanelTownBuildingUpgradeComponent } from '@components/panel-town-building-upgrade/panel-town-building-upgrade.component';
 import { SelectorCurrencyComponent } from '@components/selector-currency/selector-currency.component';
 import { SFXDirective } from '@directives/sfx.directive';
 import {
   analyticsSendDesignEvent,
   currencyGain,
+  currencyGet,
   currencyHasAmount,
   currencyLose,
   marketCurrencyBonus,
@@ -15,7 +17,7 @@ import {
   currencyConversionInputAmount,
   currencyConversionOutputAmount,
 } from '@helpers/currency-conversion';
-import type { CurrencyContent } from '@interfaces';
+import type { CurrencyContent, GameCurrency } from '@interfaces';
 import { debounce } from 'typescript-debounce-decorator';
 
 @Component({
@@ -25,6 +27,7 @@ import { debounce } from 'typescript-debounce-decorator';
     SelectorCurrencyComponent,
     FormsModule,
     SFXDirective,
+    MarkerCurrencyInlineComponent,
   ],
   templateUrl: './panel-town-market.component.html',
   styleUrl: './panel-town-market.component.scss',
@@ -35,6 +38,18 @@ export class PanelTownMarketComponent {
 
   public inputAmount = signal<number>(0);
   public outputAmount = signal<number>(0);
+
+  public inputCurrencyInfo = computed(() => ({
+    currency: this.inputCurrency()?.id as GameCurrency,
+    amount: this.inputCurrency() ? currencyGet(this.inputCurrency()!.name) : 0,
+  }));
+
+  public outputCurrencyInfo = computed(() => ({
+    currency: this.outputCurrency()?.id as GameCurrency,
+    amount: this.outputCurrency()
+      ? currencyGet(this.outputCurrency()!.name)
+      : 0,
+  }));
 
   public hasInputAmount = computed(() => {
     const input = this.inputCurrency();

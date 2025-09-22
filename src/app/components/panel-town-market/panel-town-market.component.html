@@ -24,6 +24,15 @@
             [(ngModel)]="inputAmount"
             (ngModelChange)="inputAmountChanged()"
           />
+          <span class="label">
+            @if (inputCurrencyInfo(); as inputCurr) {
+              /
+              <app-marker-currency-inline
+                [currency]="inputCurr.currency"
+                [value]="inputCurr.amount"
+              ></app-marker-currency-inline>
+            }
+          </span>
         </label>
 
         @if (inputCurrency() && !hasInputAmount()) {
@@ -54,6 +63,15 @@
             [(ngModel)]="outputAmount"
             (ngModelChange)="outputAmountChanged()"
           />
+          <span class="label">
+            @if (outputCurrencyInfo(); as outputCurr) {
+              /
+              <app-marker-currency-inline
+                [currency]="outputCurr.currency"
+                [value]="outputCurr.amount"
+              ></app-marker-currency-inline>
+            }
+          </span>
         </label>
 
         <button
