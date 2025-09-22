@@ -117,6 +117,7 @@ export class StatsItemComponent {
     const desc = symmetryLevelDescription(itemSymmetryLevel);
     const itemSymmetryCount = item.mods?.symmetryCount ?? 0;
     const copiesRequiredForNextLevel = symmetryCopiesRequired(
+      item,
       (itemSymmetryLevel + 1) as SymmetryLevel,
     );
 
@@ -126,7 +127,7 @@ export class StatsItemComponent {
     const bonusDesc = symmetryItemBonusDescription(itemSymmetryLevel);
     if (itemSymmetryLevel >= 5) return `${desc}: ${bonusDesc}`;
 
-    const adjuster = symmetryCopiesRequired(itemSymmetryLevel);
+    const adjuster = symmetryCopiesRequired(item, itemSymmetryLevel);
     return `${desc} (${itemSymmetryCount - adjuster}/${copiesRequiredForNextLevel - adjuster}): ${bonusDesc}`;
   });
 }

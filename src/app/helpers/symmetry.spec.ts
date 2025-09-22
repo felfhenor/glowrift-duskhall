@@ -1,6 +1,5 @@
 import {
   symmetryCanIncreaseCount,
-  symmetryCopiesRequired,
   symmetryIncreaseCount,
   symmetryItemBonusDescription,
   symmetryItemsMatchingItem,
@@ -113,22 +112,6 @@ describe('symmetry', () => {
     vi.clearAllMocks();
   });
 
-  describe('symmetryCopiesRequired', () => {
-    it('should return correct requirements for each symmetry level', () => {
-      expect(symmetryCopiesRequired(0)).toBe(0);
-      expect(symmetryCopiesRequired(1)).toBe(4);
-      expect(symmetryCopiesRequired(2)).toBe(12);
-      expect(symmetryCopiesRequired(3)).toBe(28);
-      expect(symmetryCopiesRequired(4)).toBe(60);
-      expect(symmetryCopiesRequired(5)).toBe(124);
-    });
-
-    it('should return -1 for invalid levels', () => {
-      expect(symmetryCopiesRequired(6 as SymmetryLevel)).toBe(-1);
-      expect(symmetryCopiesRequired(-1 as SymmetryLevel)).toBe(-1);
-    });
-  });
-
   describe('symmetryLevel', () => {
     it('should return 0 for items with no symmetry count', () => {
       const item = createMockEquipmentItem();
@@ -150,31 +133,36 @@ describe('symmetry', () => {
     it('should return correct level for items with symmetry count', () => {
       // Level 1: 4+ copies
       const item1 = createMockEquipmentItem({
-        mods: { symmetryCount: 4 },
+        rarity: 'Common',
+        mods: { symmetryCount: 5 },
       });
       expect(symmetryLevel(item1)).toBe(1);
 
       // Level 2: 12+ copies
       const item2 = createMockEquipmentItem({
-        mods: { symmetryCount: 12 },
+        rarity: 'Common',
+        mods: { symmetryCount: 15 },
       });
       expect(symmetryLevel(item2)).toBe(2);
 
       // Level 3: 28+ copies
       const item3 = createMockEquipmentItem({
-        mods: { symmetryCount: 28 },
+        rarity: 'Common',
+        mods: { symmetryCount: 30 },
       });
       expect(symmetryLevel(item3)).toBe(3);
 
       // Level 4: 60+ copies
       const item4 = createMockEquipmentItem({
-        mods: { symmetryCount: 60 },
+        rarity: 'Common',
+        mods: { symmetryCount: 50 },
       });
       expect(symmetryLevel(item4)).toBe(4);
 
       // Level 5: 124+ copies
       const item5 = createMockEquipmentItem({
-        mods: { symmetryCount: 124 },
+        rarity: 'Common',
+        mods: { symmetryCount: 75 },
       });
       expect(symmetryLevel(item5)).toBe(5);
     });
@@ -188,7 +176,7 @@ describe('symmetry', () => {
 
     it('should work with skills', () => {
       const skill = createMockEquipmentSkill({
-        mods: { symmetryCount: 12 },
+        mods: { symmetryCount: 15 },
       });
       expect(symmetryLevel(skill)).toBe(2);
     });

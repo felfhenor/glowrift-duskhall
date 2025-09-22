@@ -143,6 +143,7 @@ export class StatsSkillComponent {
     const desc = symmetryLevelDescription(skillSymmetryLevel);
     const skillSymmetryCount = skill.mods?.symmetryCount ?? 0;
     const copiesRequiredForNextLevel = symmetryCopiesRequired(
+      skill,
       (skillSymmetryLevel + 1) as SymmetryLevel,
     );
 
@@ -152,7 +153,7 @@ export class StatsSkillComponent {
     const bonusDesc = symmetrySkillBonusDescription(skillSymmetryLevel);
     if (skillSymmetryLevel >= 5) return `${desc}: ${bonusDesc}`;
 
-    const adjuster = symmetryCopiesRequired(skillSymmetryLevel);
+    const adjuster = symmetryCopiesRequired(skill, skillSymmetryLevel);
     return `${desc} (${skillSymmetryCount - adjuster}/${copiesRequiredForNextLevel - adjuster}): ${bonusDesc}`;
   });
 }

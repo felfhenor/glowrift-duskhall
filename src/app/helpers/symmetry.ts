@@ -7,14 +7,43 @@ import type { EquipmentItem } from '@interfaces/content-equipment';
 import type { EquipmentSkill } from '@interfaces/content-skill';
 import type { DropRarity, SymmetryLevel } from '@interfaces/droppable';
 
-export function symmetryCopiesRequired(forLevel: SymmetryLevel): number {
+export function symmetryCopiesRequired(
+  thing: EquipmentItem | EquipmentSkill,
+  forLevel: SymmetryLevel,
+): number {
+  const multiplierByRarity: Record<DropRarity, number> = {
+    Common: 5,
+    Uncommon: 4,
+    Rare: 3,
+    Mystical: 2,
+    Legendary: 1,
+    Unique: 1,
+  };
+
+  const multiplierByLevel: Record<SymmetryLevel, number> = {
+    0: 0,
+    1: 1,
+    2: 2,
+    3: 3,
+    4: 4,
+    5: 5,
+  };
+
+  const levelTotal = (level: SymmetryLevel) =>
+    multiplierByRarity[thing.rarity] * multiplierByLevel[level];
+
   const requirements: Record<SymmetryLevel, number> = {
     0: 0,
-    1: 4,
-    2: 12, // 4 + 8
-    3: 28, // 4 + 8 + 16
-    4: 60, // 4 + 8 + 16 + 32
-    5: 124, // 4 + 8 + 16 + 32 + 64
+    1: levelTotal(1),
+    2: levelTotal(2) + levelTotal(1),
+    3: levelTotal(3) + levelTotal(2) + levelTotal(1),
+    4: levelTotal(4) + levelTotal(3) + levelTotal(2) + levelTotal(1),
+    5:
+      levelTotal(5) +
+      levelTotal(4) +
+      levelTotal(3) +
+      levelTotal(2) +
+      levelTotal(1),
   };
 
   return requirements[forLevel] ?? -1;
@@ -26,7 +55,7 @@ export function symmetryLevel(
   for (let i = 5; i >= 0; i--) {
     if (
       (thing.mods?.symmetryCount ?? 0) >=
-      symmetryCopiesRequired(i as SymmetryLevel)
+      symmetryCopiesRequired(thing, i as SymmetryLevel)
     )
       return i as SymmetryLevel;
   }
@@ -97,6 +126,7 @@ export function symmetryIncreaseCount(
 
   const nextSymmetryLevel = symmetryLevel(thing) + 1;
   const nextSymmetryCopiesRequired = symmetryCopiesRequired(
+    thing,
     nextSymmetryLevel as SymmetryLevel,
   );
 
