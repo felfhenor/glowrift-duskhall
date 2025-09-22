@@ -27,3 +27,8 @@
   category: Location Upgrades
   name: -Nullify Evil
   description: Make all locations in the zone of control of this location permanently owned when captured. Only available to Towns.
+
+- id: 07fa176b-fffe-4715-8b35-52b51991da67
+  category: Location Upgrades
+  name: -Improved Healing
+  description: Increases the healing rate of all units resting at this location by +1 HP per level. Only available to Towns.

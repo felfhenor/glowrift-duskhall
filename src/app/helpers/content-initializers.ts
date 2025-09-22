@@ -424,6 +424,7 @@ function ensureLocationUpgrade(
     boostedRebellionPerLevel: locationUpgrade.boostedRebellionPerLevel ?? 0,
     boostedDustProductionPerLevel:
       locationUpgrade.boostedDustProductionPerLevel ?? 0,
+    boostedHealingPerLevel: locationUpgrade.boostedHealingPerLevel ?? 0,
   };
 }
 

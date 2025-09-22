@@ -5,6 +5,7 @@ import { spriteGetFromIndex } from '@helpers/sprite';
 import { gamestate, updateGamestate } from '@helpers/state-game';
 import { talentTownStatTotalForAllHeroes } from '@helpers/talent';
 import { locationGet, locationGetCurrent } from '@helpers/world-location';
+import { locationUpgradeStatTotal } from '@helpers/world-location-upgrade';
 import type {
   CameoContent,
   EquipmentSkill,
@@ -135,8 +136,14 @@ export function heroRecoveryPercent(): string {
 }
 
 export function heroHealAll(amount: number): void {
+  const curLocation = locationGetCurrent();
+  if (!curLocation) return;
+
   const totalAmount =
-    amount * (1 + talentTownStatTotalForAllHeroes('healOverTimeBonus'));
+    amount *
+    (1 +
+      talentTownStatTotalForAllHeroes('healOverTimeBonus') +
+      locationUpgradeStatTotal(curLocation, 'boostedHealingPerLevel'));
 
   const heroes = allHeroes();
 

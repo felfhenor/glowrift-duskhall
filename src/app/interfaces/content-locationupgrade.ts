@@ -13,6 +13,7 @@ export type LocationUpgradeContentNumerics = {
   boostedUnclaimableCount: number;
   boostedRebellionPerLevel: number;
   boostedDustProductionPerLevel: number;
+  boostedHealingPerLevel: number;
 };
 
 export type LocationUpgradeContent = IsContentItem &

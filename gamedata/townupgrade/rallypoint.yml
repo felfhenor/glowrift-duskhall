@@ -39,3 +39,15 @@
     Mana: 1000000
     'Soul Essence': 25000
   levelRequirement: 15
+
+- id: 5894d6a7-788d-42b2-bbf6-ce33eaf4c950
+  name: Improved Healing
+  description: 'Increases the rate at which heroes are healed in a town.'
+  appliesToTypes: ['town']
+  cost:
+    Mana: 500000
+    'Water Crystal': 1000
+    'Water Shard': 15000
+    'Water Sliver': 100000
+
+  levelRequirement: 20

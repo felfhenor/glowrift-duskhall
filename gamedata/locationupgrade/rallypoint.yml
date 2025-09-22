@@ -121,3 +121,20 @@
     Soul Essence: 100000
 
   boostedUnclaimableCount: 1
+
+- id: 8a0d01e6-819d-49ed-b8a6-084e31ddfea2
+  name: Boosted Healing
+  description: 'Increases the healing rate of all units resting at this location by +{value} HP per tick.'
+
+  requiresTownUpgradeId: Improved Healing
+  appliesToTypes: ['town']
+
+  costScalePerTile: 1
+
+  baseCost:
+    Mana: 25000
+    Water Sliver: 500
+    Water Shard: 100
+    Water Crystal: 50
+
+  boostedHealingPerLevel: 1
