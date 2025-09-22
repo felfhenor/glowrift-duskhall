@@ -15,9 +15,9 @@ export type TownBuilding =
   | 'Salvager'
   | 'Rally Point';
 
-export type ItemAction = 'Salvage' | 'Equip';
+export type ItemAction = 'Salvage' | 'Equip' | 'Favorite';
 
-export type SkillAction = 'Salvage' | 'Equip';
+export type SkillAction = 'Salvage' | 'Equip' | 'Favorite';
 
 export type BlacksmithEnchant = HasRarity &
   HasDescription & {

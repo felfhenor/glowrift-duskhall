@@ -86,5 +86,6 @@
     (skillClicked)="selectedSkill.set($event)"
     [allowItemClicks]="true"
     [disabledSkillIds]="chosen ? [chosen.id] : []"
+    [allowedSkillActions]="['Favorite']"
   ></app-inventory-grid-container>
 </app-card-page>

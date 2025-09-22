@@ -113,5 +113,6 @@
     (itemClicked)="selectedItem.set($event)"
     [allowItemClicks]="true"
     [disabledItemIds]="chosen ? [chosen.id] : []"
+    [allowedItemActions]="['Favorite']"
   ></app-inventory-grid-container>
 </app-card-page>

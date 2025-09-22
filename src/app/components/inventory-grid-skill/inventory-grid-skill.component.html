@@ -37,11 +37,13 @@
         <ul class="menu bg-base-200 rounded-box w-56 p-0 min-w-[300px]">
           <li class="menu-title">{{ item.name }} Lv.{{ item.dropLevel }}</li>
 
-          <li>
-            <a (click)="toggleFavorite(item); hide()">
-              {{ item.isFavorite ? 'Unfavorite' : 'Favorite' }}
-            </a>
-          </li>
+          @if (actions.includes('Favorite')) {
+            <li>
+              <a (click)="toggleFavorite(item); hide()">
+                {{ item.isFavorite ? 'Unfavorite' : 'Favorite' }}
+              </a>
+            </li>
+          }
 
           @if (actions.includes('Salvage')) {
             <li [class.menu-disabled]="item.isFavorite">
