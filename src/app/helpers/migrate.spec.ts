@@ -57,6 +57,7 @@ vi.mock('@helpers/migrate-world', () => ({
   migrateResetClaimedNodeCounts: vi.fn(),
   migrateUnclaimMissedNodes: vi.fn(),
   migratePermanentlyClaimedNodes: vi.fn(),
+  migrateLocationTypeCounts: vi.fn(),
 }));
 
 // Import after mocking
