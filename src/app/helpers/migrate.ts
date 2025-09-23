@@ -4,6 +4,7 @@ import { migrateHeroes } from '@helpers/migrate-heroes';
 import { migrateItems } from '@helpers/migrate-items';
 import { migrateSkills } from '@helpers/migrate-skills';
 import {
+  migrateLocationTypeCounts,
   migratePermanentlyClaimedNodes,
   migrateResetClaimedNodeCounts,
   migrateUnclaimMissedNodes,
@@ -32,6 +33,7 @@ export function migrateGameState() {
   migrateUnclaimMissedNodes();
   migratePermanentlyClaimedNodes();
   migrateResetClaimedNodeCounts();
+  migrateLocationTypeCounts();
   migrateHeroes();
   gamestateTickEnd();
   saveGameState();
